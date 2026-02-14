@@ -1100,6 +1100,7 @@
             chicken: { name: 'Golden Hen', emoji: '🐔', price: 100, ability: 'Prosperous', description: '+15% sell price on all crops', effect: 'value', rarity: 'uncommon' },
             bee: { name: 'Magic Bee', emoji: '🐝', price: 150, ability: 'Pollinator', description: '+30% mutation chance', effect: 'mutation', rarity: 'uncommon' },
             owl: { name: 'Wise Owl', emoji: '🦉', price: 200, ability: 'Weatherseer', description: 'Weather lasts 50% longer', effect: 'weather', rarity: 'rare' },
+            turtle: { name: 'Sea Turtle', emoji: '🐢', price: 250, ability: 'Tidal', description: 'Makes 1 plant wet every 15s', effect: 'wetplant', rarity: 'rare' },
             bunny: { name: 'Lucky Bunny', emoji: '🐰', price: 300, ability: 'Multiplier', description: '+1 bonus crop per harvest', effect: 'yield', rarity: 'rare' },
             dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest', rarity: 'epic' },
             unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all', rarity: 'legendary' },
@@ -1844,6 +1845,24 @@
                     const {index} = readyPlots[Math.floor(Math.random() * readyPlots.length)];
                     harvestCrop(index);
                     showMessage(`🐉 Dragon auto-harvested a crop!`);
+                }
+            }
+
+            // Sea Turtle wet effect (every 15 seconds)
+            if (hasPetEffect('wetplant')) {
+                if (!gameState.turtleTimer) gameState.turtleTimer = 0;
+                gameState.turtleTimer++;
+                if (gameState.turtleTimer >= 15) {
+                    gameState.turtleTimer = 0;
+                    const growingPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
+                        .filter(({plot}) => plot && !plot.mutations?.includes('wet'));
+                    if (growingPlots.length > 0) {
+                        const {plot} = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                        if (!plot.mutations) plot.mutations = [];
+                        plot.mutations.push('wet');
+                        showMessage(`🐢 Sea Turtle made a crop wet! 💧`);
+                        needsRender = true;
+                    }
                 }
             }
             
