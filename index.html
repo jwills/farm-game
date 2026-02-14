@@ -560,25 +560,25 @@
         };
 
         const CROPS = {
-            // Common
-            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8, rarity: 'common' },
-            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10, rarity: 'common' },
-            onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 8, basePrice: 18, growTime: 7, rarity: 'common' },
-            // Uncommon
-            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 32, growTime: 12, rarity: 'uncommon' },
-            lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 14, basePrice: 30, growTime: 11, rarity: 'uncommon' },
-            pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 18, basePrice: 38, growTime: 13, rarity: 'uncommon' },
-            // Rare
-            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 45, growTime: 15, rarity: 'rare' },
-            eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 22, basePrice: 50, growTime: 16, rarity: 'rare' },
-            broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 24, basePrice: 52, growTime: 17, rarity: 'rare' },
-            // Epic
-            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 28, basePrice: 60, growTime: 18, rarity: 'epic' },
-            watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 32, basePrice: 70, growTime: 20, rarity: 'epic' },
-            grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 35, basePrice: 75, growTime: 22, rarity: 'epic' },
+            // Common - single harvest
+            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8, rarity: 'common', yield: 1 },
+            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10, rarity: 'common', yield: [1, 3] },
+            onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 8, basePrice: 18, growTime: 7, rarity: 'common', yield: 1 },
+            // Uncommon - tomato & pepper regrow
+            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 14, growTime: 12, rarity: 'uncommon', yield: [1, 2], regrows: true, regrowTime: 5 },
+            lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 14, basePrice: 30, growTime: 11, rarity: 'uncommon', yield: 1 },
+            pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 18, basePrice: 16, growTime: 13, rarity: 'uncommon', yield: [1, 3], regrows: true, regrowTime: 5 },
+            // Rare - corn gives multiple
+            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 22, growTime: 15, rarity: 'rare', yield: [2, 4] },
+            eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 22, basePrice: 20, growTime: 16, rarity: 'rare', yield: [1, 2], regrows: true, regrowTime: 6 },
+            broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 24, basePrice: 52, growTime: 17, rarity: 'rare', yield: 1 },
+            // Epic - strawberry & grapes regrow
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 28, basePrice: 18, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true, regrowTime: 6 },
+            watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 32, basePrice: 70, growTime: 20, rarity: 'epic', yield: 1 },
+            grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 35, basePrice: 22, growTime: 22, rarity: 'epic', yield: [2, 5], regrows: true, regrowTime: 7 },
             // Legendary
-            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 40, basePrice: 90, growTime: 25, rarity: 'legendary' },
-            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 50, basePrice: 120, growTime: 30, rarity: 'legendary' }
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 40, basePrice: 90, growTime: 25, rarity: 'legendary', yield: 1 },
+            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 50, basePrice: 45, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true, regrowTime: 10 }
         };
 
         const WEATHER = {
@@ -659,7 +659,7 @@
                         <div class="name">${crop.name} Seeds</div>
                         <div class="details">
                             <span class="rarity-badge" style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
-                            • ${crop.growTime}s • ~$${crop.basePrice}
+                            • ${crop.growTime}s • ${getYieldText(crop)} • ~$${crop.basePrice}${crop.regrows ? ' 🔄' : ''}
                         </div>
                     </div>
                     <span class="price">$${crop.seedPrice}</span>
@@ -682,8 +682,9 @@
                 
                 if (plot) {
                     const crop = CROPS[plot.type];
-                    const progress = Math.min(100, (plot.growth / crop.growTime) * 100);
-                    const isReady = plot.growth >= crop.growTime;
+                    const targetTime = (plot.harvested && crop.regrows) ? crop.regrowTime : crop.growTime;
+                    const progress = Math.min(100, (plot.growth / targetTime) * 100);
+                    const isReady = plot.growth >= targetTime;
                     
                     if (isReady) {
                         div.classList.add('ready');
@@ -699,9 +700,12 @@
                         return weather ? weather.mutationEmoji : '';
                     }).join('');
                     
+                    const regrowIcon = crop.regrows ? '🔄' : '';
+                    
                     div.innerHTML = `
                         <span class="crop-emoji">${emoji}</span>
                         ${plotMutations ? `<span style="position:absolute;top:3px;right:3px;font-size:1.4rem;text-shadow: 0 0 5px rgba(255,255,255,0.8);">${plotMutations}</span>` : ''}
+                        ${regrowIcon ? `<span style="position:absolute;top:3px;left:3px;font-size:0.9rem;">${regrowIcon}</span>` : ''}
                         ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
                     `;
                     
@@ -844,7 +848,8 @@
                 type: seedType,
                 growth: 0,
                 plantedAt: Date.now(),
-                mutations: [] // can gain mutations from weather
+                mutations: [], // can gain mutations from weather
+                harvested: false // tracks if first harvest done (for regrow time)
             };
             
             showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
@@ -870,16 +875,46 @@
                 return;
             }
             
-            const sizeIndex = getRandomSize();
-            const size = SIZES[sizeIndex];
-            gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
-            gameState.totalHarvested++;
-            gameState.plots[plotIndex] = null;
+            // Calculate yield
+            let yieldAmount = 1;
+            if (Array.isArray(crop.yield)) {
+                yieldAmount = crop.yield[0] + Math.floor(Math.random() * (crop.yield[1] - crop.yield[0] + 1));
+            } else {
+                yieldAmount = crop.yield || 1;
+            }
             
-            showMessage(`Harvested ${size.name} ${crop.name}! ${crop.growEmoji}`);
+            // Harvest each item
+            for (let i = 0; i < yieldAmount; i++) {
+                const sizeIndex = getRandomSize();
+                gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
+                gameState.totalHarvested++;
+            }
+            
+            const sizeText = yieldAmount > 1 ? `${yieldAmount}x ` : '';
+            
+            // Check if crop regrows
+            if (crop.regrows) {
+                plot.growth = 0; // Reset growth
+                plot.harvested = true; // Mark as harvested before (uses regrow time)
+                showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄`);
+            } else {
+                gameState.plots[plotIndex] = null;
+                showMessage(`Harvested ${sizeText}${crop.name}! ${crop.growEmoji}`);
+            }
             
             renderFarm();
             renderInventory();
+        }
+        
+        function getRegrowTime(crop) {
+            return crop.regrowTime || Math.floor(crop.growTime / 2);
+        }
+        
+        function getYieldText(crop) {
+            if (Array.isArray(crop.yield)) {
+                return `${crop.yield[0]}-${crop.yield[1]}x`;
+            }
+            return crop.yield > 1 ? `${crop.yield}x` : '1x';
         }
 
         // Sell All Crops
