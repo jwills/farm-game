@@ -184,6 +184,15 @@
             transform: translateX(5px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        
+        .shop-item.legendary-glow {
+            animation: legendary-shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes legendary-shimmer {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 152, 0, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(255, 152, 0, 0.6); }
+        }
 
         .shop-item.disabled {
             opacity: 0.5;
@@ -537,13 +546,21 @@
 
     <script>
         // Game Data
+        const RARITIES = {
+            common: { name: 'Common', color: '#9E9E9E', bg: 'linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%)' },
+            uncommon: { name: 'Uncommon', color: '#4CAF50', bg: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },
+            rare: { name: 'Rare', color: '#2196F3', bg: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
+            epic: { name: 'Epic', color: '#9C27B0', bg: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
+            legendary: { name: 'Legendary', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%)' }
+        };
+
         const CROPS = {
-            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8 },
-            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 32, growTime: 12 },
-            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 45, growTime: 15 },
-            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10 },
-            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, basePrice: 55, growTime: 18 },
-            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, basePrice: 80, growTime: 25 }
+            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8, rarity: 'common' },
+            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10, rarity: 'common' },
+            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 32, growTime: 12, rarity: 'uncommon' },
+            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 45, growTime: 15, rarity: 'rare' },
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, basePrice: 55, growTime: 18, rarity: 'epic' },
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, basePrice: 80, growTime: 25, rarity: 'legendary' }
         };
 
         const WEATHER = {
@@ -608,15 +625,24 @@
             const container = document.getElementById('shop-items');
             container.innerHTML = '';
             
-            for (const [id, crop] of Object.entries(CROPS)) {
+            // Sort by price (cheapest first)
+            const sortedCrops = Object.entries(CROPS).sort((a, b) => a[1].seedPrice - b[1].seedPrice);
+            
+            for (const [id, crop] of sortedCrops) {
                 const canAfford = gameState.money >= crop.seedPrice;
+                const rarity = RARITIES[crop.rarity];
                 const div = document.createElement('div');
-                div.className = `shop-item ${canAfford ? '' : 'disabled'}`;
+                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''}`;
+                div.style.background = rarity.bg;
+                div.style.borderLeft = `4px solid ${rarity.color}`;
                 div.innerHTML = `
                     <span class="emoji">${crop.seedEmoji}</span>
                     <div class="info">
                         <div class="name">${crop.name} Seeds</div>
-                        <div class="details">Grows in ${crop.growTime}s • ~$${crop.basePrice}</div>
+                        <div class="details">
+                            <span class="rarity-badge" style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
+                            • ${crop.growTime}s • ~$${crop.basePrice}
+                        </div>
                     </div>
                     <span class="price">$${crop.seedPrice}</span>
                 `;
