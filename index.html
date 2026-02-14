@@ -1109,7 +1109,7 @@
             thunder: { name: 'Thunder', emoji: '⛈️', mutation: 'shocked', mutationEmoji: '⚡', bonus: 1.5 },
             windy: { name: 'Windy', emoji: '💨', mutation: 'breezy', mutationEmoji: '🍃', bonus: 1.2 },
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 },
-            snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 1.35 },
+            snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 }
         };
 
@@ -1829,7 +1829,9 @@
                         mutationChance = getPetBonus('mutation', mutationChance);
                         if (currentWeather.mutation && Math.random() < mutationChance) {
                             if (!plot.mutations) plot.mutations = [];
-                            if (!plot.mutations.includes(currentWeather.mutation)) {
+                            // Check if mutation requires another mutation first
+                            const canGetMutation = !currentWeather.requiresMutation || plot.mutations.includes(currentWeather.requiresMutation);
+                            if (canGetMutation && !plot.mutations.includes(currentWeather.mutation)) {
                                 plot.mutations.push(currentWeather.mutation);
                                 showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
                             }
