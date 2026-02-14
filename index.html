@@ -560,25 +560,25 @@
         };
 
         const CROPS = {
-            // Common - single harvest
-            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8, rarity: 'common', yield: 1 },
-            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10, rarity: 'common', yield: [1, 3] },
-            onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 8, basePrice: 18, growTime: 7, rarity: 'common', yield: 1 },
-            // Uncommon - tomato & pepper regrow
-            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 14, growTime: 12, rarity: 'uncommon', yield: [1, 2], regrows: true, regrowTime: 5 },
-            lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 14, basePrice: 30, growTime: 11, rarity: 'uncommon', yield: 1 },
-            pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 18, basePrice: 16, growTime: 13, rarity: 'uncommon', yield: [1, 3], regrows: true, regrowTime: 5 },
-            // Rare - corn gives multiple
-            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 22, growTime: 15, rarity: 'rare', yield: [2, 4] },
-            eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 22, basePrice: 20, growTime: 16, rarity: 'rare', yield: [1, 2], regrows: true, regrowTime: 6 },
-            broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 24, basePrice: 52, growTime: 17, rarity: 'rare', yield: 1 },
-            // Epic - strawberry & grapes regrow
-            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 28, basePrice: 18, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true, regrowTime: 6 },
-            watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 32, basePrice: 70, growTime: 20, rarity: 'epic', yield: 1 },
-            grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 35, basePrice: 22, growTime: 22, rarity: 'epic', yield: [2, 5], regrows: true, regrowTime: 7 },
-            // Legendary
-            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 40, basePrice: 90, growTime: 25, rarity: 'legendary', yield: 1 },
-            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 50, basePrice: 45, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true, regrowTime: 10 }
+            // Common ($8-12) - starter crops
+            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 8, basePrice: 18, growTime: 8, rarity: 'common', yield: 1 },
+            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 10, basePrice: 22, growTime: 10, rarity: 'common', yield: [1, 3] },
+            onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 6, basePrice: 15, growTime: 7, rarity: 'common', yield: 1 },
+            // Uncommon ($18-25) - early game goals
+            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 18, basePrice: 12, growTime: 12, rarity: 'uncommon', yield: [1, 2], regrows: true, regrowTime: 5 },
+            lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 20, basePrice: 28, growTime: 11, rarity: 'uncommon', yield: 1 },
+            pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 25, basePrice: 15, growTime: 13, rarity: 'uncommon', yield: [1, 3], regrows: true, regrowTime: 5 },
+            // Rare ($40-55) - mid game
+            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 40, basePrice: 18, growTime: 15, rarity: 'rare', yield: [2, 4] },
+            eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 45, basePrice: 22, growTime: 16, rarity: 'rare', yield: [1, 2], regrows: true, regrowTime: 6 },
+            broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 55, basePrice: 65, growTime: 17, rarity: 'rare', yield: 1 },
+            // Epic ($80-120) - late game
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 80, basePrice: 25, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true, regrowTime: 6 },
+            watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 100, basePrice: 120, growTime: 20, rarity: 'epic', yield: 1 },
+            grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 120, basePrice: 35, growTime: 22, rarity: 'epic', yield: [2, 5], regrows: true, regrowTime: 7 },
+            // Legendary ($200-500) - end game goals
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 200, basePrice: 250, growTime: 25, rarity: 'legendary', yield: 1 },
+            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 500, basePrice: 150, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true, regrowTime: 10 }
         };
 
         const WEATHER = {
