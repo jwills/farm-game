@@ -673,6 +673,11 @@
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 }
         };
 
+        const SPECIAL_MUTATIONS = {
+            golden: { name: 'Golden', emoji: '🌟', bonus: 2.0, timeRequired: 30 },
+            rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 3.0, timeRequired: 60 }
+        };
+
         const SIZES = [
             { name: 'Tiny', multiplier: 0.5, scale: 0.6 },
             { name: 'Small', multiplier: 0.75, scale: 0.8 },
@@ -825,7 +830,10 @@
                     
                     const plotMutations = (plot.mutations || []).map(m => {
                         const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                        return weather ? weather.mutationEmoji : '';
+                        if (weather) return weather.mutationEmoji;
+                        const special = SPECIAL_MUTATIONS[m];
+                        if (special) return special.emoji;
+                        return '';
                     }).join('');
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
@@ -890,6 +898,8 @@
                 mutations.forEach(m => {
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
                     if (weather) value *= weather.bonus;
+                    const special = SPECIAL_MUTATIONS[m];
+                    if (special) value *= special.bonus;
                 });
                 // Apply pet value bonus
                 value = getPetBonus('value', value);
@@ -898,7 +908,10 @@
                 
                 const mutationEmojis = mutations.map(m => {
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                    return weather ? weather.mutationEmoji : '';
+                    if (weather) return weather.mutationEmoji;
+                    const special = SPECIAL_MUTATIONS[m];
+                    if (special) return special.emoji;
+                    return '';
                 }).join('');
                 
                 const div = document.createElement('div');
@@ -1124,6 +1137,8 @@
                 (item.mutations || []).forEach(m => {
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
                     if (weather) value *= weather.bonus;
+                    const special = SPECIAL_MUTATIONS[m];
+                    if (special) value *= special.bonus;
                 });
                 value = getPetBonus('value', value);
                 total += Math.round(value);
@@ -1173,6 +1188,28 @@
                                 plot.mutations.push(currentWeather.mutation);
                                 showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
                             }
+                        }
+                        // Reset ready timer when not ready
+                        plot.readyTime = 0;
+                    } else {
+                        // Crop is ready - track time and check for special mutations
+                        if (!plot.readyTime) plot.readyTime = 0;
+                        plot.readyTime++;
+                        
+                        if (!plot.mutations) plot.mutations = [];
+                        
+                        // Golden mutation at 30 seconds
+                        if (plot.readyTime >= SPECIAL_MUTATIONS.golden.timeRequired && !plot.mutations.includes('golden')) {
+                            plot.mutations.push('golden');
+                            showMessage(`A crop turned golden! ${SPECIAL_MUTATIONS.golden.emoji} (2x value)`);
+                            needsRender = true;
+                        }
+                        
+                        // Rainbow mutation at 60 seconds
+                        if (plot.readyTime >= SPECIAL_MUTATIONS.rainbow.timeRequired && !plot.mutations.includes('rainbow')) {
+                            plot.mutations.push('rainbow');
+                            showMessage(`A crop became rainbow! ${SPECIAL_MUTATIONS.rainbow.emoji} (3x value)`);
+                            needsRender = true;
                         }
                     }
                 }
