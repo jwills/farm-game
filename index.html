@@ -900,6 +900,16 @@
             </div>
 
             <div class="sidebar">
+                <div class="inventory">
+                    <h2>🎒 Inventory</h2>
+                    <div id="seed-inventory" class="inventory-items"></div>
+                    <div class="sell-section">
+                        <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops</h4>
+                        <div id="harvest-inventory" class="inventory-items"></div>
+                        <button class="sell-btn" id="sell-all-btn" onclick="sellAllCrops()" disabled>Sell All Crops</button>
+                    </div>
+                </div>
+
                 <div class="shop">
                     <h2>🏪 Seed Shop</h2>
                     <div class="shop-items" id="shop-items"></div>
@@ -909,16 +919,6 @@
                     <h2>🐾 Pet Shop</h2>
                     <div class="owned-pets" id="owned-pets"></div>
                     <div class="shop-items" id="pet-shop-items"></div>
-                </div>
-
-                <div class="inventory">
-                    <h2>🎒 Inventory</h2>
-                    <div id="seed-inventory" class="inventory-items"></div>
-                    <div class="sell-section">
-                        <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops</h4>
-                        <div id="harvest-inventory" class="inventory-items"></div>
-                        <button class="sell-btn" id="sell-all-btn" onclick="sellAllCrops()" disabled>Sell All Crops</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -977,8 +977,8 @@
         };
 
         const SPECIAL_MUTATIONS = {
-            golden: { name: 'Golden', emoji: '🌟', bonus: 2.0, timeRequired: 30, chance: 0.25 },
-            rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 3.0, timeRequired: 60, chance: 0.15 }
+            golden: { name: 'Golden', emoji: '🌟', bonus: 1.6, timeRequired: 30, chance: 0.25 },
+            rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 1.7, timeRequired: 60, chance: 0.15 }
         };
 
         const SIZES = [
@@ -1538,7 +1538,7 @@
                         if (plot.readyTime === SPECIAL_MUTATIONS.golden.timeRequired) {
                             if (Math.random() < SPECIAL_MUTATIONS.golden.chance) {
                                 plot.mutations.push('golden');
-                                showMessage(`A crop turned golden! ${SPECIAL_MUTATIONS.golden.emoji} (2x value)`);
+                                showMessage(`A crop turned golden! ${SPECIAL_MUTATIONS.golden.emoji} (+60% value)`);
                                 needsRender = true;
                             }
                         }
@@ -1547,7 +1547,7 @@
                         if (plot.readyTime === SPECIAL_MUTATIONS.rainbow.timeRequired) {
                             if (Math.random() < SPECIAL_MUTATIONS.rainbow.chance) {
                                 plot.mutations.push('rainbow');
-                                showMessage(`A crop became rainbow! ${SPECIAL_MUTATIONS.rainbow.emoji} (3x value)`);
+                                showMessage(`A crop became rainbow! ${SPECIAL_MUTATIONS.rainbow.emoji} (+70% value)`);
                                 needsRender = true;
                             }
                         }
@@ -1765,7 +1765,7 @@
         }
 
         // Neighborhood Functions
-        const API_BASE = 'http://localhost:8001/api';
+        const API_BASE = '/api';
 
         function getPlayerId() {
             if (!gameState.playerId) {
