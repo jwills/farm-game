@@ -32,14 +32,20 @@ var (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
+	// API routes
 	http.HandleFunc("/api/neighborhood/create", corsMiddleware(handleCreate))
 	http.HandleFunc("/api/neighborhood/join", corsMiddleware(handleJoin))
 	http.HandleFunc("/api/neighborhood/sync", corsMiddleware(handleSync))
 	http.HandleFunc("/api/neighborhood/farms", corsMiddleware(handleGetFarms))
 	http.HandleFunc("/api/neighborhood/leave", corsMiddleware(handleLeave))
+	http.HandleFunc("/api/neighborhood/steal", corsMiddleware(handleSteal))
 
-	log.Println("Neighborhood server starting on :8001")
-	log.Fatal(http.ListenAndServe(":8001", nil))
+	// Serve static files from parent directory
+	fs := http.FileServer(http.Dir("/home/exedev/farm-game"))
+	http.Handle("/", fs)
+
+	log.Println("Farm server starting on :8000")
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
@@ -221,4 +227,92 @@ func handleLeave(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+func handleSteal(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code     string `json:"code"`
+		PlayerID string `json:"playerId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Find all other players with plants
+	var victims []string
+	for id := range hood.Farms {
+		if id != req.PlayerID {
+			victims = append(victims, id)
+		}
+	}
+
+	if len(victims) == 0 {
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"reason":  "no_neighbors",
+		})
+		return
+	}
+
+	// Pick a random victim
+	victimID := victims[rand.Intn(len(victims))]
+	victim := hood.Farms[victimID]
+
+	// Parse victim's plots to find one with a plant
+	var plots []interface{}
+	if err := json.Unmarshal(victim.Plots, &plots); err != nil || len(plots) == 0 {
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"reason":  "no_plants",
+		})
+		return
+	}
+
+	// Find non-null plots
+	var plantedIndices []int
+	for i, p := range plots {
+		if p != nil {
+			plantedIndices = append(plantedIndices, i)
+		}
+	}
+
+	if len(plantedIndices) == 0 {
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"reason":  "no_plants",
+		})
+		return
+	}
+
+	// Pick a random plant to steal
+	stealIdx := plantedIndices[rand.Intn(len(plantedIndices))]
+	stolenPlant := plots[stealIdx]
+
+	// Remove plant from victim
+	plots[stealIdx] = nil
+	newPlots, _ := json.Marshal(plots)
+	victim.Plots = newPlots
+	hood.Farms[victimID] = victim
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":    true,
+		"plant":      stolenPlant,
+		"victimName": victim.PlayerName,
+	})
 }
