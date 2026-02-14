@@ -154,6 +154,11 @@
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+        
+        .shop-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
 
         .shop h2, .inventory h2 {
             color: #1565C0;
@@ -555,12 +560,25 @@
         };
 
         const CROPS = {
+            // Common
             carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8, rarity: 'common' },
             potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10, rarity: 'common' },
+            onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 8, basePrice: 18, growTime: 7, rarity: 'common' },
+            // Uncommon
             tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 32, growTime: 12, rarity: 'uncommon' },
+            lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 14, basePrice: 30, growTime: 11, rarity: 'uncommon' },
+            pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 18, basePrice: 38, growTime: 13, rarity: 'uncommon' },
+            // Rare
             corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 45, growTime: 15, rarity: 'rare' },
-            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, basePrice: 55, growTime: 18, rarity: 'epic' },
-            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, basePrice: 80, growTime: 25, rarity: 'legendary' }
+            eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 22, basePrice: 50, growTime: 16, rarity: 'rare' },
+            broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 24, basePrice: 52, growTime: 17, rarity: 'rare' },
+            // Epic
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 28, basePrice: 60, growTime: 18, rarity: 'epic' },
+            watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 32, basePrice: 70, growTime: 20, rarity: 'epic' },
+            grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 35, basePrice: 75, growTime: 22, rarity: 'epic' },
+            // Legendary
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 40, basePrice: 90, growTime: 25, rarity: 'legendary' },
+            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 50, basePrice: 120, growTime: 30, rarity: 'legendary' }
         };
 
         const WEATHER = {
