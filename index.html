@@ -919,6 +919,7 @@
             if (crop.regrows) {
                 plot.growth = 0; // Reset growth
                 plot.harvested = true; // Mark as harvested before (uses regrow time)
+                plot.mutations = []; // Clear mutations for regrowth
                 showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄`);
             } else {
                 gameState.plots[plotIndex] = null;
