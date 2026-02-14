@@ -1000,7 +1000,7 @@
                 <div class="inventory">
                     <h2>🎒 Inventory</h2>
                     <div class="tools-section">
-                        <div id="shovel-tool" class="tool-item" onclick="toggleShovel()" title="Remove plants">🧹</div>
+                        <div id="shovel-tool" class="tool-item" onclick="toggleShovel()" title="Remove plants">🪏</div>
                     </div>
                     <div id="seed-inventory" class="inventory-items"></div>
                     <div class="sell-section">
@@ -1511,14 +1511,14 @@
         function removePlant(plotIndex) {
             const plot = gameState.plots[plotIndex];
             if (!plot) {
-                showMessage('Nothing to remove! 🧹');
+                showMessage('Nothing to remove! 🪏');
                 return;
             }
             const crop = CROPS[plot.type];
             gameState.plots[plotIndex] = null;
             gameState.shovelSelected = false;
             updateShovelUI();
-            showMessage(`Removed ${crop.name}! 🧹`);
+            showMessage(`Removed ${crop.name}! 🪏`);
             renderFarm();
         }
 
