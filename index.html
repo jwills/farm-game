@@ -1095,15 +1095,15 @@
         ];
 
         const PETS = {
-            cat: { name: 'Farm Cat', emoji: '🐱', price: 50, ability: 'Lucky', description: '+20% chance for larger crops', effect: 'size' },
-            dog: { name: 'Sheepdog', emoji: '🐕', price: 75, ability: 'Guardian', description: 'Crops grow 15% faster', effect: 'speed' },
-            chicken: { name: 'Golden Hen', emoji: '🐔', price: 100, ability: 'Prosperous', description: '+15% sell price on all crops', effect: 'value' },
-            bee: { name: 'Magic Bee', emoji: '🐝', price: 150, ability: 'Pollinator', description: '+30% mutation chance', effect: 'mutation' },
-            owl: { name: 'Wise Owl', emoji: '🦉', price: 200, ability: 'Weatherseer', description: 'Weather lasts 50% longer', effect: 'weather' },
-            bunny: { name: 'Lucky Bunny', emoji: '🐰', price: 300, ability: 'Multiplier', description: '+1 bonus crop per harvest', effect: 'yield' },
-            dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest' },
-            unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all' },
-            phoenix: { name: 'Phoenix', emoji: '🔥', price: 15000, ability: 'Rebirth', description: 'Regrow crops keep mutations', effect: 'keepmutations' }
+            cat: { name: 'Farm Cat', emoji: '🐱', price: 50, ability: 'Lucky', description: '+20% chance for larger crops', effect: 'size', rarity: 'common' },
+            dog: { name: 'Sheepdog', emoji: '🐕', price: 75, ability: 'Guardian', description: 'Crops grow 15% faster', effect: 'speed', rarity: 'common' },
+            chicken: { name: 'Golden Hen', emoji: '🐔', price: 100, ability: 'Prosperous', description: '+15% sell price on all crops', effect: 'value', rarity: 'uncommon' },
+            bee: { name: 'Magic Bee', emoji: '🐝', price: 150, ability: 'Pollinator', description: '+30% mutation chance', effect: 'mutation', rarity: 'uncommon' },
+            owl: { name: 'Wise Owl', emoji: '🦉', price: 200, ability: 'Weatherseer', description: 'Weather lasts 50% longer', effect: 'weather', rarity: 'rare' },
+            bunny: { name: 'Lucky Bunny', emoji: '🐰', price: 300, ability: 'Multiplier', description: '+1 bonus crop per harvest', effect: 'yield', rarity: 'rare' },
+            dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest', rarity: 'epic' },
+            unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all', rarity: 'legendary' },
+            phoenix: { name: 'Phoenix', emoji: '🔥', price: 15000, ability: 'Rebirth', description: 'Regrow crops keep mutations', effect: 'keepmutations', rarity: 'godly' }
         };
 
         function getRandomSize() {
@@ -1666,17 +1666,30 @@
                 const owned = gameState.pets && gameState.pets.includes(id);
                 const equipped = gameState.equippedPets && gameState.equippedPets.includes(id);
                 const canAfford = gameState.money >= pet.price && !owned;
+                const rarity = RARITIES[pet.rarity];
                 const div = document.createElement('div');
-                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}`;
-                div.style.background = equipped ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : 'linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%)';
+                
+                // Build class list with rarity glows
+                let classNames = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}`;
+                if (pet.rarity === 'legendary') classNames += ' legendary-glow';
+                if (pet.rarity === 'godly') classNames += ' godly-glow';
+                div.className = classNames;
+                
+                // Use rarity background unless equipped
+                div.style.background = equipped ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : rarity.bg;
+                div.style.borderLeft = `4px solid ${rarity.color}`;
+                
                 div.innerHTML = `
                     <span class="emoji">${pet.emoji}</span>
                     <div class="info">
                         <div class="name">${pet.name} ${equipped ? '✓' : ''}</div>
-                        <div class="details" style="color: #E91E63; font-weight: bold;">${pet.ability}</div>
+                        <div class="details">
+                            <span style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
+                            • <span style="color: #E91E63; font-weight: bold;">${pet.ability}</span>
+                        </div>
                         <div class="details">${pet.description}</div>
                     </div>
-                    ${!owned ? `<span class="price">$${pet.price}</span>` : ''}
+                    ${!owned ? `<span class="price">$${formatNumber(pet.price)}</span>` : ''}
                 `;
                 if (canAfford) {
                     div.onclick = () => buyPet(id);
