@@ -1035,7 +1035,7 @@
                     </div>
                     <div id="seed-inventory" class="inventory-items"></div>
                     <div class="sell-section">
-                        <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops</h4>
+                        <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops <span id="inventory-count" style="font-weight: normal; font-size: 0.9em;">(0/10)</span></h4>
                         <div id="harvest-inventory" class="inventory-items"></div>
                         <button class="sell-btn" id="sell-all-btn" onclick="sellAllCrops()" disabled>Sell All Crops</button>
                     </div>
@@ -1067,6 +1067,8 @@
             godly: { name: 'Godly', color: '#FF1493', bg: 'linear-gradient(135deg, #FFE4EC 0%, #FF69B4 30%, #DA70D6 70%, #9400D3 100%)' },
             demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' }
         };
+
+        const MAX_INVENTORY = 10;
 
         const CROPS = {
             // Common ($10-17) - starter crops
@@ -1432,6 +1434,12 @@
             const harvestContainer = document.getElementById('harvest-inventory');
             harvestContainer.innerHTML = '';
             
+            // Update inventory count display
+            const invCount = document.getElementById('inventory-count');
+            const isFull = gameState.harvested.length >= MAX_INVENTORY;
+            invCount.textContent = `(${gameState.harvested.length}/${MAX_INVENTORY})`;
+            invCount.style.color = isFull ? '#e74c3c' : '#666';
+            
             let hasHarvest = gameState.harvested.length > 0;
             let totalValue = 0;
             
@@ -1592,6 +1600,12 @@
             const plot = gameState.plots[plotIndex];
             if (!plot) return;
             
+            // Check inventory limit
+            if (gameState.harvested.length >= MAX_INVENTORY) {
+                showMessage('Inventory full! Sell some crops first 📦');
+                return;
+            }
+            
             const crop = CROPS[plot.type];
             const targetTime = crop.growTime;
             if (plot.growth < targetTime) {
@@ -1612,14 +1626,18 @@
             if (hasPetEffect('yield')) yieldAmount += 1;
             if (hasPetEffect('all')) yieldAmount += Math.random() < 0.5 ? 1 : 0;
             
-            // Harvest each item
-            for (let i = 0; i < yieldAmount; i++) {
+            // Harvest each item (limited by inventory space)
+            const spaceAvailable = MAX_INVENTORY - gameState.harvested.length;
+            const actualYield = Math.min(yieldAmount, spaceAvailable);
+            
+            for (let i = 0; i < actualYield; i++) {
                 const sizeIndex = getRandomSize();
                 gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
                 gameState.totalHarvested++;
             }
             
-            const sizeText = yieldAmount > 1 ? `${yieldAmount}x ` : '';
+            const sizeText = actualYield > 1 ? `${actualYield}x ` : '';
+            const lostCrops = yieldAmount - actualYield;
             
             // Check if crop regrows
             if (crop.regrows) {
@@ -1629,10 +1647,12 @@
                 if (!hasPetEffect('keepmutations')) {
                     plot.mutations = [];
                 }
-                showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄`);
+                const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
+                showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄${lostMsg}`);
             } else {
                 gameState.plots[plotIndex] = null;
-                showMessage(`Harvested ${sizeText}${crop.name}! ${crop.growEmoji}`);
+                const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
+                showMessage(`Harvested ${sizeText}${crop.name}! ${crop.growEmoji}${lostMsg}`);
             }
             
             renderFarm();
@@ -1866,8 +1886,8 @@
                 }
             });
             
-            // Dragon auto-harvest
-            if (hasPetEffect('autoharvest') && Math.random() < 0.1) {
+            // Dragon auto-harvest (only if inventory has space)
+            if (hasPetEffect('autoharvest') && Math.random() < 0.1 && gameState.harvested.length < MAX_INVENTORY) {
                 const readyPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
                     .filter(({plot}) => {
                         if (!plot) return false;
