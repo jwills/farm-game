@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌾 Grow Farm</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stats {
+            display: flex;
+            gap: 25px;
+            font-size: 1.2rem;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .main-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .farm-section {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .farm-section h2 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .farm-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .plot {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #8B6914 0%, #6B4E0A 100%);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 3px solid #5D4E37;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .plot.empty::after {
+            content: '+';
+            font-size: 2rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .plot .crop-emoji {
+            font-size: 2.5rem;
+            animation: sway 2s ease-in-out infinite;
+        }
+
+        .plot .progress-bar {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            height: 6px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .plot .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.5s;
+        }
+
+        .plot.ready {
+            animation: pulse 1s ease-in-out infinite;
+            border-color: #FFD700;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 5px #FFD700; }
+            50% { box-shadow: 0 0 20px #FFD700; }
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .shop, .inventory {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .shop h2, .inventory h2 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shop-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .shop-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shop-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .shop-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .shop-item .emoji {
+            font-size: 1.8rem;
+        }
+
+        .shop-item .info {
+            flex: 1;
+        }
+
+        .shop-item .name {
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .shop-item .details {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .shop-item .price {
+            font-weight: bold;
+            color: #F57C00;
+        }
+
+        .inventory-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .inv-item {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .inv-item:hover {
+            border-color: #FFC107;
+        }
+
+        .inv-item.selected {
+            border-color: #FF9800;
+            background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
+        }
+
+        .inv-item .emoji {
+            font-size: 1.5rem;
+        }
+
+        .inv-item .count {
+            background: #FF9800;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .sell-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .sell-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sell-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .sell-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: fadeInOut 2s ease-in-out forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        .other-farms {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .other-farms h2 {
+            color: #7B1FA2;
+            margin-bottom: 15px;
+        }
+
+        .neighbors {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .neighbor-farm {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .neighbor-farm .name {
+            font-weight: bold;
+            color: #7B1FA2;
+            margin-bottom: 10px;
+        }
+
+        .neighbor-plots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .neighbor-plot {
+            aspect-ratio: 1;
+            background: #8B6914;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .instructions {
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .main-area {
+                grid-template-columns: 1fr;
+            }
+            .farm-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>🌾 Grow Farm</h1>
+            <div class="stats">
+                <div class="stat">💰 <span id="money">100</span></div>
+                <div class="stat">📦 <span id="harvested">0</span> harvested</div>
+            </div>
+        </header>
+
+        <div class="main-area">
+            <div class="farm-section">
+                <h2>🏡 Your Farm</h2>
+                <div class="farm-grid" id="farm-grid"></div>
+
+                <div class="other-farms">
+                    <h2>👥 Neighboring Farms</h2>
+                    <div class="neighbors" id="neighbors"></div>
+                </div>
+
+                <div class="instructions">
+                    <h3>How to Play</h3>
+                    <p>1. Buy seeds from the shop → 2. Select seeds in inventory → 3. Click an empty plot to plant → 4. Wait for crops to grow → 5. Click ready crops (glowing) to harvest → 6. Sell harvested crops for profit!</p>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="shop">
+                    <h2>🏪 Seed Shop</h2>
+                    <div class="shop-items" id="shop-items"></div>
+                </div>
+
+                <div class="inventory">
+                    <h2>🎒 Inventory</h2>
+                    <div id="seed-inventory" class="inventory-items"></div>
+                    <div class="sell-section">
+                        <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops</h4>
+                        <div id="harvest-inventory" class="inventory-items"></div>
+                        <button class="sell-btn" id="sell-all-btn" onclick="sellAllCrops()" disabled>Sell All Crops</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Data
+        const CROPS = {
+            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, sellPrice: 25, growTime: 8 },
+            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, sellPrice: 40, growTime: 12 },
+            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, sellPrice: 55, growTime: 15 },
+            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, sellPrice: 30, growTime: 10 },
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, sellPrice: 70, growTime: 18 },
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, sellPrice: 100, growTime: 25 }
+        };
+
+        const NEIGHBORS = [
+            { name: 'Old MacDonald', crops: ['corn', 'corn', 'tomato', null, 'carrot', 'potato', null, 'corn', 'tomato'] },
+            { name: 'Farmer Jane', crops: ['strawberry', 'strawberry', null, 'tomato', 'carrot', 'carrot', null, 'potato', 'strawberry'] },
+            { name: 'Green Thumb', crops: ['pumpkin', null, 'corn', 'corn', 'tomato', null, 'carrot', 'potato', 'pumpkin'] }
+        ];
+
+        // Game State
+        let gameState = {
+            money: 100,
+            totalHarvested: 0,
+            seeds: {},
+            harvested: {},
+            selectedSeed: null,
+            plots: Array(20).fill(null) // 20 plots (5x4 grid)
+        };
+
+        // Initialize
+        function init() {
+            loadGame();
+            renderShop();
+            renderFarm();
+            renderInventory();
+            renderNeighbors();
+            setInterval(updateCrops, 1000);
+            setInterval(saveGame, 5000);
+        }
+
+        // Render Shop
+        function renderShop() {
+            const container = document.getElementById('shop-items');
+            container.innerHTML = '';
+            
+            for (const [id, crop] of Object.entries(CROPS)) {
+                const canAfford = gameState.money >= crop.seedPrice;
+                const div = document.createElement('div');
+                div.className = `shop-item ${canAfford ? '' : 'disabled'}`;
+                div.innerHTML = `
+                    <span class="emoji">${crop.seedEmoji}</span>
+                    <div class="info">
+                        <div class="name">${crop.name} Seeds</div>
+                        <div class="details">Grows in ${crop.growTime}s • Sells for $${crop.sellPrice}</div>
+                    </div>
+                    <span class="price">$${crop.seedPrice}</span>
+                `;
+                if (canAfford) {
+                    div.onclick = () => buySeed(id);
+                }
+                container.appendChild(div);
+            }
+        }
+
+        // Render Farm
+        function renderFarm() {
+            const container = document.getElementById('farm-grid');
+            container.innerHTML = '';
+            
+            gameState.plots.forEach((plot, index) => {
+                const div = document.createElement('div');
+                div.className = 'plot';
+                
+                if (plot) {
+                    const crop = CROPS[plot.type];
+                    const progress = Math.min(100, (plot.growth / crop.growTime) * 100);
+                    const isReady = plot.growth >= crop.growTime;
+                    
+                    if (isReady) {
+                        div.classList.add('ready');
+                    }
+                    
+                    // Show growth stages
+                    let emoji = '🌱';
+                    if (progress >= 66) emoji = crop.growEmoji;
+                    else if (progress >= 33) emoji = '🌿';
+                    
+                    div.innerHTML = `
+                        <span class="crop-emoji">${emoji}</span>
+                        ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
+                    `;
+                    
+                    div.onclick = () => harvestCrop(index);
+                } else {
+                    div.classList.add('empty');
+                    div.onclick = () => plantSeed(index);
+                }
+                
+                container.appendChild(div);
+            });
+        }
+
+        // Render Inventory
+        function renderInventory() {
+            // Seeds
+            const seedContainer = document.getElementById('seed-inventory');
+            seedContainer.innerHTML = '';
+            
+            let hasSeeds = false;
+            for (const [id, count] of Object.entries(gameState.seeds)) {
+                if (count > 0) {
+                    hasSeeds = true;
+                    const crop = CROPS[id];
+                    const div = document.createElement('div');
+                    div.className = `inv-item ${gameState.selectedSeed === id ? 'selected' : ''}`;
+                    div.innerHTML = `
+                        <span class="emoji">${crop.seedEmoji}</span>
+                        <span class="count">${count}</span>
+                    `;
+                    div.onclick = () => selectSeed(id);
+                    seedContainer.appendChild(div);
+                }
+            }
+            
+            if (!hasSeeds) {
+                seedContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No seeds - buy some!</p>';
+            }
+
+            // Harvested
+            const harvestContainer = document.getElementById('harvest-inventory');
+            harvestContainer.innerHTML = '';
+            
+            let hasHarvest = false;
+            let totalValue = 0;
+            for (const [id, count] of Object.entries(gameState.harvested)) {
+                if (count > 0) {
+                    hasHarvest = true;
+                    const crop = CROPS[id];
+                    totalValue += crop.sellPrice * count;
+                    const div = document.createElement('div');
+                    div.className = 'inv-item';
+                    div.innerHTML = `
+                        <span class="emoji">${crop.growEmoji}</span>
+                        <span class="count">${count}</span>
+                    `;
+                    harvestContainer.appendChild(div);
+                }
+            }
+            
+            if (!hasHarvest) {
+                harvestContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No crops to sell</p>';
+            }
+
+            const sellBtn = document.getElementById('sell-all-btn');
+            sellBtn.disabled = !hasHarvest;
+            sellBtn.textContent = hasHarvest ? `Sell All ($${totalValue})` : 'Sell All Crops';
+
+            // Update header stats
+            document.getElementById('money').textContent = gameState.money;
+            document.getElementById('harvested').textContent = gameState.totalHarvested;
+        }
+
+        // Render Neighbors
+        function renderNeighbors() {
+            const container = document.getElementById('neighbors');
+            container.innerHTML = '';
+            
+            NEIGHBORS.forEach(neighbor => {
+                const div = document.createElement('div');
+                div.className = 'neighbor-farm';
+                div.innerHTML = `
+                    <div class="name">${neighbor.name}</div>
+                    <div class="neighbor-plots">
+                        ${neighbor.crops.map(crop => `
+                            <div class="neighbor-plot">${crop ? CROPS[crop].growEmoji : ''}</div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Buy Seed
+        function buySeed(type) {
+            const crop = CROPS[type];
+            if (gameState.money >= crop.seedPrice) {
+                gameState.money -= crop.seedPrice;
+                gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                showMessage(`Bought ${crop.name} seeds! 🌱`);
+                renderShop();
+                renderInventory();
+            }
+        }
+
+        // Select Seed
+        function selectSeed(type) {
+            gameState.selectedSeed = gameState.selectedSeed === type ? null : type;
+            renderInventory();
+        }
+
+        // Plant Seed
+        function plantSeed(plotIndex) {
+            if (!gameState.selectedSeed || !gameState.seeds[gameState.selectedSeed]) {
+                showMessage('Select seeds from your inventory first!');
+                return;
+            }
+            
+            if (gameState.plots[plotIndex]) {
+                return; // Plot not empty
+            }
+            
+            const seedType = gameState.selectedSeed;
+            gameState.seeds[seedType]--;
+            gameState.plots[plotIndex] = {
+                type: seedType,
+                growth: 0,
+                plantedAt: Date.now()
+            };
+            
+            showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
+            
+            if (gameState.seeds[seedType] <= 0) {
+                delete gameState.seeds[seedType];
+                gameState.selectedSeed = null;
+            }
+            
+            renderFarm();
+            renderInventory();
+        }
+
+        // Harvest Crop
+        function harvestCrop(plotIndex) {
+            const plot = gameState.plots[plotIndex];
+            if (!plot) return;
+            
+            const crop = CROPS[plot.type];
+            if (plot.growth < crop.growTime) {
+                const remaining = Math.ceil(crop.growTime - plot.growth);
+                showMessage(`Not ready yet! ${remaining}s remaining ⏳`);
+                return;
+            }
+            
+            gameState.harvested[plot.type] = (gameState.harvested[plot.type] || 0) + 1;
+            gameState.totalHarvested++;
+            gameState.plots[plotIndex] = null;
+            
+            showMessage(`Harvested ${crop.name}! ${crop.growEmoji}`);
+            
+            renderFarm();
+            renderInventory();
+        }
+
+        // Sell All Crops
+        function sellAllCrops() {
+            let total = 0;
+            for (const [id, count] of Object.entries(gameState.harvested)) {
+                if (count > 0) {
+                    total += CROPS[id].sellPrice * count;
+                }
+            }
+            
+            if (total > 0) {
+                gameState.money += total;
+                gameState.harvested = {};
+                showMessage(`Sold crops for $${total}! 💰`);
+                renderShop();
+                renderInventory();
+            }
+        }
+
+        // Update Crops (growth)
+        function updateCrops() {
+            let needsRender = false;
+            
+            gameState.plots.forEach((plot, index) => {
+                if (plot && plot.growth < CROPS[plot.type].growTime) {
+                    plot.growth += 1;
+                    needsRender = true;
+                }
+            });
+            
+            if (needsRender) {
+                renderFarm();
+            }
+        }
+
+        // Show Message
+        function showMessage(text) {
+            const existing = document.querySelector('.message');
+            if (existing) existing.remove();
+            
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.textContent = text;
+            document.body.appendChild(div);
+            
+            setTimeout(() => div.remove(), 2000);
+        }
+
+        // Save/Load Game
+        function saveGame() {
+            localStorage.setItem('growFarmSave', JSON.stringify(gameState));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('growFarmSave');
+            if (saved) {
+                try {
+                    const loaded = JSON.parse(saved);
+                    gameState = { ...gameState, ...loaded };
+                } catch (e) {
+                    console.error('Failed to load save:', e);
+                }
+            }
+        }
+
+        // Start the game
+        init();
+    </script>
+</body>
+</html>
