@@ -166,34 +166,93 @@
 
         .owned-pets {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 8px;
             margin-bottom: 10px;
-            min-height: 30px;
         }
 
-        .owned-pet {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%);
-            padding: 5px 10px;
-            border-radius: 10px;
-            cursor: help;
+        .equipped-header, .owned-header {
+            font-size: 0.8rem;
+            color: #7B1FA2;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .owned-header {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        .equipped-slot {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            margin-right: 8px;
             position: relative;
         }
 
-        .owned-pet:hover::after {
-            content: attr(data-tooltip);
+        .equipped-slot.filled {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .equipped-slot.empty {
+            background: rgba(0,0,0,0.05);
+            border: 2px dashed #ccc;
+        }
+
+        .equipped-slot .pet-emoji {
+            font-size: 1.8rem;
+        }
+
+        .equipped-slot .unequip {
             position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background: #f44336;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+            border-radius: 50%;
             font-size: 0.7rem;
-            white-space: nowrap;
-            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .equipped-slot:hover .unequip {
+            opacity: 1;
+        }
+
+        .empty-slot {
+            font-size: 1.5rem;
+            color: #ccc;
+        }
+
+        .owned-pets-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .owned-pet-item {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%);
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .owned-pet-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(233, 30, 99, 0.3);
         }
 
         .shop-item.owned {
@@ -962,11 +1021,11 @@
         }
 
         function hasPetEffect(effect) {
-            return gameState.pets && gameState.pets.some(p => PETS[p]?.effect === effect);
+            return gameState.equippedPets && gameState.equippedPets.some(p => PETS[p]?.effect === effect);
         }
 
         function getPetBonus(type, base) {
-            if (!gameState.pets) return base;
+            if (!gameState.equippedPets) return base;
             let multiplier = 1;
             if (type === 'value') {
                 if (hasPetEffect('value')) multiplier += 0.15;
@@ -994,6 +1053,7 @@
             currentWeather: 'sunny',
             weatherTimer: 0,
             pets: [], // owned pets
+            equippedPets: [], // max 3 equipped
             playerId: null,
             playerName: null,
             neighborhoodCode: null
@@ -1003,6 +1063,7 @@
         function init() {
             loadGame();
             if (!gameState.pets) gameState.pets = [];
+            if (!gameState.equippedPets) gameState.equippedPets = [];
             renderShop();
             renderPetShop();
             renderFarm();
@@ -1290,22 +1351,47 @@
         }
 
         function renderPetShop() {
-            // Render owned pets
+            // Render equipped pets (max 3)
             const ownedContainer = document.getElementById('owned-pets');
             ownedContainer.innerHTML = '';
             
-            if (gameState.pets && gameState.pets.length > 0) {
-                gameState.pets.forEach(petId => {
+            const equippedCount = gameState.equippedPets ? gameState.equippedPets.length : 0;
+            ownedContainer.innerHTML = `<div class="equipped-header">Equipped (${equippedCount}/3)</div>`;
+            
+            // Show 3 slots
+            for (let i = 0; i < 3; i++) {
+                const petId = gameState.equippedPets && gameState.equippedPets[i];
+                const div = document.createElement('div');
+                div.className = 'equipped-slot' + (petId ? ' filled' : ' empty');
+                if (petId && PETS[petId]) {
                     const pet = PETS[petId];
-                    const div = document.createElement('div');
-                    div.className = 'owned-pet';
-                    div.textContent = pet.emoji;
-                    div.setAttribute('data-tooltip', `${pet.name}: ${pet.description}`);
-                    ownedContainer.appendChild(div);
-                });
-            } else {
-                ownedContainer.innerHTML = '<span style="color: #999; font-size: 0.8rem;">No pets yet!</span>';
+                    div.innerHTML = `<span class="pet-emoji">${pet.emoji}</span><span class="unequip" onclick="unequipPet('${petId}')">✕</span>`;
+                    div.setAttribute('title', `${pet.name}: ${pet.description}`);
+                } else {
+                    div.innerHTML = '<span class="empty-slot">+</span>';
+                }
+                ownedContainer.appendChild(div);
             }
+
+            // Render owned pets (not equipped)
+            const ownedPetsContainer = document.createElement('div');
+            ownedPetsContainer.className = 'owned-pets-list';
+            const unequippedPets = (gameState.pets || []).filter(p => !gameState.equippedPets?.includes(p));
+            
+            if (unequippedPets.length > 0) {
+                ownedPetsContainer.innerHTML = '<div class="owned-header">Owned (click to equip)</div>';
+                unequippedPets.forEach(petId => {
+                    const pet = PETS[petId];
+                    if (!pet) return;
+                    const div = document.createElement('div');
+                    div.className = 'owned-pet-item';
+                    div.innerHTML = `<span>${pet.emoji}</span>`;
+                    div.setAttribute('title', `${pet.name}: ${pet.description}`);
+                    div.onclick = () => equipPet(petId);
+                    ownedPetsContainer.appendChild(div);
+                });
+            }
+            ownedContainer.appendChild(ownedPetsContainer);
 
             // Render pet shop
             const container = document.getElementById('pet-shop-items');
@@ -1315,14 +1401,15 @@
             
             for (const [id, pet] of sortedPets) {
                 const owned = gameState.pets && gameState.pets.includes(id);
+                const equipped = gameState.equippedPets && gameState.equippedPets.includes(id);
                 const canAfford = gameState.money >= pet.price && !owned;
                 const div = document.createElement('div');
-                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''}`;
-                div.style.background = 'linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%)';
+                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}`;
+                div.style.background = equipped ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : 'linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%)';
                 div.innerHTML = `
                     <span class="emoji">${pet.emoji}</span>
                     <div class="info">
-                        <div class="name">${pet.name}</div>
+                        <div class="name">${pet.name} ${equipped ? '✓' : ''}</div>
                         <div class="details" style="color: #E91E63; font-weight: bold;">${pet.ability}</div>
                         <div class="details">${pet.description}</div>
                     </div>
@@ -1340,11 +1427,40 @@
             if (gameState.money >= pet.price && !gameState.pets.includes(petId)) {
                 gameState.money -= pet.price;
                 gameState.pets.push(petId);
-                showMessage(`${pet.emoji} ${pet.name} joined your farm!`);
+                // Auto-equip if less than 3 equipped
+                if (!gameState.equippedPets) gameState.equippedPets = [];
+                if (gameState.equippedPets.length < 3) {
+                    gameState.equippedPets.push(petId);
+                    showMessage(`${pet.emoji} ${pet.name} joined and is now equipped!`);
+                } else {
+                    showMessage(`${pet.emoji} ${pet.name} joined! Equip from your pets.`);
+                }
                 renderShop();
                 renderPetShop();
                 renderInventory();
             }
+        }
+
+        function equipPet(petId) {
+            if (!gameState.equippedPets) gameState.equippedPets = [];
+            if (gameState.equippedPets.length >= 3) {
+                showMessage('Unequip a pet first! (3 max) 🐾');
+                return;
+            }
+            if (!gameState.equippedPets.includes(petId)) {
+                gameState.equippedPets.push(petId);
+                const pet = PETS[petId];
+                showMessage(`${pet.emoji} ${pet.name} equipped!`);
+                renderPetShop();
+            }
+        }
+
+        function unequipPet(petId) {
+            if (!gameState.equippedPets) return;
+            gameState.equippedPets = gameState.equippedPets.filter(p => p !== petId);
+            const pet = PETS[petId];
+            showMessage(`${pet.emoji} ${pet.name} unequipped`);
+            renderPetShop();
         }
 
         // Sell All Crops
