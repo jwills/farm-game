@@ -77,6 +77,42 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
+            position: relative;
+        }
+
+        .player {
+            position: absolute;
+            font-size: 2.5rem;
+            z-index: 100;
+            transition: left 0.15s ease-out, top 0.15s ease-out;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+            pointer-events: none;
+            transform-origin: bottom center;
+        }
+
+        .player.jumping {
+            animation: jump 0.4s ease-out;
+        }
+
+        .player.walking-left {
+            transform: scaleX(-1);
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0); }
+        }
+
+        .player-shadow {
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 50%;
+            z-index: 99;
+            pointer-events: none;
+            transition: left 0.15s ease-out, top 0.15s ease-out;
         }
 
         .plot {
@@ -997,7 +1033,10 @@
         <div class="main-area">
             <div class="farm-section">
                 <h2>🏡 Your Farm</h2>
-                <div class="farm-grid" id="farm-grid"></div>
+                <div class="farm-grid" id="farm-grid">
+                    <div class="player" id="player">🧑‍🌾</div>
+                    <div class="player-shadow" id="player-shadow"></div>
+                </div>
 
                 <div class="neighborhood-section">
                     <h2>🏡 Neighborhood</h2>
@@ -1230,6 +1269,109 @@
         };
 
         // Initialize
+        // Player movement state
+        const playerState = {
+            x: 2,  // Grid column (0-4)
+            y: 1,  // Grid row (0-3)
+            facing: 'right',
+            isJumping: false
+        };
+
+        function updatePlayerPosition() {
+            const grid = document.getElementById('farm-grid');
+            const player = document.getElementById('player');
+            const shadow = document.getElementById('player-shadow');
+            if (!grid || !player) return;
+
+            const plots = grid.querySelectorAll('.plot');
+            if (plots.length === 0) return;
+
+            const plot = plots[playerState.y * 5 + playerState.x];
+            if (!plot) return;
+
+            const gridRect = grid.getBoundingClientRect();
+            const plotRect = plot.getBoundingClientRect();
+
+            const left = plotRect.left - gridRect.left + plotRect.width / 2 - 20;
+            const top = plotRect.top - gridRect.top + plotRect.height / 2 - 20;
+
+            player.style.left = left + 'px';
+            player.style.top = top + 'px';
+            player.className = 'player' + (playerState.facing === 'left' ? ' walking-left' : '') + (playerState.isJumping ? ' jumping' : '');
+
+            shadow.style.left = (left + 5) + 'px';
+            shadow.style.top = (top + 35) + 'px';
+        }
+
+        function movePlayer(dx, dy) {
+            const newX = playerState.x + dx;
+            const newY = playerState.y + dy;
+
+            if (newX >= 0 && newX < 5 && newY >= 0 && newY < 4) {
+                playerState.x = newX;
+                playerState.y = newY;
+                if (dx < 0) playerState.facing = 'left';
+                if (dx > 0) playerState.facing = 'right';
+                updatePlayerPosition();
+            }
+        }
+
+        function playerJump() {
+            if (playerState.isJumping) return;
+            playerState.isJumping = true;
+            updatePlayerPosition();
+            setTimeout(() => {
+                playerState.isJumping = false;
+                updatePlayerPosition();
+            }, 400);
+        }
+
+        function handleKeyDown(e) {
+            // Don't move if typing in an input
+            if (e.target.tagName === 'INPUT') return;
+
+            switch(e.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    e.preventDefault();
+                    movePlayer(0, -1);
+                    break;
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    e.preventDefault();
+                    movePlayer(0, 1);
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                case 'A':
+                    e.preventDefault();
+                    movePlayer(-1, 0);
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                case 'D':
+                    e.preventDefault();
+                    movePlayer(1, 0);
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    playerJump();
+                    break;
+                case 'Enter':
+                case 'e':
+                case 'E':
+                    // Interact with current plot
+                    e.preventDefault();
+                    const plotIndex = playerState.y * 5 + playerState.x;
+                    handlePlotClick(plotIndex);
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+
         function init() {
             loadGame();
             if (!gameState.pets) gameState.pets = [];
@@ -1244,7 +1386,10 @@
             setInterval(updateCrops, 1000);
             setInterval(updateRestockTimer, 1000);
             setInterval(saveGame, 5000);
-            setInterval(checkRestock, 30000); // Check restock every 30 seconds
+            setInterval(checkRestock, 30000);
+            // Position player after render
+            setTimeout(updatePlayerPosition, 100);
+            window.addEventListener('resize', updatePlayerPosition);
         }
 
         function initializeStock() {
@@ -1414,6 +1559,20 @@
                 
                 container.appendChild(div);
             });
+
+            // Re-add player elements
+            const player = document.createElement('div');
+            player.className = 'player' + (playerState.facing === 'left' ? ' walking-left' : '');
+            player.id = 'player';
+            player.textContent = '🧑‍🌾';
+            container.appendChild(player);
+
+            const shadow = document.createElement('div');
+            shadow.className = 'player-shadow';
+            shadow.id = 'player-shadow';
+            container.appendChild(shadow);
+
+            setTimeout(updatePlayerPosition, 10);
         }
 
         // Render Inventory
