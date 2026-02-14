@@ -674,8 +674,8 @@
         };
 
         const SPECIAL_MUTATIONS = {
-            golden: { name: 'Golden', emoji: '🌟', bonus: 2.0, timeRequired: 30 },
-            rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 3.0, timeRequired: 60 }
+            golden: { name: 'Golden', emoji: '🌟', bonus: 2.0, timeRequired: 30, chance: 0.25 },
+            rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 3.0, timeRequired: 60, chance: 0.15 }
         };
 
         const SIZES = [
@@ -1198,18 +1198,22 @@
                         
                         if (!plot.mutations) plot.mutations = [];
                         
-                        // Golden mutation at 30 seconds
-                        if (plot.readyTime >= SPECIAL_MUTATIONS.golden.timeRequired && !plot.mutations.includes('golden')) {
-                            plot.mutations.push('golden');
-                            showMessage(`A crop turned golden! ${SPECIAL_MUTATIONS.golden.emoji} (2x value)`);
-                            needsRender = true;
+                        // Golden mutation chance at exactly 30 seconds
+                        if (plot.readyTime === SPECIAL_MUTATIONS.golden.timeRequired) {
+                            if (Math.random() < SPECIAL_MUTATIONS.golden.chance) {
+                                plot.mutations.push('golden');
+                                showMessage(`A crop turned golden! ${SPECIAL_MUTATIONS.golden.emoji} (2x value)`);
+                                needsRender = true;
+                            }
                         }
                         
-                        // Rainbow mutation at 60 seconds
-                        if (plot.readyTime >= SPECIAL_MUTATIONS.rainbow.timeRequired && !plot.mutations.includes('rainbow')) {
-                            plot.mutations.push('rainbow');
-                            showMessage(`A crop became rainbow! ${SPECIAL_MUTATIONS.rainbow.emoji} (3x value)`);
-                            needsRender = true;
+                        // Rainbow mutation chance at exactly 60 seconds
+                        if (plot.readyTime === SPECIAL_MUTATIONS.rainbow.timeRequired) {
+                            if (Math.random() < SPECIAL_MUTATIONS.rainbow.chance) {
+                                plot.mutations.push('rainbow');
+                                showMessage(`A crop became rainbow! ${SPECIAL_MUTATIONS.rainbow.emoji} (3x value)`);
+                                needsRender = true;
+                            }
                         }
                     }
                 }
