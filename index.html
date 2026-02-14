@@ -365,6 +365,26 @@
             margin-bottom: 8px;
         }
 
+        #weather-display {
+            transition: all 0.5s;
+        }
+        
+        .weather-rainy {
+            background: linear-gradient(135deg, #5C6BC0 0%, #3949AB 100%) !important;
+        }
+        
+        .weather-thunder {
+            background: linear-gradient(135deg, #37474F 0%, #263238 100%) !important;
+        }
+        
+        .weather-windy {
+            background: linear-gradient(135deg, #4DB6AC 0%, #26A69A 100%) !important;
+        }
+        
+        .weather-heatwave {
+            background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%) !important;
+        }
+
         @media (max-width: 900px) {
             .main-area {
                 grid-template-columns: 1fr;
@@ -380,6 +400,7 @@
         <header>
             <h1>🌾 Grow Farm</h1>
             <div class="stats">
+                <div class="stat" id="weather-display">☀️ Sunny</div>
                 <div class="stat">💰 <span id="money">100</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
             </div>
@@ -431,6 +452,14 @@
             pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, basePrice: 80, growTime: 25 }
         };
 
+        const WEATHER = {
+            sunny: { name: 'Sunny', emoji: '☀️', mutation: null },
+            rainy: { name: 'Rainy', emoji: '🌧️', mutation: 'wet', mutationEmoji: '💧', bonus: 1.3 },
+            thunder: { name: 'Thunder', emoji: '⛈️', mutation: 'shocked', mutationEmoji: '⚡', bonus: 1.5 },
+            windy: { name: 'Windy', emoji: '💨', mutation: 'breezy', mutationEmoji: '🍃', bonus: 1.2 },
+            heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 }
+        };
+
         const SIZES = [
             { name: 'Tiny', multiplier: 0.5, scale: 0.6 },
             { name: 'Small', multiplier: 0.75, scale: 0.8 },
@@ -464,7 +493,9 @@
             seeds: {},
             harvested: [], // Now an array of {type, sizeIndex}
             selectedSeed: null,
-            plots: Array(20).fill(null) // 20 plots (5x4 grid)
+            plots: Array(20).fill(null), // 20 plots (5x4 grid)
+            currentWeather: 'sunny',
+            weatherTimer: 0
         };
 
         // Initialize
@@ -525,8 +556,14 @@
                     if (progress >= 66) emoji = crop.growEmoji;
                     else if (progress >= 33) emoji = '🌿';
                     
+                    const plotMutations = (plot.mutations || []).map(m => {
+                        const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                        return weather ? weather.mutationEmoji : '';
+                    }).join('');
+                    
                     div.innerHTML = `
                         <span class="crop-emoji">${emoji}</span>
+                        ${plotMutations ? `<span style="position:absolute;top:5px;right:5px;font-size:0.9rem;">${plotMutations}</span>` : ''}
                         ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
                     `;
                     
@@ -576,15 +613,27 @@
             gameState.harvested.forEach((item, index) => {
                 const crop = CROPS[item.type];
                 const size = SIZES[item.sizeIndex];
-                const value = Math.round(crop.basePrice * size.multiplier);
+                let value = crop.basePrice * size.multiplier;
+                
+                // Apply mutation bonuses
+                const mutations = item.mutations || [];
+                mutations.forEach(m => {
+                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                    if (weather) value *= weather.bonus;
+                });
+                value = Math.round(value);
                 totalValue += value;
+                
+                const mutationEmojis = mutations.map(m => {
+                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                    return weather ? weather.mutationEmoji : '';
+                }).join('');
                 
                 const div = document.createElement('div');
                 div.className = 'inv-item';
-                div.style.cssText = `font-size: ${size.scale}rem;`;
                 div.innerHTML = `
                     <span class="emoji" style="transform: scale(${size.scale}); display: inline-block;">${crop.growEmoji}</span>
-                    <span style="font-size: 0.7rem; color: #666;">${size.name}<br>$${value}</span>
+                    <span style="font-size: 0.7rem; color: #666;">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
                 `;
                 harvestContainer.appendChild(div);
             });
@@ -656,7 +705,8 @@
             gameState.plots[plotIndex] = {
                 type: seedType,
                 growth: 0,
-                plantedAt: Date.now()
+                plantedAt: Date.now(),
+                mutations: [] // can gain mutations from weather
             };
             
             showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
@@ -684,7 +734,7 @@
             
             const sizeIndex = getRandomSize();
             const size = SIZES[sizeIndex];
-            gameState.harvested.push({ type: plot.type, sizeIndex });
+            gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
             gameState.totalHarvested++;
             gameState.plots[plotIndex] = null;
             
@@ -700,7 +750,12 @@
             gameState.harvested.forEach(item => {
                 const crop = CROPS[item.type];
                 const size = SIZES[item.sizeIndex];
-                total += Math.round(crop.basePrice * size.multiplier);
+                let value = crop.basePrice * size.multiplier;
+                (item.mutations || []).forEach(m => {
+                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                    if (weather) value *= weather.bonus;
+                });
+                total += Math.round(value);
             });
             
             if (total > 0) {
@@ -712,20 +767,56 @@
             }
         }
 
-        // Update Crops (growth)
+        // Update Crops (growth) and Weather
         function updateCrops() {
             let needsRender = false;
+            
+            // Update weather
+            gameState.weatherTimer--;
+            if (gameState.weatherTimer <= 0) {
+                changeWeather();
+            }
+            updateWeatherDisplay();
+            
+            const currentWeather = WEATHER[gameState.currentWeather];
             
             gameState.plots.forEach((plot, index) => {
                 if (plot && plot.growth < CROPS[plot.type].growTime) {
                     plot.growth += 1;
                     needsRender = true;
+                    
+                    // Chance to gain mutation from current weather
+                    if (currentWeather.mutation && Math.random() < 0.15) {
+                        if (!plot.mutations) plot.mutations = [];
+                        if (!plot.mutations.includes(currentWeather.mutation)) {
+                            plot.mutations.push(currentWeather.mutation);
+                            showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
+                        }
+                    }
                 }
             });
             
             if (needsRender) {
                 renderFarm();
             }
+        }
+        
+        function changeWeather() {
+            const weathers = Object.keys(WEATHER);
+            // Sunny is more common
+            const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
+            gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
+            gameState.weatherTimer = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
+            
+            const weather = WEATHER[gameState.currentWeather];
+            if (weather.mutation) {
+                showMessage(`Weather changed to ${weather.name}! ${weather.emoji}`);
+            }
+        }
+        
+        function updateWeatherDisplay() {
+            const weather = WEATHER[gameState.currentWeather];
+            document.getElementById('weather-display').innerHTML = `${weather.emoji} ${weather.name}`;
         }
 
         // Show Message
