@@ -999,8 +999,9 @@
             if (!plot) return;
             
             const crop = CROPS[plot.type];
-            if (plot.growth < crop.growTime) {
-                const remaining = Math.ceil(crop.growTime - plot.growth);
+            const targetTime = (plot.harvested && crop.regrows) ? crop.regrowTime : crop.growTime;
+            if (plot.growth < targetTime) {
+                const remaining = Math.ceil(targetTime - plot.growth);
                 showMessage(`Not ready yet! ${remaining}s remaining ⏳`);
                 return;
             }
