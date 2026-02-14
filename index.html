@@ -1129,7 +1129,8 @@
             playerName: null,
             neighborhoodCode: null,
             shopStock: {}, // seed stock levels
-            lastRestock: 0 // timestamp of last restock
+            lastRestock: 0, // timestamp of last restock
+            demonicInStock: false // only true during hellscape with 25% chance
         };
 
         // Stock settings per rarity
@@ -1140,7 +1141,7 @@
             epic: { min: 1, max: 3, restockChance: 0.3 },
             legendary: { min: 0, max: 2, restockChance: 0.15 },
             godly: { min: 0, max: 1, restockChance: 0.05 },
-            demonic: { min: 0, max: 1, restockChance: 0.01 }
+            demonic: { min: 0, max: 0, restockChance: 0, hellscapeOnly: true }
         };
 
         // Initialize
@@ -1222,8 +1223,23 @@
             const sortedCrops = Object.entries(CROPS).sort((a, b) => a[1].seedPrice - b[1].seedPrice);
             
             for (const [id, crop] of sortedCrops) {
-                const stock = gameState.shopStock[id] || 0;
-                const inStock = stock > 0;
+                const isDemonic = crop.rarity === 'demonic';
+                const isHellscape = gameState.currentWeather === 'hellscape';
+                
+                // Demonic items only available during hellscape with 25% chance per check
+                let stock, inStock, stockDisplay, stockColor;
+                if (isDemonic) {
+                    inStock = isHellscape && gameState.demonicInStock;
+                    stockDisplay = isHellscape ? (inStock ? '🔥 Available' : '👿 Sold Out') : '👿 Requires Hellscape';
+                    stockColor = inStock ? '#ff4500' : '#8B0000';
+                    stock = inStock ? 1 : 0;
+                } else {
+                    stock = gameState.shopStock[id] || 0;
+                    inStock = stock > 0;
+                    stockDisplay = inStock ? `📦 ${stock}` : '❌ Sold Out';
+                    stockColor = inStock ? (stock <= 2 ? '#ff9800' : '#4CAF50') : '#f44336';
+                }
+                
                 const canAfford = gameState.money >= crop.seedPrice;
                 const canBuy = canAfford && inStock;
                 const rarity = RARITIES[crop.rarity];
@@ -1231,9 +1247,6 @@
                 div.className = `shop-item ${canBuy ? '' : 'disabled'} ${!inStock ? 'out-of-stock' : ''} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''} ${crop.rarity === 'demonic' ? 'demonic-glow' : ''}`;
                 div.style.background = rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
-                
-                const stockDisplay = inStock ? `📦 ${stock}` : '❌ Sold Out';
-                const stockColor = inStock ? (stock <= 2 ? '#ff9800' : '#4CAF50') : '#f44336';
                 
                 div.innerHTML = `
                     <span class="emoji">${crop.seedEmoji}</span>
@@ -1396,6 +1409,25 @@
         // Buy Seed
         function buySeed(type) {
             const crop = CROPS[type];
+            const isDemonic = crop.rarity === 'demonic';
+            
+            // Special handling for demonic seeds
+            if (isDemonic) {
+                if (gameState.currentWeather !== 'hellscape' || !gameState.demonicInStock) {
+                    showMessage(`${crop.name} requires Hellscape weather! 👿`);
+                    return;
+                }
+                if (gameState.money >= crop.seedPrice) {
+                    gameState.money -= crop.seedPrice;
+                    gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                    gameState.demonicInStock = false; // Only one per hellscape
+                    showMessage(`🔥 Bought ${crop.name} seeds! 👿`);
+                    renderShop();
+                    renderInventory();
+                }
+                return;
+            }
+            
             const stock = gameState.shopStock[type] || 0;
             if (gameState.money >= crop.seedPrice && stock > 0) {
                 gameState.money -= crop.seedPrice;
@@ -1743,8 +1775,17 @@
             // 5% chance for hellscape
             if (Math.random() < 0.05) {
                 gameState.currentWeather = 'hellscape';
+                // 25% chance demonic seeds are available during hellscape
+                gameState.demonicInStock = Math.random() < 0.25;
+                if (gameState.demonicInStock) {
+                    showMessage(`👿 Hellscape arrives! Demonic seeds available! 🔥`);
+                } else {
+                    showMessage(`👿 Hellscape arrives! 🔥`);
+                }
+                renderShop();
             } else {
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
+                gameState.demonicInStock = false;
             }
             let weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
             if (hasPetEffect('weather')) weatherDuration *= 1.5;
@@ -1752,7 +1793,7 @@
             gameState.weatherTimer = weatherDuration;
             
             const weather = WEATHER[gameState.currentWeather];
-            if (weather.mutation) {
+            if (weather.mutation && gameState.currentWeather !== 'hellscape') {
                 showMessage(`Weather changed to ${weather.name}! ${weather.emoji}`);
             }
         }
