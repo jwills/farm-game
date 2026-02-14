@@ -160,6 +160,61 @@
             overflow-y: auto;
         }
 
+        .pet-shop h2 {
+            color: #E91E63;
+        }
+
+        .owned-pets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            min-height: 30px;
+        }
+
+        .owned-pet {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%);
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: help;
+            position: relative;
+        }
+
+        .owned-pet:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            z-index: 100;
+        }
+
+        .shop-item.owned {
+            opacity: 0.5;
+            background: #E0E0E0 !important;
+        }
+
+        .shop-item.owned::after {
+            content: '✓ Owned';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .shop-item {
+            position: relative;
+        }
+
         .shop h2, .inventory h2 {
             color: #1565C0;
             margin-bottom: 15px;
@@ -547,6 +602,12 @@
                     <div class="shop-items" id="shop-items"></div>
                 </div>
 
+                <div class="shop pet-shop">
+                    <h2>🐾 Pet Shop</h2>
+                    <div class="owned-pets" id="owned-pets"></div>
+                    <div class="shop-items" id="pet-shop-items"></div>
+                </div>
+
                 <div class="inventory">
                     <h2>🎒 Inventory</h2>
                     <div id="seed-inventory" class="inventory-items"></div>
@@ -620,9 +681,28 @@
             { name: 'Huge', multiplier: 2.0, scale: 1.4 }
         ];
 
+        const PETS = {
+            cat: { name: 'Farm Cat', emoji: '🐱', price: 50, ability: 'Lucky', description: '+20% chance for larger crops', effect: 'size' },
+            dog: { name: 'Sheepdog', emoji: '🐕', price: 75, ability: 'Guardian', description: 'Crops grow 15% faster', effect: 'speed' },
+            chicken: { name: 'Golden Hen', emoji: '🐔', price: 100, ability: 'Prosperous', description: '+15% sell price on all crops', effect: 'value' },
+            bee: { name: 'Magic Bee', emoji: '🐝', price: 150, ability: 'Pollinator', description: '+30% mutation chance', effect: 'mutation' },
+            owl: { name: 'Wise Owl', emoji: '🦉', price: 200, ability: 'Weatherseer', description: 'Weather lasts 50% longer', effect: 'weather' },
+            bunny: { name: 'Lucky Bunny', emoji: '🐰', price: 300, ability: 'Multiplier', description: '+1 bonus crop per harvest', effect: 'yield' },
+            dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest' },
+            unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all' },
+            phoenix: { name: 'Phoenix', emoji: '🔥', price: 15000, ability: 'Rebirth', description: 'Regrow crops keep mutations', effect: 'keepmutations' }
+        };
+
         function getRandomSize() {
             // Weighted random - medium most common, tiny/huge rare
             const weights = [10, 25, 40, 20, 5];
+            // Cat pet shifts weights toward larger
+            if (hasPetEffect('size')) {
+                weights[0] = 5; weights[1] = 15; weights[3] = 30; weights[4] = 15;
+            }
+            if (hasPetEffect('all')) {
+                weights[0] = 8; weights[1] = 20; weights[3] = 25; weights[4] = 10;
+            }
             const total = weights.reduce((a, b) => a + b, 0);
             let rand = Math.random() * total;
             for (let i = 0; i < weights.length; i++) {
@@ -630,6 +710,28 @@
                 if (rand <= 0) return i;
             }
             return 2; // default medium
+        }
+
+        function hasPetEffect(effect) {
+            return gameState.pets && gameState.pets.some(p => PETS[p]?.effect === effect);
+        }
+
+        function getPetBonus(type, base) {
+            if (!gameState.pets) return base;
+            let multiplier = 1;
+            if (type === 'value') {
+                if (hasPetEffect('value')) multiplier += 0.15;
+                if (hasPetEffect('all')) multiplier += 0.075;
+            }
+            if (type === 'speed') {
+                if (hasPetEffect('speed')) multiplier += 0.15;
+                if (hasPetEffect('all')) multiplier += 0.075;
+            }
+            if (type === 'mutation') {
+                if (hasPetEffect('mutation')) multiplier += 0.30;
+                if (hasPetEffect('all')) multiplier += 0.15;
+            }
+            return base * multiplier;
         }
 
         const NEIGHBORS = [
@@ -647,13 +749,16 @@
             selectedSeed: null,
             plots: Array(20).fill(null), // 20 plots (5x4 grid)
             currentWeather: 'sunny',
-            weatherTimer: 0
+            weatherTimer: 0,
+            pets: [] // owned pets
         };
 
         // Initialize
         function init() {
             loadGame();
+            if (!gameState.pets) gameState.pets = [];
             renderShop();
+            renderPetShop();
             renderFarm();
             renderInventory();
             renderNeighbors();
@@ -786,6 +891,8 @@
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
                     if (weather) value *= weather.bonus;
                 });
+                // Apply pet value bonus
+                value = getPetBonus('value', value);
                 value = Math.round(value);
                 totalValue += value;
                 
@@ -906,6 +1013,10 @@
                 yieldAmount = crop.yield || 1;
             }
             
+            // Bunny bonus yield
+            if (hasPetEffect('yield')) yieldAmount += 1;
+            if (hasPetEffect('all')) yieldAmount += Math.random() < 0.5 ? 1 : 0;
+            
             // Harvest each item
             for (let i = 0; i < yieldAmount; i++) {
                 const sizeIndex = getRandomSize();
@@ -919,7 +1030,10 @@
             if (crop.regrows) {
                 plot.growth = 0; // Reset growth
                 plot.harvested = true; // Mark as harvested before (uses regrow time)
-                plot.mutations = []; // Clear mutations for regrowth
+                // Phoenix keeps mutations, otherwise clear them
+                if (!hasPetEffect('keepmutations')) {
+                    plot.mutations = [];
+                }
                 showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄`);
             } else {
                 gameState.plots[plotIndex] = null;
@@ -941,6 +1055,64 @@
             return crop.yield > 1 ? `${crop.yield}x` : '1x';
         }
 
+        function renderPetShop() {
+            // Render owned pets
+            const ownedContainer = document.getElementById('owned-pets');
+            ownedContainer.innerHTML = '';
+            
+            if (gameState.pets && gameState.pets.length > 0) {
+                gameState.pets.forEach(petId => {
+                    const pet = PETS[petId];
+                    const div = document.createElement('div');
+                    div.className = 'owned-pet';
+                    div.textContent = pet.emoji;
+                    div.setAttribute('data-tooltip', `${pet.name}: ${pet.description}`);
+                    ownedContainer.appendChild(div);
+                });
+            } else {
+                ownedContainer.innerHTML = '<span style="color: #999; font-size: 0.8rem;">No pets yet!</span>';
+            }
+
+            // Render pet shop
+            const container = document.getElementById('pet-shop-items');
+            container.innerHTML = '';
+            
+            const sortedPets = Object.entries(PETS).sort((a, b) => a[1].price - b[1].price);
+            
+            for (const [id, pet] of sortedPets) {
+                const owned = gameState.pets && gameState.pets.includes(id);
+                const canAfford = gameState.money >= pet.price && !owned;
+                const div = document.createElement('div');
+                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''}`;
+                div.style.background = 'linear-gradient(135deg, #FCE4EC 0%, #F8BBD9 100%)';
+                div.innerHTML = `
+                    <span class="emoji">${pet.emoji}</span>
+                    <div class="info">
+                        <div class="name">${pet.name}</div>
+                        <div class="details" style="color: #E91E63; font-weight: bold;">${pet.ability}</div>
+                        <div class="details">${pet.description}</div>
+                    </div>
+                    ${!owned ? `<span class="price">$${pet.price}</span>` : ''}
+                `;
+                if (canAfford) {
+                    div.onclick = () => buyPet(id);
+                }
+                container.appendChild(div);
+            }
+        }
+
+        function buyPet(petId) {
+            const pet = PETS[petId];
+            if (gameState.money >= pet.price && !gameState.pets.includes(petId)) {
+                gameState.money -= pet.price;
+                gameState.pets.push(petId);
+                showMessage(`${pet.emoji} ${pet.name} joined your farm!`);
+                renderShop();
+                renderPetShop();
+                renderInventory();
+            }
+        }
+
         // Sell All Crops
         function sellAllCrops() {
             let total = 0;
@@ -952,6 +1124,7 @@
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
                     if (weather) value *= weather.bonus;
                 });
+                value = getPetBonus('value', value);
                 total += Math.round(value);
             });
             
@@ -978,20 +1151,47 @@
             const currentWeather = WEATHER[gameState.currentWeather];
             
             gameState.plots.forEach((plot, index) => {
-                if (plot && plot.growth < CROPS[plot.type].growTime) {
-                    plot.growth += 1;
-                    needsRender = true;
+                if (plot) {
+                    const crop = CROPS[plot.type];
+                    const targetTime = (plot.harvested && crop.regrows) ? crop.regrowTime : crop.growTime;
                     
-                    // Chance to gain mutation from current weather
-                    if (currentWeather.mutation && Math.random() < 0.15) {
-                        if (!plot.mutations) plot.mutations = [];
-                        if (!plot.mutations.includes(currentWeather.mutation)) {
-                            plot.mutations.push(currentWeather.mutation);
-                            showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
+                    if (plot.growth < targetTime) {
+                        // Apply speed bonus from pets
+                        let growthAmount = 1;
+                        if (hasPetEffect('speed')) growthAmount += 0.15;
+                        if (hasPetEffect('all')) growthAmount += 0.075;
+                        plot.growth += growthAmount;
+                        needsRender = true;
+                        
+                        // Chance to gain mutation from current weather
+                        let mutationChance = 0.15;
+                        mutationChance = getPetBonus('mutation', mutationChance);
+                        if (currentWeather.mutation && Math.random() < mutationChance) {
+                            if (!plot.mutations) plot.mutations = [];
+                            if (!plot.mutations.includes(currentWeather.mutation)) {
+                                plot.mutations.push(currentWeather.mutation);
+                                showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
+                            }
                         }
                     }
                 }
             });
+            
+            // Dragon auto-harvest
+            if (hasPetEffect('autoharvest') && Math.random() < 0.1) {
+                const readyPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
+                    .filter(({plot}) => {
+                        if (!plot) return false;
+                        const crop = CROPS[plot.type];
+                        const targetTime = (plot.harvested && crop.regrows) ? crop.regrowTime : crop.growTime;
+                        return plot.growth >= targetTime;
+                    });
+                if (readyPlots.length > 0) {
+                    const {index} = readyPlots[Math.floor(Math.random() * readyPlots.length)];
+                    harvestCrop(index);
+                    showMessage(`🐉 Dragon auto-harvested a crop!`);
+                }
+            }
             
             if (needsRender) {
                 renderFarm();
@@ -1003,7 +1203,10 @@
             // Sunny is more common
             const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
             gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
-            gameState.weatherTimer = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
+            let weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
+            if (hasPetEffect('weather')) weatherDuration *= 1.5;
+            if (hasPetEffect('all')) weatherDuration *= 1.25;
+            gameState.weatherTimer = weatherDuration;
             
             const weather = WEATHER[gameState.currentWeather];
             if (weather.mutation) {
