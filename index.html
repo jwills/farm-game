@@ -369,6 +369,99 @@
             transition: all 0.5s;
         }
         
+        .weather-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        /* Rain effect */
+        .rain-drop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background: linear-gradient(transparent, rgba(100, 150, 255, 0.6));
+            animation: rain-fall linear infinite;
+        }
+        
+        @keyframes rain-fall {
+            0% { transform: translateY(-20px); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        /* Thunder flash */
+        .thunder-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 101;
+        }
+        
+        .thunder-flash.flash {
+            animation: lightning 0.3s ease-out;
+        }
+        
+        @keyframes lightning {
+            0% { opacity: 0.8; }
+            20% { opacity: 0.2; }
+            40% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+        
+        /* Wind leaves */
+        .wind-leaf {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: wind-blow linear infinite;
+        }
+        
+        @keyframes wind-blow {
+            0% { transform: translate(-50px, 0) rotate(0deg); }
+            100% { transform: translate(100vw, 100px) rotate(720deg); }
+        }
+        
+        /* Heatwave shimmer */
+        .heat-shimmer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(255,100,0,0.1) 0%, transparent 50%);
+            animation: heat-wave 2s ease-in-out infinite;
+        }
+        
+        @keyframes heat-wave {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* Sun rays */
+        .sun-ray {
+            position: fixed;
+            top: -50px;
+            width: 100px;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(255,220,100,0.3), transparent);
+            transform-origin: top center;
+            animation: sun-shine 8s ease-in-out infinite;
+        }
+        
+        @keyframes sun-shine {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
         .weather-rainy {
             background: linear-gradient(135deg, #5C6BC0 0%, #3949AB 100%) !important;
         }
@@ -396,6 +489,7 @@
     </style>
 </head>
 <body>
+    <div class="weather-overlay" id="weather-overlay"></div>
     <div class="game-container">
         <header>
             <h1>🌾 Grow Farm</h1>
@@ -563,7 +657,7 @@
                     
                     div.innerHTML = `
                         <span class="crop-emoji">${emoji}</span>
-                        ${plotMutations ? `<span style="position:absolute;top:5px;right:5px;font-size:0.9rem;">${plotMutations}</span>` : ''}
+                        ${plotMutations ? `<span style="position:absolute;top:3px;right:3px;font-size:1.4rem;text-shadow: 0 0 5px rgba(255,255,255,0.8);">${plotMutations}</span>` : ''}
                         ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
                     `;
                     
@@ -817,6 +911,92 @@
         function updateWeatherDisplay() {
             const weather = WEATHER[gameState.currentWeather];
             document.getElementById('weather-display').innerHTML = `${weather.emoji} ${weather.name}`;
+            updateWeatherEffects();
+        }
+        
+        function updateWeatherEffects() {
+            const overlay = document.getElementById('weather-overlay');
+            const weather = gameState.currentWeather;
+            
+            // Clear existing effects if weather changed
+            if (overlay.dataset.weather !== weather) {
+                overlay.innerHTML = '';
+                overlay.dataset.weather = weather;
+                
+                if (weather === 'rainy' || weather === 'thunder') {
+                    createRain();
+                    if (weather === 'thunder') {
+                        const flash = document.createElement('div');
+                        flash.className = 'thunder-flash';
+                        flash.id = 'thunder-flash';
+                        document.body.appendChild(flash);
+                        startLightning();
+                    }
+                } else if (weather === 'windy') {
+                    createWind();
+                } else if (weather === 'heatwave') {
+                    const shimmer = document.createElement('div');
+                    shimmer.className = 'heat-shimmer';
+                    overlay.appendChild(shimmer);
+                } else if (weather === 'sunny') {
+                    createSunRays();
+                }
+            }
+        }
+        
+        function createRain() {
+            const overlay = document.getElementById('weather-overlay');
+            for (let i = 0; i < 100; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                overlay.appendChild(drop);
+            }
+        }
+        
+        let lightningInterval;
+        function startLightning() {
+            if (lightningInterval) clearInterval(lightningInterval);
+            lightningInterval = setInterval(() => {
+                if (gameState.currentWeather === 'thunder' && Math.random() < 0.3) {
+                    const flash = document.getElementById('thunder-flash');
+                    if (flash) {
+                        flash.classList.remove('flash');
+                        void flash.offsetWidth; // Trigger reflow
+                        flash.classList.add('flash');
+                    }
+                }
+            }, 2000);
+        }
+        
+        function createWind() {
+            const overlay = document.getElementById('weather-overlay');
+            const leaves = ['🍃', '🍂', '🌿', '☘️'];
+            setInterval(() => {
+                if (gameState.currentWeather === 'windy' && overlay.children.length < 20) {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'wind-leaf';
+                    leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+                    leaf.style.top = Math.random() * 80 + 'vh';
+                    leaf.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    overlay.appendChild(leaf);
+                    setTimeout(() => leaf.remove(), 5000);
+                }
+            }, 500);
+        }
+        
+        function createSunRays() {
+            const overlay = document.getElementById('weather-overlay');
+            for (let i = 0; i < 5; i++) {
+                const ray = document.createElement('div');
+                ray.className = 'sun-ray';
+                ray.style.left = (10 + i * 20) + 'vw';
+                ray.style.transform = `rotate(${-20 + i * 10}deg)`;
+                ray.style.animationDelay = i * 0.5 + 's';
+                overlay.appendChild(ray);
+            }
         }
 
         // Show Message
