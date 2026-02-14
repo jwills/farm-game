@@ -423,13 +423,33 @@
     <script>
         // Game Data
         const CROPS = {
-            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, sellPrice: 25, growTime: 8 },
-            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, sellPrice: 40, growTime: 12 },
-            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, sellPrice: 55, growTime: 15 },
-            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, sellPrice: 30, growTime: 10 },
-            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, sellPrice: 70, growTime: 18 },
-            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, sellPrice: 100, growTime: 25 }
+            carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 10, basePrice: 20, growTime: 8 },
+            tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 15, basePrice: 32, growTime: 12 },
+            corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 20, basePrice: 45, growTime: 15 },
+            potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 12, basePrice: 25, growTime: 10 },
+            strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 25, basePrice: 55, growTime: 18 },
+            pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 35, basePrice: 80, growTime: 25 }
         };
+
+        const SIZES = [
+            { name: 'Tiny', multiplier: 0.5, scale: 0.6 },
+            { name: 'Small', multiplier: 0.75, scale: 0.8 },
+            { name: 'Medium', multiplier: 1.0, scale: 1.0 },
+            { name: 'Large', multiplier: 1.5, scale: 1.2 },
+            { name: 'Huge', multiplier: 2.0, scale: 1.4 }
+        ];
+
+        function getRandomSize() {
+            // Weighted random - medium most common, tiny/huge rare
+            const weights = [10, 25, 40, 20, 5];
+            const total = weights.reduce((a, b) => a + b, 0);
+            let rand = Math.random() * total;
+            for (let i = 0; i < weights.length; i++) {
+                rand -= weights[i];
+                if (rand <= 0) return i;
+            }
+            return 2; // default medium
+        }
 
         const NEIGHBORS = [
             { name: 'Old MacDonald', crops: ['corn', 'corn', 'tomato', null, 'carrot', 'potato', null, 'corn', 'tomato'] },
@@ -442,7 +462,7 @@
             money: 20,
             totalHarvested: 0,
             seeds: {},
-            harvested: {},
+            harvested: [], // Now an array of {type, sizeIndex}
             selectedSeed: null,
             plots: Array(20).fill(null) // 20 plots (5x4 grid)
         };
@@ -471,7 +491,7 @@
                     <span class="emoji">${crop.seedEmoji}</span>
                     <div class="info">
                         <div class="name">${crop.name} Seeds</div>
-                        <div class="details">Grows in ${crop.growTime}s • Sells for $${crop.sellPrice}</div>
+                        <div class="details">Grows in ${crop.growTime}s • ~$${crop.basePrice}</div>
                     </div>
                     <span class="price">$${crop.seedPrice}</span>
                 `;
@@ -550,22 +570,24 @@
             const harvestContainer = document.getElementById('harvest-inventory');
             harvestContainer.innerHTML = '';
             
-            let hasHarvest = false;
+            let hasHarvest = gameState.harvested.length > 0;
             let totalValue = 0;
-            for (const [id, count] of Object.entries(gameState.harvested)) {
-                if (count > 0) {
-                    hasHarvest = true;
-                    const crop = CROPS[id];
-                    totalValue += crop.sellPrice * count;
-                    const div = document.createElement('div');
-                    div.className = 'inv-item';
-                    div.innerHTML = `
-                        <span class="emoji">${crop.growEmoji}</span>
-                        <span class="count">${count}</span>
-                    `;
-                    harvestContainer.appendChild(div);
-                }
-            }
+            
+            gameState.harvested.forEach((item, index) => {
+                const crop = CROPS[item.type];
+                const size = SIZES[item.sizeIndex];
+                const value = Math.round(crop.basePrice * size.multiplier);
+                totalValue += value;
+                
+                const div = document.createElement('div');
+                div.className = 'inv-item';
+                div.style.cssText = `font-size: ${size.scale}rem;`;
+                div.innerHTML = `
+                    <span class="emoji" style="transform: scale(${size.scale}); display: inline-block;">${crop.growEmoji}</span>
+                    <span style="font-size: 0.7rem; color: #666;">${size.name}<br>$${value}</span>
+                `;
+                harvestContainer.appendChild(div);
+            });
             
             if (!hasHarvest) {
                 harvestContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No crops to sell</p>';
@@ -660,11 +682,13 @@
                 return;
             }
             
-            gameState.harvested[plot.type] = (gameState.harvested[plot.type] || 0) + 1;
+            const sizeIndex = getRandomSize();
+            const size = SIZES[sizeIndex];
+            gameState.harvested.push({ type: plot.type, sizeIndex });
             gameState.totalHarvested++;
             gameState.plots[plotIndex] = null;
             
-            showMessage(`Harvested ${crop.name}! ${crop.growEmoji}`);
+            showMessage(`Harvested ${size.name} ${crop.name}! ${crop.growEmoji}`);
             
             renderFarm();
             renderInventory();
@@ -673,15 +697,15 @@
         // Sell All Crops
         function sellAllCrops() {
             let total = 0;
-            for (const [id, count] of Object.entries(gameState.harvested)) {
-                if (count > 0) {
-                    total += CROPS[id].sellPrice * count;
-                }
-            }
+            gameState.harvested.forEach(item => {
+                const crop = CROPS[item.type];
+                const size = SIZES[item.sizeIndex];
+                total += Math.round(crop.basePrice * size.multiplier);
+            });
             
             if (total > 0) {
                 gameState.money += total;
-                gameState.harvested = {};
+                gameState.harvested = [];
                 showMessage(`Sold crops for $${total}! 💰`);
                 renderShop();
                 renderInventory();
