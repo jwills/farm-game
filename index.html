@@ -894,6 +894,37 @@
                 opacity: 0;
             }
         }
+
+        /* Snow */
+        .snow-tint {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(200,220,255,0.3) 0%, rgba(255,255,255,0.2) 100%);
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -20px;
+            color: white;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            animation: snowfall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.7;
+            }
+        }
         
         /* Sun rays */
         .sun-ray {
@@ -1078,6 +1109,7 @@
             thunder: { name: 'Thunder', emoji: '⛈️', mutation: 'shocked', mutationEmoji: '⚡', bonus: 1.5 },
             windy: { name: 'Windy', emoji: '💨', mutation: 'breezy', mutationEmoji: '🍃', bonus: 1.2 },
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 },
+            snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 1.35 },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 }
         };
 
@@ -1935,7 +1967,28 @@
                     createSunRays();
                 } else if (weather === 'hellscape') {
                     createHellscape();
+                } else if (weather === 'snow') {
+                    createSnow();
                 }
+            }
+        }
+
+        function createSnow() {
+            const overlay = document.getElementById('weather-overlay');
+            // Add blue tint overlay
+            const tint = document.createElement('div');
+            tint.className = 'snow-tint';
+            overlay.appendChild(tint);
+            // Add falling snowflakes
+            for (let i = 0; i < 50; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = Math.random() > 0.5 ? '❄️' : '✧';
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = (3 + Math.random() * 4) + 's';
+                flake.style.animationDelay = Math.random() * 3 + 's';
+                flake.style.fontSize = (0.5 + Math.random() * 1) + 'rem';
+                overlay.appendChild(flake);
             }
         }
 
