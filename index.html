@@ -282,6 +282,16 @@
             gap: 10px;
         }
 
+        .restock-timer {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 5px;
+            text-align: center;
+        }
+
         .shop-items {
             display: flex;
             flex-direction: column;
@@ -338,6 +348,11 @@
         .shop-item.disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .shop-item.out-of-stock {
+            opacity: 0.4;
+            filter: grayscale(50%);
         }
 
         .shop-item .emoji {
@@ -963,6 +978,7 @@
 
                 <div class="shop">
                     <h2>🏪 Seed Shop</h2>
+                    <div class="restock-timer" id="restock-timer">Restock in: --</div>
                     <div class="shop-items" id="shop-items"></div>
                 </div>
 
@@ -1111,7 +1127,20 @@
             equippedPets: [], // max 3 equipped
             playerId: null,
             playerName: null,
-            neighborhoodCode: null
+            neighborhoodCode: null,
+            shopStock: {}, // seed stock levels
+            lastRestock: 0 // timestamp of last restock
+        };
+
+        // Stock settings per rarity
+        const STOCK_CONFIG = {
+            common: { min: 8, max: 15, restockChance: 0.9 },
+            uncommon: { min: 4, max: 8, restockChance: 0.7 },
+            rare: { min: 2, max: 5, restockChance: 0.5 },
+            epic: { min: 1, max: 3, restockChance: 0.3 },
+            legendary: { min: 0, max: 2, restockChance: 0.15 },
+            godly: { min: 0, max: 1, restockChance: 0.05 },
+            demonic: { min: 0, max: 1, restockChance: 0.01 }
         };
 
         // Initialize
@@ -1119,12 +1148,69 @@
             loadGame();
             if (!gameState.pets) gameState.pets = [];
             if (!gameState.equippedPets) gameState.equippedPets = [];
+            if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
+                initializeStock();
+            }
             renderShop();
             renderPetShop();
             renderFarm();
             renderInventory();
             setInterval(updateCrops, 1000);
+            setInterval(updateRestockTimer, 1000);
             setInterval(saveGame, 5000);
+            setInterval(checkRestock, 30000); // Check restock every 30 seconds
+        }
+
+        function initializeStock() {
+            gameState.shopStock = {};
+            for (const [id, crop] of Object.entries(CROPS)) {
+                const config = STOCK_CONFIG[crop.rarity];
+                gameState.shopStock[id] = config.min + Math.floor(Math.random() * (config.max - config.min + 1));
+            }
+            gameState.lastRestock = Date.now();
+        }
+
+        function checkRestock() {
+            const now = Date.now();
+            const timeSinceRestock = now - (gameState.lastRestock || 0);
+            
+            // Restock every 60 seconds
+            if (timeSinceRestock >= 60000) {
+                restockShop();
+                gameState.lastRestock = now;
+            }
+        }
+
+        function restockShop() {
+            let restocked = [];
+            for (const [id, crop] of Object.entries(CROPS)) {
+                const config = STOCK_CONFIG[crop.rarity];
+                const currentStock = gameState.shopStock[id] || 0;
+                
+                // Only restock if below max and chance succeeds
+                if (currentStock < config.max && Math.random() < config.restockChance) {
+                    const addAmount = Math.ceil(Math.random() * 2); // Add 1-2
+                    gameState.shopStock[id] = Math.min(currentStock + addAmount, config.max);
+                    if (currentStock === 0 && gameState.shopStock[id] > 0) {
+                        restocked.push(crop.name);
+                    }
+                }
+            }
+            if (restocked.length > 0) {
+                showMessage(`Shop restocked: ${restocked.slice(0, 3).join(', ')}${restocked.length > 3 ? '...' : ''} 📦`);
+            }
+            renderShop();
+        }
+
+        function updateRestockTimer() {
+            const now = Date.now();
+            const timeSinceRestock = now - (gameState.lastRestock || 0);
+            const timeUntilRestock = Math.max(0, 60000 - timeSinceRestock);
+            const seconds = Math.ceil(timeUntilRestock / 1000);
+            const timerEl = document.getElementById('restock-timer');
+            if (timerEl) {
+                timerEl.textContent = `📦 Restock in: ${seconds}s`;
+            }
         }
 
         // Render Shop
@@ -1136,28 +1222,43 @@
             const sortedCrops = Object.entries(CROPS).sort((a, b) => a[1].seedPrice - b[1].seedPrice);
             
             for (const [id, crop] of sortedCrops) {
+                const stock = gameState.shopStock[id] || 0;
+                const inStock = stock > 0;
                 const canAfford = gameState.money >= crop.seedPrice;
+                const canBuy = canAfford && inStock;
                 const rarity = RARITIES[crop.rarity];
                 const div = document.createElement('div');
-                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''} ${crop.rarity === 'demonic' ? 'demonic-glow' : ''}`;
+                div.className = `shop-item ${canBuy ? '' : 'disabled'} ${!inStock ? 'out-of-stock' : ''} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''} ${crop.rarity === 'demonic' ? 'demonic-glow' : ''}`;
                 div.style.background = rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
+                
+                const stockDisplay = inStock ? `📦 ${stock}` : '❌ Sold Out';
+                const stockColor = inStock ? (stock <= 2 ? '#ff9800' : '#4CAF50') : '#f44336';
+                
                 div.innerHTML = `
                     <span class="emoji">${crop.seedEmoji}</span>
                     <div class="info">
                         <div class="name">${crop.name} Seeds</div>
                         <div class="details">
                             <span class="rarity-badge" style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
-                            • ${crop.growTime}s • ${getYieldText(crop)} • ~$${crop.basePrice}${crop.regrows ? ' 🔄' : ''}
+                            • ${crop.growTime}s • ${getYieldText(crop)} • ~$${formatNumber(crop.basePrice)}${crop.regrows ? ' 🔄' : ''}
                         </div>
+                        <div class="stock" style="color: ${stockColor}; font-size: 0.8rem; margin-top: 2px;">${stockDisplay}</div>
                     </div>
-                    <span class="price">$${crop.seedPrice}</span>
+                    <span class="price">$${formatNumber(crop.seedPrice)}</span>
                 `;
-                if (canAfford) {
+                if (canBuy) {
                     div.onclick = () => buySeed(id);
                 }
                 container.appendChild(div);
             }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
         }
 
         // Render Farm
@@ -1295,12 +1396,16 @@
         // Buy Seed
         function buySeed(type) {
             const crop = CROPS[type];
-            if (gameState.money >= crop.seedPrice) {
+            const stock = gameState.shopStock[type] || 0;
+            if (gameState.money >= crop.seedPrice && stock > 0) {
                 gameState.money -= crop.seedPrice;
                 gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                gameState.shopStock[type] = stock - 1;
                 showMessage(`Bought ${crop.name} seeds! 🌱`);
                 renderShop();
                 renderInventory();
+            } else if (stock <= 0) {
+                showMessage(`${crop.name} seeds are sold out! ❌`);
             }
         }
 
