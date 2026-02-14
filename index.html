@@ -383,7 +383,7 @@
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
 
-        .other-farms {
+        .neighborhood-section {
             margin-top: 20px;
             background: rgba(255,255,255,0.9);
             border-radius: 15px;
@@ -391,15 +391,99 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        .other-farms h2 {
+        .neighborhood-section h2 {
             color: #7B1FA2;
             margin-bottom: 15px;
         }
 
+        .neighborhood-join {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .neighborhood-join input {
+            padding: 10px;
+            border: 2px solid #E1BEE7;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .neighborhood-join input:focus {
+            outline: none;
+            border-color: #7B1FA2;
+        }
+
+        #hood-code {
+            width: 70px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .neighborhood-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .join-group {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .hood-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hood-btn.create {
+            background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+            color: white;
+        }
+
+        .hood-btn.join {
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
+            color: white;
+        }
+
+        .hood-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .hood-info {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .hood-code-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2E7D32;
+            letter-spacing: 5px;
+            margin: 10px 0;
+        }
+
+        .hood-btn.leave {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            margin-top: 10px;
+        }
+
         .neighbors {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
+            margin-top: 15px;
         }
 
         .neighbor-farm {
@@ -407,28 +491,109 @@
             border-radius: 10px;
             padding: 15px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .neighbor-farm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(123, 31, 162, 0.3);
         }
 
         .neighbor-farm .name {
             font-weight: bold;
             color: #7B1FA2;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .neighbor-plots {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
+        .neighbor-farm .preview {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
-        .neighbor-plot {
-            aspect-ratio: 1;
-            background: #8B6914;
-            border-radius: 5px;
+        .neighbor-farm .stats {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .visit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1000;
+        }
+
+        .visit-modal.hidden {
+            display: none;
+        }
+
+        .visit-modal-content {
+            background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .visit-modal-content h3 {
+            color: #7B1FA2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .close-visit {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f44336;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
             font-size: 1rem;
+        }
+
+        .visit-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .visit-plot {
+            aspect-ratio: 1;
+            background: #8B6914;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .visit-plot.has-crop {
+            background: #6B4F12;
+        }
+
+        #visit-farm-stats {
+            text-align: center;
+            color: #555;
+        }
+
+        #visit-farm-stats .stat {
+            display: inline-block;
+            margin: 0 15px;
+            font-size: 1.1rem;
         }
 
         .instructions {
@@ -633,9 +798,29 @@
                 <h2>🏡 Your Farm</h2>
                 <div class="farm-grid" id="farm-grid"></div>
 
-                <div class="other-farms">
-                    <h2>👥 Neighboring Farms</h2>
-                    <div class="neighbors" id="neighbors"></div>
+                <div class="neighborhood-section">
+                    <h2>🏡 Neighborhood</h2>
+                    <div id="neighborhood-status">
+                        <div class="neighborhood-join">
+                            <input type="text" id="player-name" placeholder="Your farm name" maxlength="20">
+                            <div class="neighborhood-buttons">
+                                <button onclick="createNeighborhood()" class="hood-btn create">🌟 Create New</button>
+                                <div class="join-group">
+                                    <input type="text" id="hood-code" placeholder="Code" maxlength="4" pattern="[0-9]*">
+                                    <button onclick="joinNeighborhood()" class="hood-btn join">👋 Join</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="neighborhood-members" class="neighbors"></div>
+                    <div id="visit-modal" class="visit-modal hidden">
+                        <div class="visit-modal-content">
+                            <button class="close-visit" onclick="closeVisit()">✕</button>
+                            <h3 id="visit-farm-name">Visiting Farm</h3>
+                            <div id="visit-farm-grid" class="visit-grid"></div>
+                            <div id="visit-farm-stats"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="instructions">
@@ -798,12 +983,6 @@
             return base * multiplier;
         }
 
-        const NEIGHBORS = [
-            { name: 'Old MacDonald', crops: ['corn', 'corn', 'tomato', null, 'carrot', 'potato', null, 'corn', 'tomato'] },
-            { name: 'Farmer Jane', crops: ['strawberry', 'strawberry', null, 'tomato', 'carrot', 'carrot', null, 'potato', 'strawberry'] },
-            { name: 'Green Thumb', crops: ['pumpkin', null, 'corn', 'corn', 'tomato', null, 'carrot', 'potato', 'pumpkin'] }
-        ];
-
         // Game State
         let gameState = {
             money: 20,
@@ -814,7 +993,10 @@
             plots: Array(20).fill(null), // 20 plots (5x4 grid)
             currentWeather: 'sunny',
             weatherTimer: 0,
-            pets: [] // owned pets
+            pets: [], // owned pets
+            playerId: null,
+            playerName: null,
+            neighborhoodCode: null
         };
 
         // Initialize
@@ -825,7 +1007,6 @@
             renderPetShop();
             renderFarm();
             renderInventory();
-            renderNeighbors();
             setInterval(updateCrops, 1000);
             setInterval(saveGame, 5000);
         }
@@ -993,26 +1174,6 @@
             // Update header stats
             document.getElementById('money').textContent = gameState.money;
             document.getElementById('harvested').textContent = gameState.totalHarvested;
-        }
-
-        // Render Neighbors
-        function renderNeighbors() {
-            const container = document.getElementById('neighbors');
-            container.innerHTML = '';
-            
-            NEIGHBORS.forEach(neighbor => {
-                const div = document.createElement('div');
-                div.className = 'neighbor-farm';
-                div.innerHTML = `
-                    <div class="name">${neighbor.name}</div>
-                    <div class="neighbor-plots">
-                        ${neighbor.crops.map(crop => `
-                            <div class="neighbor-plot">${crop ? CROPS[crop].growEmoji : ''}</div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(div);
-            });
         }
 
         // Buy Seed
@@ -1487,8 +1648,239 @@
             }
         }
 
+        // Neighborhood Functions
+        const API_BASE = 'http://localhost:8001/api';
+
+        function getPlayerId() {
+            if (!gameState.playerId) {
+                gameState.playerId = 'player_' + Math.random().toString(36).substr(2, 9);
+                saveGame();
+            }
+            return gameState.playerId;
+        }
+
+        function getPlayerName() {
+            return gameState.playerName || document.getElementById('player-name').value || 'Anonymous Farmer';
+        }
+
+        async function createNeighborhood() {
+            const name = document.getElementById('player-name').value.trim();
+            if (!name) {
+                showMessage('Enter your farm name first! 🌾');
+                return;
+            }
+            gameState.playerName = name;
+
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ playerId: getPlayerId(), playerName: name })
+                });
+                const data = await res.json();
+                if (data.code) {
+                    gameState.neighborhoodCode = data.code;
+                    saveGame();
+                    showMessage(`Neighborhood created! Code: ${data.code} 🌟`);
+                    renderNeighborhoodStatus();
+                    syncFarmToNeighborhood();
+                }
+            } catch (err) {
+                showMessage('Could not create neighborhood ❌');
+            }
+        }
+
+        async function joinNeighborhood() {
+            const name = document.getElementById('player-name').value.trim();
+            const code = document.getElementById('hood-code').value.trim();
+            if (!name) {
+                showMessage('Enter your farm name first! 🌾');
+                return;
+            }
+            if (!code || code.length !== 4) {
+                showMessage('Enter a 4-digit code! 🔢');
+                return;
+            }
+            gameState.playerName = name;
+
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, playerId: getPlayerId(), playerName: name })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    gameState.neighborhoodCode = code;
+                    saveGame();
+                    showMessage(`Joined neighborhood ${code}! 👋`);
+                    renderNeighborhoodStatus();
+                    syncFarmToNeighborhood();
+                } else {
+                    showMessage('Neighborhood not found ❌');
+                }
+            } catch (err) {
+                showMessage('Could not join neighborhood ❌');
+            }
+        }
+
+        async function leaveNeighborhood() {
+            if (!confirm('Leave this neighborhood?')) return;
+
+            try {
+                await fetch(`${API_BASE}/neighborhood/leave`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: gameState.neighborhoodCode, playerId: getPlayerId() })
+                });
+            } catch (err) {}
+
+            gameState.neighborhoodCode = null;
+            saveGame();
+            showMessage('Left neighborhood 👋');
+            renderNeighborhoodStatus();
+        }
+
+        async function syncFarmToNeighborhood() {
+            if (!gameState.neighborhoodCode) return;
+
+            try {
+                await fetch(`${API_BASE}/neighborhood/sync`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerId: getPlayerId(),
+                        playerName: getPlayerName(),
+                        plots: gameState.plots,
+                        money: gameState.money,
+                        pets: gameState.pets || []
+                    })
+                });
+            } catch (err) {
+                console.log('Sync failed:', err);
+            }
+        }
+
+        async function fetchNeighborhoodFarms() {
+            if (!gameState.neighborhoodCode) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/farms?code=${gameState.neighborhoodCode}&playerId=${getPlayerId()}`);
+                const data = await res.json();
+                renderNeighborFarms(data.farms || {});
+            } catch (err) {
+                console.log('Fetch farms failed:', err);
+            }
+        }
+
+        function renderNeighborhoodStatus() {
+            const container = document.getElementById('neighborhood-status');
+            
+            if (gameState.neighborhoodCode) {
+                container.innerHTML = `
+                    <div class="hood-info">
+                        <p>Your Neighborhood</p>
+                        <div class="hood-code-display">${gameState.neighborhoodCode}</div>
+                        <p style="font-size: 0.85rem; color: #555;">Share this code with friends!</p>
+                        <button onclick="leaveNeighborhood()" class="hood-btn leave">🚪 Leave</button>
+                    </div>
+                `;
+                fetchNeighborhoodFarms();
+            } else {
+                container.innerHTML = `
+                    <div class="neighborhood-join">
+                        <input type="text" id="player-name" placeholder="Your farm name" maxlength="20" value="${gameState.playerName || ''}">
+                        <div class="neighborhood-buttons">
+                            <button onclick="createNeighborhood()" class="hood-btn create">🌟 Create New</button>
+                            <div class="join-group">
+                                <input type="text" id="hood-code" placeholder="Code" maxlength="4" pattern="[0-9]*">
+                                <button onclick="joinNeighborhood()" class="hood-btn join">👋 Join</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('neighborhood-members').innerHTML = '';
+            }
+        }
+
+        function renderNeighborFarms(farms) {
+            const container = document.getElementById('neighborhood-members');
+            container.innerHTML = '';
+
+            const farmEntries = Object.entries(farms);
+            if (farmEntries.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No neighbors yet! Share your code 🏡</p>';
+                return;
+            }
+
+            farmEntries.forEach(([id, farm]) => {
+                const cropCount = (farm.plots || []).filter(p => p !== null).length;
+                const previewCrops = (farm.plots || []).slice(0, 6).map(p => {
+                    if (p && CROPS[p.type]) return CROPS[p.type].growEmoji;
+                    return '';
+                }).join('');
+
+                const div = document.createElement('div');
+                div.className = 'neighbor-farm';
+                div.innerHTML = `
+                    <div class="name">${farm.playerName || 'Unknown'}</div>
+                    <div class="preview">${previewCrops || '🌱'}</div>
+                    <div class="stats">💰 $${farm.money || 0} • 🌿 ${cropCount} crops</div>
+                `;
+                div.onclick = () => visitFarm(id, farm);
+                container.appendChild(div);
+            });
+        }
+
+        function visitFarm(id, farm) {
+            const modal = document.getElementById('visit-modal');
+            const nameEl = document.getElementById('visit-farm-name');
+            const gridEl = document.getElementById('visit-farm-grid');
+            const statsEl = document.getElementById('visit-farm-stats');
+
+            nameEl.textContent = `🌾 ${farm.playerName}'s Farm`;
+
+            gridEl.innerHTML = '';
+            const plots = farm.plots || [];
+            for (let i = 0; i < 20; i++) {
+                const plot = plots[i];
+                const div = document.createElement('div');
+                div.className = 'visit-plot' + (plot ? ' has-crop' : '');
+                if (plot && CROPS[plot.type]) {
+                    div.textContent = CROPS[plot.type].growEmoji;
+                }
+                gridEl.appendChild(div);
+            }
+
+            const petEmojis = (farm.pets || []).map(p => PETS[p] ? PETS[p].emoji : '').join(' ');
+            statsEl.innerHTML = `
+                <span class="stat">💰 $${farm.money || 0}</span>
+                <span class="stat">🐾 ${petEmojis || 'No pets'}</span>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeVisit() {
+            document.getElementById('visit-modal').classList.add('hidden');
+        }
+
+        // Sync periodically
+        setInterval(() => {
+            if (gameState.neighborhoodCode) {
+                syncFarmToNeighborhood();
+                fetchNeighborhoodFarms();
+            }
+        }, 10000);
+
         // Start the game
         init();
+
+        // Initialize neighborhood UI after load
+        setTimeout(() => {
+            renderNeighborhoodStatus();
+        }, 100);
     </script>
 </body>
 </html>

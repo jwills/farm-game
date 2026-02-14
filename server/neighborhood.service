@@ -1,0 +1,14 @@
+[Unit]
+Description=Grow Farm Neighborhood Server
+After=network.target
+
+[Service]
+Type=simple
+User=exedev
+WorkingDirectory=/home/exedev/farm-game/server
+ExecStart=/home/exedev/farm-game/server/neighborhood-server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
