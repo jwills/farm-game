@@ -198,6 +198,17 @@
             0%, 100% { box-shadow: 0 0 5px rgba(255, 152, 0, 0.3); }
             50% { box-shadow: 0 0 15px rgba(255, 152, 0, 0.6); }
         }
+        
+        .shop-item.godly-glow {
+            animation: godly-shimmer 2s ease-in-out infinite;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #FF1493, #9400D3, #FF1493) 1;
+        }
+        
+        @keyframes godly-shimmer {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 20, 147, 0.5), 0 0 20px rgba(148, 0, 211, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 40px rgba(148, 0, 211, 0.5); }
+        }
 
         .shop-item.disabled {
             opacity: 0.5;
@@ -556,7 +567,8 @@
             uncommon: { name: 'Uncommon', color: '#4CAF50', bg: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)' },
             rare: { name: 'Rare', color: '#2196F3', bg: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)' },
             epic: { name: 'Epic', color: '#9C27B0', bg: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
-            legendary: { name: 'Legendary', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%)' }
+            legendary: { name: 'Legendary', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%)' },
+            godly: { name: 'Godly', color: '#FF1493', bg: 'linear-gradient(135deg, #FFE4EC 0%, #FF69B4 30%, #DA70D6 70%, #9400D3 100%)' }
         };
 
         const CROPS = {
@@ -578,7 +590,12 @@
             grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 200, basePrice: 35, growTime: 22, rarity: 'epic', yield: [2, 5], regrows: true, regrowTime: 7 },
             // Legendary ($333-833) - end game goals
             pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 333, basePrice: 250, growTime: 25, rarity: 'legendary', yield: 1 },
-            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 833, basePrice: 150, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true, regrowTime: 10 }
+            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 833, basePrice: 150, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true, regrowTime: 10 },
+            // Godly ($20000+) - fantasy endgame
+            candytree: { name: 'Candy Tree', seedEmoji: '🍭', growEmoji: '🎄🍭', seedPrice: 20000, basePrice: 5000, growTime: 45, rarity: 'godly', yield: [2, 3], regrows: true, regrowTime: 15 },
+            crystalflower: { name: 'Crystal Flower', seedEmoji: '💎', growEmoji: '✨💎🌸', seedPrice: 35000, basePrice: 8000, growTime: 50, rarity: 'godly', yield: [2, 4], regrows: true, regrowTime: 18 },
+            starfruit: { name: 'Star Fruit', seedEmoji: '⭐', growEmoji: '🌟⭐🌟', seedPrice: 50000, basePrice: 12000, growTime: 60, rarity: 'godly', yield: [2, 3], regrows: true, regrowTime: 20 },
+            rainbowmelon: { name: 'Rainbow Melon', seedEmoji: '🌈', growEmoji: '🌈🍉✨', seedPrice: 100000, basePrice: 25000, growTime: 90, rarity: 'godly', yield: [1, 2], regrows: true, regrowTime: 30 }
         };
 
         const WEATHER = {
@@ -650,7 +667,7 @@
                 const canAfford = gameState.money >= crop.seedPrice;
                 const rarity = RARITIES[crop.rarity];
                 const div = document.createElement('div');
-                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''}`;
+                div.className = `shop-item ${canAfford ? '' : 'disabled'} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''}`;
                 div.style.background = rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 div.innerHTML = `
