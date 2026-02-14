@@ -445,6 +445,54 @@
             margin-bottom: 8px;
         }
 
+        .save-section {
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .save-section h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .save-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .save-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .save-btn.danger {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+
+        .save-info {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 8px;
+            text-align: center;
+        }
+
         #weather-display {
             transition: all 0.5s;
         }
@@ -593,6 +641,17 @@
                 <div class="instructions">
                     <h3>How to Play</h3>
                     <p>1. Buy seeds from the shop → 2. Select seeds in inventory → 3. Click an empty plot to plant → 4. Wait for crops to grow → 5. Click ready crops (glowing) to harvest → 6. Sell harvested crops for profit!</p>
+                </div>
+
+                <div class="save-section">
+                    <h3>💾 Save Game</h3>
+                    <div class="save-buttons">
+                        <button onclick="manualSave()" class="save-btn">💾 Save Now</button>
+                        <button onclick="exportSave()" class="save-btn">📤 Export</button>
+                        <button onclick="importSave()" class="save-btn">📥 Import</button>
+                        <button onclick="resetGame()" class="save-btn danger">🗑️ Reset</button>
+                    </div>
+                    <p class="save-info">Auto-saves every 5 seconds</p>
                 </div>
             </div>
 
@@ -1374,6 +1433,57 @@
                 } catch (e) {
                     console.error('Failed to load save:', e);
                 }
+            }
+        }
+
+        function manualSave() {
+            saveGame();
+            showMessage('Game saved! 💾');
+        }
+
+        function exportSave() {
+            const saveData = JSON.stringify(gameState);
+            const blob = new Blob([saveData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `growfarm-save-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showMessage('Save exported! 📤');
+        }
+
+        function importSave() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const loaded = JSON.parse(event.target.result);
+                        gameState = { ...gameState, ...loaded };
+                        saveGame();
+                        renderFarm();
+                        renderShop();
+                        renderInventory();
+                        renderPetShop();
+                        showMessage('Save imported! 📥');
+                    } catch (err) {
+                        showMessage('Invalid save file! ❌');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetGame() {
+            if (confirm('Are you sure you want to reset? All progress will be lost!')) {
+                localStorage.removeItem('growFarmSave');
+                location.reload();
             }
         }
 
