@@ -2749,12 +2749,140 @@
             z-index: 2;
         }
 
-        /* Eggplant - purple stem with hanging fruit */
+        /* Eggplant - persistent purple bush structure */
         .plant-model.crop-eggplant .plant-stem { background: linear-gradient(to top, #5a4a6a, #7a6a8a); width: 5px; }
         .plant-model.crop-eggplant .plant-leaf { background: #5a7a5a; width: 16px; height: 10px; }
+        .plant-model.crop-eggplant.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-eggplant.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-eggplant.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-eggplant.stage-3 .plant-stem { height: 28px; }
+        .plant-model.crop-eggplant.stage-3 .plant-leaves { bottom: 30px; }
         .plant-model.crop-eggplant.stage-4 .plant-stem { height: 40px; }
-        .plant-model.crop-eggplant.stage-4 .plant-crop { bottom: 20px; }
-        .plant-model.crop-eggplant.stage-4 .plant-leaves { bottom: 35px; }
+        .plant-model.crop-eggplant.stage-4 .plant-leaves { bottom: 38px; }
+        /* Eggplant bush canopy - always visible */
+        .plant-model.crop-eggplant::before {
+            content: '';
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-eggplant.stage-2::before {
+            width: 18px; height: 14px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #6a8a6a, #4a6a4a 70%);
+        }
+        .plant-model.crop-eggplant.stage-3::before {
+            width: 26px; height: 20px; bottom: 26px;
+            background: radial-gradient(ellipse at 50% 60%, #6a8a6a, #4a6a4a 70%);
+        }
+        .plant-model.crop-eggplant.stage-4::before {
+            width: 34px; height: 28px; bottom: 34px;
+            background: radial-gradient(ellipse at 50% 55%, #7a9a7a, #5a7a5a 50%, #4a6a4a 80%);
+            z-index: 1;
+        }
+        /* Eggplants only appear at stage 4 */
+        .crop-eggplant .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-eggplant.stage-4 .plant-fruit {
+            width: 14px; height: 28px;
+            background: linear-gradient(90deg, #4a0080, #6a0dad, #4a0080);
+            border-radius: 7px 7px 10px 10px;
+            bottom: 20px;
+            z-index: 2;
+        }
+
+        /* Spinach - persistent leafy bush structure */
+        .plant-model.crop-spinach .plant-stem { background: linear-gradient(to top, #3a5a3a, #4a7a4a); width: 3px; }
+        .plant-model.crop-spinach .plant-leaf { background: #2e8b2e; width: 14px; height: 10px; }
+        .plant-model.crop-spinach.stage-1 .plant-stem { height: 4px; }
+        .plant-model.crop-spinach.stage-2 .plant-stem { height: 10px; }
+        .plant-model.crop-spinach.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-spinach.stage-3 .plant-stem { height: 16px; }
+        .plant-model.crop-spinach.stage-3 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-spinach.stage-4 .plant-stem { height: 20px; }
+        .plant-model.crop-spinach.stage-4 .plant-leaves { bottom: 18px; }
+        /* Spinach bush canopy - always visible */
+        .plant-model.crop-spinach::before {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 40% 40% 50% 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-spinach.stage-2::before {
+            width: 20px; height: 14px; bottom: 10px;
+            background: radial-gradient(ellipse at 50% 60%, #3a9a3a, #2a7a2a 70%);
+        }
+        .plant-model.crop-spinach.stage-3::before {
+            width: 28px; height: 20px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #3a9a3a, #2a7a2a 70%);
+        }
+        .plant-model.crop-spinach.stage-4::before {
+            width: 36px; height: 26px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 55%, #3aaa3a, #2e8b2e 50%, #1a6a1a 80%);
+            z-index: 1;
+        }
+        /* Spinach leaves only appear at stage 4 */
+        .crop-spinach .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-spinach.stage-4 .plant-fruit {
+            width: 24px; height: 20px;
+            background: radial-gradient(circle at 50% 50%, #2e8b2e, #1a5a1a);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 12px;
+            z-index: 2;
+        }
+
+        /* Bell Pepper - persistent bush structure */
+        .plant-model.crop-bellpepper .plant-stem { background: linear-gradient(to top, #3a6a3a, #5a9a5a); width: 4px; }
+        .plant-model.crop-bellpepper .plant-leaf { background: #4a8a4a; width: 14px; height: 8px; }
+        .plant-model.crop-bellpepper.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-bellpepper.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-bellpepper.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-bellpepper.stage-3 .plant-stem { height: 24px; }
+        .plant-model.crop-bellpepper.stage-3 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-bellpepper.stage-4 .plant-stem { height: 34px; }
+        .plant-model.crop-bellpepper.stage-4 .plant-leaves { bottom: 32px; }
+        /* Bell Pepper bush canopy - always visible */
+        .plant-model.crop-bellpepper::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-bellpepper.stage-2::before {
+            width: 16px; height: 12px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-bellpepper.stage-3::before {
+            width: 24px; height: 18px; bottom: 22px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-bellpepper.stage-4::before {
+            width: 32px; height: 26px; bottom: 30px;
+            background: radial-gradient(ellipse at 50% 55%, #5aba5a, #4a9a4a 50%, #3a8a3a 80%);
+            z-index: 1;
+        }
+        /* Bell Peppers only appear at stage 4 */
+        .crop-bellpepper .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-bellpepper.stage-4 .plant-fruit {
+            width: 16px; height: 20px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 4px 4px 8px 8px;
+            bottom: 22px;
+            z-index: 2;
+        }
 
         /* Broccoli - thick stalk with bushy top */
         .plant-model.crop-broccoli .plant-stem { background: linear-gradient(to top, #4a7a4a, #5a8a5a); width: 8px; }
