@@ -7839,19 +7839,27 @@
             
             // Get plants to water based on range
             const plantsToWater = [];
+            
+            // Always water the clicked plant first
+            const clickedPlot = gameState.plots[plotIndex];
+            if (clickedPlot && !clickedPlot.isEgg) {
+                plantsToWater.push(plotIndex);
+            }
+            
             if (gear.range === 'all') {
+                // Water all plants
                 gameState.plots.forEach((plot, i) => {
-                    if (plot && !plot.isEgg) plantsToWater.push(i);
+                    if (plot && !plot.isEgg && i !== plotIndex) plantsToWater.push(i);
                 });
-            } else {
-                // Water plants around the selected plot
+            } else if (gear.range > 1) {
+                // Water additional adjacent plants (range includes clicked plant)
                 const cols = gameState.farmExpanded ? 6 : 5;
                 const targetCol = plotIndex % cols;
                 const targetRow = Math.floor(plotIndex / cols);
                 
-                let found = 0;
-                for (let dy = -1; dy <= 1 && found < gear.range; dy++) {
-                    for (let dx = -1; dx <= 1 && found < gear.range; dx++) {
+                for (let dy = -1; dy <= 1 && plantsToWater.length < gear.range; dy++) {
+                    for (let dx = -1; dx <= 1 && plantsToWater.length < gear.range; dx++) {
+                        if (dx === 0 && dy === 0) continue; // Skip clicked plot (already added)
                         const newCol = targetCol + dx;
                         const newRow = targetRow + dy;
                         const newIndex = newRow * cols + newCol;
@@ -7859,7 +7867,6 @@
                             const plot = gameState.plots[newIndex];
                             if (plot && !plot.isEgg) {
                                 plantsToWater.push(newIndex);
-                                found++;
                             }
                         }
                     }
