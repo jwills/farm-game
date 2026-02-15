@@ -271,21 +271,28 @@
             padding: 8px 12px;
             border-radius: 8px;
             margin-bottom: 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #4A148C;
             font-weight: bold;
             display: flex;
-            align-items: center;
-            gap: 5px;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .raccoon-timer-side.hidden {
             display: none;
         }
 
-        .raccoon-timer-side #raccoon-timer {
+        .raccoon-timer-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .raccoon-timer-row .timer-value {
             color: #7B1FA2;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            margin-left: auto;
         }
 
         .empty-slot {
@@ -1114,9 +1121,7 @@
 
                 <div class="shop pet-shop">
                     <h2>🐾 Pet Shop</h2>
-                    <div id="raccoon-timer-container" class="raccoon-timer-side hidden">
-                        <span>🦝</span> Raccoon steals in: <span id="raccoon-timer">10:00</span>
-                    </div>
+                    <div id="raccoon-timer-container" class="raccoon-timer-side hidden"></div>
                     <div class="owned-pets" id="owned-pets"></div>
                     <div class="shop-items" id="pet-shop-items"></div>
                 </div>
@@ -1978,14 +1983,15 @@
             const timerContainer = document.getElementById('raccoon-timer-container');
             if (!timerContainer) return;
             
-            const hasRaccoon = hasPetEffect('steal');
+            const equippedRaccoons = (gameState.equippedPets || []).filter(p => p === 'raccoon').length;
             const inNeighborhood = !!gameState.neighborhoodCode;
             
-            if (hasRaccoon && inNeighborhood) {
+            if (equippedRaccoons > 0 && inNeighborhood) {
                 timerContainer.classList.remove('hidden');
-                updateRaccoonTimer();
+                updateRaccoonTimers();
             } else {
                 timerContainer.classList.add('hidden');
+                timerContainer.innerHTML = '';
             }
         }
 
@@ -2171,14 +2177,27 @@
                 }
             }
 
-            // Raccoon steal effect (every 10 minutes = 600 seconds)
-            if (hasPetEffect('steal') && gameState.neighborhoodCode) {
-                if (!gameState.raccoonTimer) gameState.raccoonTimer = 0;
-                gameState.raccoonTimer++;
-                updateRaccoonTimer();
-                if (gameState.raccoonTimer >= 600) {
-                    gameState.raccoonTimer = 0;
-                    attemptRaccoonSteal();
+            // Raccoon steal effect (every 10 minutes = 600 seconds per raccoon)
+            if (gameState.neighborhoodCode) {
+                const equippedRaccoons = (gameState.equippedPets || []).filter(p => p === 'raccoon').length;
+                if (equippedRaccoons > 0) {
+                    if (!gameState.raccoonTimers) gameState.raccoonTimers = [];
+                    // Ensure we have the right number of timers
+                    while (gameState.raccoonTimers.length < equippedRaccoons) {
+                        gameState.raccoonTimers.push(0);
+                    }
+                    while (gameState.raccoonTimers.length > equippedRaccoons) {
+                        gameState.raccoonTimers.pop();
+                    }
+                    // Update each raccoon's timer
+                    for (let i = 0; i < equippedRaccoons; i++) {
+                        gameState.raccoonTimers[i]++;
+                        if (gameState.raccoonTimers[i] >= 600) {
+                            gameState.raccoonTimers[i] = 0;
+                            attemptRaccoonSteal(i + 1);
+                        }
+                    }
+                    updateRaccoonTimers();
                 }
             }
             
@@ -2543,17 +2562,30 @@
             }
         }
 
-        function updateRaccoonTimer() {
-            const timerEl = document.getElementById('raccoon-timer');
-            if (timerEl) {
-                const remaining = 600 - (gameState.raccoonTimer || 0);
+        function updateRaccoonTimers() {
+            const timerContainer = document.getElementById('raccoon-timer-container');
+            if (!timerContainer) return;
+            
+            const equippedRaccoons = (gameState.equippedPets || []).filter(p => p === 'raccoon').length;
+            if (equippedRaccoons === 0 || !gameState.neighborhoodCode) {
+                timerContainer.innerHTML = '';
+                return;
+            }
+            
+            if (!gameState.raccoonTimers) gameState.raccoonTimers = [];
+            
+            let html = '';
+            for (let i = 0; i < equippedRaccoons; i++) {
+                const timer = gameState.raccoonTimers[i] || 0;
+                const remaining = 600 - timer;
                 const mins = Math.floor(remaining / 60);
                 const secs = remaining % 60;
-                timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                html += `<div class="raccoon-timer-row"><span>🦝</span> Raccoon ${i + 1}: <span class="timer-value">${mins}:${secs.toString().padStart(2, '0')}</span></div>`;
             }
+            timerContainer.innerHTML = html;
         }
 
-        async function attemptRaccoonSteal() {
+        async function attemptRaccoonSteal(raccoonNum = 1) {
             if (!gameState.neighborhoodCode) return;
 
             try {
@@ -2575,16 +2607,16 @@
                         const stolenPlant = data.plant;
                         stolenPlant.planted = Date.now();
                         gameState.plots[emptyIdx] = stolenPlant;
-                        showMessage(`🦝 Raccoon stole a ${CROPS[stolenPlant.type]?.name || 'plant'} from ${data.victimName}! 💎`);
+                        showMessage(`🦝 Raccoon #${raccoonNum} stole a ${CROPS[stolenPlant.type]?.name || 'plant'} from ${data.victimName}! 💎`);
                         renderFarm();
                         saveGame();
                     } else {
-                        showMessage(`🦝 Raccoon tried to steal but your farm is full!`);
+                        showMessage(`🦝 Raccoon #${raccoonNum} tried to steal but your farm is full!`);
                     }
                 } else if (data.reason === 'no_neighbors') {
-                    showMessage(`🦝 Raccoon couldn't find any neighbors to steal from...`);
+                    showMessage(`🦝 Raccoon #${raccoonNum} couldn't find any neighbors...`);
                 } else if (data.reason === 'no_plants') {
-                    showMessage(`🦝 Raccoon found nothing to steal - neighbors have no plants!`);
+                    showMessage(`🦝 Raccoon #${raccoonNum} found nothing to steal!`);
                 }
             } catch (err) {
                 console.log('Raccoon steal failed:', err);
