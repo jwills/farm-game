@@ -80,6 +80,32 @@
             position: relative;
         }
 
+        .farm-grid.expanded {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .expand-btn {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .expand-btn:hover {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            transform: scale(1.05);
+        }
+
+        .expand-btn.purchased {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            cursor: default;
+        }
+
         .player {
             position: absolute;
             width: 40px;
@@ -3550,7 +3576,7 @@
 
         <div class="main-area">
             <div class="farm-section">
-                <h2>🏡 Your Farm</h2>
+                <h2>🏡 Your Farm <button id="expand-farm-btn" class="expand-btn" onclick="expandFarm()">🔓 Expand Farm ($200M)</button></h2>
                 <div class="farm-grid" id="farm-grid">
                     <div class="player" id="player">
                         <div class="farmer-model">
@@ -3802,7 +3828,8 @@
             harvested: [], // Now an array of {type, sizeIndex}
             selectedSeed: null,
             shovelSelected: false,
-            plots: Array(20).fill(null), // 20 plots (5x4 grid)
+            plots: Array(20).fill(null), // 20 plots (5x4 grid), expandable to 30 (6x5)
+            farmExpanded: false,
             currentWeather: 'sunny',
             weatherTimer: 0,
             pets: [], // owned pets
@@ -3870,7 +3897,8 @@
             if (!grid || !petEl || !pet) return;
             const plots = grid.querySelectorAll('.plot');
             if (plots.length === 0) return;
-            const plot = plots[pet.y * 5 + pet.x];
+            const cols = gameState.farmExpanded ? 6 : 5;
+            const plot = plots[pet.y * cols + pet.x];
             if (!plot) return;
             const gridRect = grid.getBoundingClientRect();
             const plotRect = plot.getBoundingClientRect();
@@ -3915,8 +3943,8 @@
 
             const plots = grid.querySelectorAll('.plot');
             if (plots.length === 0) return;
-
-            const plot = plots[playerState.y * 5 + playerState.x];
+            const cols = gameState.farmExpanded ? 6 : 5;
+            const plot = plots[playerState.y * cols + playerState.x];
             if (!plot) return;
 
             const gridRect = grid.getBoundingClientRect();
@@ -3936,8 +3964,10 @@
         function movePlayer(dx, dy) {
             const newX = playerState.x + dx;
             const newY = playerState.y + dy;
+            const cols = gameState.farmExpanded ? 6 : 5;
+            const rows = gameState.farmExpanded ? 5 : 4;
 
-            if (newX >= 0 && newX < 5 && newY >= 0 && newY < 4) {
+            if (newX >= 0 && newX < cols && newY >= 0 && newY < rows) {
                 playerState.x = newX;
                 playerState.y = newY;
                 if (dx < 0) playerState.facing = 'left';
@@ -3994,7 +4024,8 @@
                 case 'E':
                     // Interact with current plot
                     e.preventDefault();
-                    const plotIndex = playerState.y * 5 + playerState.x;
+                    const plotCols = gameState.farmExpanded ? 6 : 5;
+                    const plotIndex = playerState.y * plotCols + playerState.x;
                     const plot = gameState.plots[plotIndex];
                     if (plot) {
                         // Plot has a crop - harvest it or use shovel
@@ -4146,10 +4177,53 @@
             return num.toString();
         }
 
+        // Farm expansion
+        function expandFarm() {
+            if (gameState.farmExpanded) {
+                showMessage('Farm is already expanded! 🌾');
+                return;
+            }
+            const cost = 200000000;
+            if (gameState.money < cost) {
+                showMessage(`Need $${formatNumber(cost)} to expand farm! 💰`);
+                return;
+            }
+            gameState.money -= cost;
+            gameState.farmExpanded = true;
+            // Add 10 more plots
+            while (gameState.plots.length < 30) {
+                gameState.plots.push(null);
+            }
+            showMessage('Farm expanded to 30 plots! 🎉🌾');
+            updateExpandButton();
+            renderFarm();
+            renderInventory();
+        }
+
+        function updateExpandButton() {
+            const btn = document.getElementById('expand-farm-btn');
+            if (!btn) return;
+            if (gameState.farmExpanded) {
+                btn.textContent = '✅ Expanded!';
+                btn.classList.add('purchased');
+                btn.onclick = null;
+            }
+        }
+
         // Render Farm
         function renderFarm() {
             const container = document.getElementById('farm-grid');
             container.innerHTML = '';
+            
+            // Update grid class based on expansion
+            if (gameState.farmExpanded) {
+                container.classList.add('expanded');
+            } else {
+                container.classList.remove('expanded');
+            }
+            
+            // Update expand button state
+            updateExpandButton();
             
             gameState.plots.forEach((plot, index) => {
                 const div = document.createElement('div');
@@ -4498,7 +4572,8 @@
             
             // Find first empty plot
             let plotIndex = -1;
-            for (let i = 0; i < 25; i++) {
+            const maxPlots = gameState.plots.length;
+            for (let i = 0; i < maxPlots; i++) {
                 if (!gameState.plots[i]) {
                     plotIndex = i;
                     break;
@@ -5517,7 +5592,8 @@
 
             gridEl.innerHTML = '';
             const plots = farm.plots || [];
-            for (let i = 0; i < 20; i++) {
+            const maxPlots = plots.length || 20;
+            for (let i = 0; i < maxPlots; i++) {
                 const plot = plots[i];
                 const div = document.createElement('div');
                 div.className = 'visit-plot' + (plot ? ' has-crop' : '');
