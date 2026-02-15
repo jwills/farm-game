@@ -506,13 +506,7 @@
             50% { transform: translateX(-50%) translateY(-3px) rotate(5deg); }
         }
         /* Special pet-specific effects */
-        .pet-phoenix .pet-body {
-            animation: petBob 1s ease-in-out infinite, phoenixFlame 0.3s infinite;
-        }
-        @keyframes phoenixFlame {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
+
         .pet-dragon .pet-body {
             animation: petBob 1s ease-in-out infinite;
         }
@@ -1426,134 +1420,7 @@
             transform: rotate(-20deg);
         }
         
-        /* Phoenix - fiery bird */
-        .pet-phoenix .pet-body::before {
-            content: '';
-            position: absolute;
-            width: 18px; height: 16px;
-            background: linear-gradient(135deg, #ff4500, #e74c3c, #c0392b);
-            border-radius: 50%;
-            bottom: 6px; left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.6), 0 0 30px rgba(255, 165, 0, 0.3);
-            animation: phoenixPulse 1.5s ease-in-out infinite;
-        }
-        @keyframes phoenixPulse {
-            0%, 100% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.6), 0 0 30px rgba(255, 165, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 165, 0, 0.5); }
-        }
-        .pet-phoenix .pet-body::after {
-            content: '';
-            position: absolute;
-            width: 14px; height: 13px;
-            background: linear-gradient(135deg, #ffd700, #f39c12, #e67e22);
-            border-radius: 50%;
-            top: 4px; left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-        }
-        .pet-phoenix .pet-ears {
-            position: absolute;
-            top: -2px; left: 50%; transform: translateX(-50%);
-            width: 22px;
-        }
-        .pet-phoenix .pet-ears::before, .pet-phoenix .pet-ears::after {
-            content: '';
-            position: absolute;
-            width: 6px; height: 14px;
-            background: linear-gradient(to top, #e74c3c, #ff6b00, #ffd700, rgba(255,255,200,0.8));
-            border-radius: 50% 50% 20% 20%;
-            animation: phoenixFlame 0.15s infinite alternate;
-            filter: blur(0.5px);
-            box-shadow: 0 0 4px #ff6b00;
-        }
-        .pet-phoenix .pet-ears::before { left: 2px; animation-delay: 0s; }
-        .pet-phoenix .pet-ears::after { right: 2px; animation-delay: 0.075s; }
-        @keyframes phoenixFlame {
-            0% { height: 14px; transform: scaleX(1) rotate(-3deg); }
-            100% { height: 16px; transform: scaleX(0.9) rotate(3deg); }
-        }
-        .pet-phoenix .pet-eyes {
-            position: absolute;
-            top: 9px; left: 50%; transform: translateX(-50%);
-            width: 10px; display: flex; justify-content: space-between;
-        }
-        .pet-phoenix .pet-eyes::before, .pet-phoenix .pet-eyes::after {
-            content: '';
-            width: 4px; height: 4px;
-            background: radial-gradient(circle at 30% 30%, #fff, #fffacd);
-            border-radius: 50%;
-            box-shadow: 0 0 4px #fff, 0 0 8px #ffd700;
-            animation: phoenixEyeGlow 2s ease-in-out infinite;
-        }
-        @keyframes phoenixEyeGlow {
-            0%, 100% { box-shadow: 0 0 4px #fff, 0 0 8px #ffd700; }
-            50% { box-shadow: 0 0 6px #fff, 0 0 12px #ff6b00; }
-        }
-        .pet-phoenix .pet-beak {
-            position: absolute;
-            top: 13px; left: 50%; transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 6px solid #ff8c00;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-        }
-        .pet-phoenix .pet-tail {
-            position: absolute;
-            width: 8px; height: 20px;
-            background: linear-gradient(to bottom, #e74c3c, #ff6b00, #ffd700, rgba(255,255,200,0.6));
-            border-radius: 0 0 50% 50%;
-            bottom: 0px; right: 2px;
-            transform: rotate(30deg);
-            animation: phoenixTailFlow 0.8s ease-in-out infinite;
-            box-shadow: 0 0 8px rgba(255, 165, 0, 0.5);
-            filter: blur(0.3px);
-        }
-        @keyframes phoenixTailFlow {
-            0%, 100% { transform: rotate(30deg) scaleY(1); }
-            50% { transform: rotate(35deg) scaleY(1.1); }
-        }
-        .pet-phoenix .pet-tail::before {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: -5px;
-            width: 6px; height: 16px;
-            background: linear-gradient(to bottom, #f39c12, #ffd700, rgba(255,255,200,0.4));
-            border-radius: 0 0 50% 50%;
-            animation: phoenixTailFlow 0.8s ease-in-out infinite 0.2s;
-        }
-        .pet-phoenix .pet-tail::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; left: 6px;
-            width: 5px; height: 14px;
-            background: linear-gradient(to bottom, #ff4500, #ff6b00, rgba(255,200,100,0.4));
-            border-radius: 0 0 50% 50%;
-            animation: phoenixTailFlow 0.8s ease-in-out infinite 0.4s;
-        }
-        .pet-phoenix .pet-comb {
-            position: absolute;
-            top: 4px; left: 2px;
-            width: 10px; height: 14px;
-            background: linear-gradient(135deg, #ff4500, #e74c3c, #c0392b);
-            border-radius: 50% 20% 50% 50%;
-            box-shadow: -2px 0 8px rgba(255, 69, 0, 0.5);
-            animation: phoenixWingFlap 0.6s ease-in-out infinite;
-        }
-        .pet-phoenix .pet-comb::before {
-            content: '';
-            position: absolute;
-            top: 0; right: -8px;
-            width: 10px; height: 14px;
-            background: linear-gradient(225deg, #ff4500, #e74c3c, #c0392b);
-            border-radius: 20% 50% 50% 50%;
-            box-shadow: 2px 0 8px rgba(255, 69, 0, 0.5);
-        }
-        @keyframes phoenixWingFlap {
-            0%, 100% { transform: rotate(-5deg) scaleY(1); }
-            50% { transform: rotate(5deg) scaleY(0.95); }
-        }
-
-        .plot {
+.plot {
             aspect-ratio: 1;
             background: linear-gradient(145deg, #8B6914 0%, #6B4E0A 100%);
             border-radius: 10px;
@@ -6385,7 +6252,6 @@
             bunny: { name: 'Lucky Bunny', emoji: '🐰', price: 300, ability: 'Multiplier', description: '+1 bonus crop per harvest', effect: 'yield', rarity: 'rare' },
             dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest', rarity: 'epic' },
             unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all', rarity: 'legendary' },
-            phoenix: { name: 'Phoenix', emoji: '🔥', price: 15000, ability: 'Rebirth', description: 'Keep mutations + plants start with gold/rainbow', effect: 'keepmutations', rarity: 'godly' },
             raccoon: { name: 'Raccoon', emoji: '🦝', price: 20000, ability: 'Thief', description: 'Steals a plant from neighbors every 10min', effect: 'steal', rarity: 'godly' },
             frog: { name: 'Garden Frog', emoji: '🐸', price: 125, ability: 'Moisture', description: 'Rain is 25% more effective', effect: 'rain', rarity: 'common' },
             pig: { name: 'Truffle Pig', emoji: '🐷', price: 400, ability: 'Digger', description: 'Find bonus coins when harvesting', effect: 'coins', rarity: 'rare' },
@@ -7278,26 +7144,7 @@
                 harvested: false // tracks if first harvest done (for regrow time)
             };
             
-            // Phoenix gives chance for golden/rainbow mutations on planting
-            if (hasPetEffect('keepmutations')) {
-                const plot = gameState.plots[plotIndex];
-                // 25% chance for golden
-                if (Math.random() < 0.25) {
-                    plot.mutations.push('golden');
-                }
-                // 15% chance for rainbow (can stack with golden!)
-                if (Math.random() < 0.15) {
-                    plot.mutations.push('rainbow');
-                }
-                if (plot.mutations.length > 0) {
-                    const mutEmojis = plot.mutations.map(m => SPECIAL_MUTATIONS[m]?.emoji || '').join('');
-                    showMessage(`Phoenix blessed your ${CROPS[seedType].name}! ${mutEmojis}`);
-                } else {
-                    showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
-                }
-            } else {
-                showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
-            }
+            showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
             
             if (gameState.seeds[seedType] <= 0) {
                 delete gameState.seeds[seedType];
@@ -7438,10 +7285,7 @@
             if (crop.regrows) {
                 plot.growth = 0; // Reset growth
                 plot.harvested = true; // Mark as harvested before (uses regrow time)
-                // Phoenix keeps mutations, otherwise clear them
-                if (!hasPetEffect('keepmutations')) {
-                    plot.mutations = [];
-                }
+                plot.mutations = [];
                 const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
                 showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄${lostMsg}`);
             } else {
