@@ -3152,6 +3152,622 @@
             font-size: 1.8rem;
         }
 
+        /* CSS Crop Icons */
+        .crop-icon {
+            width: 36px;
+            height: 36px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Carrot */
+        .crop-icon.carrot::before {
+            content: '';
+            position: absolute;
+            width: 10px; height: 22px;
+            background: linear-gradient(135deg, #ff7b00, #ff5500);
+            border-radius: 3px 3px 50% 50%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.carrot::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 10px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 25% 0%, 50% 60%, 75% 0%, 100% 0%);
+        }
+
+        /* Potato */
+        .crop-icon.potato::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 18px;
+            background: radial-gradient(ellipse at 30% 30%, #d4a574, #b8860b, #8b7355);
+            border-radius: 45% 45% 50% 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3);
+        }
+        .crop-icon.potato::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #5d4037;
+            border-radius: 50%;
+            bottom: 14px; left: 12px;
+            box-shadow: 6px 4px 0 #5d4037, 3px -2px 0 #5d4037, 10px 0px 0 #5d4037;
+        }
+
+        /* Onion */
+        .crop-icon.onion::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 20px;
+            background: radial-gradient(ellipse at 40% 30%, #ffe4b5, #daa520, #b8860b);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.2);
+        }
+        .crop-icon.onion::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 20% 0%, 80% 0%);
+        }
+
+        /* Radish */
+        .crop-icon.radish::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 18px;
+            background: radial-gradient(ellipse at 35% 30%, #ff6b6b, #e63946, #c41e3a);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.radish::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 8px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 10% 0%, 35% 20%, 50% 0%, 65% 20%, 90% 0%);
+        }
+
+        /* Turnip */
+        .crop-icon.turnip::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 18px;
+            background: radial-gradient(ellipse at 35% 25%, #fff, #f0e6fa, #dda0dd);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .crop-icon.turnip::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 10px;
+            background: linear-gradient(to top, #228b22, #90ee90);
+            top: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 30% 30%, 50% 0%, 70% 30%, 100% 0%);
+        }
+
+        /* Wheat */
+        .crop-icon.wheat {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        .crop-icon.wheat::before {
+            content: '';
+            position: absolute;
+            width: 3px; height: 24px;
+            background: linear-gradient(to top, #8b7355, #daa520);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+        }
+        .crop-icon.wheat::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 14px;
+            background: linear-gradient(to top, #daa520, #ffd700);
+            top: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 30% 15%, 20% 30%, 15% 50%, 20% 70%, 30% 85%, 50% 100%, 70% 85%, 80% 70%, 85% 50%, 80% 30%, 70% 15%);
+        }
+
+        /* Tomato */
+        .crop-icon.tomato::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 20px;
+            background: radial-gradient(ellipse at 35% 30%, #ff6347, #e53935, #c62828);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.2), inset 2px 2px 4px rgba(255,255,255,0.2);
+        }
+        .crop-icon.tomato::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 6px;
+            background: #228b22;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 25% 40%, 50% 0%, 75% 40%, 100% 0%);
+        }
+
+        /* Corn */
+        .crop-icon.corn::before {
+            content: '';
+            position: absolute;
+            width: 12px; height: 24px;
+            background: linear-gradient(90deg, #ffd700 20%, #ffed4e 40%, #ffd700 60%, #daa520 80%);
+            border-radius: 30% 30% 40% 40%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.corn::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 12px;
+            background: linear-gradient(to bottom, #90ee90, #228b22);
+            top: 0; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 20% 50%, 40% 0%, 60% 50%, 80% 0%, 100% 50%, 50% 100%);
+        }
+
+        /* Strawberry */
+        .crop-icon.strawberry::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 20px;
+            background: radial-gradient(ellipse at 35% 30%, #ff6b6b, #e53935, #b71c1c);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.strawberry::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 6px;
+            background: #228b22;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 30% 50%, 50% 0%, 70% 50%, 100% 0%);
+        }
+
+        /* Watermelon */
+        .crop-icon.watermelon::before {
+            content: '';
+            position: absolute;
+            width: 28px; height: 20px;
+            background: linear-gradient(to bottom, #228b22 0%, #228b22 15%, #90ee90 15%, #90ee90 25%, #ff6b6b 25%, #e53935 100%);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.2);
+        }
+        .crop-icon.watermelon::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #1a1a1a;
+            bottom: 12px; left: 14px;
+            border-radius: 50%;
+            box-shadow: 4px 2px 0 #1a1a1a, 8px 0 0 #1a1a1a, 2px 4px 0 #1a1a1a, 6px 4px 0 #1a1a1a;
+        }
+
+        /* Pumpkin */
+        .crop-icon.pumpkin::before {
+            content: '';
+            position: absolute;
+            width: 26px; height: 20px;
+            background: radial-gradient(ellipse at 30% 30%, #ff8c00, #ff6600, #cc5500);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -4px 0 8px rgba(0,0,0,0.3), inset 4px 0 0 rgba(255,200,100,0.2);
+        }
+        .crop-icon.pumpkin::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 8px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Lettuce */
+        .crop-icon.lettuce::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 18px;
+            background: radial-gradient(ellipse at 40% 40%, #90ee90, #32cd32, #228b22);
+            border-radius: 60% 60% 50% 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15);
+        }
+        .crop-icon.lettuce::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 10px;
+            background: radial-gradient(ellipse, #98fb98, #90ee90);
+            border-radius: 50%;
+            bottom: 12px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Eggplant */
+        .crop-icon.eggplant::before {
+            content: '';
+            position: absolute;
+            width: 14px; height: 24px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad, #6c3483);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px 0 6px rgba(0,0,0,0.3);
+        }
+        .crop-icon.eggplant::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 6px;
+            background: #228b22;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Pepper */
+        .crop-icon.pepper::before {
+            content: '';
+            position: absolute;
+            width: 10px; height: 22px;
+            background: linear-gradient(135deg, #ff4500, #e53935, #b71c1c);
+            border-radius: 30% 30% 50% 50%;
+            bottom: 2px; left: 50%; transform: translateX(-50%) rotate(-10deg);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.pepper::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 8px;
+            background: #228b22;
+            top: 3px; left: 50%; transform: translateX(-50%);
+            border-radius: 1px;
+        }
+
+        /* Sunflower */
+        .crop-icon.sunflower::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: radial-gradient(circle, #4a3728 40%, #ffd700 40%, #ffd700 50%, #ffed4e 50%);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 0 3px #ffd700;
+        }
+        .crop-icon.sunflower::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 12px;
+            background: linear-gradient(to bottom, #228b22, #32cd32);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Grapes */
+        .crop-icon.grapes::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: radial-gradient(circle at 30% 30%, #9b59b6, #8e44ad);
+            border-radius: 50%;
+            bottom: 8px; left: 10px;
+            box-shadow: 6px 0 0 #8e44ad, 3px 6px 0 #7d3c98, 9px 6px 0 #7d3c98, 0px 12px 0 #6c3483, 6px 12px 0 #6c3483, 3px 18px 0 #5b2c6f;
+        }
+        .crop-icon.grapes::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 8px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Broccoli */
+        .crop-icon.broccoli::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 16px;
+            background: radial-gradient(circle at 25% 50%, #228b22, #228b22 30%, transparent 30%),
+                        radial-gradient(circle at 50% 40%, #228b22, #228b22 35%, transparent 35%),
+                        radial-gradient(circle at 75% 50%, #228b22, #228b22 30%, transparent 30%),
+                        radial-gradient(circle at 35% 70%, #228b22, #228b22 25%, transparent 25%),
+                        radial-gradient(circle at 65% 70%, #228b22, #228b22 25%, transparent 25%);
+            top: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .crop-icon.broccoli::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 12px;
+            background: linear-gradient(to top, #90ee90, #32cd32);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Cucumber */
+        .crop-icon.cucumber::before {
+            content: '';
+            position: absolute;
+            width: 10px; height: 24px;
+            background: linear-gradient(135deg, #32cd32, #228b22, #006400);
+            border-radius: 30% 30% 40% 40%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.cucumber::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 2px;
+            background: rgba(255,255,255,0.3);
+            bottom: 18px; left: 50%; transform: translateX(-50%) rotate(-20deg);
+            box-shadow: 0 6px 0 rgba(255,255,255,0.2), 0 12px 0 rgba(255,255,255,0.15);
+        }
+
+        /* Beans */
+        .crop-icon.beans::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 10px;
+            background: linear-gradient(to bottom, #32cd32, #228b22);
+            border-radius: 40%;
+            bottom: 10px; left: 50%; transform: translateX(-50%);
+        }
+        .crop-icon.beans::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 6px;
+            background: radial-gradient(circle at 30% 30%, #90ee90, #32cd32);
+            border-radius: 50%;
+            bottom: 12px; left: 8px;
+            box-shadow: 8px 0 0 #32cd32, 4px 6px 0 #228b22, 12px 6px 0 #228b22;
+        }
+
+        /* Cabbage */
+        .crop-icon.cabbage::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 20px;
+            background: radial-gradient(ellipse at 40% 40%, #90ee90, #32cd32, #228b22);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.2);
+        }
+        .crop-icon.cabbage::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 14px;
+            background: radial-gradient(ellipse at 45% 45%, #98fb98, #90ee90);
+            border-radius: 50%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Cauliflower */
+        .crop-icon.cauliflower::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: radial-gradient(circle at 25% 50%, #fff, #fff 30%, transparent 32%),
+                        radial-gradient(circle at 50% 35%, #fff, #fff 35%, transparent 37%),
+                        radial-gradient(circle at 75% 50%, #fff, #fff 30%, transparent 32%),
+                        radial-gradient(circle at 40% 65%, #fff, #fff 28%, transparent 30%),
+                        radial-gradient(circle at 60% 65%, #fff, #fff 28%, transparent 30%),
+                        #f5f5dc;
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .crop-icon.cauliflower::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 8px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(20% 100%, 0% 0%, 50% 60%, 100% 0%, 80% 100%);
+        }
+
+        /* Spinach */
+        .crop-icon.spinach::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 22px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 30% 25%, 0% 30%, 20% 55%, 10% 80%, 35% 75%, 50% 100%, 65% 75%, 90% 80%, 80% 55%, 100% 30%, 70% 25%);
+        }
+
+        /* Bell Pepper */
+        .crop-icon.bellpepper::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 20px;
+            background: radial-gradient(ellipse at 35% 30%, #32cd32, #228b22, #006400);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px 0 6px rgba(0,0,0,0.2);
+        }
+        .crop-icon.bellpepper::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 8px;
+            background: #2d5a27;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 1px;
+        }
+
+        /* Blueberry */
+        .crop-icon.blueberry::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: radial-gradient(circle at 30% 30%, #6495ed, #4169e1, #00008b);
+            border-radius: 50%;
+            bottom: 10px; left: 8px;
+            box-shadow: 8px 0 0 #4169e1, 4px 7px 0 #00008b, 12px 7px 0 #00008b, 0 14px 0 #191970, 8px 14px 0 #191970;
+        }
+        .crop-icon.blueberry::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 8px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0% 0%, 50% 40%, 100% 0%);
+        }
+
+        /* Melon/Honeydew */
+        .crop-icon.melon::before {
+            content: '';
+            position: absolute;
+            width: 26px; height: 22px;
+            background: radial-gradient(ellipse at 35% 35%, #f0fff0, #98fb98, #90ee90);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.15);
+        }
+
+        /* Pineapple */
+        .crop-icon.pineapple::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 22px;
+            background: linear-gradient(135deg, #ffd700, #daa520, #b8860b);
+            border-radius: 30% 30% 40% 40%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.pineapple::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 12px;
+            background: linear-gradient(to top, #228b22, #32cd32);
+            top: 0; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 10% 0%, 30% 40%, 50% 0%, 70% 40%, 90% 0%);
+        }
+
+        /* Cherry */
+        .crop-icon.cherry::before {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #dc143c, #8b0000);
+            border-radius: 50%;
+            bottom: 8px; left: 8px;
+            box-shadow: 10px 0 0 #dc143c;
+        }
+        .crop-icon.cherry::after {
+            content: '';
+            position: absolute;
+            width: 2px; height: 12px;
+            background: #228b22;
+            top: 4px; left: 50%; transform: translateX(-50%) rotate(-10deg);
+            border-radius: 2px;
+        }
+
+        /* Rose */
+        .crop-icon.rose::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: radial-gradient(circle, #c41e3a 20%, #e53935 40%, #ff6b6b 60%, #ffcccb 80%);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.rose::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 14px;
+            background: linear-gradient(to bottom, #228b22, #006400);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Truffle */
+        .crop-icon.truffle::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: radial-gradient(ellipse at 30% 30%, #4a3728, #2d1f14, #1a1209);
+            border-radius: 45% 50% 45% 50%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.4);
+        }
+        .crop-icon.truffle::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #1a1209;
+            bottom: 16px; left: 12px;
+            border-radius: 50%;
+            box-shadow: 5px 2px 0 #1a1209, 9px 0 0 #1a1209, 3px 4px 0 #1a1209;
+        }
+
+        /* Golden Apple */
+        .crop-icon.goldenapple::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 22px;
+            background: radial-gradient(ellipse at 35% 30%, #ffd700, #ffb347, #daa520);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.2), 0 0 8px rgba(255,215,0,0.5);
+        }
+        .crop-icon.goldenapple::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 8px;
+            background: #8b4513;
+            top: 2px; left: 50%; transform: translateX(-50%) rotate(10deg);
+            border-radius: 1px;
+        }
+
+        /* Coconut */
+        .crop-icon.coconut::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 20px;
+            background: radial-gradient(ellipse at 35% 35%, #8b4513, #5d3a1a, #3d2512);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3);
+        }
+        .crop-icon.coconut::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #1a1a1a;
+            bottom: 14px; left: 11px;
+            border-radius: 50%;
+            box-shadow: 6px 2px 0 #1a1a1a, 3px 5px 0 #1a1a1a;
+        }
+
+        /* Default/fallback for other crops */
+        .crop-icon.default::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: linear-gradient(135deg, #90ee90, #32cd32);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.default::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 10px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Inventory item icon styling */
+        .inv-item .crop-icon {
+            width: 28px;
+            height: 28px;
+            transform: scale(0.8);
+        }
+
         .shop-item .info {
             flex: 1;
         }
@@ -4336,6 +4952,13 @@
             }
         }
 
+        // Generate crop icon HTML
+        function getCropIcon(cropId) {
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut'];
+            const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
+            return `<div class="crop-icon ${iconClass}"></div>`;
+        }
+
         // Render Shop
         function renderShop() {
             const container = document.getElementById('shop-items');
@@ -4371,7 +4994,7 @@
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 
                 div.innerHTML = `
-                    <span class="emoji">${crop.seedEmoji}</span>
+                    ${getCropIcon(id)}
                     <div class="info">
                         <div class="name">${crop.name} Seeds</div>
                         <div class="details">
@@ -4587,7 +5210,7 @@
                     const div = document.createElement('div');
                     div.className = `inv-item ${gameState.selectedSeed === id ? 'selected' : ''}`;
                     div.innerHTML = `
-                        <span class="emoji">${crop.seedEmoji}</span>
+                        ${getCropIcon(id)}
                         <span class="count">${count}</span>
                     `;
                     div.onclick = () => selectSeed(id);
@@ -4658,10 +5281,10 @@
                 }).join('');
                 
                 const div = document.createElement('div');
-                div.className = 'inv-item';
+                div.className = 'inv-item harvested-item';
                 div.innerHTML = `
-                    <span class="emoji" style="transform: scale(${size.scale}); display: inline-block;">${crop.growEmoji}</span>
-                    <span style="font-size: 0.7rem; color: #666;">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
+                    <div style="transform: scale(${size.scale}); display: inline-block;">${getCropIcon(item.type)}</div>
+                    <span style="font-size: 0.65rem; color: #666;">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
                 `;
                 harvestContainer.appendChild(div);
             });
