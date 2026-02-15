@@ -1365,7 +1365,18 @@
                     // Interact with current plot
                     e.preventDefault();
                     const plotIndex = playerState.y * 5 + playerState.x;
-                    handlePlotClick(plotIndex);
+                    const plot = gameState.plots[plotIndex];
+                    if (plot) {
+                        // Plot has a crop - harvest it or use shovel
+                        if (gameState.shovelSelected) {
+                            removePlant(plotIndex);
+                        } else {
+                            harvestCrop(plotIndex);
+                        }
+                    } else {
+                        // Empty plot - plant a seed
+                        plantSeed(plotIndex);
+                    }
                     break;
             }
         }
