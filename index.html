@@ -6349,7 +6349,7 @@
             crystalized: { name: 'Crystalized', emoji: '💎', bonus: 1.9, sprinklerOnly: true },
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
             enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
-            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 1.85 }
+            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 3.5 }
         };
 
         const SIZES = [
@@ -6380,7 +6380,7 @@
             panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
             kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
-            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 30000, ability: 'Bloodlust', description: 'Bloodlit mutation, 3x cursed bonus, 2x sprinkler duration', effect: 'bloodlust', rarity: 'godly' }
+            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: '2.5% bloodlit every 2:30, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' }
         };
 
         const GEAR = {
@@ -6470,7 +6470,8 @@
             sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
             unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
             selectedGear: null, // currently selected watering can
-            selectedSprinkler: null // sprinkler being placed (index in unplacedSprinklers)
+            selectedSprinkler: null, // sprinkler being placed (index in unplacedSprinklers)
+            bloodTigerTimer: 0 // timer for Blood Tiger bloodlit chance (every 150s)
         };
 
         // Stock settings per rarity
@@ -6691,6 +6692,7 @@
             setInterval(updateRestockTimer, 1000);
             setInterval(saveGame, 5000);
             setInterval(checkRestock, 30000);
+            setInterval(updateBloodTigerTimer, 1000);
             // Position player after render
             setTimeout(updatePlayerPosition, 100);
             window.addEventListener('resize', updatePlayerPosition);
@@ -7269,13 +7271,7 @@
                 harvested: false // tracks if first harvest done (for regrow time)
             };
             
-            // Blood Tiger gives bloodlit mutation on planting
-            if (hasPetEffect('bloodlust')) {
-                gameState.plots[plotIndex].mutations.push('bloodlit');
-                showMessage(`Blood Tiger blessed your ${CROPS[seedType].name}! 🩸`);
-            } else {
-                showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
-            }
+            showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
             
             if (gameState.seeds[seedType] <= 0) {
                 delete gameState.seeds[seedType];
@@ -7532,14 +7528,21 @@
                 const plantedCount = countPlantedEggs(id);
                 const totalCount = ownedCount + inInventory + plantedCount;
                 const maxedOut = totalCount >= 3;
-                const canAfford = gameState.money >= pet.price && !maxedOut;
+                
+                // Demonic pets only available during hellscape
+                const isDemonic = pet.rarity === 'demonic';
+                const isHellscape = gameState.currentWeather === 'hellscape';
+                const inStock = !isDemonic || (isHellscape && gameState.demonicInStock);
+                
+                const canAfford = gameState.money >= pet.price && !maxedOut && inStock;
                 const rarity = RARITIES[pet.rarity];
                 const div = document.createElement('div');
                 
                 // Build class list with rarity glows
-                let classNames = `shop-item ${canAfford ? '' : 'disabled'} ${maxedOut ? 'maxed' : ''}`;
+                let classNames = `shop-item ${canAfford ? '' : 'disabled'} ${maxedOut ? 'maxed' : ''} ${!inStock ? 'out-of-stock' : ''}`;
                 if (pet.rarity === 'legendary') classNames += ' legendary-glow';
                 if (pet.rarity === 'godly') classNames += ' godly-glow';
+                if (pet.rarity === 'demonic') classNames += ' demonic-glow';
                 div.className = classNames;
                 
                 // Use rarity background
@@ -7591,19 +7594,36 @@
         }
 
         // Hatch times in seconds (quadrupled): common 120s, uncommon 240s, rare 360s, epic 480s, legendary 720s, godly 1200s
-        const EGG_HATCH_TIMES = { common: 120, uncommon: 240, rare: 360, epic: 480, legendary: 720, godly: 1200 };
+        const EGG_HATCH_TIMES = { common: 120, uncommon: 240, rare: 360, epic: 480, legendary: 720, godly: 1200, demonic: 666 };
 
         function buyEgg(petId) {
             const pet = PETS[petId];
             const owned = getPetCount(petId);
             const inInventory = (gameState.eggInventory && gameState.eggInventory[petId]) || 0;
             const planted = countPlantedEggs(petId);
+            
+            // Check demonic availability
+            const isDemonic = pet.rarity === 'demonic';
+            if (isDemonic) {
+                if (gameState.currentWeather !== 'hellscape' || !gameState.demonicInStock) {
+                    showMessage('Blood Tiger eggs only available during Hellscape! 👿');
+                    return;
+                }
+            }
+            
             if (gameState.money >= pet.price && (owned + inInventory + planted) < 3) {
                 gameState.money -= pet.price;
                 if (!gameState.eggInventory) gameState.eggInventory = {};
                 gameState.eggInventory[petId] = (gameState.eggInventory[petId] || 0) + 1;
                 const hatchTime = EGG_HATCH_TIMES[pet.rarity] || 120;
-                showMessage(`🥚 ${pet.name} egg purchased! Plant it in your garden to hatch (${hatchTime}s).`);
+                
+                // Demonic purchases consume the demonic stock
+                if (isDemonic) {
+                    gameState.demonicInStock = false;
+                    showMessage(`🩸 ${pet.name} egg purchased! The darkness consumes...`);
+                } else {
+                    showMessage(`🥚 ${pet.name} egg purchased! Plant it in your garden to hatch (${hatchTime}s).`);
+                }
                 renderShop();
                 renderPetShop();
                 renderInventory();
@@ -8102,6 +8122,37 @@
                 showMessage(`Sold crops for $${total}! 💰`);
                 renderShop();
                 renderInventory();
+            }
+        }
+
+        // Blood Tiger bloodlit timer (2.5% chance every 2:30)
+        function updateBloodTigerTimer() {
+            if (!hasPetEffect('bloodlust')) {
+                gameState.bloodTigerTimer = 0;
+                return;
+            }
+            
+            gameState.bloodTigerTimer++;
+            
+            // Every 150 seconds (2:30)
+            if (gameState.bloodTigerTimer >= 150) {
+                gameState.bloodTigerTimer = 0;
+                
+                // 2.5% chance to apply bloodlit to a random growing crop
+                if (Math.random() < 0.025) {
+                    const growingPlots = gameState.plots
+                        .map((p, i) => ({ plot: p, index: i }))
+                        .filter(({ plot }) => plot && !plot.isEgg && plot.growth < 100 && !plot.mutations?.includes('bloodlit'));
+                    
+                    if (growingPlots.length > 0) {
+                        const { plot, index } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                        if (!plot.mutations) plot.mutations = [];
+                        plot.mutations.push('bloodlit');
+                        const crop = CROPS[plot.type];
+                        showMessage(`🩸 Blood Tiger cursed your ${crop.name} with bloodlit! (+250% value)`);
+                        renderFarm();
+                    }
+                }
             }
         }
 
