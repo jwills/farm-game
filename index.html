@@ -2485,16 +2485,36 @@
         .plant-model.stage-1 .plant-crop { bottom: 8px; font-size: 0.9rem; }
         .plant-model.stage-1 .plant-leaves { display: none; }
 
-        /* Regrowing plants keep their full-grown structure, only fruit is hidden */
-        .plant-model.regrowing .plant-fruit { 
-            width: 0 !important; 
-            height: 0 !important; 
-            opacity: 0 !important;
+        /* Regrowing plants keep their full-grown stem and leaves */
+        .plant-model.regrowing .plant-stem { height: 35px !important; }
+        .plant-model.regrowing .plant-leaves { bottom: 28px !important; display: flex !important; }
+        .plant-model.regrowing .plant-leaf { width: 16px !important; height: 10px !important; background: #3d6b35 !important; }
+        
+        /* Regrowing fruit scales up gradually */
+        .plant-model.regrowing .plant-fruit,
+        .plant-model.regrowing .plant-fruit::before,
+        .plant-model.regrowing .plant-fruit::after {
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        .plant-model.regrowing.stage-4 .plant-fruit { 
-            width: auto !important; 
-            height: auto !important; 
-            opacity: 1 !important;
+        .plant-model.regrowing.stage-1 .plant-fruit {
+            display: block !important;
+            transform: scale(0);
+            opacity: 0;
+        }
+        .plant-model.regrowing.stage-2 .plant-fruit {
+            display: block !important;
+            transform: scale(0.4);
+            opacity: 0.6;
+        }
+        .plant-model.regrowing.stage-3 .plant-fruit {
+            display: block !important;
+            transform: scale(0.7);
+            opacity: 0.85;
+        }
+        .plant-model.regrowing.stage-4 .plant-fruit {
+            display: block !important;
+            transform: scale(1);
+            opacity: 1;
         }
 
         /* Growth Stage 2: Sprout */
@@ -6666,10 +6686,7 @@
                     else if (progress >= 66) stage = 3;
                     else if (progress >= 33) stage = 2;
                     
-                    // Regrowing plants always show stage-4 structure (fruit hidden via CSS)
-                    if (plot.harvested && crop.regrows) {
-                        stage = 4;
-                    }
+                    // Regrowing plants: stage controls fruit growth, plant structure stays mature
                     
                     const plotMutations = (plot.mutations || []).map(m => {
                         const weather = Object.values(WEATHER).find(w => w.mutation === m);
