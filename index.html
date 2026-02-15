@@ -4283,48 +4283,6 @@
             color: #00BCD4;
         }
 
-        .owned-gear {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
-            padding: 8px;
-            background: rgba(0, 188, 212, 0.1);
-            border-radius: 8px;
-            min-height: 40px;
-        }
-
-        .gear-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 8px;
-            background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
-            border-radius: 8px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .gear-item:hover {
-            transform: scale(1.05);
-            border-color: #00BCD4;
-        }
-
-        .gear-item.selected {
-            border-color: #00BCD4;
-            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
-        }
-
-        .gear-item.sprinkler {
-            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
-        }
-
-        .gear-item .uses {
-            font-size: 0.7rem;
-            color: #666;
-        }
-
         .owned-pets {
             display: flex;
             flex-direction: column;
@@ -5511,7 +5469,8 @@
 
         .tools-section {
             display: flex;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
             margin-bottom: 10px;
         }
 
@@ -5538,6 +5497,46 @@
             border-color: #f44336;
             background: linear-gradient(135deg, #FFCDD2 0%, #EF9A9A 100%);
             box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+        }
+
+        .tool-item.watering-can {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            position: relative;
+        }
+
+        .tool-item.watering-can:hover {
+            background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+        }
+
+        .tool-item.watering-can.selected {
+            border-color: #2196F3;
+            background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+        }
+
+        .tool-item.sprinkler {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            position: relative;
+        }
+
+        .tool-item .tool-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            background: #333;
+            color: white;
+            font-size: 0.6rem;
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .tool-item.watering-can .tool-badge {
+            background: #2196F3;
+        }
+
+        .tool-item.sprinkler .tool-badge {
+            background: #4CAF50;
         }
 
         .inventory-items {
@@ -6188,8 +6187,9 @@
             <div class="sidebar">
                 <div class="inventory">
                     <h2>🎒 Inventory</h2>
-                    <div class="tools-section">
+                    <div class="tools-section" id="tools-section">
                         <div id="shovel-tool" class="tool-item" onclick="toggleShovel()" title="Remove plants">🪏</div>
+                        <!-- Gear tools rendered dynamically -->
                     </div>
                     <div id="seed-inventory" class="inventory-items"></div>
                     <div class="sell-section">
@@ -6214,7 +6214,6 @@
 
                 <div class="shop gear-shop">
                     <h2>🛠️ Gear Shop</h2>
-                    <div class="owned-gear" id="owned-gear"></div>
                     <div class="shop-items" id="gear-shop-items"></div>
                 </div>
             </div>
@@ -6976,6 +6975,9 @@
             // Update shovel UI
             updateShovelUI();
             
+            // Render gear tools in tools section
+            renderGearTools();
+            
             // Seeds
             const seedContainer = document.getElementById('seed-inventory');
             seedContainer.innerHTML = '';
@@ -7552,44 +7554,42 @@
         }
 
         // Gear Shop Functions
-        function renderGearShop() {
-            // Render owned gear
-            const ownedContainer = document.getElementById('owned-gear');
-            if (!ownedContainer) return;
-            ownedContainer.innerHTML = '';
+        function renderGearTools() {
+            const toolsSection = document.getElementById('tools-section');
+            if (!toolsSection) return;
             
-            // Show owned watering cans
-            const ownedGear = Object.entries(gameState.gear || {});
-            if (ownedGear.length === 0 && (gameState.sprinklers || []).length === 0) {
-                ownedContainer.innerHTML = '<span style="color: #999; font-size: 0.9rem;">No gear owned</span>';
-            } else {
-                // Watering cans
-                for (const [gearId, data] of ownedGear) {
-                    const gear = GEAR[gearId];
-                    if (!gear || gear.passive) continue;
-                    const div = document.createElement('div');
-                    div.className = `gear-item${gameState.selectedGear === gearId ? ' selected' : ''}`;
-                    div.innerHTML = `<span>${gear.emoji}</span><span class="uses">${data.uses}/${gear.uses}</span>`;
-                    div.title = `${gear.name}: ${gear.description}`;
-                    div.onclick = () => selectGear(gearId);
-                    ownedContainer.appendChild(div);
-                }
-                // Sprinklers (show count)
-                const sprinklerCounts = {};
-                (gameState.sprinklers || []).forEach(s => {
-                    sprinklerCounts[s.id] = (sprinklerCounts[s.id] || 0) + 1;
-                });
-                for (const [gearId, count] of Object.entries(sprinklerCounts)) {
-                    const gear = GEAR[gearId];
-                    if (!gear) continue;
-                    const div = document.createElement('div');
-                    div.className = 'gear-item sprinkler';
-                    div.innerHTML = `<span>${gear.emoji}</span><span class="uses">x${count}</span>`;
-                    div.title = `${gear.name}: ${gear.description} (${count} placed)`;
-                    ownedContainer.appendChild(div);
-                }
+            // Remove old gear tools (keep shovel)
+            toolsSection.querySelectorAll('.tool-item:not(#shovel-tool)').forEach(el => el.remove());
+            
+            // Add watering cans
+            for (const [gearId, data] of Object.entries(gameState.gear || {})) {
+                const gear = GEAR[gearId];
+                if (!gear || gear.passive) continue;
+                const div = document.createElement('div');
+                div.className = `tool-item watering-can${gameState.selectedGear === gearId ? ' selected' : ''}`;
+                div.innerHTML = `${gear.emoji}<span class="tool-badge">${data.uses}</span>`;
+                div.title = `${gear.name}: ${gear.description} (${data.uses} uses left)`;
+                div.onclick = () => selectGear(gearId);
+                toolsSection.appendChild(div);
             }
             
+            // Add sprinklers (grouped by type)
+            const sprinklerCounts = {};
+            (gameState.sprinklers || []).forEach(s => {
+                sprinklerCounts[s.id] = (sprinklerCounts[s.id] || 0) + 1;
+            });
+            for (const [gearId, count] of Object.entries(sprinklerCounts)) {
+                const gear = GEAR[gearId];
+                if (!gear) continue;
+                const div = document.createElement('div');
+                div.className = 'tool-item sprinkler';
+                div.innerHTML = `${gear.emoji}<span class="tool-badge">x${count}</span>`;
+                div.title = `${gear.name}: ${gear.description} (${count} active)`;
+                toolsSection.appendChild(div);
+            }
+        }
+
+        function renderGearShop() {
             // Render gear shop items
             const container = document.getElementById('gear-shop-items');
             if (!container) return;
@@ -7684,7 +7684,7 @@
                 showMessage(`${gear.emoji} is empty! Buy a new one.`);
                 delete gameState.gear[gearId];
                 gameState.selectedGear = null;
-                renderGearShop();
+                renderInventory();
                 return false;
             }
             
@@ -7745,7 +7745,7 @@
             }
             
             renderFarm();
-            renderGearShop();
+            renderInventory();
             return true;
         }
         
