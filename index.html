@@ -5545,17 +5545,34 @@
         
         .plot-sprinkler {
             position: absolute;
-            bottom: 5px;
-            left: 5px;
-            font-size: 1.2rem;
-            text-shadow: 0 0 3px rgba(255,255,255,0.8), 0 0 6px rgba(76,175,80,0.5);
-            z-index: 5;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            text-shadow: 0 0 8px rgba(255,255,255,1), 0 0 15px rgba(33,150,243,0.8), 0 2px 4px rgba(0,0,0,0.5);
+            z-index: 10;
             animation: sprinklerPulse 2s ease-in-out infinite;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .plot-sprinkler .sprinkler-timer {
+            font-size: 0.55rem;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(33,150,243,0.95);
+            padding: 2px 6px;
+            border-radius: 8px;
+            white-space: nowrap;
+            text-shadow: none;
+            margin-top: -5px;
         }
         
         @keyframes sprinklerPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .tool-item .tool-badge {
@@ -6389,17 +6406,17 @@
             wateringcan_gold: { name: 'Gold Watering Can', emoji: '💧', price: 1000, description: 'Water 5 plants (+8s growth)', uses: 30, growthBoost: 8, range: 5, rarity: 'epic' },
             wateringcan_diamond: { name: 'Diamond Watering Can', emoji: '💎', price: 5000, description: 'Water all plants (+10s growth)', uses: 50, growthBoost: 10, range: 'all', rarity: 'legendary' },
             // Sprinklers - passive, auto-water nearby plants
-            sprinkler_basic: { name: 'Basic Sprinkler', emoji: '💦', price: 200, description: 'Auto-waters 1 plant every 30s (+10% mutation)', interval: 30, growthBoost: 2, mutationBoost: 0.10, range: 1, rarity: 'common', passive: true },
-            sprinkler_improved: { name: 'Improved Sprinkler', emoji: '💦', price: 600, description: 'Auto-waters 4 plants every 25s (+15% mutation)', interval: 25, growthBoost: 3, mutationBoost: 0.15, range: 4, rarity: 'uncommon', passive: true },
-            sprinkler_quality: { name: 'Quality Sprinkler', emoji: '🌊', price: 1500, description: 'Auto-waters 8 plants every 20s (+20% mutation)', interval: 20, growthBoost: 4, mutationBoost: 0.20, range: 8, rarity: 'rare', passive: true },
-            sprinkler_iridium: { name: 'Iridium Sprinkler', emoji: '🌊', price: 4000, description: 'Auto-waters 12 plants every 15s (+25% mutation)', interval: 15, growthBoost: 5, mutationBoost: 0.25, range: 12, rarity: 'epic', passive: true },
-            sprinkler_prismatic: { name: 'Prismatic Sprinkler', emoji: '🌈', price: 15000, description: 'Auto-waters ALL plants every 10s (+35% mutation)', interval: 10, growthBoost: 6, mutationBoost: 0.35, range: 'all', rarity: 'legendary', passive: true },
+            sprinkler_basic: { name: 'Basic Sprinkler', emoji: '💦', price: 200, description: 'Auto-waters nearby plants every 30s (lasts 2min)', interval: 30, growthBoost: 2, mutationBoost: 0.10, range: 1, duration: 120, rarity: 'common', passive: true },
+            sprinkler_improved: { name: 'Improved Sprinkler', emoji: '💦', price: 600, description: 'Auto-waters nearby plants every 25s (lasts 3min)', interval: 25, growthBoost: 3, mutationBoost: 0.15, range: 4, duration: 180, rarity: 'uncommon', passive: true },
+            sprinkler_quality: { name: 'Quality Sprinkler', emoji: '🌊', price: 1500, description: 'Auto-waters nearby plants every 20s (lasts 4min)', interval: 20, growthBoost: 4, mutationBoost: 0.20, range: 8, duration: 240, rarity: 'rare', passive: true },
+            sprinkler_iridium: { name: 'Iridium Sprinkler', emoji: '🌊', price: 4000, description: 'Auto-waters nearby plants every 15s (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.25, range: 12, duration: 300, rarity: 'epic', passive: true },
+            sprinkler_prismatic: { name: 'Prismatic Sprinkler', emoji: '🌈', price: 15000, description: 'Auto-waters ALL plants every 10s (lasts 10min)', interval: 10, growthBoost: 6, mutationBoost: 0.35, range: 'all', duration: 600, rarity: 'legendary', passive: true },
             // Special Sprinklers - apply unique mutations
-            sprinkler_honey: { name: 'Honey Sprinkler', emoji: '🍯', price: 2500, description: 'Waters 4 plants every 20s, applies Honey Glaze (+80% value)', interval: 20, growthBoost: 4, mutationBoost: 0.25, specialMutation: 'honeyglazed', range: 4, rarity: 'rare', passive: true },
-            sprinkler_star: { name: 'Starlight Sprinkler', emoji: '⭐', price: 8000, description: 'Waters 6 plants every 15s, applies Star Blessing (+100% value)', interval: 15, growthBoost: 5, mutationBoost: 0.30, specialMutation: 'starblessed', range: 6, rarity: 'epic', passive: true },
-            sprinkler_crystal: { name: 'Crystal Sprinkler', emoji: '💎', price: 5000, description: 'Waters 5 plants every 18s, applies Crystalize (+90% value)', interval: 18, growthBoost: 4, mutationBoost: 0.20, specialMutation: 'crystalized', range: 5, rarity: 'epic', passive: true },
-            sprinkler_volcanic: { name: 'Volcanic Sprinkler', emoji: '🌋', price: 12000, description: 'Waters 8 plants every 12s, applies Volcanic (+120% value)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'volcanic', range: 8, rarity: 'legendary', passive: true },
-            sprinkler_enchanted: { name: 'Enchanted Sprinkler', emoji: '🪄', price: 3500, description: 'Waters 4 plants every 22s, applies Enchantment (+75% value)', interval: 22, growthBoost: 3, mutationBoost: 0.40, specialMutation: 'enchanted', range: 4, rarity: 'rare', passive: true }
+            sprinkler_honey: { name: 'Honey Sprinkler', emoji: '🍯', price: 2500, description: 'Honey Glaze +80% value (lasts 3min)', interval: 20, growthBoost: 4, mutationBoost: 0.25, specialMutation: 'honeyglazed', range: 4, duration: 180, rarity: 'rare', passive: true },
+            sprinkler_star: { name: 'Starlight Sprinkler', emoji: '⭐', price: 8000, description: 'Star Blessing +100% value (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.30, specialMutation: 'starblessed', range: 6, duration: 300, rarity: 'epic', passive: true },
+            sprinkler_crystal: { name: 'Crystal Sprinkler', emoji: '💎', price: 5000, description: 'Crystalize +90% value (lasts 4min)', interval: 18, growthBoost: 4, mutationBoost: 0.20, specialMutation: 'crystalized', range: 5, duration: 240, rarity: 'epic', passive: true },
+            sprinkler_volcanic: { name: 'Volcanic Sprinkler', emoji: '🌋', price: 12000, description: 'Volcanic +120% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'volcanic', range: 8, duration: 360, rarity: 'legendary', passive: true },
+            sprinkler_enchanted: { name: 'Enchanted Sprinkler', emoji: '🪄', price: 3500, description: 'Enchantment +75% value (lasts 3min)', interval: 22, growthBoost: 3, mutationBoost: 0.40, specialMutation: 'enchanted', range: 4, duration: 180, rarity: 'rare', passive: true }
         };
 
         function getRandomSize() {
@@ -6991,10 +7008,15 @@
                 if (sprinklerOnPlot) {
                     const sprinklerGear = GEAR[sprinklerOnPlot.id];
                     if (sprinklerGear) {
+                        const remaining = sprinklerOnPlot.remaining || 0;
+                        const mins = Math.floor(remaining / 60);
+                        const secs = remaining % 60;
+                        const timeStr = mins > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : `${secs}s`;
+                        
                         const sprinklerIcon = document.createElement('div');
                         sprinklerIcon.className = 'plot-sprinkler';
-                        sprinklerIcon.innerHTML = sprinklerGear.emoji;
-                        sprinklerIcon.title = `${sprinklerGear.name}: ${sprinklerGear.description}`;
+                        sprinklerIcon.innerHTML = `${sprinklerGear.emoji}<span class="sprinkler-timer">${timeStr}</span>`;
+                        sprinklerIcon.title = `${sprinklerGear.name}: ${sprinklerGear.description} (${timeStr} remaining)`;
                         div.appendChild(sprinklerIcon);
                     }
                 }
@@ -7786,12 +7808,13 @@
             }
             
             // Remove from unplaced and add to placed
+            const gear = GEAR[gearId];
             gameState.unplacedSprinklers.splice(gameState.selectedSprinkler, 1);
             if (!gameState.sprinklers) gameState.sprinklers = [];
-            gameState.sprinklers.push({ id: gearId, plotIndex: plotIndex, timer: 0 });
+            gameState.sprinklers.push({ id: gearId, plotIndex: plotIndex, timer: 0, remaining: gear.duration || 120 });
             
-            const gear = GEAR[gearId];
-            showMessage(`${gear.emoji} ${gear.name} placed! It will auto-water nearby plants.`);
+            const durationMin = Math.floor((gear.duration || 120) / 60);
+            showMessage(`${gear.emoji} ${gear.name} placed! Lasts ${durationMin} min.`);
             
             gameState.selectedSprinkler = null;
             renderInventory();
@@ -7899,6 +7922,34 @@
         
         function updateSprinklers() {
             if (!gameState.sprinklers || gameState.sprinklers.length === 0) return;
+            
+            // Decrement remaining time and remove expired sprinklers
+            const expiredSprinklers = [];
+            gameState.sprinklers.forEach((sprinkler, idx) => {
+                const gear = GEAR[sprinkler.id];
+                if (!gear) return;
+                
+                // Skip unplaced sprinklers
+                if (sprinkler.plotIndex === undefined || sprinkler.plotIndex < 0) return;
+                
+                // Decrement remaining time
+                if (sprinkler.remaining !== undefined) {
+                    sprinkler.remaining--;
+                    if (sprinkler.remaining <= 0) {
+                        expiredSprinklers.push(idx);
+                        showMessage(`${gear.emoji} ${gear.name} has expired!`);
+                    }
+                }
+            });
+            
+            // Remove expired sprinklers (in reverse order to maintain indices)
+            expiredSprinklers.reverse().forEach(idx => {
+                gameState.sprinklers.splice(idx, 1);
+            });
+            if (expiredSprinklers.length > 0) {
+                renderFarm();
+                renderGearTools();
+            }
             
             gameState.sprinklers.forEach(sprinkler => {
                 const gear = GEAR[sprinkler.id];
