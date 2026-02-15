@@ -2032,13 +2032,53 @@
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
 
-        /* Candy Tree - colorful candy */
+        /* Candy Tree - large blue and pink tree with lollipops */
         .crop-candytree .plant-fruit {
-            width: 18px;
-            height: 24px;
-            background: linear-gradient(180deg, #ff69b4 0%, #ff69b4 25%, #fff 25%, #fff 50%, #ff69b4 50%, #ff69b4 75%, #fff 75%);
-            border-radius: 8px;
+            width: 0;
+            height: 0;
+            background: transparent;
             bottom: 32px;
+        }
+        /* Lollipops only appear at stage 4 */
+        .crop-candytree.stage-4 .plant-fruit {
+            width: 60px;
+            height: 50px;
+            background: transparent;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+        }
+        /* Pink lollipop - left side */
+        .crop-candytree.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 18px; height: 18px;
+            background: conic-gradient(from 0deg, #ff69b4, #fff, #ff69b4, #fff, #ff69b4, #fff, #ff69b4, #fff);
+            border-radius: 50%;
+            border: 3px solid #ff1493;
+            top: -8px; left: -5px;
+            box-shadow: 0 0 10px rgba(255,105,180,0.8), inset 0 0 5px rgba(255,255,255,0.5);
+            animation: lollipopBob 1.5s ease-in-out infinite;
+        }
+        /* Blue lollipop - right side */
+        .crop-candytree.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 16px; height: 16px;
+            background: conic-gradient(from 45deg, #87ceeb, #fff, #87ceeb, #fff, #87ceeb, #fff, #87ceeb, #fff);
+            border-radius: 50%;
+            border: 3px solid #4169e1;
+            top: -5px; right: -5px;
+            box-shadow: 0 0 10px rgba(135,206,235,0.8), inset 0 0 5px rgba(255,255,255,0.5);
+            animation: lollipopBob 1.8s ease-in-out infinite 0.3s;
+        }
+        @keyframes lollipopBob {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(5deg); }
         }
 
         /* Moon Flower - glowing crescent */
@@ -2623,11 +2663,60 @@
         }
 
         /* Candy Tree - colorful fantasy */
-        .plant-model.crop-candytree .plant-stem { background: linear-gradient(to top, #aa5588, #cc77aa); width: 8px; }
-        .plant-model.crop-candytree .plant-leaf { background: #88cc88; width: 18px; height: 14px; border-radius: 50%; }
-        .plant-model.crop-candytree.stage-4 .plant-stem { height: 48px; }
-        .plant-model.crop-candytree.stage-4 .plant-crop { bottom: 35px; }
-        .plant-model.crop-candytree.stage-4 .plant-leaves { bottom: 45px; }
+        /* Candy Tree - large permanent tree with blue/pink colors */
+        .plant-model.crop-candytree .plant-stem { 
+            background: linear-gradient(to top, #8b4583, #c77dba, #e8a4d8); 
+            width: 12px; 
+            border-radius: 3px;
+        }
+        .plant-model.crop-candytree .plant-leaf { 
+            background: linear-gradient(135deg, #87ceeb, #dda0dd); 
+            width: 22px; 
+            height: 18px; 
+            border-radius: 50%; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 -2px 4px rgba(255,255,255,0.3);
+        }
+        .plant-model.crop-candytree .plant-leaf.left {
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        }
+        .plant-model.crop-candytree .plant-leaf.right {
+            background: linear-gradient(135deg, #87ceeb, #4169e1);
+        }
+        /* Tree canopy - additional foliage */
+        .plant-model.crop-candytree::before {
+            content: '';
+            position: absolute;
+            width: 40px; height: 30px;
+            background: radial-gradient(ellipse at 50% 60%, #ffb6c1 0%, #ff69b4 40%, transparent 70%);
+            border-radius: 50%;
+            bottom: 35px; left: 50%; transform: translateX(-50%);
+            z-index: 1;
+        }
+        .plant-model.crop-candytree::after {
+            content: '';
+            position: absolute;
+            width: 35px; height: 25px;
+            background: radial-gradient(ellipse at 50% 60%, #b0e0e6 0%, #87ceeb 40%, transparent 70%);
+            border-radius: 50%;
+            bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        /* Stage 2 - sapling */
+        .plant-model.crop-candytree.stage-2 .plant-stem { height: 20px; }
+        .plant-model.crop-candytree.stage-2 .plant-leaves { bottom: 22px; }
+        .plant-model.crop-candytree.stage-2::before { width: 20px; height: 15px; bottom: 18px; }
+        .plant-model.crop-candytree.stage-2::after { width: 15px; height: 12px; bottom: 22px; }
+        /* Stage 3 - young tree */
+        .plant-model.crop-candytree.stage-3 .plant-stem { height: 35px; }
+        .plant-model.crop-candytree.stage-3 .plant-leaves { bottom: 38px; }
+        .plant-model.crop-candytree.stage-3::before { width: 30px; height: 22px; bottom: 30px; }
+        .plant-model.crop-candytree.stage-3::after { width: 25px; height: 18px; bottom: 35px; }
+        /* Stage 4 - full tree (always shows tree, lollipops show when ready) */
+        .plant-model.crop-candytree.stage-4 .plant-stem { height: 50px; }
+        .plant-model.crop-candytree.stage-4 .plant-leaves { bottom: 52px; }
+        .plant-model.crop-candytree.stage-4 .plant-leaf { width: 26px; height: 22px; }
+        .plant-model.crop-candytree.stage-4::before { width: 45px; height: 35px; bottom: 42px; }
+        .plant-model.crop-candytree.stage-4::after { width: 38px; height: 28px; bottom: 48px; }
 
         /* Moon Flower - ethereal night bloomer */
         .plant-model.crop-moonflower .plant-stem { background: linear-gradient(to top, #4a5a6a, #6a7a8a); width: 4px; }
