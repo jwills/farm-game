@@ -189,10 +189,473 @@
             right: -8px;
         }
 
-        .plant-crop {
+        .plant-fruit {
             position: absolute;
-            font-size: 1.8rem;
             z-index: 2;
+            display: none;
+        }
+
+        .plant-model.stage-4 .plant-fruit {
+            display: block;
+        }
+
+        /* Carrot - orange triangle pointing down */
+        .crop-carrot .plant-fruit {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 28px solid #ff7518;
+            bottom: 2px;
+            border-radius: 0 0 4px 4px;
+        }
+        .crop-carrot .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -32px;
+            left: -4px;
+            width: 8px;
+            height: 8px;
+            background: #4a8c4a;
+            border-radius: 50% 50% 0 0;
+        }
+
+        /* Potato - brown oval */
+        .crop-potato .plant-fruit {
+            width: 24px;
+            height: 18px;
+            background: radial-gradient(ellipse at 30% 30%, #c9a66b, #8b6914);
+            border-radius: 50%;
+            bottom: 3px;
+        }
+        .crop-potato .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #5a4020;
+            border-radius: 50%;
+            top: 6px;
+            left: 8px;
+        }
+
+        /* Onion - purple/white bulb */
+        .crop-onion .plant-fruit {
+            width: 22px;
+            height: 26px;
+            background: linear-gradient(135deg, #f0e6ff 0%, #d4b8e8 50%, #9a6bb5 100%);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 0px;
+        }
+        .crop-onion .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 8px;
+            width: 6px;
+            height: 10px;
+            background: #5a8c5a;
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Tomato - red sphere */
+        .crop-tomato .plant-fruit {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0000);
+            border-radius: 50%;
+            bottom: 22px;
+        }
+        .crop-tomato .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 6px;
+            width: 10px;
+            height: 6px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+
+        /* Lettuce - green leafy ball */
+        .crop-lettuce .plant-fruit {
+            width: 28px;
+            height: 24px;
+            background: radial-gradient(circle at 40% 40%, #90EE90, #228B22);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 5px;
+        }
+        .crop-lettuce .plant-fruit::before,
+        .crop-lettuce .plant-fruit::after {
+            content: '';
+            position: absolute;
+            background: #6ab66a;
+            border-radius: 50%;
+        }
+        .crop-lettuce .plant-fruit::before {
+            width: 12px; height: 10px; top: -4px; left: 2px; transform: rotate(-20deg);
+        }
+        .crop-lettuce .plant-fruit::after {
+            width: 12px; height: 10px; top: -4px; right: 2px; transform: rotate(20deg);
+        }
+
+        /* Pepper - red curved shape */
+        .crop-pepper .plant-fruit {
+            width: 10px;
+            height: 28px;
+            background: linear-gradient(90deg, #ff3030, #cc0000);
+            border-radius: 5px 5px 8px 8px;
+            bottom: 18px;
+            transform: rotate(10deg);
+        }
+        .crop-pepper .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 2px;
+            width: 6px;
+            height: 8px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+
+        /* Corn - yellow cob */
+        .crop-corn .plant-fruit {
+            width: 14px;
+            height: 30px;
+            background: linear-gradient(90deg, #ffd700, #ffb800, #ffd700);
+            border-radius: 4px;
+            bottom: 22px;
+        }
+        .crop-corn .plant-fruit::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 14px;
+            height: 12px;
+            background: #7ca743;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .crop-corn .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 2px;
+            width: 10px;
+            height: 24px;
+            background: repeating-linear-gradient(0deg, #e6b800 0px, #e6b800 3px, #ffd700 3px, #ffd700 6px);
+            border-radius: 3px;
+        }
+
+        /* Eggplant - purple oval */
+        .crop-eggplant .plant-fruit {
+            width: 14px;
+            height: 28px;
+            background: linear-gradient(90deg, #4a0080, #6a0dad, #4a0080);
+            border-radius: 7px 7px 10px 10px;
+            bottom: 15px;
+        }
+        .crop-eggplant .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 3px;
+            width: 8px;
+            height: 8px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+
+        /* Broccoli - green tree shape */
+        .crop-broccoli .plant-fruit {
+            width: 30px;
+            height: 24px;
+            background: radial-gradient(circle at 50% 60%, #228B22, #006400);
+            border-radius: 50% 50% 30% 30%;
+            bottom: 22px;
+        }
+        .crop-broccoli .plant-fruit::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 12px;
+            width: 6px;
+            height: 10px;
+            background: #5a8a5a;
+            border-radius: 2px;
+        }
+
+        /* Strawberry - red heart shape */
+        .crop-strawberry .plant-fruit {
+            width: 18px;
+            height: 22px;
+            background: linear-gradient(135deg, #ff4040, #cc0000);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 8px;
+        }
+        .crop-strawberry .plant-fruit::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 5px;
+            width: 8px;
+            height: 6px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+        .crop-strawberry .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 20%),
+                        radial-gradient(circle at 70% 30%, rgba(255,255,0,0.5) 0%, rgba(255,255,0,0.5) 2px, transparent 2px),
+                        radial-gradient(circle at 40% 60%, rgba(255,255,0,0.5) 0%, rgba(255,255,0,0.5) 2px, transparent 2px),
+                        radial-gradient(circle at 60% 70%, rgba(255,255,0,0.5) 0%, rgba(255,255,0,0.5) 2px, transparent 2px);
+            border-radius: inherit;
+        }
+
+        /* Watermelon - green striped oval */
+        .crop-watermelon .plant-fruit {
+            width: 32px;
+            height: 24px;
+            background: repeating-linear-gradient(90deg, #228B22 0px, #228B22 4px, #32CD32 4px, #32CD32 8px);
+            border-radius: 50%;
+            bottom: 2px;
+        }
+
+        /* Grapes - purple cluster */
+        .crop-grapes .plant-fruit {
+            width: 20px;
+            height: 24px;
+            bottom: 16px;
+            background: radial-gradient(circle at 30% 30%, #9370DB, #4B0082);
+            border-radius: 50%;
+        }
+        .crop-grapes .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 14px;
+            background: radial-gradient(circle at 30% 30%, #9370DB, #4B0082);
+            border-radius: 50%;
+            top: 10px;
+            left: -6px;
+        }
+        .crop-grapes .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 14px;
+            background: radial-gradient(circle at 30% 30%, #9370DB, #4B0082);
+            border-radius: 50%;
+            top: 10px;
+            right: -6px;
+        }
+
+        /* Pumpkin - orange round */
+        .crop-pumpkin .plant-fruit {
+            width: 32px;
+            height: 28px;
+            background: radial-gradient(ellipse at 30% 30%, #ff8c00, #cc5500);
+            border-radius: 50%;
+            bottom: 2px;
+        }
+        .crop-pumpkin .plant-fruit::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 13px;
+            width: 6px;
+            height: 8px;
+            background: #5a4a2a;
+            border-radius: 2px;
+        }
+        .crop-pumpkin .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, transparent 20%,
+                rgba(0,0,0,0.1) 20%, rgba(0,0,0,0.1) 25%,
+                transparent 25%, transparent 45%,
+                rgba(0,0,0,0.1) 45%, rgba(0,0,0,0.1) 55%,
+                transparent 55%, transparent 75%,
+                rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1) 80%,
+                transparent 80%);
+            border-radius: 50%;
+        }
+
+        /* Cherry - pink blossoms */
+        .crop-cherry .plant-fruit {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 30% 30%, #ffb7c5, #ff69b4);
+            border-radius: 50%;
+            bottom: 28px;
+        }
+        .crop-cherry .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle at 30% 30%, #ffb7c5, #ff69b4);
+            border-radius: 50%;
+            top: 8px;
+            left: -10px;
+        }
+
+        /* Truffle - brown mushroom */
+        .crop-truffle .plant-fruit {
+            width: 22px;
+            height: 18px;
+            background: radial-gradient(ellipse at 30% 30%, #8b7355, #4a3728);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 2px;
+        }
+
+        /* Golden Apple - shiny apple */
+        .crop-goldenapple .plant-fruit {
+            width: 20px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #daa520);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 26px;
+            box-shadow: 0 0 10px #ffd700;
+        }
+        .crop-goldenapple .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 8px;
+            width: 4px;
+            height: 6px;
+            background: #5a4020;
+            border-radius: 2px;
+        }
+
+        /* Ancient Wheat - golden grain */
+        .crop-ancientwheat .plant-fruit {
+            width: 12px;
+            height: 20px;
+            background: linear-gradient(90deg, #daa520, #ffd700, #daa520);
+            border-radius: 3px 3px 6px 6px;
+            bottom: 38px;
+        }
+        .crop-ancientwheat .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 14px;
+            background: linear-gradient(90deg, #daa520, #ffd700, #daa520);
+            border-radius: 3px;
+            left: -8px;
+            top: 4px;
+        }
+        .crop-ancientwheat .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 14px;
+            background: linear-gradient(90deg, #daa520, #ffd700, #daa520);
+            border-radius: 3px;
+            right: -8px;
+            top: 4px;
+        }
+
+        /* Coconut - brown nut */
+        .crop-coconut .plant-fruit {
+            width: 20px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #8B4513, #5D3A1A);
+            border-radius: 50%;
+            bottom: 32px;
+        }
+
+        /* Dragon Fruit - pink exotic */
+        .crop-dragonfruit .plant-fruit {
+            width: 20px;
+            height: 26px;
+            background: radial-gradient(circle at 50% 50%, #ff1493, #c71585);
+            border-radius: 50%;
+            bottom: 22px;
+            box-shadow: 0 0 8px #ff4500;
+        }
+        .crop-dragonfruit .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 10px;
+            background: #32cd32;
+            top: -4px;
+            left: 7px;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        /* Candy Tree - colorful candy */
+        .crop-candytree .plant-fruit {
+            width: 18px;
+            height: 24px;
+            background: linear-gradient(180deg, #ff69b4 0%, #ff69b4 25%, #fff 25%, #fff 50%, #ff69b4 50%, #ff69b4 75%, #fff 75%);
+            border-radius: 8px;
+            bottom: 32px;
+        }
+
+        /* Moon Flower - glowing crescent */
+        .crop-moonflower .plant-fruit {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #f0f8ff, #b0c4de);
+            border-radius: 50%;
+            bottom: 30px;
+            box-shadow: 0 0 12px #87ceeb;
+        }
+
+        /* Crystal Flower - gem shape */
+        .crop-crystalflower .plant-fruit {
+            width: 18px;
+            height: 24px;
+            background: linear-gradient(135deg, #e0ffff 0%, #00ced1 50%, #008b8b 100%);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            bottom: 26px;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        /* Star Fruit - yellow star */
+        .crop-starfruit .plant-fruit {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #ffff00, #ffd700);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            bottom: 28px;
+            box-shadow: 0 0 8px #ffd700;
+        }
+
+        /* Rainbow Melon - rainbow stripes */
+        .crop-rainbowmelon .plant-fruit {
+            width: 32px;
+            height: 26px;
+            background: linear-gradient(90deg, #ff0000 0%, #ff7f00 17%, #ffff00 33%, #00ff00 50%, #0000ff 67%, #4b0082 83%, #9400d3 100%);
+            border-radius: 50%;
+            bottom: 2px;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        /* Hellfruit - fiery fruit */
+        .crop-hellfruit .plant-fruit {
+            width: 22px;
+            height: 26px;
+            background: radial-gradient(circle at 50% 50%, #ff4500, #8b0000);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 22px;
+            box-shadow: 0 0 12px #ff4500;
+            animation: hellpulse 1s ease-in-out infinite;
+        }
+        @keyframes hellpulse {
+            0%, 100% { box-shadow: 0 0 8px #ff4500; }
+            50% { box-shadow: 0 0 16px #ff6600; }
         }
 
         .plant-ground {
@@ -1883,7 +2346,7 @@
                     
                     div.innerHTML = `
                         <div class="plant-model stage-${stage} crop-${plot.type}${mutationClasses}">
-                            <div class="plant-crop">${stage === 4 ? crop.growEmoji : seedEmoji}</div>
+                            <div class="plant-fruit"></div>
                             <div class="plant-leaves">
                                 <div class="plant-leaf left"></div>
                                 <div class="plant-leaf right"></div>
