@@ -4089,6 +4089,7 @@
             let restocked = [];
             for (const [id, crop] of Object.entries(CROPS)) {
                 const config = STOCK_CONFIG[crop.rarity];
+                if (config.hellscapeOnly) continue; // Skip demonic
                 const currentStock = gameState.shopStock[id] || 0;
                 
                 // Only restock if below max and chance succeeds
