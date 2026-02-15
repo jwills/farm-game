@@ -2893,18 +2893,185 @@
         .plant-model.crop-broccoli.stage-4 .plant-crop { bottom: 20px; }
         .plant-model.crop-broccoli.stage-4 .plant-leaves { display: none; }
 
-        /* Grapes - vine with climbing structure */
+        /* Grapes - persistent vine structure */
         .plant-model.crop-grapes .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a5a4a); width: 3px; }
-        .plant-model.crop-grapes .plant-leaf { background: #5a9a5a; width: 14px; height: 12px; border-radius: 50% 50% 50% 50%; }
+        .plant-model.crop-grapes .plant-leaf { background: #5a9a5a; width: 14px; height: 12px; border-radius: 50%; }
+        .plant-model.crop-grapes.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-grapes.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-grapes.stage-2 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-grapes.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-grapes.stage-3 .plant-leaves { bottom: 32px; }
         .plant-model.crop-grapes.stage-4 .plant-stem { height: 40px; }
-        .plant-model.crop-grapes.stage-4 .plant-crop { bottom: 18px; }
-        .plant-model.crop-grapes.stage-4 .plant-leaves { bottom: 35px; }
+        .plant-model.crop-grapes.stage-4 .plant-leaves { bottom: 38px; }
+        /* Grape vine canopy - always visible */
+        .plant-model.crop-grapes::before {
+            content: '';
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-grapes.stage-2::before {
+            width: 20px; height: 16px; bottom: 18px;
+            background: radial-gradient(ellipse at 50% 60%, #6aaa6a, #4a8a4a 70%);
+        }
+        .plant-model.crop-grapes.stage-3::before {
+            width: 30px; height: 24px; bottom: 28px;
+            background: radial-gradient(ellipse at 50% 60%, #6aaa6a, #4a8a4a 70%);
+        }
+        .plant-model.crop-grapes.stage-4::before {
+            width: 38px; height: 30px; bottom: 36px;
+            background: radial-gradient(ellipse at 50% 55%, #7aba7a, #5a9a5a 50%, #4a8a4a 80%);
+            z-index: 1;
+        }
+        /* Grapes only appear at stage 4 */
+        .crop-grapes .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-grapes.stage-4 .plant-fruit {
+            width: 20px; height: 24px;
+            background: radial-gradient(circle at 30% 30%, #9370DB, #4B0082);
+            border-radius: 50%;
+            bottom: 20px;
+            z-index: 2;
+        }
 
-        /* Strawberry - low bush with berries */
-        .plant-model.crop-strawberry .plant-stem { height: 20px !important; background: #4a7a4a; width: 3px; }
+        /* Strawberry - persistent low bush */
+        .plant-model.crop-strawberry .plant-stem { background: #4a7a4a; width: 3px; }
         .plant-model.crop-strawberry .plant-leaf { background: #4a8c4a; width: 14px; height: 8px; }
-        .plant-model.crop-strawberry.stage-4 .plant-crop { bottom: 10px; }
+        .plant-model.crop-strawberry.stage-1 .plant-stem { height: 4px; }
+        .plant-model.crop-strawberry.stage-2 .plant-stem { height: 10px; }
+        .plant-model.crop-strawberry.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-strawberry.stage-3 .plant-stem { height: 16px; }
+        .plant-model.crop-strawberry.stage-3 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-strawberry.stage-4 .plant-stem { height: 20px; }
         .plant-model.crop-strawberry.stage-4 .plant-leaves { bottom: 18px; }
+        /* Strawberry bush canopy - always visible */
+        .plant-model.crop-strawberry::before {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-strawberry.stage-2::before {
+            width: 18px; height: 12px; bottom: 10px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9c5a, #3a7c3a 70%);
+        }
+        .plant-model.crop-strawberry.stage-3::before {
+            width: 26px; height: 18px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9c5a, #3a7c3a 70%);
+        }
+        .plant-model.crop-strawberry.stage-4::before {
+            width: 32px; height: 22px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 55%, #5aac5a, #4a8c4a 50%, #3a7c3a 80%);
+            z-index: 1;
+        }
+        /* Strawberries only appear at stage 4 */
+        .crop-strawberry .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-strawberry.stage-4 .plant-fruit {
+            width: 18px; height: 22px;
+            background: linear-gradient(135deg, #ff4040, #cc0000);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 8px;
+            z-index: 2;
+        }
+
+        /* Blueberry - persistent small bush */
+        .plant-model.crop-blueberry .plant-stem { background: linear-gradient(to top, #4a5a4a, #5a7a5a); width: 3px; }
+        .plant-model.crop-blueberry .plant-leaf { background: #4a7a5a; width: 12px; height: 8px; }
+        .plant-model.crop-blueberry.stage-1 .plant-stem { height: 4px; }
+        .plant-model.crop-blueberry.stage-2 .plant-stem { height: 10px; }
+        .plant-model.crop-blueberry.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-blueberry.stage-3 .plant-stem { height: 18px; }
+        .plant-model.crop-blueberry.stage-3 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-blueberry.stage-4 .plant-stem { height: 24px; }
+        .plant-model.crop-blueberry.stage-4 .plant-leaves { bottom: 22px; }
+        /* Blueberry bush canopy - always visible */
+        .plant-model.crop-blueberry::before {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-blueberry.stage-2::before {
+            width: 16px; height: 12px; bottom: 10px;
+            background: radial-gradient(ellipse at 50% 60%, #5a8a6a, #3a6a4a 70%);
+        }
+        .plant-model.crop-blueberry.stage-3::before {
+            width: 24px; height: 18px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #5a8a6a, #3a6a4a 70%);
+        }
+        .plant-model.crop-blueberry.stage-4::before {
+            width: 30px; height: 22px; bottom: 20px;
+            background: radial-gradient(ellipse at 50% 55%, #5a9a6a, #4a7a5a 50%, #3a6a4a 80%);
+            z-index: 1;
+        }
+        /* Blueberries only appear at stage 4 */
+        .crop-blueberry .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-blueberry.stage-4 .plant-fruit {
+            width: 14px; height: 14px;
+            background: radial-gradient(circle at 30% 30%, #6495ed, #00008b);
+            border-radius: 50%;
+            bottom: 14px;
+            z-index: 2;
+        }
+
+        /* Rose - persistent thorny bush */
+        .plant-model.crop-rose .plant-stem { background: linear-gradient(to top, #3a5a3a, #4a7a4a); width: 3px; }
+        .plant-model.crop-rose .plant-leaf { background: #3a6a3a; width: 12px; height: 8px; }
+        .plant-model.crop-rose.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-rose.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-rose.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-rose.stage-3 .plant-stem { height: 24px; }
+        .plant-model.crop-rose.stage-3 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-rose.stage-4 .plant-stem { height: 34px; }
+        .plant-model.crop-rose.stage-4 .plant-leaves { bottom: 32px; }
+        /* Rose bush canopy - always visible */
+        .plant-model.crop-rose::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-rose.stage-2::before {
+            width: 16px; height: 12px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #4a8a4a, #2a5a2a 70%);
+        }
+        .plant-model.crop-rose.stage-3::before {
+            width: 26px; height: 20px; bottom: 22px;
+            background: radial-gradient(ellipse at 50% 60%, #4a8a4a, #2a5a2a 70%);
+        }
+        .plant-model.crop-rose.stage-4::before {
+            width: 34px; height: 28px; bottom: 30px;
+            background: radial-gradient(ellipse at 50% 55%, #4a9a4a, #3a7a3a 50%, #2a5a2a 80%);
+            z-index: 1;
+        }
+        /* Roses only appear at stage 4 */
+        .crop-rose .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-rose.stage-4 .plant-fruit {
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 50% 50%, #ff1744, #b71c1c);
+            border-radius: 50%;
+            bottom: 28px;
+            z-index: 2;
+        }
 
         .plant-model.crop-pumpkin .plant-stem { background: #5a7c27; width: 6px; }
         .plant-model.crop-pumpkin .plant-leaf { background: #4a7c27; width: 18px; }
