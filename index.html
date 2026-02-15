@@ -4170,6 +4170,52 @@
             color: #E91E63;
         }
 
+        .gear-shop h2 {
+            color: #00BCD4;
+        }
+
+        .owned-gear {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(0, 188, 212, 0.1);
+            border-radius: 8px;
+            min-height: 40px;
+        }
+
+        .gear-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: linear-gradient(135deg, #E0F7FA, #B2EBF2);
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .gear-item:hover {
+            transform: scale(1.05);
+            border-color: #00BCD4;
+        }
+
+        .gear-item.selected {
+            border-color: #00BCD4;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+
+        .gear-item.sprinkler {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+        }
+
+        .gear-item .uses {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
         .owned-pets {
             display: flex;
             flex-direction: column;
@@ -6056,6 +6102,12 @@
                     <div class="owned-pets" id="owned-pets"></div>
                     <div class="shop-items" id="pet-shop-items"></div>
                 </div>
+
+                <div class="shop gear-shop">
+                    <h2>🛠️ Gear Shop</h2>
+                    <div class="owned-gear" id="owned-gear"></div>
+                    <div class="shop-items" id="gear-shop-items"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -6176,6 +6228,21 @@
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' }
         };
 
+        const GEAR = {
+            // Watering Cans - manual use, instant growth boost
+            wateringcan_basic: { name: 'Basic Watering Can', emoji: '🚿', price: 50, description: 'Water 1 plant (+3s growth)', uses: 10, growthBoost: 3, range: 1, rarity: 'common' },
+            wateringcan_copper: { name: 'Copper Watering Can', emoji: '🚿', price: 150, description: 'Water 1 plant (+5s growth)', uses: 20, growthBoost: 5, range: 1, rarity: 'uncommon' },
+            wateringcan_silver: { name: 'Silver Watering Can', emoji: '💧', price: 400, description: 'Water 3 plants (+5s growth)', uses: 25, growthBoost: 5, range: 3, rarity: 'rare' },
+            wateringcan_gold: { name: 'Gold Watering Can', emoji: '💧', price: 1000, description: 'Water 5 plants (+8s growth)', uses: 30, growthBoost: 8, range: 5, rarity: 'epic' },
+            wateringcan_diamond: { name: 'Diamond Watering Can', emoji: '💎', price: 5000, description: 'Water all plants (+10s growth)', uses: 50, growthBoost: 10, range: 'all', rarity: 'legendary' },
+            // Sprinklers - passive, auto-water nearby plants
+            sprinkler_basic: { name: 'Basic Sprinkler', emoji: '💦', price: 200, description: 'Auto-waters 1 adjacent plant every 30s', interval: 30, growthBoost: 2, range: 1, rarity: 'common', passive: true },
+            sprinkler_improved: { name: 'Improved Sprinkler', emoji: '💦', price: 600, description: 'Auto-waters 4 adjacent plants every 25s', interval: 25, growthBoost: 3, range: 4, rarity: 'uncommon', passive: true },
+            sprinkler_quality: { name: 'Quality Sprinkler', emoji: '🌊', price: 1500, description: 'Auto-waters 8 nearby plants every 20s', interval: 20, growthBoost: 4, range: 8, rarity: 'rare', passive: true },
+            sprinkler_iridium: { name: 'Iridium Sprinkler', emoji: '🌊', price: 4000, description: 'Auto-waters 12 plants every 15s', interval: 15, growthBoost: 5, range: 12, rarity: 'epic', passive: true },
+            sprinkler_prismatic: { name: 'Prismatic Sprinkler', emoji: '🌈', price: 15000, description: 'Auto-waters ALL plants every 10s', interval: 10, growthBoost: 6, range: 'all', rarity: 'legendary', passive: true }
+        };
+
         function getRandomSize() {
             // Weighted random - medium most common, tiny/huge rare
             const weights = [10, 25, 40, 20, 5];
@@ -6237,7 +6304,10 @@
             neighborhoodCode: null,
             shopStock: {}, // seed stock levels
             lastRestock: 0, // timestamp of last restock
-            demonicInStock: false // only true during hellscape with 25% chance
+            demonicInStock: false, // only true during hellscape with 25% chance
+            gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
+            sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
+            selectedGear: null // currently selected watering can
         };
 
         // Stock settings per rarity
@@ -6451,6 +6521,7 @@
             }
             renderShop();
             renderPetShop();
+            renderGearShop();
             renderFarm();
             renderInventory();
             setInterval(updateCrops, 1000);
@@ -6728,12 +6799,20 @@
                     div.onclick = () => {
                         if (gameState.shovelSelected) {
                             removePlant(index);
+                        } else if (gameState.selectedGear) {
+                            useWateringCan(index);
                         }
                         // Harvesting only via player walking to plot and pressing space/E
                     };
                 } else {
                     div.classList.add('empty');
-                    div.onclick = () => plantSeed(index);
+                    div.onclick = () => {
+                        if (gameState.selectedGear) {
+                            showMessage('No plant here to water!');
+                        } else {
+                            plantSeed(index);
+                        }
+                    };
                 }
                 
                 container.appendChild(div);
@@ -6913,13 +6992,17 @@
         function selectSeed(type) {
             gameState.selectedSeed = gameState.selectedSeed === type ? null : type;
             gameState.shovelSelected = false;
+            gameState.selectedGear = null;
             renderInventory();
+            renderGearShop();
         }
 
         function toggleShovel() {
             gameState.shovelSelected = !gameState.shovelSelected;
             if (gameState.shovelSelected) {
                 gameState.selectedSeed = null;
+                gameState.selectedGear = null;
+                renderGearShop();
             }
             renderInventory();
             updateShovelUI();
@@ -7341,6 +7424,258 @@
             }
         }
 
+        // Gear Shop Functions
+        function renderGearShop() {
+            // Render owned gear
+            const ownedContainer = document.getElementById('owned-gear');
+            if (!ownedContainer) return;
+            ownedContainer.innerHTML = '';
+            
+            // Show owned watering cans
+            const ownedGear = Object.entries(gameState.gear || {});
+            if (ownedGear.length === 0 && (gameState.sprinklers || []).length === 0) {
+                ownedContainer.innerHTML = '<span style="color: #999; font-size: 0.9rem;">No gear owned</span>';
+            } else {
+                // Watering cans
+                for (const [gearId, data] of ownedGear) {
+                    const gear = GEAR[gearId];
+                    if (!gear || gear.passive) continue;
+                    const div = document.createElement('div');
+                    div.className = `gear-item${gameState.selectedGear === gearId ? ' selected' : ''}`;
+                    div.innerHTML = `<span>${gear.emoji}</span><span class="uses">${data.uses}/${gear.uses}</span>`;
+                    div.title = `${gear.name}: ${gear.description}`;
+                    div.onclick = () => selectGear(gearId);
+                    ownedContainer.appendChild(div);
+                }
+                // Sprinklers (show count)
+                const sprinklerCounts = {};
+                (gameState.sprinklers || []).forEach(s => {
+                    sprinklerCounts[s.id] = (sprinklerCounts[s.id] || 0) + 1;
+                });
+                for (const [gearId, count] of Object.entries(sprinklerCounts)) {
+                    const gear = GEAR[gearId];
+                    if (!gear) continue;
+                    const div = document.createElement('div');
+                    div.className = 'gear-item sprinkler';
+                    div.innerHTML = `<span>${gear.emoji}</span><span class="uses">x${count}</span>`;
+                    div.title = `${gear.name}: ${gear.description} (${count} placed)`;
+                    ownedContainer.appendChild(div);
+                }
+            }
+            
+            // Render gear shop items
+            const container = document.getElementById('gear-shop-items');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            const sortedGear = Object.entries(GEAR).sort((a, b) => a[1].price - b[1].price);
+            
+            for (const [id, gear] of sortedGear) {
+                const canAfford = gameState.money >= gear.price;
+                const rarity = RARITIES[gear.rarity];
+                const div = document.createElement('div');
+                
+                let classNames = `shop-item ${canAfford ? '' : 'disabled'}`;
+                if (gear.rarity === 'legendary') classNames += ' legendary-glow';
+                if (gear.rarity === 'epic') classNames += ' epic-glow';
+                div.className = classNames;
+                
+                div.style.background = rarity.bg;
+                div.style.borderLeft = `4px solid ${rarity.color}`;
+                
+                const typeLabel = gear.passive ? '💦 Sprinkler' : '🚿 Watering Can';
+                div.innerHTML = `
+                    <span class="emoji">${gear.emoji}</span>
+                    <div class="info">
+                        <div class="name">${gear.name}</div>
+                        <div class="details">
+                            ${typeLabel} • ${gear.description}
+                        </div>
+                        <div class="price">$${gear.price.toLocaleString()}</div>
+                    </div>
+                `;
+                
+                div.onclick = () => buyGear(id);
+                container.appendChild(div);
+            }
+        }
+        
+        function buyGear(gearId) {
+            const gear = GEAR[gearId];
+            if (!gear || gameState.money < gear.price) {
+                showMessage('Not enough money! 💸');
+                return;
+            }
+            
+            gameState.money -= gear.price;
+            
+            if (gear.passive) {
+                // Sprinkler - add to sprinklers list (will need to be placed)
+                if (!gameState.sprinklers) gameState.sprinklers = [];
+                gameState.sprinklers.push({ id: gearId, plotIndex: -1, timer: 0 });
+                showMessage(`${gear.emoji} ${gear.name} purchased! It will auto-water plants.`);
+            } else {
+                // Watering can - add to gear inventory
+                if (!gameState.gear) gameState.gear = {};
+                if (gameState.gear[gearId]) {
+                    // Refill existing can
+                    gameState.gear[gearId].uses = gear.uses;
+                    showMessage(`${gear.emoji} ${gear.name} refilled!`);
+                } else {
+                    gameState.gear[gearId] = { uses: gear.uses };
+                    showMessage(`${gear.emoji} ${gear.name} purchased! Select it to water plants.`);
+                }
+            }
+            
+            renderGearShop();
+            renderShop();
+        }
+        
+        function selectGear(gearId) {
+            if (gameState.selectedGear === gearId) {
+                gameState.selectedGear = null;
+                showMessage('Watering can deselected');
+            } else {
+                gameState.selectedGear = gearId;
+                gameState.selectedSeed = null; // Deselect seeds
+                gameState.shovelSelected = false;
+                const gear = GEAR[gearId];
+                showMessage(`${gear.emoji} ${gear.name} selected! Click plants to water them.`);
+            }
+            renderGearShop();
+            renderInventory();
+        }
+        
+        function useWateringCan(plotIndex) {
+            const gearId = gameState.selectedGear;
+            if (!gearId || !gameState.gear[gearId]) return false;
+            
+            const gear = GEAR[gearId];
+            const gearData = gameState.gear[gearId];
+            
+            if (gearData.uses <= 0) {
+                showMessage(`${gear.emoji} is empty! Buy a new one.`);
+                delete gameState.gear[gearId];
+                gameState.selectedGear = null;
+                renderGearShop();
+                return false;
+            }
+            
+            // Get plants to water based on range
+            const plantsToWater = [];
+            if (gear.range === 'all') {
+                gameState.plots.forEach((plot, i) => {
+                    if (plot && !plot.isEgg) plantsToWater.push(i);
+                });
+            } else {
+                // Water plants around the selected plot
+                const cols = gameState.farmExpanded ? 6 : 5;
+                const targetCol = plotIndex % cols;
+                const targetRow = Math.floor(plotIndex / cols);
+                
+                let found = 0;
+                for (let dy = -1; dy <= 1 && found < gear.range; dy++) {
+                    for (let dx = -1; dx <= 1 && found < gear.range; dx++) {
+                        const newCol = targetCol + dx;
+                        const newRow = targetRow + dy;
+                        const newIndex = newRow * cols + newCol;
+                        if (newCol >= 0 && newCol < cols && newRow >= 0 && newIndex < gameState.plots.length) {
+                            const plot = gameState.plots[newIndex];
+                            if (plot && !plot.isEgg) {
+                                plantsToWater.push(newIndex);
+                                found++;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (plantsToWater.length === 0) {
+                showMessage('No plants to water here!');
+                return false;
+            }
+            
+            // Apply water boost
+            plantsToWater.forEach(i => {
+                const plot = gameState.plots[i];
+                if (plot) {
+                    plot.growth = (plot.growth || 0) + gear.growthBoost;
+                    // Add wet mutation if not already present
+                    if (!plot.mutations) plot.mutations = [];
+                    if (!plot.mutations.includes('wet')) {
+                        plot.mutations.push('wet');
+                    }
+                }
+            });
+            
+            gearData.uses--;
+            showMessage(`${gear.emoji} Watered ${plantsToWater.length} plant(s)! (+${gear.growthBoost}s) 💧`);
+            
+            if (gearData.uses <= 0) {
+                delete gameState.gear[gearId];
+                gameState.selectedGear = null;
+                showMessage(`${gear.emoji} is now empty!`);
+            }
+            
+            renderFarm();
+            renderGearShop();
+            return true;
+        }
+        
+        function updateSprinklers() {
+            if (!gameState.sprinklers || gameState.sprinklers.length === 0) return;
+            
+            gameState.sprinklers.forEach(sprinkler => {
+                const gear = GEAR[sprinkler.id];
+                if (!gear) return;
+                
+                sprinkler.timer = (sprinkler.timer || 0) + 1;
+                
+                if (sprinkler.timer >= gear.interval) {
+                    sprinkler.timer = 0;
+                    
+                    // Get plants to water
+                    const plantsToWater = [];
+                    if (gear.range === 'all') {
+                        gameState.plots.forEach((plot, i) => {
+                            if (plot && !plot.isEgg) plantsToWater.push(i);
+                        });
+                    } else {
+                        // Water random plants up to range
+                        const validPlots = [];
+                        gameState.plots.forEach((plot, i) => {
+                            if (plot && !plot.isEgg) validPlots.push(i);
+                        });
+                        // Shuffle and take up to range
+                        for (let i = validPlots.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [validPlots[i], validPlots[j]] = [validPlots[j], validPlots[i]];
+                        }
+                        plantsToWater.push(...validPlots.slice(0, gear.range));
+                    }
+                    
+                    // Apply water boost
+                    plantsToWater.forEach(i => {
+                        const plot = gameState.plots[i];
+                        if (plot) {
+                            plot.growth = (plot.growth || 0) + gear.growthBoost;
+                            if (!plot.mutations) plot.mutations = [];
+                            if (!plot.mutations.includes('wet')) {
+                                plot.mutations.push('wet');
+                            }
+                        }
+                    });
+                    
+                    if (plantsToWater.length > 0) {
+                        // Silent watering, or show subtle message for prismatic
+                        if (gear.range === 'all') {
+                            showMessage(`🌈 Prismatic Sprinkler watered all plants!`);
+                        }
+                    }
+                }
+            });
+        }
+
         // Sell All Crops
         function sellAllCrops() {
             let total = 0;
@@ -7477,6 +7812,9 @@
                     }
                 }
             }
+
+            // Update sprinklers
+            updateSprinklers();
 
             // Raccoon steal effect (every 10 minutes = 600 seconds per raccoon)
             if (gameState.neighborhoodCode) {
