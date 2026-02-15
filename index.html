@@ -6887,6 +6887,7 @@
             gameState.plots.forEach((plot, index) => {
                 const div = document.createElement('div');
                 div.className = 'plot';
+                div.dataset.index = index;
                 
                 if (plot && plot.isEgg) {
                     // Render egg plot
@@ -7957,6 +7958,17 @@
                 renderFarm();
                 renderGearTools();
             }
+            
+            // Update sprinkler timer displays
+            gameState.sprinklers.forEach(sprinkler => {
+                if (sprinkler.plotIndex === undefined || sprinkler.plotIndex < 0) return;
+                const timerEl = document.querySelector(`.plot[data-index="${sprinkler.plotIndex}"] .sprinkler-timer`);
+                if (timerEl && sprinkler.remaining !== undefined) {
+                    const mins = Math.floor(sprinkler.remaining / 60);
+                    const secs = sprinkler.remaining % 60;
+                    timerEl.textContent = mins > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : `${secs}s`;
+                }
+            });
             
             gameState.sprinklers.forEach(sprinkler => {
                 const gear = GEAR[sprinkler.id];
