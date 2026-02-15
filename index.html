@@ -320,6 +320,10 @@
             font-weight: bold;
         }
 
+        .shop-item.maxed {
+            opacity: 0.7;
+        }
+
         .shop-item {
             position: relative;
         }
@@ -1884,7 +1888,26 @@
             // Render owned pets (not equipped)
             const ownedPetsContainer = document.createElement('div');
             ownedPetsContainer.className = 'owned-pets-list';
-            const unequippedPets = (gameState.pets || []).filter(p => !gameState.equippedPets?.includes(p));
+            
+            // Count equipped pets by type
+            const equippedCounts = {};
+            (gameState.equippedPets || []).forEach(p => {
+                equippedCounts[p] = (equippedCounts[p] || 0) + 1;
+            });
+            
+            // Get unequipped pets (total owned minus equipped)
+            const unequippedPets = [];
+            const ownedCounts = {};
+            (gameState.pets || []).forEach(p => {
+                ownedCounts[p] = (ownedCounts[p] || 0) + 1;
+            });
+            for (const [petId, count] of Object.entries(ownedCounts)) {
+                const equippedOfThis = equippedCounts[petId] || 0;
+                const unequippedOfThis = count - equippedOfThis;
+                for (let i = 0; i < unequippedOfThis; i++) {
+                    unequippedPets.push(petId);
+                }
+            }
             
             if (unequippedPets.length > 0) {
                 ownedPetsContainer.innerHTML = '<div class="owned-header">Owned (click to equip)</div>';
@@ -1908,33 +1931,34 @@
             const sortedPets = Object.entries(PETS).sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, pet] of sortedPets) {
-                const owned = gameState.pets && gameState.pets.includes(id);
-                const equipped = gameState.equippedPets && gameState.equippedPets.includes(id);
-                const canAfford = gameState.money >= pet.price && !owned;
+                const ownedCount = getPetCount(id);
+                const maxedOut = ownedCount >= 3;
+                const canAfford = gameState.money >= pet.price && !maxedOut;
                 const rarity = RARITIES[pet.rarity];
                 const div = document.createElement('div');
                 
                 // Build class list with rarity glows
-                let classNames = `shop-item ${canAfford ? '' : 'disabled'} ${owned ? 'owned' : ''} ${equipped ? 'equipped' : ''}`;
+                let classNames = `shop-item ${canAfford ? '' : 'disabled'} ${maxedOut ? 'maxed' : ''}`;
                 if (pet.rarity === 'legendary') classNames += ' legendary-glow';
                 if (pet.rarity === 'godly') classNames += ' godly-glow';
                 div.className = classNames;
                 
-                // Use rarity background unless equipped
-                div.style.background = equipped ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : rarity.bg;
+                // Use rarity background
+                div.style.background = maxedOut ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 
+                const ownedText = ownedCount > 0 ? ` (${ownedCount}/3)` : '';
                 div.innerHTML = `
                     <span class="emoji">${pet.emoji}</span>
                     <div class="info">
-                        <div class="name">${pet.name} ${equipped ? '✓' : ''}</div>
+                        <div class="name">${pet.name}${ownedText}</div>
                         <div class="details">
                             <span style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
                             • <span style="color: #E91E63; font-weight: bold;">${pet.ability}</span>
                         </div>
                         <div class="details">${pet.description}</div>
                     </div>
-                    ${!owned ? `<span class="price">$${formatNumber(pet.price)}</span>` : ''}
+                    ${!maxedOut ? `<span class="price">$${formatNumber(pet.price)}</span>` : '<span class="price" style="color: #4CAF50;">MAX</span>'}
                 `;
                 if (canAfford) {
                     div.onclick = () => buyPet(id);
@@ -1943,18 +1967,24 @@
             }
         }
 
+        function getPetCount(petId) {
+            return (gameState.pets || []).filter(p => p === petId).length;
+        }
+
         function buyPet(petId) {
             const pet = PETS[petId];
-            if (gameState.money >= pet.price && !gameState.pets.includes(petId)) {
+            const owned = getPetCount(petId);
+            if (gameState.money >= pet.price && owned < 3) {
                 gameState.money -= pet.price;
+                if (!gameState.pets) gameState.pets = [];
                 gameState.pets.push(petId);
                 // Auto-equip if less than 3 equipped
                 if (!gameState.equippedPets) gameState.equippedPets = [];
                 if (gameState.equippedPets.length < 3) {
                     gameState.equippedPets.push(petId);
-                    showMessage(`${pet.emoji} ${pet.name} joined and is now equipped!`);
+                    showMessage(`${pet.emoji} ${pet.name} #${owned + 1} joined and is now equipped!`);
                 } else {
-                    showMessage(`${pet.emoji} ${pet.name} joined! Equip from your pets.`);
+                    showMessage(`${pet.emoji} ${pet.name} #${owned + 1} joined! Equip from your pets.`);
                 }
                 renderShop();
                 renderPetShop();
