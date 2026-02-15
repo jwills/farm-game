@@ -6236,11 +6236,11 @@
             wateringcan_gold: { name: 'Gold Watering Can', emoji: '💧', price: 1000, description: 'Water 5 plants (+8s growth)', uses: 30, growthBoost: 8, range: 5, rarity: 'epic' },
             wateringcan_diamond: { name: 'Diamond Watering Can', emoji: '💎', price: 5000, description: 'Water all plants (+10s growth)', uses: 50, growthBoost: 10, range: 'all', rarity: 'legendary' },
             // Sprinklers - passive, auto-water nearby plants
-            sprinkler_basic: { name: 'Basic Sprinkler', emoji: '💦', price: 200, description: 'Auto-waters 1 adjacent plant every 30s', interval: 30, growthBoost: 2, range: 1, rarity: 'common', passive: true },
-            sprinkler_improved: { name: 'Improved Sprinkler', emoji: '💦', price: 600, description: 'Auto-waters 4 adjacent plants every 25s', interval: 25, growthBoost: 3, range: 4, rarity: 'uncommon', passive: true },
-            sprinkler_quality: { name: 'Quality Sprinkler', emoji: '🌊', price: 1500, description: 'Auto-waters 8 nearby plants every 20s', interval: 20, growthBoost: 4, range: 8, rarity: 'rare', passive: true },
-            sprinkler_iridium: { name: 'Iridium Sprinkler', emoji: '🌊', price: 4000, description: 'Auto-waters 12 plants every 15s', interval: 15, growthBoost: 5, range: 12, rarity: 'epic', passive: true },
-            sprinkler_prismatic: { name: 'Prismatic Sprinkler', emoji: '🌈', price: 15000, description: 'Auto-waters ALL plants every 10s', interval: 10, growthBoost: 6, range: 'all', rarity: 'legendary', passive: true }
+            sprinkler_basic: { name: 'Basic Sprinkler', emoji: '💦', price: 200, description: 'Auto-waters 1 plant every 30s (+10% mutation)', interval: 30, growthBoost: 2, mutationBoost: 0.10, range: 1, rarity: 'common', passive: true },
+            sprinkler_improved: { name: 'Improved Sprinkler', emoji: '💦', price: 600, description: 'Auto-waters 4 plants every 25s (+15% mutation)', interval: 25, growthBoost: 3, mutationBoost: 0.15, range: 4, rarity: 'uncommon', passive: true },
+            sprinkler_quality: { name: 'Quality Sprinkler', emoji: '🌊', price: 1500, description: 'Auto-waters 8 plants every 20s (+20% mutation)', interval: 20, growthBoost: 4, mutationBoost: 0.20, range: 8, rarity: 'rare', passive: true },
+            sprinkler_iridium: { name: 'Iridium Sprinkler', emoji: '🌊', price: 4000, description: 'Auto-waters 12 plants every 15s (+25% mutation)', interval: 15, growthBoost: 5, mutationBoost: 0.25, range: 12, rarity: 'epic', passive: true },
+            sprinkler_prismatic: { name: 'Prismatic Sprinkler', emoji: '🌈', price: 15000, description: 'Auto-waters ALL plants every 10s (+35% mutation)', interval: 10, growthBoost: 6, mutationBoost: 0.35, range: 'all', rarity: 'legendary', passive: true }
         };
 
         function getRandomSize() {
@@ -7654,7 +7654,8 @@
                         plantsToWater.push(...validPlots.slice(0, gear.range));
                     }
                     
-                    // Apply water boost
+                    // Apply water boost and mutation chance
+                    let mutationGained = null;
                     plantsToWater.forEach(i => {
                         const plot = gameState.plots[i];
                         if (plot) {
@@ -7663,12 +7664,41 @@
                             if (!plot.mutations.includes('wet')) {
                                 plot.mutations.push('wet');
                             }
+                            
+                            // Chance to gain weather mutation from sprinkler
+                            const currentWeather = WEATHER[gameState.currentWeather];
+                            if (currentWeather.mutation && Math.random() < gear.mutationBoost) {
+                                const canGetMutation = !currentWeather.requiresMutation || plot.mutations.includes(currentWeather.requiresMutation);
+                                if (canGetMutation && !plot.mutations.includes(currentWeather.mutation)) {
+                                    plot.mutations.push(currentWeather.mutation);
+                                    mutationGained = currentWeather;
+                                }
+                            }
+                            
+                            // Small chance for golden/rainbow from higher tier sprinklers
+                            if (gear.mutationBoost >= 0.20) {
+                                const crop = CROPS[plot.type];
+                                const targetTime = crop?.growTime || 10;
+                                if (plot.growth >= targetTime) {
+                                    // Golden chance
+                                    if (!plot.mutations.includes('golden') && Math.random() < gear.mutationBoost * 0.3) {
+                                        plot.mutations.push('golden');
+                                        mutationGained = { mutation: 'golden', mutationEmoji: '🌟' };
+                                    }
+                                    // Rainbow chance (rarer)
+                                    if (!plot.mutations.includes('rainbow') && Math.random() < gear.mutationBoost * 0.15) {
+                                        plot.mutations.push('rainbow');
+                                        mutationGained = { mutation: 'rainbow', mutationEmoji: '🌈' };
+                                    }
+                                }
+                            }
                         }
                     });
                     
                     if (plantsToWater.length > 0) {
-                        // Silent watering, or show subtle message for prismatic
-                        if (gear.range === 'all') {
+                        if (mutationGained) {
+                            showMessage(`${gear.emoji} Sprinkler triggered a ${mutationGained.mutation} mutation! ${mutationGained.mutationEmoji}`);
+                        } else if (gear.range === 'all') {
                             showMessage(`🌈 Prismatic Sprinkler watered all plants!`);
                         }
                     }
