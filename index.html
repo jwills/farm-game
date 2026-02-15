@@ -814,6 +814,369 @@
             50% { box-shadow: 0 0 16px #ff6600; }
         }
 
+        /* Radish - small red root */
+        .crop-radish .plant-fruit {
+            width: 14px;
+            height: 18px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0033);
+            border-radius: 50% 50% 60% 60%;
+            bottom: 2px;
+        }
+        .crop-radish .plant-fruit::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 5px;
+            width: 4px;
+            height: 6px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
+        /* Turnip - white/purple root */
+        .crop-turnip .plant-fruit {
+            width: 20px;
+            height: 22px;
+            background: linear-gradient(180deg, #9966cc 0%, #fff 40%, #fff 100%);
+            border-radius: 50% 50% 55% 55%;
+            bottom: 2px;
+        }
+
+        /* Wheat - golden stalks */
+        .crop-wheat .plant-fruit {
+            width: 8px;
+            height: 16px;
+            background: linear-gradient(90deg, #daa520, #f4d03f, #daa520);
+            border-radius: 2px 2px 4px 4px;
+            bottom: 28px;
+        }
+        .crop-wheat .plant-fruit::before,
+        .crop-wheat .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 12px;
+            background: linear-gradient(90deg, #daa520, #f4d03f, #daa520);
+            border-radius: 2px;
+        }
+        .crop-wheat .plant-fruit::before { left: -8px; top: 3px; }
+        .crop-wheat .plant-fruit::after { right: -8px; top: 3px; }
+
+        /* Cabbage - green layered ball */
+        .crop-cabbage .plant-fruit {
+            width: 26px;
+            height: 22px;
+            background: radial-gradient(circle at 40% 40%, #90EE90, #2e8b2e);
+            border-radius: 50%;
+            bottom: 4px;
+        }
+        .crop-cabbage .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 14px;
+            background: radial-gradient(circle at 50% 50%, #98fb98, #3cb371);
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+        }
+
+        /* Cucumber - green oblong */
+        .crop-cucumber .plant-fruit {
+            width: 10px;
+            height: 26px;
+            background: linear-gradient(90deg, #228b22, #32cd32, #228b22);
+            border-radius: 5px;
+            bottom: 18px;
+        }
+        .crop-cucumber .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, transparent 0px, transparent 4px, rgba(255,255,255,0.2) 4px, rgba(255,255,255,0.2) 5px);
+            border-radius: 5px;
+        }
+
+        /* Beans - green pods */
+        .crop-beans .plant-fruit {
+            width: 6px;
+            height: 20px;
+            background: linear-gradient(90deg, #228b22, #32cd32);
+            border-radius: 3px;
+            bottom: 20px;
+            transform: rotate(-10deg);
+        }
+        .crop-beans .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 18px;
+            background: linear-gradient(90deg, #228b22, #32cd32);
+            border-radius: 3px;
+            left: 8px;
+            top: 2px;
+            transform: rotate(15deg);
+        }
+
+        /* Cauliflower - white florets */
+        .crop-cauliflower .plant-fruit {
+            width: 28px;
+            height: 22px;
+            background: radial-gradient(circle at 40% 40%, #fffef0, #e8e8d0);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 18px;
+        }
+        .crop-cauliflower .plant-fruit::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 8px;
+            width: 12px;
+            height: 10px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+
+        /* Spinach - dark green leaves */
+        .crop-spinach .plant-fruit {
+            width: 24px;
+            height: 20px;
+            background: radial-gradient(circle at 50% 50%, #2e8b2e, #1a5a1a);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 8px;
+        }
+
+        /* Bell Pepper - blocky pepper */
+        .crop-bellpepper .plant-fruit {
+            width: 16px;
+            height: 20px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 4px 4px 8px 8px;
+            bottom: 20px;
+        }
+        .crop-bellpepper .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 6px;
+            width: 4px;
+            height: 6px;
+            background: #4a8c4a;
+            border-radius: 2px;
+        }
+
+        /* Sunflower - big yellow flower */
+        .crop-sunflower .plant-fruit {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 50% 50%, #8b4513 0%, #8b4513 35%, #ffd700 35%, #ffd700 100%);
+            border-radius: 50%;
+            bottom: 35px;
+        }
+        .crop-sunflower .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: conic-gradient(from 0deg, #ffd700, #ffb800, #ffd700, #ffb800, #ffd700, #ffb800, #ffd700, #ffb800, #ffd700);
+            border-radius: 50%;
+            clip-path: polygon(50% 0%, 60% 35%, 100% 35%, 68% 57%, 79% 100%, 50% 70%, 21% 100%, 32% 57%, 0% 35%, 40% 35%);
+        }
+
+        /* Blueberry - small blue cluster */
+        .crop-blueberry .plant-fruit {
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 30% 30%, #6495ed, #00008b);
+            border-radius: 50%;
+            bottom: 14px;
+        }
+        .crop-blueberry .plant-fruit::before,
+        .crop-blueberry .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle at 30% 30%, #6495ed, #00008b);
+            border-radius: 50%;
+        }
+        .crop-blueberry .plant-fruit::before { left: -8px; top: 4px; }
+        .crop-blueberry .plant-fruit::after { right: -8px; top: 4px; }
+
+        /* Honeydew melon - pale green */
+        .crop-melon .plant-fruit {
+            width: 28px;
+            height: 24px;
+            background: radial-gradient(circle at 40% 40%, #c1ffc1, #90EE90);
+            border-radius: 50%;
+            bottom: 3px;
+        }
+
+        /* Pineapple - spiky tropical */
+        .crop-pineapple .plant-fruit {
+            width: 18px;
+            height: 26px;
+            background: linear-gradient(90deg, #daa520, #ffa500, #daa520);
+            border-radius: 4px;
+            bottom: 12px;
+        }
+        .crop-pineapple .plant-fruit::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 3px;
+            width: 12px;
+            height: 14px;
+            background: linear-gradient(0deg, #228b22 0%, #32cd32 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 25% 80%, 50% 100%, 75% 80%, 100% 100%);
+        }
+        .crop-pineapple .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, transparent 0px, transparent 3px, rgba(139,69,19,0.3) 3px, rgba(139,69,19,0.3) 4px);
+            border-radius: 4px;
+        }
+
+        /* Rose - red flower */
+        .crop-rose .plant-fruit {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 50% 50%, #ff1744, #b71c1c);
+            border-radius: 50%;
+            bottom: 28px;
+        }
+        .crop-rose .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 50% 50%, #ff4569, #c62828);
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+        }
+
+        /* Peach - fuzzy orange fruit */
+        .crop-peach .plant-fruit {
+            width: 20px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ffcc99, #ff9966);
+            border-radius: 50%;
+            bottom: 26px;
+        }
+        .crop-peach .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 8px;
+            width: 4px;
+            height: 4px;
+            background: #ff6347;
+            border-radius: 50%;
+        }
+
+        /* Lemon - yellow citrus */
+        .crop-lemon .plant-fruit {
+            width: 16px;
+            height: 20px;
+            background: radial-gradient(ellipse at 30% 30%, #fff44f, #ffd700);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 24px;
+        }
+
+        /* Orange - orange citrus */
+        .crop-orange .plant-fruit {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #ffa500, #ff8c00);
+            border-radius: 50%;
+            bottom: 26px;
+        }
+        .crop-orange .plant-fruit::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 8px;
+            width: 4px;
+            height: 5px;
+            background: #228b22;
+            border-radius: 2px;
+        }
+
+        /* Tulip - cup flower */
+        .crop-tulip .plant-fruit {
+            width: 16px;
+            height: 20px;
+            background: linear-gradient(180deg, #ff1493 0%, #ff69b4 100%);
+            border-radius: 50% 50% 30% 30%;
+            bottom: 30px;
+        }
+        .crop-tulip .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 12px;
+            background: #ff69b4;
+            border-radius: 50% 50% 20% 20%;
+            top: 2px;
+            left: -3px;
+        }
+        .crop-tulip .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 12px;
+            background: #ff69b4;
+            border-radius: 50% 50% 20% 20%;
+            top: 2px;
+            right: -3px;
+        }
+
+        /* Cosmic Grape - glowing purple */
+        .crop-cosmicgrape .plant-fruit {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle at 30% 30%, #da70d6, #4b0082);
+            border-radius: 50%;
+            bottom: 20px;
+            box-shadow: 0 0 10px #9400d3;
+            animation: cosmic-pulse 2s ease-in-out infinite;
+        }
+        .crop-cosmicgrape .plant-fruit::before,
+        .crop-cosmicgrape .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle at 30% 30%, #da70d6, #4b0082);
+            border-radius: 50%;
+            box-shadow: 0 0 8px #9400d3;
+        }
+        .crop-cosmicgrape .plant-fruit::before { left: -10px; top: 6px; }
+        .crop-cosmicgrape .plant-fruit::after { right: -10px; top: 6px; }
+        @keyframes cosmic-pulse {
+            0%, 100% { box-shadow: 0 0 10px #9400d3; }
+            50% { box-shadow: 0 0 20px #da70d6; }
+        }
+
+        /* Void Berry - black with glow */
+        .crop-voidberry .plant-fruit {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 30% 30%, #2a0a2a, #000);
+            border-radius: 50%;
+            bottom: 16px;
+            box-shadow: 0 0 15px #4a004a, inset 0 0 8px #8a008a;
+            animation: void-pulse 3s ease-in-out infinite;
+        }
+        @keyframes void-pulse {
+            0%, 100% { box-shadow: 0 0 15px #4a004a, inset 0 0 8px #8a008a; }
+            50% { box-shadow: 0 0 25px #6a006a, inset 0 0 12px #aa00aa; }
+        }
+
         .plant-ground {
             width: 40px;
             height: 8px;
@@ -2199,38 +2562,58 @@
         const MAX_INVENTORY = 10;
 
         const CROPS = {
-            // Common ($10-17) - starter crops
+            // Common ($10-20) - starter crops
             carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 13, basePrice: 17, growTime: 8, rarity: 'common', yield: 1 },
             potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 17, basePrice: 11, growTime: 10, rarity: 'common', yield: [1, 3] },
             onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 10, basePrice: 13, growTime: 7, rarity: 'common', yield: 1 },
-            // Uncommon ($30-42) - early game goals
+            radish: { name: 'Radish', seedEmoji: '🔴', growEmoji: '🔴', seedPrice: 8, basePrice: 12, growTime: 5, rarity: 'common', yield: 1 },
+            turnip: { name: 'Turnip', seedEmoji: '🤍', growEmoji: '🤍', seedPrice: 15, basePrice: 20, growTime: 9, rarity: 'common', yield: 1 },
+            wheat: { name: 'Wheat', seedEmoji: '🌾', growEmoji: '🌾', seedPrice: 12, basePrice: 8, growTime: 6, rarity: 'common', yield: [2, 4] },
+            // Uncommon ($30-50) - early game goals
             tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 30, basePrice: 12, growTime: 12, rarity: 'uncommon', yield: [1, 2], regrows: true },
             lettuce: { name: 'Lettuce', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 33, basePrice: 43, growTime: 11, rarity: 'uncommon', yield: 1 },
             pepper: { name: 'Pepper', seedEmoji: '🌶️', growEmoji: '🌶️', seedPrice: 42, basePrice: 15, growTime: 13, rarity: 'uncommon', yield: [1, 3], regrows: true },
-            // Rare ($67-92) - mid game
+            cabbage: { name: 'Cabbage', seedEmoji: '🥗', growEmoji: '🥗', seedPrice: 35, basePrice: 48, growTime: 12, rarity: 'uncommon', yield: 1 },
+            cucumber: { name: 'Cucumber', seedEmoji: '🥒', growEmoji: '🥒', seedPrice: 38, basePrice: 14, growTime: 10, rarity: 'uncommon', yield: [1, 3], regrows: true },
+            beans: { name: 'Green Beans', seedEmoji: '🫛', growEmoji: '🫛', seedPrice: 45, basePrice: 16, growTime: 11, rarity: 'uncommon', yield: [2, 4], regrows: true },
+            // Rare ($67-120) - mid game
             corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 67, basePrice: 29, growTime: 15, rarity: 'rare', yield: [2, 4] },
             eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 75, basePrice: 22, growTime: 16, rarity: 'rare', yield: [1, 2], regrows: true },
             broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 92, basePrice: 120, growTime: 17, rarity: 'rare', yield: 1 },
-            // Epic ($133-200) - late game
+            cauliflower: { name: 'Cauliflower', seedEmoji: '🤍', growEmoji: '🤍', seedPrice: 85, basePrice: 110, growTime: 16, rarity: 'rare', yield: 1 },
+            spinach: { name: 'Spinach', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 70, basePrice: 28, growTime: 14, rarity: 'rare', yield: [1, 2], regrows: true },
+            bellpepper: { name: 'Bell Pepper', seedEmoji: '🫑', growEmoji: '🫑', seedPrice: 80, basePrice: 32, growTime: 15, rarity: 'rare', yield: [1, 3], regrows: true },
+            sunflower: { name: 'Sunflower', seedEmoji: '🌻', growEmoji: '🌻', seedPrice: 100, basePrice: 45, growTime: 18, rarity: 'rare', yield: [2, 5] },
+            // Epic ($133-250) - late game
             strawberry: { name: 'Strawberry', seedEmoji: '🍓', growEmoji: '🍓', seedPrice: 133, basePrice: 25, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true },
             watermelon: { name: 'Watermelon', seedEmoji: '🍉', growEmoji: '🍉', seedPrice: 167, basePrice: 217, growTime: 20, rarity: 'epic', yield: 1 },
             grapes: { name: 'Grapes', seedEmoji: '🍇', growEmoji: '🍇', seedPrice: 200, basePrice: 35, growTime: 22, rarity: 'epic', yield: [2, 5], regrows: true },
+            blueberry: { name: 'Blueberry', seedEmoji: '🫐', growEmoji: '🫐', seedPrice: 180, basePrice: 30, growTime: 19, rarity: 'epic', yield: [3, 6], regrows: true },
+            melon: { name: 'Honeydew', seedEmoji: '🍈', growEmoji: '🍈', seedPrice: 220, basePrice: 280, growTime: 22, rarity: 'epic', yield: 1 },
+            pineapple: { name: 'Pineapple', seedEmoji: '🍍', growEmoji: '🍍', seedPrice: 250, basePrice: 320, growTime: 24, rarity: 'epic', yield: 1 },
+            rose: { name: 'Rose', seedEmoji: '🌹', growEmoji: '🌹', seedPrice: 190, basePrice: 55, growTime: 20, rarity: 'epic', yield: [2, 4], regrows: true },
             // Legendary ($500-2000) - end game goals
             pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 500, basePrice: 651, growTime: 25, rarity: 'legendary', yield: 1 },
-            cherry: { name: 'Cherry Blossom', seedEmoji: '🌸', growEmoji: '🌸🍒🌸', seedPrice: 700, basePrice: 180, growTime: 22, rarity: 'legendary', yield: [2, 5], regrows: true },
-            coconut: { name: 'Coconut Palm', seedEmoji: '🌴', growEmoji: '🌴🥥', seedPrice: 900, basePrice: 220, growTime: 28, rarity: 'legendary', yield: [2, 4], regrows: true },
-            truffle: { name: 'Truffle', seedEmoji: '🍄', growEmoji: '✨🍄✨', seedPrice: 1200, basePrice: 1561, growTime: 35, rarity: 'legendary', yield: 1 },
-            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '✨🍎✨', seedPrice: 1500, basePrice: 300, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true },
-            ancientwheat: { name: 'Ancient Wheat', seedEmoji: '🌾', growEmoji: '✨🌾🏆', seedPrice: 2000, basePrice: 2602, growTime: 40, rarity: 'legendary', yield: 1 },
-            // Godly ($20000+) - fantasy endgame
-            dragonfruit: { name: 'Dragon Fruit', seedEmoji: '🐲', growEmoji: '🔥🐲🔥', seedPrice: 15000, basePrice: 19518, growTime: 40, rarity: 'godly', yield: 1 },
-            candytree: { name: 'Candy Tree', seedEmoji: '🍭', growEmoji: '🎄🍭', seedPrice: 20000, basePrice: 5000, growTime: 45, rarity: 'godly', yield: [2, 3], regrows: true },
-            moonflower: { name: 'Moon Flower', seedEmoji: '🌙', growEmoji: '✨🌙🌼', seedPrice: 30000, basePrice: 39036, growTime: 55, rarity: 'godly', yield: 1 },
-            crystalflower: { name: 'Crystal Flower', seedEmoji: '💎', growEmoji: '✨💎🌸', seedPrice: 35000, basePrice: 8000, growTime: 50, rarity: 'godly', yield: [2, 4], regrows: true },
-            starfruit: { name: 'Star Fruit', seedEmoji: '⭐', growEmoji: '🌟⭐🌟', seedPrice: 50000, basePrice: 12000, growTime: 60, rarity: 'godly', yield: [2, 3], regrows: true },
-            rainbowmelon: { name: 'Rainbow Melon', seedEmoji: '🌈', growEmoji: '🌈🍉✨', seedPrice: 100000, basePrice: 25000, growTime: 90, rarity: 'godly', yield: [1, 2], regrows: true },
+            cherry: { name: 'Cherry Tree', seedEmoji: '🍒', growEmoji: '🍒', seedPrice: 700, basePrice: 180, growTime: 22, rarity: 'legendary', yield: [2, 5], regrows: true },
+            coconut: { name: 'Coconut Palm', seedEmoji: '🥥', growEmoji: '🥥', seedPrice: 900, basePrice: 220, growTime: 28, rarity: 'legendary', yield: [2, 4], regrows: true },
+            truffle: { name: 'Truffle', seedEmoji: '🍄', growEmoji: '🍄', seedPrice: 1200, basePrice: 1561, growTime: 35, rarity: 'legendary', yield: 1 },
+            goldenapple: { name: 'Golden Apple', seedEmoji: '🍎', growEmoji: '🍎', seedPrice: 1500, basePrice: 300, growTime: 30, rarity: 'legendary', yield: [1, 3], regrows: true },
+            ancientwheat: { name: 'Ancient Wheat', seedEmoji: '✨', growEmoji: '✨', seedPrice: 2000, basePrice: 2602, growTime: 40, rarity: 'legendary', yield: 1 },
+            peach: { name: 'Peach Tree', seedEmoji: '🍑', growEmoji: '🍑', seedPrice: 800, basePrice: 200, growTime: 26, rarity: 'legendary', yield: [2, 4], regrows: true },
+            lemon: { name: 'Lemon Tree', seedEmoji: '🍋', growEmoji: '🍋', seedPrice: 650, basePrice: 160, growTime: 24, rarity: 'legendary', yield: [2, 5], regrows: true },
+            orange: { name: 'Orange Tree', seedEmoji: '🍊', growEmoji: '🍊', seedPrice: 750, basePrice: 185, growTime: 25, rarity: 'legendary', yield: [2, 4], regrows: true },
+            tulip: { name: 'Tulip', seedEmoji: '🌷', growEmoji: '🌷', seedPrice: 600, basePrice: 150, growTime: 23, rarity: 'legendary', yield: [1, 3] },
+            // Godly ($15000+) - fantasy endgame
+            dragonfruit: { name: 'Dragon Fruit', seedEmoji: '🐲', growEmoji: '🐲', seedPrice: 15000, basePrice: 19518, growTime: 40, rarity: 'godly', yield: 1 },
+            candytree: { name: 'Candy Tree', seedEmoji: '🍭', growEmoji: '🍭', seedPrice: 20000, basePrice: 5000, growTime: 45, rarity: 'godly', yield: [2, 3], regrows: true },
+            moonflower: { name: 'Moon Flower', seedEmoji: '🌙', growEmoji: '🌙', seedPrice: 30000, basePrice: 39036, growTime: 55, rarity: 'godly', yield: 1 },
+            crystalflower: { name: 'Crystal Flower', seedEmoji: '💎', growEmoji: '💎', seedPrice: 35000, basePrice: 8000, growTime: 50, rarity: 'godly', yield: [2, 4], regrows: true },
+            starfruit: { name: 'Star Fruit', seedEmoji: '⭐', growEmoji: '⭐', seedPrice: 50000, basePrice: 12000, growTime: 60, rarity: 'godly', yield: [2, 3], regrows: true },
+            rainbowmelon: { name: 'Rainbow Melon', seedEmoji: '🌈', growEmoji: '🌈', seedPrice: 100000, basePrice: 25000, growTime: 90, rarity: 'godly', yield: [1, 2], regrows: true },
+            cosmicgrape: { name: 'Cosmic Grape', seedEmoji: '🔮', growEmoji: '🔮', seedPrice: 75000, basePrice: 18000, growTime: 70, rarity: 'godly', yield: [2, 4], regrows: true },
+            voidberry: { name: 'Void Berry', seedEmoji: '🖤', growEmoji: '🖤', seedPrice: 150000, basePrice: 35000, growTime: 100, rarity: 'godly', yield: [1, 2], regrows: true },
             // Demonic
-            hellfruit: { name: 'Hellfruit', seedEmoji: '🔥', growEmoji: '🔥👿🔥', seedPrice: 25000000, basePrice: 500000, growTime: 666, rarity: 'demonic', yield: 1, regrows: true }
+            hellfruit: { name: 'Hellfruit', seedEmoji: '🔥', growEmoji: '👿', seedPrice: 25000000, basePrice: 500000, growTime: 666, rarity: 'demonic', yield: 1, regrows: true }
         };
 
         const WEATHER = {
