@@ -3082,12 +3082,51 @@
         .plant-model.crop-watermelon .plant-leaf { background: #5a8c4a; width: 16px; }
         .plant-model.crop-watermelon.stage-4 .plant-crop { bottom: 2px; font-size: 2rem; }
 
-        /* Cherry Blossom - elegant tree */
+        /* Cherry Blossom - persistent elegant tree */
         .plant-model.crop-cherry .plant-stem { background: linear-gradient(to top, #5a4a4a, #7a6a6a); width: 6px; }
         .plant-model.crop-cherry .plant-leaf { background: #ffb7c5; width: 12px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-cherry.stage-1 .plant-stem { height: 8px; width: 4px; }
+        .plant-model.crop-cherry.stage-2 .plant-stem { height: 20px; }
+        .plant-model.crop-cherry.stage-2 .plant-leaves { bottom: 22px; }
+        .plant-model.crop-cherry.stage-3 .plant-stem { height: 34px; }
+        .plant-model.crop-cherry.stage-3 .plant-leaves { bottom: 36px; }
         .plant-model.crop-cherry.stage-4 .plant-stem { height: 45px; }
-        .plant-model.crop-cherry.stage-4 .plant-crop { bottom: 30px; }
-        .plant-model.crop-cherry.stage-4 .plant-leaves { bottom: 40px; }
+        .plant-model.crop-cherry.stage-4 .plant-leaves { bottom: 43px; }
+        /* Cherry tree canopy - pink blossoms */
+        .plant-model.crop-cherry::before {
+            content: '';
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-cherry.stage-2::before {
+            width: 24px; height: 18px; bottom: 18px;
+            background: radial-gradient(ellipse at 50% 60%, #ffb7c5, #ff99aa 60%, #ff7799 90%);
+        }
+        .plant-model.crop-cherry.stage-3::before {
+            width: 36px; height: 28px; bottom: 30px;
+            background: radial-gradient(ellipse at 50% 60%, #ffb7c5, #ff99aa 50%, #ff7799 80%);
+        }
+        .plant-model.crop-cherry.stage-4::before {
+            width: 48px; height: 38px; bottom: 40px;
+            background: radial-gradient(ellipse at 50% 55%, #ffc0cb, #ffb7c5 30%, #ff99aa 60%, #ff7799 90%);
+            box-shadow: 0 2px 8px rgba(255,150,180,0.4);
+            z-index: 1;
+        }
+        /* Cherries only appear at stage 4 */
+        .crop-cherry .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-cherry.stage-4 .plant-fruit {
+            width: 16px; height: 16px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0000);
+            border-radius: 50%;
+            bottom: 34px;
+            z-index: 2;
+        }
 
         /* Truffle - underground mushroom */
         .plant-model.crop-truffle .plant-stem { background: linear-gradient(to top, #4a3a2a, #6a5a4a); width: 2px; height: 10px !important; }
@@ -3096,12 +3135,52 @@
         .plant-model.crop-truffle.stage-4 .plant-stem { height: 8px !important; }
         .plant-model.crop-truffle.stage-4 .plant-leaves { bottom: 12px; }
 
-        /* Golden Apple - magical tree */
+        /* Golden Apple - persistent magical tree */
         .plant-model.crop-goldenapple .plant-stem { background: linear-gradient(to top, #6a5a3a, #8a7a5a); width: 7px; }
         .plant-model.crop-goldenapple .plant-leaf { background: #6a9a5a; width: 16px; height: 12px; border-radius: 50%; }
+        .plant-model.crop-goldenapple.stage-1 .plant-stem { height: 8px; width: 4px; }
+        .plant-model.crop-goldenapple.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-goldenapple.stage-2 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-goldenapple.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-goldenapple.stage-3 .plant-leaves { bottom: 32px; }
         .plant-model.crop-goldenapple.stage-4 .plant-stem { height: 42px; }
-        .plant-model.crop-goldenapple.stage-4 .plant-crop { bottom: 28px; filter: drop-shadow(0 0 5px gold); }
-        .plant-model.crop-goldenapple.stage-4 .plant-leaves { bottom: 38px; }
+        .plant-model.crop-goldenapple.stage-4 .plant-leaves { bottom: 40px; }
+        /* Golden Apple tree canopy */
+        .plant-model.crop-goldenapple::before {
+            content: '';
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-goldenapple.stage-2::before {
+            width: 22px; height: 18px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #7aba6a, #5a9a4a 70%);
+        }
+        .plant-model.crop-goldenapple.stage-3::before {
+            width: 34px; height: 28px; bottom: 28px;
+            background: radial-gradient(ellipse at 50% 60%, #7aba6a, #5a9a4a 70%);
+        }
+        .plant-model.crop-goldenapple.stage-4::before {
+            width: 46px; height: 38px; bottom: 38px;
+            background: radial-gradient(ellipse at 50% 55%, #8aca7a, #6aba5a 40%, #5a9a4a 70%);
+            box-shadow: 0 0 10px rgba(255,215,0,0.3);
+            z-index: 1;
+        }
+        /* Golden Apples only appear at stage 4 */
+        .crop-goldenapple .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-goldenapple.stage-4 .plant-fruit {
+            width: 20px; height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #daa520);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 30px;
+            box-shadow: 0 0 10px #ffd700;
+            z-index: 2;
+        }
 
         /* Ancient Wheat - tall golden stalks */
         .plant-model.crop-ancientwheat .plant-stem { background: linear-gradient(to top, #9a8a5a, #baaa7a); width: 3px; }
@@ -3110,12 +3189,185 @@
         .plant-model.crop-ancientwheat.stage-4 .plant-crop { bottom: 38px; }
         .plant-model.crop-ancientwheat.stage-4 .plant-leaves { bottom: 35px; }
 
-        /* Coconut Palm - tall tropical tree */
+        /* Coconut Palm - persistent tall tropical tree */
         .plant-model.crop-coconut .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a6a5a); width: 8px; }
         .plant-model.crop-coconut .plant-leaf { background: #3a8a3a; width: 25px; height: 8px; border-radius: 2px; }
+        .plant-model.crop-coconut.stage-1 .plant-stem { height: 10px; width: 5px; }
+        .plant-model.crop-coconut.stage-2 .plant-stem { height: 24px; }
+        .plant-model.crop-coconut.stage-2 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-coconut.stage-3 .plant-stem { height: 38px; }
+        .plant-model.crop-coconut.stage-3 .plant-leaves { bottom: 40px; }
         .plant-model.crop-coconut.stage-4 .plant-stem { height: 50px; }
-        .plant-model.crop-coconut.stage-4 .plant-crop { bottom: 35px; }
         .plant-model.crop-coconut.stage-4 .plant-leaves { bottom: 48px; }
+        /* Coconut palm fronds - fan shape */
+        .plant-model.crop-coconut::before {
+            content: '';
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50% 50% 30% 30%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-coconut.stage-2::before {
+            width: 30px; height: 20px; bottom: 24px;
+            background: radial-gradient(ellipse at 50% 70%, #4a9a4a, #2a7a2a 80%);
+        }
+        .plant-model.crop-coconut.stage-3::before {
+            width: 42px; height: 28px; bottom: 36px;
+            background: radial-gradient(ellipse at 50% 70%, #4a9a4a, #2a7a2a 80%);
+        }
+        .plant-model.crop-coconut.stage-4::before {
+            width: 54px; height: 36px; bottom: 46px;
+            background: radial-gradient(ellipse at 50% 65%, #5aaa5a, #3a9a3a 50%, #2a7a2a 80%);
+            z-index: 1;
+        }
+        /* Coconuts only appear at stage 4 */
+        .crop-coconut .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-coconut.stage-4 .plant-fruit {
+            width: 20px; height: 24px;
+            background: radial-gradient(circle at 30% 30%, #8B4513, #5D3A1A);
+            border-radius: 50%;
+            bottom: 38px;
+            z-index: 2;
+        }
+
+        /* Peach Tree - persistent fruit tree */
+        .plant-model.crop-peach .plant-stem { background: linear-gradient(to top, #6a5040, #8a7060); width: 6px; }
+        .plant-model.crop-peach .plant-leaf { background: #5a9a5a; width: 14px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-peach.stage-1 .plant-stem { height: 8px; width: 4px; }
+        .plant-model.crop-peach.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-peach.stage-2 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-peach.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-peach.stage-3 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-peach.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-peach.stage-4 .plant-leaves { bottom: 38px; }
+        /* Peach tree canopy */
+        .plant-model.crop-peach::before {
+            content: '';
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-peach.stage-2::before {
+            width: 22px; height: 16px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #6aba6a, #4a9a4a 70%);
+        }
+        .plant-model.crop-peach.stage-3::before {
+            width: 32px; height: 26px; bottom: 28px;
+            background: radial-gradient(ellipse at 50% 60%, #6aba6a, #4a9a4a 70%);
+        }
+        .plant-model.crop-peach.stage-4::before {
+            width: 44px; height: 36px; bottom: 36px;
+            background: radial-gradient(ellipse at 50% 55%, #7aca7a, #5aba5a 40%, #4a9a4a 70%);
+            z-index: 1;
+        }
+        /* Peaches only appear at stage 4 */
+        .crop-peach .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-peach.stage-4 .plant-fruit {
+            width: 20px; height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ffcc99, #ff9966);
+            border-radius: 50%;
+            bottom: 28px;
+            z-index: 2;
+        }
+
+        /* Lemon Tree - persistent citrus tree */
+        .plant-model.crop-lemon .plant-stem { background: linear-gradient(to top, #5a5040, #7a7060); width: 5px; }
+        .plant-model.crop-lemon .plant-leaf { background: #4a8a4a; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-lemon.stage-1 .plant-stem { height: 7px; width: 3px; }
+        .plant-model.crop-lemon.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-lemon.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-lemon.stage-3 .plant-stem { height: 28px; }
+        .plant-model.crop-lemon.stage-3 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-lemon.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-lemon.stage-4 .plant-leaves { bottom: 36px; }
+        /* Lemon tree canopy */
+        .plant-model.crop-lemon::before {
+            content: '';
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-lemon.stage-2::before {
+            width: 20px; height: 16px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9a5a, #3a7a3a 70%);
+        }
+        .plant-model.crop-lemon.stage-3::before {
+            width: 32px; height: 26px; bottom: 26px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9a5a, #3a7a3a 70%);
+        }
+        .plant-model.crop-lemon.stage-4::before {
+            width: 42px; height: 34px; bottom: 34px;
+            background: radial-gradient(ellipse at 50% 55%, #6aaa6a, #4a9a4a 40%, #3a7a3a 70%);
+            z-index: 1;
+        }
+        /* Lemons only appear at stage 4 */
+        .crop-lemon .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-lemon.stage-4 .plant-fruit {
+            width: 16px; height: 20px;
+            background: radial-gradient(ellipse at 30% 30%, #fff44f, #ffd700);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 26px;
+            z-index: 2;
+        }
+
+        /* Orange Tree - persistent citrus tree */
+        .plant-model.crop-orange .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a6a5a); width: 6px; }
+        .plant-model.crop-orange .plant-leaf { background: #4a9a4a; width: 14px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-orange.stage-1 .plant-stem { height: 8px; width: 4px; }
+        .plant-model.crop-orange.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-orange.stage-2 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-orange.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-orange.stage-3 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-orange.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-orange.stage-4 .plant-leaves { bottom: 38px; }
+        /* Orange tree canopy */
+        .plant-model.crop-orange::before {
+            content: '';
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-orange.stage-2::before {
+            width: 22px; height: 18px; bottom: 18px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-orange.stage-3::before {
+            width: 34px; height: 28px; bottom: 28px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-orange.stage-4::before {
+            width: 44px; height: 36px; bottom: 36px;
+            background: radial-gradient(ellipse at 50% 55%, #6aba6a, #4aaa4a 40%, #3a8a3a 70%);
+            z-index: 1;
+        }
+        /* Oranges only appear at stage 4 */
+        .crop-orange .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-orange.stage-4 .plant-fruit {
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 30% 30%, #ffa500, #ff8c00);
+            border-radius: 50%;
+            bottom: 28px;
+            z-index: 2;
+        }
 
         /* Dragon Fruit - exotic cactus-like */
         .plant-model.crop-dragonfruit .plant-stem { background: linear-gradient(to top, #4a6a4a, #6a8a6a); width: 10px; border-radius: 3px; }
