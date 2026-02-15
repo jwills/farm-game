@@ -5518,6 +5518,45 @@
             background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
             position: relative;
         }
+        
+        .tool-item.sprinkler.unplaced {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+            cursor: pointer;
+        }
+        
+        .tool-item.sprinkler.unplaced:hover {
+            background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+        }
+        
+        .tool-item.sprinkler.unplaced.selected {
+            border-color: #FF9800;
+            background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+        }
+        
+        .tool-item.sprinkler.placed {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            opacity: 0.8;
+        }
+        
+        .tool-item.sprinkler .tool-badge.placed {
+            background: #388E3C;
+        }
+        
+        .plot-sprinkler {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 3px rgba(255,255,255,0.8), 0 0 6px rgba(76,175,80,0.5);
+            z-index: 5;
+            animation: sprinklerPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes sprinklerPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
 
         .tool-item .tool-badge {
             position: absolute;
@@ -6427,7 +6466,9 @@
             demonicInStock: false, // only true during hellscape with 25% chance
             gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
             sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
-            selectedGear: null // currently selected watering can
+            unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
+            selectedGear: null, // currently selected watering can
+            selectedSprinkler: null // sprinkler being placed (index in unplacedSprinklers)
         };
 
         // Stock settings per rarity
@@ -6925,6 +6966,8 @@
                     div.onclick = () => {
                         if (gameState.shovelSelected) {
                             removePlant(index);
+                        } else if (gameState.selectedSprinkler !== null) {
+                            placeSprinkler(index);
                         } else if (gameState.selectedGear) {
                             useWateringCan(index);
                         }
@@ -6933,12 +6976,27 @@
                 } else {
                     div.classList.add('empty');
                     div.onclick = () => {
-                        if (gameState.selectedGear) {
+                        if (gameState.selectedSprinkler !== null) {
+                            placeSprinkler(index);
+                        } else if (gameState.selectedGear) {
                             showMessage('No plant here to water!');
                         } else {
                             plantSeed(index);
                         }
                     };
+                }
+                
+                // Add sprinkler icon if there's a sprinkler on this plot
+                const sprinklerOnPlot = (gameState.sprinklers || []).find(s => s.plotIndex === index);
+                if (sprinklerOnPlot) {
+                    const sprinklerGear = GEAR[sprinklerOnPlot.id];
+                    if (sprinklerGear) {
+                        const sprinklerIcon = document.createElement('div');
+                        sprinklerIcon.className = 'plot-sprinkler';
+                        sprinklerIcon.innerHTML = sprinklerGear.emoji;
+                        sprinklerIcon.title = `${sprinklerGear.name}: ${sprinklerGear.description}`;
+                        div.appendChild(sprinklerIcon);
+                    }
                 }
                 
                 container.appendChild(div);
@@ -7122,6 +7180,7 @@
             gameState.selectedSeed = gameState.selectedSeed === type ? null : type;
             gameState.shovelSelected = false;
             gameState.selectedGear = null;
+            gameState.selectedSprinkler = null;
             renderInventory();
             renderGearShop();
         }
@@ -7131,6 +7190,7 @@
             if (gameState.shovelSelected) {
                 gameState.selectedSeed = null;
                 gameState.selectedGear = null;
+                gameState.selectedSprinkler = null;
                 renderGearShop();
             }
             renderInventory();
@@ -7573,18 +7633,37 @@
                 toolsSection.appendChild(div);
             }
             
-            // Add sprinklers (grouped by type)
-            const sprinklerCounts = {};
-            (gameState.sprinklers || []).forEach(s => {
-                sprinklerCounts[s.id] = (sprinklerCounts[s.id] || 0) + 1;
+            // Add unplaced sprinklers (selectable for placement)
+            const unplacedCounts = {};
+            (gameState.unplacedSprinklers || []).forEach((gearId, idx) => {
+                if (!unplacedCounts[gearId]) unplacedCounts[gearId] = { count: 0, firstIdx: idx };
+                unplacedCounts[gearId].count++;
             });
-            for (const [gearId, count] of Object.entries(sprinklerCounts)) {
+            for (const [gearId, data] of Object.entries(unplacedCounts)) {
+                const gear = GEAR[gearId];
+                if (!gear) continue;
+                const isSelected = gameState.selectedSprinkler !== null && 
+                    gameState.unplacedSprinklers[gameState.selectedSprinkler] === gearId;
+                const div = document.createElement('div');
+                div.className = `tool-item sprinkler unplaced${isSelected ? ' selected' : ''}`;
+                div.innerHTML = `${gear.emoji}<span class="tool-badge">x${data.count}</span>`;
+                div.title = `${gear.name}: Click to select, then click a plot to place`;
+                div.onclick = () => selectSprinklerToPlace(gearId);
+                toolsSection.appendChild(div);
+            }
+            
+            // Add placed sprinklers (info only, grouped by type)
+            const placedCounts = {};
+            (gameState.sprinklers || []).forEach(s => {
+                placedCounts[s.id] = (placedCounts[s.id] || 0) + 1;
+            });
+            for (const [gearId, count] of Object.entries(placedCounts)) {
                 const gear = GEAR[gearId];
                 if (!gear) continue;
                 const div = document.createElement('div');
-                div.className = 'tool-item sprinkler';
-                div.innerHTML = `${gear.emoji}<span class="tool-badge">x${count}</span>`;
-                div.title = `${gear.name}: ${gear.description} (${count} active)`;
+                div.className = 'tool-item sprinkler placed';
+                div.innerHTML = `${gear.emoji}<span class="tool-badge placed">✓${count}</span>`;
+                div.title = `${gear.name}: ${count} placed on farm`;
                 toolsSection.appendChild(div);
             }
         }
@@ -7637,10 +7716,10 @@
             gameState.money -= gear.price;
             
             if (gear.passive) {
-                // Sprinkler - add to sprinklers list (will need to be placed)
-                if (!gameState.sprinklers) gameState.sprinklers = [];
-                gameState.sprinklers.push({ id: gearId, plotIndex: -1, timer: 0 });
-                showMessage(`${gear.emoji} ${gear.name} purchased! It will auto-water plants.`);
+                // Sprinkler - add to unplaced list
+                if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                gameState.unplacedSprinklers.push(gearId);
+                showMessage(`${gear.emoji} ${gear.name} purchased! Select it and click a plot to place.`);
             } else {
                 // Watering can - add to gear inventory
                 if (!gameState.gear) gameState.gear = {};
@@ -7665,13 +7744,59 @@
                 showMessage('Watering can deselected');
             } else {
                 gameState.selectedGear = gearId;
-                gameState.selectedSeed = null; // Deselect seeds
+                gameState.selectedSeed = null;
                 gameState.shovelSelected = false;
+                gameState.selectedSprinkler = null;
                 const gear = GEAR[gearId];
                 showMessage(`${gear.emoji} ${gear.name} selected! Click plants to water them.`);
             }
             renderGearShop();
             renderInventory();
+        }
+        
+        function selectSprinklerToPlace(gearId) {
+            // Find first unplaced sprinkler of this type
+            const idx = (gameState.unplacedSprinklers || []).findIndex(id => id === gearId);
+            if (idx === -1) return;
+            
+            if (gameState.selectedSprinkler === idx) {
+                gameState.selectedSprinkler = null;
+                showMessage('Sprinkler deselected');
+            } else {
+                gameState.selectedSprinkler = idx;
+                gameState.selectedSeed = null;
+                gameState.shovelSelected = false;
+                gameState.selectedGear = null;
+                const gear = GEAR[gearId];
+                showMessage(`${gear.emoji} ${gear.name} selected! Click a plot to place it.`);
+            }
+            renderInventory();
+        }
+        
+        function placeSprinkler(plotIndex) {
+            if (gameState.selectedSprinkler === null) return false;
+            const gearId = gameState.unplacedSprinklers[gameState.selectedSprinkler];
+            if (!gearId) return false;
+            
+            // Check if plot already has a sprinkler
+            const existingSprinkler = (gameState.sprinklers || []).find(s => s.plotIndex === plotIndex);
+            if (existingSprinkler) {
+                showMessage('This plot already has a sprinkler! 🚫');
+                return false;
+            }
+            
+            // Remove from unplaced and add to placed
+            gameState.unplacedSprinklers.splice(gameState.selectedSprinkler, 1);
+            if (!gameState.sprinklers) gameState.sprinklers = [];
+            gameState.sprinklers.push({ id: gearId, plotIndex: plotIndex, timer: 0 });
+            
+            const gear = GEAR[gearId];
+            showMessage(`${gear.emoji} ${gear.name} placed! It will auto-water nearby plants.`);
+            
+            gameState.selectedSprinkler = null;
+            renderInventory();
+            renderFarm();
+            return true;
         }
         
         function useWateringCan(plotIndex) {
@@ -7750,6 +7875,28 @@
             return true;
         }
         
+        function getAdjacentPlots(plotIndex) {
+            // Get plots adjacent to the given plot (including diagonals)
+            const cols = gameState.farmExpanded ? 6 : 5;
+            const rows = gameState.farmExpanded ? 5 : 4;
+            const totalPlots = cols * rows;
+            const row = Math.floor(plotIndex / cols);
+            const col = plotIndex % cols;
+            
+            const adjacent = [];
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue; // Skip self
+                    const newRow = row + dr;
+                    const newCol = col + dc;
+                    if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+                        adjacent.push(newRow * cols + newCol);
+                    }
+                }
+            }
+            return adjacent;
+        }
+        
         function updateSprinklers() {
             if (!gameState.sprinklers || gameState.sprinklers.length === 0) return;
             
@@ -7757,29 +7904,29 @@
                 const gear = GEAR[sprinkler.id];
                 if (!gear) return;
                 
+                // Skip unplaced sprinklers
+                if (sprinkler.plotIndex === undefined || sprinkler.plotIndex < 0) return;
+                
                 sprinkler.timer = (sprinkler.timer || 0) + 1;
                 
                 if (sprinkler.timer >= gear.interval) {
                     sprinkler.timer = 0;
                     
-                    // Get plants to water
+                    // Get adjacent plots to water
+                    const adjacentPlots = getAdjacentPlots(sprinkler.plotIndex);
                     const plantsToWater = [];
+                    
                     if (gear.range === 'all') {
+                        // Premium sprinkler waters ALL plants on farm
                         gameState.plots.forEach((plot, i) => {
                             if (plot && !plot.isEgg) plantsToWater.push(i);
                         });
                     } else {
-                        // Water random plants up to range
-                        const validPlots = [];
-                        gameState.plots.forEach((plot, i) => {
-                            if (plot && !plot.isEgg) validPlots.push(i);
+                        // Water adjacent plots with plants
+                        adjacentPlots.forEach(i => {
+                            const plot = gameState.plots[i];
+                            if (plot && !plot.isEgg) plantsToWater.push(i);
                         });
-                        // Shuffle and take up to range
-                        for (let i = validPlots.length - 1; i > 0; i--) {
-                            const j = Math.floor(Math.random() * (i + 1));
-                            [validPlots[i], validPlots[j]] = [validPlots[j], validPlots[i]];
-                        }
-                        plantsToWater.push(...validPlots.slice(0, gear.range));
                     }
                     
                     // Apply water boost and mutation chance
