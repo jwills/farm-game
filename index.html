@@ -891,13 +891,74 @@
         }
 
         /* Mutation visual effects on plant */
-        .plant-model.has-golden .plant-crop { filter: drop-shadow(0 0 5px gold); }
-        .plant-model.has-rainbow .plant-crop { animation: rainbow-glow 2s linear infinite; }
-        @keyframes rainbow-glow {
-            0% { filter: drop-shadow(0 0 5px red); }
-            33% { filter: drop-shadow(0 0 5px lime); }
-            66% { filter: drop-shadow(0 0 5px blue); }
-            100% { filter: drop-shadow(0 0 5px red); }
+        
+        /* Golden mutation - gold color with sparkles */
+        .plant-model.has-golden .plant-fruit {
+            filter: sepia(1) saturate(3) hue-rotate(15deg) brightness(1.1) drop-shadow(0 0 6px #ffd700);
+        }
+        .plant-model.has-golden.stage-4 .plant-leaves {
+            display: none;
+        }
+        /* Sparkles around golden fruit */
+        .plant-model.has-golden.stage-4::before,
+        .plant-model.has-golden.stage-4::after {
+            content: '✦';
+            position: absolute;
+            font-size: 10px;
+            color: #ffd700;
+            z-index: 10;
+            animation: sparkle 1.5s ease-in-out infinite;
+            text-shadow: 0 0 4px #ffd700;
+        }
+        .plant-model.has-golden.stage-4::before {
+            top: 12px;
+            left: 8px;
+            animation-delay: 0s;
+        }
+        .plant-model.has-golden.stage-4::after {
+            top: 20px;
+            right: 8px;
+            animation-delay: 0.5s;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Rainbow mutation - cycling rainbow colors */
+        .plant-model.has-rainbow .plant-fruit {
+            animation: rainbow-color 3s linear infinite;
+        }
+        .plant-model.has-rainbow.stage-4 .plant-leaves {
+            display: none;
+        }
+        .plant-model.has-rainbow.stage-4::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0088, #ff0000);
+            border-radius: 50%;
+            z-index: 1;
+            opacity: 0.3;
+            animation: rainbow-spin 4s linear infinite;
+            filter: blur(8px);
+        }
+        @keyframes rainbow-color {
+            0% { filter: hue-rotate(0deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #ff0000); }
+            16% { filter: hue-rotate(60deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #ffff00); }
+            33% { filter: hue-rotate(120deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #00ff00); }
+            50% { filter: hue-rotate(180deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #00ffff); }
+            66% { filter: hue-rotate(240deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #0000ff); }
+            83% { filter: hue-rotate(300deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #ff00ff); }
+            100% { filter: hue-rotate(360deg) saturate(1.5) brightness(1.1) drop-shadow(0 0 8px #ff0000); }
+        }
+        @keyframes rainbow-spin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
         }
 
         .plant-model.has-wet .plant-stem { background: linear-gradient(to top, #2a4a4a, #3a6a6a) !important; }
