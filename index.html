@@ -4310,13 +4310,13 @@
                     hasSeeds = true; // So we don't show "no seeds"
                     const pet = PETS[petId];
                     const div = document.createElement('div');
-                    div.className = `inv-item egg-inv-item ${gameState.selectedEgg === petId ? 'selected' : ''}`;
+                    div.className = `inv-item egg-inv-item`;
                     div.innerHTML = `
                         <span class="emoji">🥚</span>
                         <span class="count">${count}</span>
                     `;
-                    div.title = `${pet.name} Egg - click to select, then plant in garden`;
-                    div.onclick = () => selectEgg(petId);
+                    div.title = `${pet.name} Egg - click to plant in first empty plot`;
+                    div.onclick = () => autoPlantEgg(petId);
                     seedContainer.appendChild(div);
                 }
             }
@@ -4424,7 +4424,6 @@
         // Select Seed
         function selectSeed(type) {
             gameState.selectedSeed = gameState.selectedSeed === type ? null : type;
-            gameState.selectedEgg = null;
             gameState.shovelSelected = false;
             renderInventory();
         }
@@ -4433,7 +4432,6 @@
             gameState.shovelSelected = !gameState.shovelSelected;
             if (gameState.shovelSelected) {
                 gameState.selectedSeed = null;
-                gameState.selectedEgg = null;
             }
             renderInventory();
             updateShovelUI();
@@ -4462,11 +4460,6 @@
 
         // Plant Seed
         function plantSeed(plotIndex) {
-            // Check if planting an egg
-            if (gameState.selectedEgg) {
-                return plantEgg(plotIndex);
-            }
-            
             if (!gameState.selectedSeed || !gameState.seeds[gameState.selectedSeed]) {
                 showMessage('Select seeds from your inventory first!');
                 return;
@@ -4497,15 +4490,24 @@
             renderInventory();
         }
 
-        function plantEgg(plotIndex) {
-            const petId = gameState.selectedEgg;
+        function autoPlantEgg(petId) {
             if (!petId || !gameState.eggInventory || !gameState.eggInventory[petId]) {
-                showMessage('Select an egg from your inventory first!');
+                showMessage('No eggs to plant!');
                 return;
             }
             
-            if (gameState.plots[plotIndex]) {
-                return; // Plot not empty
+            // Find first empty plot
+            let plotIndex = -1;
+            for (let i = 0; i < 25; i++) {
+                if (!gameState.plots[i]) {
+                    plotIndex = i;
+                    break;
+                }
+            }
+            
+            if (plotIndex === -1) {
+                showMessage('No empty plots available! 🚫');
+                return;
             }
             
             const pet = PETS[petId];
@@ -4524,7 +4526,6 @@
             
             if (gameState.eggInventory[petId] <= 0) {
                 delete gameState.eggInventory[petId];
-                gameState.selectedEgg = null;
             }
             
             renderFarm();
@@ -4817,17 +4818,6 @@
 
         function countPlantedEggs(petId) {
             return (gameState.plots || []).filter(p => p && p.isEgg && p.petId === petId).length;
-        }
-
-        function getSelectedEgg() {
-            return gameState.selectedEgg || null;
-        }
-
-        function selectEgg(petId) {
-            gameState.selectedSeed = null;
-            gameState.selectedEgg = gameState.selectedEgg === petId ? null : petId;
-            gameState.shovelSelected = false;
-            renderInventory();
         }
 
         // Legacy support
