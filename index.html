@@ -281,6 +281,241 @@
             transition: left 0.8s ease-in-out, top 0.8s ease-in-out;
         }
         .roaming-pet.facing-left { transform: scaleX(-1); }
+        /* Pet rarity effects */
+        .roaming-pet.rarity-uncommon {
+            filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+        }
+        .roaming-pet.rarity-rare {
+            filter: drop-shadow(0 0 5px rgba(52, 152, 219, 0.8));
+        }
+        .roaming-pet.rarity-epic {
+            filter: drop-shadow(0 0 8px rgba(155, 89, 182, 0.9));
+        }
+        .roaming-pet.rarity-epic::after {
+            content: '✦';
+            position: absolute;
+            top: -5px; right: -5px;
+            font-size: 10px;
+            color: #9b59b6;
+            animation: petSparkle 1s infinite;
+        }
+        @keyframes petSparkle {
+            0%, 100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .roaming-pet.rarity-legendary {
+            filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.9)) drop-shadow(0 0 20px rgba(241, 196, 15, 0.5));
+        }
+        .roaming-pet.rarity-legendary::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: 50%; transform: translateX(-50%);
+            width: 12px; height: 12px;
+            background: radial-gradient(circle, #f1c40f 0%, transparent 70%);
+            border-radius: 50%;
+            animation: legendaryGlow 1.5s infinite;
+        }
+        .roaming-pet.rarity-legendary::after {
+            content: '★';
+            position: absolute;
+            top: -10px; left: 50%; transform: translateX(-50%);
+            font-size: 12px;
+            color: #f1c40f;
+            text-shadow: 0 0 5px #f39c12;
+            animation: starFloat 2s ease-in-out infinite;
+        }
+        @keyframes legendaryGlow {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.5); }
+        }
+        @keyframes starFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-5px); }
+        }
+        .roaming-pet.rarity-godly {
+            filter: drop-shadow(0 0 12px rgba(231, 76, 60, 0.9)) drop-shadow(0 0 25px rgba(142, 68, 173, 0.7));
+            animation: godlyPulse 2s infinite;
+        }
+        @keyframes godlyPulse {
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(231, 76, 60, 0.9)) drop-shadow(0 0 25px rgba(142, 68, 173, 0.7)); }
+            50% { filter: drop-shadow(0 0 18px rgba(241, 196, 15, 1)) drop-shadow(0 0 35px rgba(46, 204, 113, 0.8)); }
+        }
+        .roaming-pet.rarity-godly::before {
+            content: '';
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 30px;
+            background: conic-gradient(from 0deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db, #9b59b6, #e74c3c);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: godlyRing 3s linear infinite;
+        }
+        @keyframes godlyRing {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        .roaming-pet.rarity-godly::after {
+            content: '👑';
+            position: absolute;
+            top: -18px; left: 50%; transform: translateX(-50%);
+            font-size: 14px;
+            animation: crownBob 1s ease-in-out infinite;
+        }
+        @keyframes crownBob {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+            50% { transform: translateX(-50%) translateY(-3px) rotate(5deg); }
+        }
+        /* Special pet-specific effects */
+        .pet-phoenix .pet-body {
+            animation: petBob 1s ease-in-out infinite, phoenixFlame 0.3s infinite;
+        }
+        @keyframes phoenixFlame {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        .pet-dragon .pet-body {
+            animation: petBob 1s ease-in-out infinite;
+        }
+        .pet-dragon .pet-comb {
+            box-shadow: 0 0 8px #e74c3c, 0 0 15px #f39c12;
+        }
+        .pet-unicorn .pet-body {
+            animation: petBob 1s ease-in-out infinite, unicornShimmer 3s infinite;
+        }
+        @keyframes unicornShimmer {
+            0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+            50% { filter: brightness(1.1) hue-rotate(20deg); }
+        }
+        .pet-bee .pet-body {
+            animation: petBob 0.5s ease-in-out infinite;
+        }
+        .pet-bunny .pet-body {
+            animation: bunnyHop 0.8s ease-in-out infinite;
+        }
+        @keyframes bunnyHop {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+            50% { transform: translateY(0); }
+        }
+        .pet-slime .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 18px;
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            border-radius: 50% 50% 60% 60%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            animation: slimeWobble 1s ease-in-out infinite;
+        }
+        .pet-slime .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 6px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            top: 10px; left: 12px;
+        }
+        .pet-slime .pet-eyes {
+            position: absolute;
+            top: 14px; left: 50%; transform: translateX(-50%);
+            width: 14px; display: flex; justify-content: space-between;
+        }
+        .pet-slime .pet-eyes::before, .pet-slime .pet-eyes::after {
+            content: '';
+            width: 5px; height: 5px;
+            background: #2c3e50;
+            border-radius: 50%;
+        }
+        @keyframes slimeWobble {
+            0%, 100% { transform: translateX(-50%) scaleX(1) scaleY(1); }
+            25% { transform: translateX(-50%) scaleX(1.1) scaleY(0.9); }
+            50% { transform: translateX(-50%) scaleX(0.9) scaleY(1.1); }
+            75% { transform: translateX(-50%) scaleX(1.05) scaleY(0.95); }
+        }
+        .pet-kraken .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 16px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-kraken .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 12px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border-radius: 50%;
+            top: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-kraken .pet-eyes {
+            position: absolute;
+            top: 10px; left: 50%; transform: translateX(-50%);
+            width: 12px; display: flex; justify-content: space-between;
+        }
+        .pet-kraken .pet-eyes::before, .pet-kraken .pet-eyes::after {
+            content: '';
+            width: 5px; height: 5px;
+            background: #f1c40f;
+            border-radius: 50%;
+        }
+        .pet-kraken .pet-tail {
+            position: absolute;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            width: 24px; display: flex; justify-content: space-between;
+        }
+        .pet-kraken .pet-tail::before, .pet-kraken .pet-tail::after {
+            content: '';
+            width: 3px; height: 10px;
+            background: #8e44ad;
+            border-radius: 0 0 3px 3px;
+            animation: tentacleWave 0.5s ease-in-out infinite alternate;
+        }
+        .pet-kraken .pet-tail::after { animation-delay: 0.25s; }
+        @keyframes tentacleWave {
+            0% { transform: rotate(-15deg); }
+            100% { transform: rotate(15deg); }
+        }
+        .pet-raccoon .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: linear-gradient(135deg, #7f8c8d, #606060);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-raccoon .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 12px;
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-raccoon .pet-eyes {
+            position: absolute;
+            top: 6px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 6px;
+            background: #2c3e50;
+            border-radius: 3px;
+        }
+        .pet-raccoon .pet-eyes::before, .pet-raccoon .pet-eyes::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            top: 1px;
+        }
+        .pet-raccoon .pet-eyes::before { left: 2px; }
+        .pet-raccoon .pet-eyes::after { right: 2px; }
+        .pet-raccoon .pet-tail {
+            position: absolute;
+            width: 5px; height: 14px;
+            background: repeating-linear-gradient(0deg, #7f8c8d 0px, #7f8c8d 3px, #2c3e50 3px, #2c3e50 6px);
+            border-radius: 3px;
+            bottom: 6px; right: 2px;
+            transform: rotate(30deg);
+        }
         .roaming-pet .pet-shadow {
             position: absolute;
             width: 20px;
@@ -3122,7 +3357,6 @@
             frog: { name: 'Garden Frog', emoji: '🐸', price: 125, ability: 'Moisture', description: 'Rain is 25% more effective', effect: 'rain', rarity: 'common' },
             pig: { name: 'Truffle Pig', emoji: '🐷', price: 400, ability: 'Digger', description: 'Find bonus coins when harvesting', effect: 'coins', rarity: 'rare' },
             crow: { name: 'Lucky Crow', emoji: '🐦‍⬛', price: 175, ability: 'Scavenger', description: '+10% chance to find rare seeds', effect: 'rareseeds', rarity: 'uncommon' },
-            goat: { name: 'Mountain Goat', emoji: '🐐', price: 350, ability: 'Hardy', description: 'Crops survive bad weather', effect: 'weatherproof', rarity: 'rare' },
             butterfly: { name: 'Monarch', emoji: '🦋', price: 500, ability: 'Grace', description: 'Golden mutations 2x more likely', effect: 'golden', rarity: 'epic' },
             snail: { name: 'Rainbow Snail', emoji: '🐌', price: 600, ability: 'Prism', description: 'Rainbow mutations 2x more likely', effect: 'rainbow', rarity: 'epic' },
             fox: { name: 'Arctic Fox', emoji: '🦊', price: 750, ability: 'Frostbite', description: 'Frozen plants worth 3x', effect: 'frostvalue', rarity: 'epic' },
@@ -3224,8 +3458,9 @@
             // Create pets for each equipped pet
             (gameState.equippedPets || []).forEach((petId, idx) => {
                 if (!petId || !PETS[petId]) return;
+                const pet = PETS[petId];
                 const petEl = document.createElement('div');
-                petEl.className = `roaming-pet pet-${petId}`;
+                petEl.className = `roaming-pet pet-${petId} rarity-${pet.rarity || 'common'}`;
                 petEl.id = `roaming-pet-${idx}`;
                 petEl.innerHTML = `<div class="pet-body"><div class="pet-ears"></div><div class="pet-tail"></div><div class="pet-eyes"></div><div class="pet-comb"></div><div class="pet-beak"></div><div class="pet-snout"></div></div><div class="pet-shadow"></div>`;
                 grid.appendChild(petEl);
