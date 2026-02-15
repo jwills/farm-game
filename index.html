@@ -266,18 +266,26 @@
             opacity: 1;
         }
 
-        .raccoon-timer {
-            position: absolute;
-            bottom: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.65rem;
-            color: #9C27B0;
+        .raccoon-timer-side {
+            background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #4A148C;
             font-weight: bold;
-            white-space: nowrap;
-            background: rgba(255,255,255,0.9);
-            padding: 1px 4px;
-            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .raccoon-timer-side.hidden {
+            display: none;
+        }
+
+        .raccoon-timer-side #raccoon-timer {
+            color: #7B1FA2;
+            font-size: 1.1rem;
         }
 
         .empty-slot {
@@ -1106,6 +1114,9 @@
 
                 <div class="shop pet-shop">
                     <h2>🐾 Pet Shop</h2>
+                    <div id="raccoon-timer-container" class="raccoon-timer-side hidden">
+                        <span>🦝</span> Raccoon steals in: <span id="raccoon-timer">10:00</span>
+                    </div>
                     <div class="owned-pets" id="owned-pets"></div>
                     <div class="shop-items" id="pet-shop-items"></div>
                 </div>
@@ -1870,14 +1881,7 @@
                 div.className = 'equipped-slot' + (petId ? ' filled' : ' empty');
                 if (petId && PETS[petId]) {
                     const pet = PETS[petId];
-                    let extraHtml = '';
-                    if (petId === 'raccoon' && gameState.neighborhoodCode) {
-                        const remaining = 600 - (gameState.raccoonTimer || 0);
-                        const mins = Math.floor(remaining / 60);
-                        const secs = remaining % 60;
-                        extraHtml = `<span class="raccoon-timer" id="raccoon-timer">${mins}:${secs.toString().padStart(2, '0')}</span>`;
-                    }
-                    div.innerHTML = `<span class="pet-emoji">${pet.emoji}</span><span class="unequip" onclick="unequipPet('${petId}')">✕</span>${extraHtml}`;
+                    div.innerHTML = `<span class="pet-emoji">${pet.emoji}</span><span class="unequip" onclick="unequipPet('${petId}')">✕</span>`;
                     div.setAttribute('title', `${pet.name}: ${pet.description}`);
                 } else {
                     div.innerHTML = '<span class="empty-slot">+</span>';
@@ -1965,6 +1969,24 @@
                 }
                 container.appendChild(div);
             }
+
+            // Update raccoon timer visibility
+            updateRaccoonTimerVisibility();
+        }
+
+        function updateRaccoonTimerVisibility() {
+            const timerContainer = document.getElementById('raccoon-timer-container');
+            if (!timerContainer) return;
+            
+            const hasRaccoon = hasPetEffect('steal');
+            const inNeighborhood = !!gameState.neighborhoodCode;
+            
+            if (hasRaccoon && inNeighborhood) {
+                timerContainer.classList.remove('hidden');
+                updateRaccoonTimer();
+            } else {
+                timerContainer.classList.add('hidden');
+            }
         }
 
         function getPetCount(petId) {
@@ -1998,7 +2020,10 @@
                 showMessage('Unequip a pet first! (3 max) 🐾');
                 return;
             }
-            if (!gameState.equippedPets.includes(petId)) {
+            // Check if we have an unequipped copy of this pet
+            const ownedCount = getPetCount(petId);
+            const equippedCount = gameState.equippedPets.filter(p => p === petId).length;
+            if (equippedCount < ownedCount) {
                 gameState.equippedPets.push(petId);
                 const pet = PETS[petId];
                 showMessage(`${pet.emoji} ${pet.name} equipped!`);
@@ -2008,10 +2033,14 @@
 
         function unequipPet(petId) {
             if (!gameState.equippedPets) return;
-            gameState.equippedPets = gameState.equippedPets.filter(p => p !== petId);
-            const pet = PETS[petId];
-            showMessage(`${pet.emoji} ${pet.name} unequipped`);
-            renderPetShop();
+            // Remove only the first instance of this pet
+            const index = gameState.equippedPets.indexOf(petId);
+            if (index !== -1) {
+                gameState.equippedPets.splice(index, 1);
+                const pet = PETS[petId];
+                showMessage(`${pet.emoji} ${pet.name} unequipped`);
+                renderPetShop();
+            }
         }
 
         // Sell All Crops
@@ -2602,6 +2631,7 @@
                 `;
                 document.getElementById('neighborhood-members').innerHTML = '';
             }
+            updateRaccoonTimerVisibility();
         }
 
         function renderNeighborFarms(farms) {
