@@ -3854,10 +3854,10 @@
             });
         }
 
-        // Move pets every 2-4 seconds
-        setInterval(() => {
-            if (Math.random() > 0.3) movePets();
-        }, 2000);
+        // Pet roaming disabled
+        // setInterval(() => {
+        //     if (Math.random() > 0.3) movePets();
+        // }, 2000);
 
 
 
@@ -4196,7 +4196,7 @@
             container.appendChild(shadow);
 
             setTimeout(updatePlayerPosition, 10);
-            setTimeout(initRoamingPets, 20);
+            // setTimeout(initRoamingPets, 20); // Pet roaming disabled
         }
 
         // Render Inventory
