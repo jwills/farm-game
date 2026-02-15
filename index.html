@@ -901,8 +901,51 @@
         }
 
         .plant-model.has-wet .plant-stem { background: linear-gradient(to top, #2a4a4a, #3a6a6a) !important; }
-        .plant-model.has-frozen .plant-model, .plant-model.has-frozen .plant-crop { filter: brightness(1.2) hue-rotate(180deg); }
-        .plant-model.has-shocked .plant-crop { animation: shock 0.3s ease-in-out infinite; }
+        
+        /* Frozen mutation - ice block around fruit */
+        .plant-model.has-frozen .plant-fruit {
+            filter: brightness(1.1) saturate(0.7);
+        }
+        .plant-model.has-frozen.stage-4::before {
+            content: '';
+            position: absolute;
+            width: 36px;
+            height: 40px;
+            background: linear-gradient(135deg, 
+                rgba(200, 230, 255, 0.6) 0%,
+                rgba(150, 200, 255, 0.4) 25%,
+                rgba(180, 220, 255, 0.5) 50%,
+                rgba(140, 190, 255, 0.4) 75%,
+                rgba(200, 230, 255, 0.6) 100%);
+            border: 2px solid rgba(150, 200, 255, 0.8);
+            border-radius: 4px;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            box-shadow: 
+                inset 0 0 15px rgba(255, 255, 255, 0.5),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+                0 0 10px rgba(150, 200, 255, 0.5);
+        }
+        /* Ice cracks/highlights */
+        .plant-model.has-frozen.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 36px;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.6) 45%, transparent 50%),
+                linear-gradient(-45deg, transparent 60%, rgba(255,255,255,0.4) 65%, transparent 70%),
+                linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.3) 22%, transparent 24%);
+            pointer-events: none;
+        }
+        
+        .plant-model.has-shocked .plant-fruit { animation: shock 0.3s ease-in-out infinite; }
         @keyframes shock {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-2px); }
