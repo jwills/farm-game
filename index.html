@@ -271,6 +271,243 @@
             transition: left 0.15s ease-out, top 0.15s ease-out;
         }
 
+        /* Roaming pets */
+        .roaming-pet {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            z-index: 101;
+            pointer-events: none;
+            transition: left 0.8s ease-in-out, top 0.8s ease-in-out;
+        }
+        .roaming-pet.facing-left { transform: scaleX(-1); }
+        .roaming-pet .pet-shadow {
+            position: absolute;
+            width: 20px;
+            height: 6px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 50%;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .pet-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: petBob 1s ease-in-out infinite;
+        }
+        @keyframes petBob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        /* Cat */
+        .pet-cat .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: linear-gradient(135deg, #ff9f43, #ee8822);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-cat .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 10px;
+            background: linear-gradient(135deg, #ff9f43, #ee8822);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-cat .pet-ears {
+            position: absolute;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            width: 14px; height: 8px;
+        }
+        .pet-cat .pet-ears::before, .pet-cat .pet-ears::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 8px solid #ff9f43;
+        }
+        .pet-cat .pet-ears::before { left: 0; }
+        .pet-cat .pet-ears::after { right: 0; }
+        .pet-cat .pet-tail {
+            position: absolute;
+            width: 3px; height: 12px;
+            background: #ff9f43;
+            border-radius: 3px;
+            bottom: 8px; right: 2px;
+            transform: rotate(30deg);
+            transform-origin: bottom;
+            animation: tailWag 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes tailWag { 0% { transform: rotate(20deg); } 100% { transform: rotate(40deg); } }
+        /* Dog */
+        .pet-dog .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 16px;
+            background: linear-gradient(135deg, #c9a86c, #a08050);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-dog .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 12px;
+            background: linear-gradient(135deg, #c9a86c, #a08050);
+            border-radius: 50%;
+            top: 2px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-dog .pet-ears {
+            position: absolute;
+            top: 4px; width: 100%;
+        }
+        .pet-dog .pet-ears::before, .pet-dog .pet-ears::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 10px;
+            background: #8b6914;
+            border-radius: 50% 50% 50% 50%;
+        }
+        .pet-dog .pet-ears::before { left: 4px; }
+        .pet-dog .pet-ears::after { right: 4px; }
+        .pet-dog .pet-tail {
+            position: absolute;
+            width: 4px; height: 10px;
+            background: #c9a86c;
+            border-radius: 3px;
+            bottom: 10px; right: 0;
+            animation: tailWag 0.3s ease-in-out infinite alternate;
+        }
+        /* Chicken */
+        .pet-chicken .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 14px;
+            background: linear-gradient(135deg, #fff, #f5f5dc);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-chicken .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 10px;
+            background: linear-gradient(135deg, #fff, #f5f5dc);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-chicken .pet-comb {
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 8px; height: 6px;
+            background: #e74c3c;
+            border-radius: 50% 50% 20% 20%;
+        }
+        .pet-chicken .pet-beak {
+            position: absolute;
+            top: 10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            border-left: 5px solid #f39c12;
+        }
+        /* Bunny */
+        .pet-bunny .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 14px; height: 16px;
+            background: linear-gradient(135deg, #fff, #eee);
+            border-radius: 50%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-bunny .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 12px; height: 10px;
+            background: linear-gradient(135deg, #fff, #eee);
+            border-radius: 50%;
+            top: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-bunny .pet-ears {
+            position: absolute;
+            top: -2px; left: 50%; transform: translateX(-50%);
+            width: 16px;
+        }
+        .pet-bunny .pet-ears::before, .pet-bunny .pet-ears::after {
+            content: '';
+            position: absolute;
+            width: 5px; height: 14px;
+            background: linear-gradient(to right, #ffc0cb, #fff);
+            border-radius: 50%;
+        }
+        .pet-bunny .pet-ears::before { left: 2px; transform: rotate(-10deg); }
+        .pet-bunny .pet-ears::after { right: 2px; transform: rotate(10deg); }
+        /* Frog */
+        .pet-frog .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 14px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-frog .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 10px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-radius: 50%;
+            top: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-frog .pet-eyes {
+            position: absolute;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            width: 18px; display: flex; justify-content: space-between;
+        }
+        .pet-frog .pet-eyes::before, .pet-frog .pet-eyes::after {
+            content: '';
+            width: 7px; height: 7px;
+            background: radial-gradient(circle at 30% 30%, #fff, #2ecc71);
+            border-radius: 50%;
+        }
+        /* Pig */
+        .pet-pig .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: linear-gradient(135deg, #ffb6c1, #ff91a4);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-pig .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 12px;
+            background: linear-gradient(135deg, #ffb6c1, #ff91a4);
+            border-radius: 50%;
+            top: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-pig .pet-snout {
+            position: absolute;
+            top: 12px; left: 50%; transform: translateX(-50%);
+            width: 10px; height: 6px;
+            background: #ff7b8a;
+            border-radius: 50%;
+        }
+        .pet-pig .pet-snout::before, .pet-pig .pet-snout::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #c0392b;
+            border-radius: 50%;
+            top: 1px;
+        }
+        .pet-pig .pet-snout::before { left: 1px; }
+        .pet-pig .pet-snout::after { right: 1px; }
+
         .plot {
             aspect-ratio: 1;
             background: linear-gradient(145deg, #8B6914 0%, #6B4E0A 100%);
@@ -2650,7 +2887,17 @@
             dragon: { name: 'Baby Dragon', emoji: '🐉', price: 1000, ability: 'Inferno', description: 'Auto-harvests 1 ready crop every 10s', effect: 'autoharvest', rarity: 'epic' },
             unicorn: { name: 'Unicorn', emoji: '🦄', price: 5000, ability: 'Miracle', description: 'All pet bonuses at 50% power', effect: 'all', rarity: 'legendary' },
             phoenix: { name: 'Phoenix', emoji: '🔥', price: 15000, ability: 'Rebirth', description: 'Regrow crops keep mutations', effect: 'keepmutations', rarity: 'godly' },
-            raccoon: { name: 'Raccoon', emoji: '🦝', price: 20000, ability: 'Thief', description: 'Steals a plant from neighbors every 10min', effect: 'steal', rarity: 'godly' }
+            raccoon: { name: 'Raccoon', emoji: '🦝', price: 20000, ability: 'Thief', description: 'Steals a plant from neighbors every 10min', effect: 'steal', rarity: 'godly' },
+            frog: { name: 'Garden Frog', emoji: '🐸', price: 125, ability: 'Moisture', description: 'Rain is 25% more effective', effect: 'rain', rarity: 'common' },
+            pig: { name: 'Truffle Pig', emoji: '🐷', price: 400, ability: 'Digger', description: 'Find bonus coins when harvesting', effect: 'coins', rarity: 'rare' },
+            crow: { name: 'Lucky Crow', emoji: '🐦‍⬛', price: 175, ability: 'Scavenger', description: '+10% chance to find rare seeds', effect: 'rareseeds', rarity: 'uncommon' },
+            goat: { name: 'Mountain Goat', emoji: '🐐', price: 350, ability: 'Hardy', description: 'Crops survive bad weather', effect: 'weatherproof', rarity: 'rare' },
+            butterfly: { name: 'Monarch', emoji: '🦋', price: 500, ability: 'Grace', description: 'Golden mutations 2x more likely', effect: 'golden', rarity: 'epic' },
+            snail: { name: 'Rainbow Snail', emoji: '🐌', price: 600, ability: 'Prism', description: 'Rainbow mutations 2x more likely', effect: 'rainbow', rarity: 'epic' },
+            fox: { name: 'Arctic Fox', emoji: '🦊', price: 750, ability: 'Frostbite', description: 'Frozen plants worth 3x', effect: 'frostvalue', rarity: 'epic' },
+            panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
+            kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
+            slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' }
         };
 
         function getRandomSize() {
@@ -2734,6 +2981,76 @@
             facing: 'right',
             isJumping: false
         };
+
+        // Roaming pets state
+        const roamingPets = {};
+
+        function initRoamingPets() {
+            const grid = document.getElementById('farm-grid');
+            if (!grid) return;
+            // Remove old pet elements
+            grid.querySelectorAll('.roaming-pet').forEach(el => el.remove());
+            // Create pets for each equipped pet
+            (gameState.equippedPets || []).forEach((petId, idx) => {
+                if (!petId || !PETS[petId]) return;
+                const petEl = document.createElement('div');
+                petEl.className = `roaming-pet pet-${petId}`;
+                petEl.id = `roaming-pet-${idx}`;
+                petEl.innerHTML = `<div class="pet-body"><div class="pet-ears"></div><div class="pet-tail"></div><div class="pet-eyes"></div><div class="pet-comb"></div><div class="pet-beak"></div><div class="pet-snout"></div></div><div class="pet-shadow"></div>`;
+                grid.appendChild(petEl);
+                roamingPets[idx] = {
+                    x: Math.floor(Math.random() * 5),
+                    y: Math.floor(Math.random() * 4),
+                    facing: Math.random() > 0.5 ? 'left' : 'right',
+                    petId: petId
+                };
+                updatePetPosition(idx);
+            });
+        }
+
+        function updatePetPosition(idx) {
+            const grid = document.getElementById('farm-grid');
+            const petEl = document.getElementById(`roaming-pet-${idx}`);
+            const pet = roamingPets[idx];
+            if (!grid || !petEl || !pet) return;
+            const plots = grid.querySelectorAll('.plot');
+            if (plots.length === 0) return;
+            const plot = plots[pet.y * 5 + pet.x];
+            if (!plot) return;
+            const gridRect = grid.getBoundingClientRect();
+            const plotRect = plot.getBoundingClientRect();
+            const left = plotRect.left - gridRect.left + plotRect.width / 2 - 15 + (Math.random() - 0.5) * 20;
+            const top = plotRect.top - gridRect.top + plotRect.height / 2 - 10 + (Math.random() - 0.5) * 20;
+            petEl.style.left = left + 'px';
+            petEl.style.top = top + 'px';
+            petEl.classList.toggle('facing-left', pet.facing === 'left');
+        }
+
+        function movePets() {
+            Object.keys(roamingPets).forEach(idx => {
+                const pet = roamingPets[idx];
+                if (!pet) return;
+                // Random movement
+                const dx = Math.floor(Math.random() * 3) - 1;
+                const dy = Math.floor(Math.random() * 3) - 1;
+                const newX = pet.x + dx;
+                const newY = pet.y + dy;
+                if (newX >= 0 && newX < 5 && newY >= 0 && newY < 4) {
+                    pet.x = newX;
+                    pet.y = newY;
+                    if (dx < 0) pet.facing = 'left';
+                    if (dx > 0) pet.facing = 'right';
+                    updatePetPosition(idx);
+                }
+            });
+        }
+
+        // Move pets every 2-4 seconds
+        setInterval(() => {
+            if (Math.random() > 0.3) movePets();
+        }, 2000);
+
+
 
         function updatePlayerPosition() {
             const grid = document.getElementById('farm-grid');
@@ -3070,6 +3387,7 @@
             container.appendChild(shadow);
 
             setTimeout(updatePlayerPosition, 10);
+            setTimeout(initRoamingPets, 20);
         }
 
         // Render Inventory
