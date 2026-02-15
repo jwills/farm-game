@@ -2774,6 +2774,40 @@
             box-shadow: 0 3px 10px rgba(233, 30, 99, 0.3);
         }
 
+        .incubating-eggs {
+            margin-top: 10px;
+        }
+
+        .egg-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            padding: 5px 10px;
+            border-radius: 8px;
+            margin: 3px;
+            animation: eggWobble 2s ease-in-out infinite;
+        }
+
+        .egg-icon {
+            font-size: 1.5rem;
+        }
+
+        .egg-info {
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .egg-info small {
+            color: #F57C00;
+            font-weight: bold;
+        }
+
+        @keyframes eggWobble {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
         .shop-item.owned {
             opacity: 0.5;
             background: #E0E0E0 !important;
@@ -3762,6 +3796,7 @@
             weatherTimer: 0,
             pets: [], // owned pets
             equippedPets: [], // max 3 equipped
+            eggs: [], // incubating eggs: { petId, hatchTime }
             playerId: null,
             playerName: null,
             neighborhoodCode: null,
@@ -3971,6 +4006,7 @@
             loadGame();
             if (!gameState.pets) gameState.pets = [];
             if (!gameState.equippedPets) gameState.equippedPets = [];
+            if (!gameState.eggs) gameState.eggs = [];
             if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
                 initializeStock();
             }
@@ -4526,6 +4562,29 @@
             }
             ownedContainer.appendChild(ownedPetsContainer);
 
+            // Render incubating eggs
+            const eggs = gameState.eggs || [];
+            if (eggs.length > 0) {
+                const eggsContainer = document.createElement('div');
+                eggsContainer.className = 'incubating-eggs';
+                eggsContainer.innerHTML = '<div class="owned-header">🥚 Incubating</div>';
+                const now = Date.now();
+                eggs.forEach((egg, idx) => {
+                    const pet = PETS[egg.petId];
+                    if (!pet) return;
+                    const timeLeft = Math.max(0, Math.ceil((egg.hatchTime - now) / 1000));
+                    const div = document.createElement('div');
+                    div.className = 'egg-item';
+                    div.innerHTML = `
+                        <span class="egg-icon">🥚</span>
+                        <span class="egg-info">${pet.name}<br><small>${timeLeft}s</small></span>
+                    `;
+                    div.setAttribute('title', `${pet.name} egg - hatching in ${timeLeft}s`);
+                    eggsContainer.appendChild(div);
+                });
+                ownedContainer.appendChild(eggsContainer);
+            }
+
             // Render pet shop
             const container = document.getElementById('pet-shop-items');
             container.innerHTML = '';
@@ -4534,7 +4593,9 @@
             
             for (const [id, pet] of sortedPets) {
                 const ownedCount = getPetCount(id);
-                const maxedOut = ownedCount >= 3;
+                const incubatingCount = (gameState.eggs || []).filter(e => e.petId === id).length;
+                const totalCount = ownedCount + incubatingCount;
+                const maxedOut = totalCount >= 3;
                 const canAfford = gameState.money >= pet.price && !maxedOut;
                 const rarity = RARITIES[pet.rarity];
                 const div = document.createElement('div');
@@ -4549,11 +4610,11 @@
                 div.style.background = maxedOut ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 
-                const ownedText = ownedCount > 0 ? ` (${ownedCount}/3)` : '';
+                const ownedText = totalCount > 0 ? ` (${ownedCount}${incubatingCount > 0 ? '+' + incubatingCount + '🥚' : ''}/3)` : '';
                 div.innerHTML = `
-                    <span class="emoji">${pet.emoji}</span>
+                    <span class="emoji">🥚</span>
                     <div class="info">
-                        <div class="name">${pet.name}${ownedText}</div>
+                        <div class="name">${pet.name} Egg${ownedText}</div>
                         <div class="details">
                             <span style="color: ${rarity.color}; font-weight: bold;">${rarity.name}</span>
                             • <span style="color: #E91E63; font-weight: bold;">${pet.ability}</span>
@@ -4563,7 +4624,7 @@
                     ${!maxedOut ? `<span class="price">$${formatNumber(pet.price)}</span>` : '<span class="price" style="color: #4CAF50;">MAX</span>'}
                 `;
                 if (canAfford) {
-                    div.onclick = () => buyPet(id);
+                    div.onclick = () => buyEgg(id);
                 }
                 container.appendChild(div);
             }
@@ -4592,26 +4653,58 @@
             return (gameState.pets || []).filter(p => p === petId).length;
         }
 
-        function buyPet(petId) {
+        function buyEgg(petId) {
             const pet = PETS[petId];
             const owned = getPetCount(petId);
-            if (gameState.money >= pet.price && owned < 3) {
+            const incubating = (gameState.eggs || []).filter(e => e.petId === petId).length;
+            if (gameState.money >= pet.price && (owned + incubating) < 3) {
                 gameState.money -= pet.price;
+                if (!gameState.eggs) gameState.eggs = [];
+                // Hatch time: 30s for common, 60s uncommon, 90s rare, 120s epic, 180s legendary, 300s godly
+                const hatchTimes = { common: 30, uncommon: 60, rare: 90, epic: 120, legendary: 180, godly: 300 };
+                const hatchTime = Date.now() + (hatchTimes[pet.rarity] || 60) * 1000;
+                gameState.eggs.push({ petId, hatchTime });
+                showMessage(`🥚 ${pet.name} egg purchased! Hatching in ${hatchTimes[pet.rarity]}s...`);
+                renderShop();
+                renderPetShop();
+                renderInventory();
+            }
+        }
+
+        function checkEggHatching() {
+            if (!gameState.eggs || gameState.eggs.length === 0) return;
+            const now = Date.now();
+            const hatched = [];
+            gameState.eggs = gameState.eggs.filter(egg => {
+                if (now >= egg.hatchTime) {
+                    hatched.push(egg.petId);
+                    return false;
+                }
+                return true;
+            });
+            hatched.forEach(petId => {
+                const pet = PETS[petId];
                 if (!gameState.pets) gameState.pets = [];
                 gameState.pets.push(petId);
                 // Auto-equip if less than 3 equipped
                 if (!gameState.equippedPets) gameState.equippedPets = [];
                 if (gameState.equippedPets.length < 3) {
                     gameState.equippedPets.push(petId);
-                    showMessage(`${pet.emoji} ${pet.name} #${owned + 1} joined and is now equipped!`);
+                    showMessage(`🐣 ${pet.emoji} ${pet.name} hatched and is now equipped!`);
                 } else {
-                    showMessage(`${pet.emoji} ${pet.name} #${owned + 1} joined! Equip from your pets.`);
+                    showMessage(`🐣 ${pet.emoji} ${pet.name} hatched! Equip from your pets.`);
                 }
-                renderShop();
+            });
+            if (hatched.length > 0) {
                 renderPetShop();
-                renderInventory();
             }
         }
+
+        // Check egg hatching every second
+        setInterval(checkEggHatching, 1000);
+
+        // Legacy support
+        function buyPet(petId) { buyEgg(petId); }
 
         function equipPet(petId) {
             if (!gameState.equippedPets) gameState.equippedPets = [];
