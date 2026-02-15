@@ -136,48 +136,93 @@
             position: relative;
             width: 100%;
             height: 100%;
+            animation: farmerBreathe 3s ease-in-out infinite;
+        }
+        
+        @keyframes farmerBreathe {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.02); }
         }
         
         /* Head */
         .farmer-head {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle at 30% 30%, #ffdbac, #e8b88a);
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle at 35% 35%, #ffe4c4, #ffdbac 40%, #e8b88a);
             border-radius: 50%;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Cheeks */
+        .farmer-head::before {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 3px;
+            background: rgba(255,150,150,0.4);
+            border-radius: 50%;
+            bottom: 6px;
+            left: 2px;
+        }
+        .farmer-head::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 3px;
+            background: rgba(255,150,150,0.4);
+            border-radius: 50%;
+            bottom: 6px;
+            right: 2px;
         }
         
         /* Hat */
         .farmer-hat {
             position: absolute;
-            top: -6px;
+            top: -8px;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 10;
         }
         .farmer-hat::before {
             content: '';
             position: absolute;
-            width: 28px;
-            height: 6px;
-            background: linear-gradient(to bottom, #f4d03f, #c9a227);
-            border-radius: 2px;
-            top: 8px;
+            width: 30px;
+            height: 7px;
+            background: linear-gradient(to bottom, #f9e076, #f4d03f, #c9a227);
+            border-radius: 3px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .farmer-hat::after {
             content: '';
             position: absolute;
-            width: 18px;
-            height: 10px;
-            background: linear-gradient(to bottom, #f4d03f, #c9a227);
-            border-radius: 4px 4px 0 0;
+            width: 20px;
+            height: 12px;
+            background: linear-gradient(to bottom, #f9e076, #f4d03f 30%, #c9a227);
+            border-radius: 6px 6px 2px 2px;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Hat band */
+        .farmer-hatband {
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: linear-gradient(to bottom, #8B4513, #654321);
+            border-radius: 1px;
+            z-index: 11;
         }
         
         /* Eyes */
@@ -186,104 +231,173 @@
             top: 8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 12px;
+            width: 14px;
             display: flex;
             justify-content: space-between;
+            animation: farmerBlink 4s ease-in-out infinite;
         }
         .farmer-eyes::before,
         .farmer-eyes::after {
             content: '';
-            width: 4px;
-            height: 4px;
-            background: #2c1810;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle at 40% 40%, #4a3728, #2c1810);
             border-radius: 50%;
+            box-shadow: inset 1px 1px 1px rgba(255,255,255,0.3);
+        }
+        
+        @keyframes farmerBlink {
+            0%, 45%, 55%, 100% { transform: translateX(-50%) scaleY(1); }
+            50% { transform: translateX(-50%) scaleY(0.1); }
+        }
+        
+        /* Mouth/Smile */
+        .farmer-mouth {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 3px;
+            border: none;
+            border-bottom: 2px solid #a0522d;
+            border-radius: 0 0 6px 6px;
         }
         
         /* Body/Overalls */
         .farmer-body {
             position: absolute;
-            width: 18px;
-            height: 22px;
-            background: linear-gradient(to bottom, #4a90d9, #2e6ab3);
-            border-radius: 4px 4px 0 0;
-            top: 18px;
+            width: 20px;
+            height: 24px;
+            background: linear-gradient(135deg, #5ba3e8 0%, #4a90d9 50%, #2e6ab3 100%);
+            border-radius: 5px 5px 2px 2px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15);
         }
+        /* Overall straps */
         .farmer-body::before {
             content: '';
             position: absolute;
-            width: 14px;
-            height: 8px;
-            background: linear-gradient(to bottom, #d35400, #a04000);
-            border-radius: 2px;
-            top: 0;
+            width: 16px;
+            height: 10px;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 50%, #a04000 100%);
+            border-radius: 3px;
+            top: -2px;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: inset -1px -1px 2px rgba(0,0,0,0.2);
+        }
+        /* Overall buttons */
+        .farmer-body::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #f4d03f;
+            border-radius: 50%;
+            top: 2px;
+            left: 4px;
+            box-shadow: 9px 0 0 #f4d03f;
         }
         
         /* Arms */
         .farmer-arms {
             position: absolute;
-            top: 20px;
+            top: 22px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
+            width: 34px;
         }
         .farmer-arms::before,
         .farmer-arms::after {
             content: '';
             position: absolute;
-            width: 6px;
-            height: 14px;
-            background: linear-gradient(to bottom, #ffdbac, #e8b88a);
-            border-radius: 3px;
+            width: 7px;
+            height: 16px;
+            background: linear-gradient(to right, #e8b88a, #ffdbac, #e8b88a);
+            border-radius: 4px;
+            box-shadow: inset -1px 0 2px rgba(0,0,0,0.1);
         }
         .farmer-arms::before {
             left: 0;
-            transform: rotate(15deg);
+            transform: rotate(12deg);
+            animation: armSwingLeft 2s ease-in-out infinite;
         }
         .farmer-arms::after {
             right: 0;
-            transform: rotate(-15deg);
+            transform: rotate(-12deg);
+            animation: armSwingRight 2s ease-in-out infinite;
         }
+        
+        @keyframes armSwingLeft {
+            0%, 100% { transform: rotate(12deg); }
+            50% { transform: rotate(18deg); }
+        }
+        @keyframes armSwingRight {
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(-18deg); }
+        }
+        
+        /* Hands */
+        .farmer-hands {
+            position: absolute;
+            top: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38px;
+        }
+        .farmer-hands::before,
+        .farmer-hands::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle at 40% 40%, #ffdbac, #e8b88a);
+            border-radius: 50%;
+        }
+        .farmer-hands::before { left: 0; }
+        .farmer-hands::after { right: 0; }
         
         /* Legs */
         .farmer-legs {
             position: absolute;
-            top: 38px;
+            top: 42px;
             left: 50%;
             transform: translateX(-50%);
-            width: 16px;
+            width: 18px;
             display: flex;
             justify-content: space-between;
         }
         .farmer-legs::before,
         .farmer-legs::after {
             content: '';
-            width: 6px;
+            width: 7px;
             height: 16px;
-            background: linear-gradient(to bottom, #4a90d9, #2e6ab3);
-            border-radius: 0 0 2px 2px;
+            background: linear-gradient(135deg, #5ba3e8, #4a90d9, #2e6ab3);
+            border-radius: 0 0 3px 3px;
+            box-shadow: inset -1px -1px 2px rgba(0,0,0,0.15);
         }
         
         /* Boots */
         .farmer-boots {
             position: absolute;
-            top: 52px;
+            top: 56px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
+            width: 24px;
             display: flex;
             justify-content: space-between;
         }
         .farmer-boots::before,
         .farmer-boots::after {
             content: '';
-            width: 8px;
-            height: 6px;
-            background: linear-gradient(to bottom, #5d4037, #3e2723);
-            border-radius: 2px;
+            width: 10px;
+            height: 7px;
+            background: linear-gradient(to bottom, #6d4c41, #5d4037, #3e2723);
+            border-radius: 3px 3px 4px 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .player-shadow {
@@ -1100,96 +1214,141 @@
         .pet-dragon .pet-body::before {
             content: '';
             position: absolute;
-            width: 16px; height: 16px;
-            background: #9b59b6;
+            width: 18px; height: 18px;
+            background: linear-gradient(135deg, #a855f7 0%, #9b59b6 50%, #7c3aed 100%);
             border-radius: 50%;
             bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
         }
         .pet-dragon .pet-body::after {
             content: '';
             position: absolute;
-            width: 12px; height: 11px;
-            background: #9b59b6;
+            width: 14px; height: 13px;
+            background: linear-gradient(135deg, #a855f7, #9b59b6);
             border-radius: 50%;
-            top: 6px; left: 50%; transform: translateX(-50%);
+            top: 4px; left: 50%; transform: translateX(-50%);
         }
         .pet-dragon .pet-ears {
             position: absolute;
-            top: 4px; left: 50%; transform: translateX(-50%);
-            width: 16px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            width: 20px;
         }
         .pet-dragon .pet-ears::before, .pet-dragon .pet-ears::after {
             content: '';
             position: absolute;
             width: 0; height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-bottom: 8px solid #8e44ad;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid #7c3aed;
+            filter: drop-shadow(0 0 2px #a855f7);
         }
         .pet-dragon .pet-ears::before { left: 0; }
         .pet-dragon .pet-ears::after { right: 0; }
         .pet-dragon .pet-eyes {
             position: absolute;
-            top: 10px; left: 50%; transform: translateX(-50%);
-            width: 8px; display: flex; justify-content: space-between;
+            top: 9px; left: 50%; transform: translateX(-50%);
+            width: 10px; display: flex; justify-content: space-between;
         }
         .pet-dragon .pet-eyes::before, .pet-dragon .pet-eyes::after {
             content: '';
-            width: 3px; height: 4px;
-            background: #f1c40f;
-            border-radius: 50%;
+            width: 4px; height: 5px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #ff6b00);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 4px #ffd700;
+            animation: dragonEyeGlow 2s ease-in-out infinite;
+        }
+        @keyframes dragonEyeGlow {
+            0%, 100% { box-shadow: 0 0 4px #ffd700; }
+            50% { box-shadow: 0 0 8px #ff6b00, 0 0 12px #ffd700; }
         }
         .pet-dragon .pet-snout {
             position: absolute;
             top: 14px; left: 50%; transform: translateX(-50%);
-            width: 6px; height: 4px;
+            width: 8px; height: 5px;
             background: #8e44ad;
             border-radius: 50%;
         }
         .pet-dragon .pet-snout::before {
             content: '';
             position: absolute;
-            top: 1px; left: 50%; transform: translateX(-50%);
-            width: 4px; height: 2px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 2px;
+            background: #2c2c2c;
             border-radius: 50%;
+            box-shadow: 4px 0 0 #2c2c2c;
         }
         .pet-dragon .pet-tail {
             position: absolute;
-            width: 4px; height: 12px;
-            background: #9b59b6;
+            width: 5px; height: 14px;
+            background: linear-gradient(to bottom, #9b59b6, #7c3aed);
             border-radius: 3px 3px 0 0;
-            bottom: 6px; right: 4px;
+            bottom: 6px; right: 2px;
             transform: rotate(25deg);
+            animation: dragonTailSwish 1s ease-in-out infinite;
+        }
+        @keyframes dragonTailSwish {
+            0%, 100% { transform: rotate(25deg); }
+            50% { transform: rotate(35deg); }
         }
         .pet-dragon .pet-tail::after {
             content: '';
             position: absolute;
-            bottom: -2px; left: -2px;
+            bottom: -4px; left: -3px;
             width: 0; height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 6px solid #9b59b6;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid #7c3aed;
         }
         .pet-dragon .pet-comb {
             position: absolute;
-            top: 6px; left: 2px;
-            width: 6px; height: 8px;
-            background: #e74c3c;
-            border-radius: 50% 0 50% 50%;
-            animation: dragonFire 0.3s infinite;
-            box-shadow: 0 0 4px #e74c3c, 0 0 8px #f39c12;
+            top: 4px; left: 0px;
+            width: 8px; height: 12px;
+            background: linear-gradient(to top, #ff4500, #ff6b00, #ffd700);
+            border-radius: 50% 50% 20% 20%;
+            animation: dragonFire 0.2s infinite;
+            box-shadow: 0 0 6px #ff4500, 0 0 12px #ff6b00, 0 -4px 8px #ffd700;
+            filter: blur(0.5px);
+        }
+        .pet-dragon .pet-comb::before {
+            content: '';
+            position: absolute;
+            top: -4px; left: 2px;
+            width: 4px; height: 6px;
+            background: linear-gradient(to top, #ff6b00, #ffd700);
+            border-radius: 50%;
+            animation: dragonFireFlicker 0.15s infinite alternate;
         }
         @keyframes dragonFire {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.15); }
+            0%, 100% { opacity: 1; transform: scale(1) rotate(-5deg); }
+            25% { opacity: 0.9; transform: scale(1.1) rotate(5deg); }
+            50% { opacity: 0.85; transform: scale(1.05) rotate(-3deg); }
+            75% { opacity: 0.95; transform: scale(1.15) rotate(3deg); }
+        }
+        @keyframes dragonFireFlicker {
+            0% { transform: scale(1) translateY(0); opacity: 0.8; }
+            100% { transform: scale(0.8) translateY(-2px); opacity: 0.5; }
         }
         .pet-dragon .pet-beak {
             position: absolute;
-            top: 0; right: 2px;
-            width: 8px; height: 10px;
-            background: rgba(155, 89, 182, 0.6);
-            border-radius: 0 50% 50% 0;
-            border: 1px solid #8e44ad;
+            top: -2px; right: 0px;
+            width: 10px; height: 14px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(124, 58, 237, 0.6));
+            border-radius: 0 60% 60% 0;
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            animation: dragonWingFlap 0.8s ease-in-out infinite;
+        }
+        .pet-dragon .pet-beak::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: -8px;
+            width: 10px; height: 14px;
+            background: linear-gradient(225deg, rgba(168, 85, 247, 0.4), rgba(124, 58, 237, 0.6));
+            border-radius: 60% 0 0 60%;
+            border: 1px solid rgba(124, 58, 237, 0.5);
+        }
+        @keyframes dragonWingFlap {
+            0%, 100% { transform: rotate(0deg) scaleY(1); }
+            50% { transform: rotate(10deg) scaleY(0.9); }
         }
         
         /* Unicorn - white horse with horn and rainbow mane */
@@ -1271,76 +1430,127 @@
         .pet-phoenix .pet-body::before {
             content: '';
             position: absolute;
-            width: 16px; height: 14px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            width: 18px; height: 16px;
+            background: linear-gradient(135deg, #ff4500, #e74c3c, #c0392b);
             border-radius: 50%;
             bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.6), 0 0 30px rgba(255, 165, 0, 0.3);
+            animation: phoenixPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes phoenixPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.6), 0 0 30px rgba(255, 165, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.8), 0 0 40px rgba(255, 165, 0, 0.5); }
         }
         .pet-phoenix .pet-body::after {
             content: '';
             position: absolute;
-            width: 12px; height: 11px;
-            background: linear-gradient(135deg, #f39c12, #e67e22);
+            width: 14px; height: 13px;
+            background: linear-gradient(135deg, #ffd700, #f39c12, #e67e22);
             border-radius: 50%;
-            top: 6px; left: 50%; transform: translateX(-50%);
+            top: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
         .pet-phoenix .pet-ears {
             position: absolute;
-            top: 2px; left: 50%; transform: translateX(-50%);
-            width: 18px;
+            top: -2px; left: 50%; transform: translateX(-50%);
+            width: 22px;
         }
         .pet-phoenix .pet-ears::before, .pet-phoenix .pet-ears::after {
             content: '';
             position: absolute;
-            width: 5px; height: 10px;
-            background: linear-gradient(to top, #e74c3c, #f1c40f);
-            border-radius: 50% 50% 0 0;
-            animation: flameFlicker 0.2s infinite alternate;
+            width: 6px; height: 14px;
+            background: linear-gradient(to top, #e74c3c, #ff6b00, #ffd700, rgba(255,255,200,0.8));
+            border-radius: 50% 50% 20% 20%;
+            animation: phoenixFlame 0.15s infinite alternate;
+            filter: blur(0.5px);
+            box-shadow: 0 0 4px #ff6b00;
         }
-        .pet-phoenix .pet-ears::before { left: 2px; }
-        .pet-phoenix .pet-ears::after { right: 2px; }
-        @keyframes flameFlicker { 0% { height: 10px; } 100% { height: 12px; } }
+        .pet-phoenix .pet-ears::before { left: 2px; animation-delay: 0s; }
+        .pet-phoenix .pet-ears::after { right: 2px; animation-delay: 0.075s; }
+        @keyframes phoenixFlame {
+            0% { height: 14px; transform: scaleX(1) rotate(-3deg); }
+            100% { height: 16px; transform: scaleX(0.9) rotate(3deg); }
+        }
         .pet-phoenix .pet-eyes {
             position: absolute;
-            top: 10px; left: 50%; transform: translateX(-50%);
-            width: 8px; display: flex; justify-content: space-between;
+            top: 9px; left: 50%; transform: translateX(-50%);
+            width: 10px; display: flex; justify-content: space-between;
         }
         .pet-phoenix .pet-eyes::before, .pet-phoenix .pet-eyes::after {
             content: '';
-            width: 3px; height: 3px;
-            background: #fff;
+            width: 4px; height: 4px;
+            background: radial-gradient(circle at 30% 30%, #fff, #fffacd);
             border-radius: 50%;
+            box-shadow: 0 0 4px #fff, 0 0 8px #ffd700;
+            animation: phoenixEyeGlow 2s ease-in-out infinite;
+        }
+        @keyframes phoenixEyeGlow {
+            0%, 100% { box-shadow: 0 0 4px #fff, 0 0 8px #ffd700; }
+            50% { box-shadow: 0 0 6px #fff, 0 0 12px #ff6b00; }
         }
         .pet-phoenix .pet-beak {
             position: absolute;
-            top: 12px; left: 50%; transform: translateX(-50%);
+            top: 13px; left: 50%; transform: translateX(-50%);
             width: 0; height: 0;
-            border-left: 3px solid transparent;
-            border-right: 3px solid transparent;
-            border-top: 5px solid #f39c12;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 6px solid #ff8c00;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
         }
         .pet-phoenix .pet-tail {
             position: absolute;
-            width: 6px; height: 16px;
-            background: linear-gradient(to bottom, #e74c3c, #f39c12, #f1c40f);
+            width: 8px; height: 20px;
+            background: linear-gradient(to bottom, #e74c3c, #ff6b00, #ffd700, rgba(255,255,200,0.6));
             border-radius: 0 0 50% 50%;
-            bottom: 2px; right: 4px;
-            transform: rotate(25deg);
+            bottom: 0px; right: 2px;
+            transform: rotate(30deg);
+            animation: phoenixTailFlow 0.8s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(255, 165, 0, 0.5);
+            filter: blur(0.3px);
+        }
+        @keyframes phoenixTailFlow {
+            0%, 100% { transform: rotate(30deg) scaleY(1); }
+            50% { transform: rotate(35deg) scaleY(1.1); }
         }
         .pet-phoenix .pet-tail::before {
             content: '';
             position: absolute;
-            bottom: -2px; left: -3px;
-            width: 4px; height: 12px;
-            background: linear-gradient(to bottom, #f39c12, #f1c40f);
+            bottom: -4px; left: -5px;
+            width: 6px; height: 16px;
+            background: linear-gradient(to bottom, #f39c12, #ffd700, rgba(255,255,200,0.4));
             border-radius: 0 0 50% 50%;
+            animation: phoenixTailFlow 0.8s ease-in-out infinite 0.2s;
+        }
+        .pet-phoenix .pet-tail::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 6px;
+            width: 5px; height: 14px;
+            background: linear-gradient(to bottom, #ff4500, #ff6b00, rgba(255,200,100,0.4));
+            border-radius: 0 0 50% 50%;
+            animation: phoenixTailFlow 0.8s ease-in-out infinite 0.4s;
         }
         .pet-phoenix .pet-comb {
             position: absolute;
-            top: 6px; left: 4px;
-            width: 8px; height: 10px;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            border-radius: 50% 0 50% 50%;
+            top: 4px; left: 2px;
+            width: 10px; height: 14px;
+            background: linear-gradient(135deg, #ff4500, #e74c3c, #c0392b);
+            border-radius: 50% 20% 50% 50%;
+            box-shadow: -2px 0 8px rgba(255, 69, 0, 0.5);
+            animation: phoenixWingFlap 0.6s ease-in-out infinite;
+        }
+        .pet-phoenix .pet-comb::before {
+            content: '';
+            position: absolute;
+            top: 0; right: -8px;
+            width: 10px; height: 14px;
+            background: linear-gradient(225deg, #ff4500, #e74c3c, #c0392b);
+            border-radius: 20% 50% 50% 50%;
+            box-shadow: 2px 0 8px rgba(255, 69, 0, 0.5);
+        }
+        @keyframes phoenixWingFlap {
+            0%, 100% { transform: rotate(-5deg) scaleY(1); }
+            50% { transform: rotate(5deg) scaleY(0.95); }
         }
 
         .plot {
@@ -3581,10 +3791,13 @@
                     <div class="player" id="player">
                         <div class="farmer-model">
                             <div class="farmer-hat"></div>
+                            <div class="farmer-hatband"></div>
                             <div class="farmer-head"></div>
                             <div class="farmer-eyes"></div>
+                            <div class="farmer-mouth"></div>
                             <div class="farmer-body"></div>
                             <div class="farmer-arms"></div>
+                            <div class="farmer-hands"></div>
                             <div class="farmer-legs"></div>
                             <div class="farmer-boots"></div>
                         </div>
