@@ -2653,9 +2653,8 @@
                     div.onclick = () => {
                         if (gameState.shovelSelected) {
                             removePlant(index);
-                        } else {
-                            harvestCrop(index);
                         }
+                        // Harvesting only via player walking to plot and pressing space/E
                     };
                 } else {
                     div.classList.add('empty');
