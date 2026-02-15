@@ -2993,6 +2993,17 @@
             background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
         }
 
+        .inv-item.egg-inv-item {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border-color: #FFA000;
+        }
+
+        .inv-item.egg-inv-item.selected {
+            background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
+            border-color: #FF6F00;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+        }
+
         .inv-item .emoji {
             font-size: 1.5rem;
         }
@@ -3796,7 +3807,7 @@
             weatherTimer: 0,
             pets: [], // owned pets
             equippedPets: [], // max 3 equipped
-            eggs: [], // incubating eggs: { petId, hatchTime }
+            eggInventory: {}, // bought eggs: { petId: count }
             playerId: null,
             playerName: null,
             neighborhoodCode: null,
@@ -4006,7 +4017,7 @@
             loadGame();
             if (!gameState.pets) gameState.pets = [];
             if (!gameState.equippedPets) gameState.equippedPets = [];
-            if (!gameState.eggs) gameState.eggs = [];
+            if (!gameState.eggInventory) gameState.eggInventory = {};
             if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
                 initializeStock();
             }
@@ -4144,7 +4155,38 @@
                 const div = document.createElement('div');
                 div.className = 'plot';
                 
-                if (plot) {
+                if (plot && plot.isEgg) {
+                    // Render egg plot
+                    const pet = PETS[plot.petId];
+                    const progress = Math.min(100, (plot.growth / plot.hatchTime) * 100);
+                    const isReady = plot.growth >= plot.hatchTime;
+                    
+                    if (isReady) {
+                        div.classList.add('ready');
+                    }
+                    
+                    // Egg stages: 1=egg, 2=cracking, 3=hatching, 4=ready
+                    let stage = 1;
+                    if (progress >= 100) stage = 4;
+                    else if (progress >= 66) stage = 3;
+                    else if (progress >= 33) stage = 2;
+                    
+                    const stageEmojis = ['🥚', '🥚', '🥚💢', '🐣'];
+                    
+                    div.innerHTML = `
+                        <div class="egg-plot stage-${stage}" style="font-size: 2.5rem; animation: ${isReady ? 'none' : 'eggWobble 2s ease-in-out infinite'};">
+                            ${stageEmojis[stage - 1]}
+                        </div>
+                        <div style="position:absolute;bottom:8px;font-size:0.7rem;color:#666;">${pet.name}</div>
+                        ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%; background: linear-gradient(90deg, #FFD700, #FFA500);"></div></div>` : ''}
+                    `;
+                    
+                    div.onclick = () => {
+                        if (gameState.shovelSelected) {
+                            removePlant(index);
+                        }
+                    };
+                } else if (plot) {
                     const crop = CROPS[plot.type];
                     const targetTime = crop.growTime;
                     const progress = Math.min(100, (plot.growth / targetTime) * 100);
@@ -4260,7 +4302,26 @@
                 }
             }
             
-            if (!hasSeeds) {
+            // Eggs in inventory
+            let hasEggs = false;
+            for (const [petId, count] of Object.entries(gameState.eggInventory || {})) {
+                if (count > 0) {
+                    hasEggs = true;
+                    hasSeeds = true; // So we don't show "no seeds"
+                    const pet = PETS[petId];
+                    const div = document.createElement('div');
+                    div.className = `inv-item egg-inv-item ${gameState.selectedEgg === petId ? 'selected' : ''}`;
+                    div.innerHTML = `
+                        <span class="emoji">🥚</span>
+                        <span class="count">${count}</span>
+                    `;
+                    div.title = `${pet.name} Egg - click to select, then plant in garden`;
+                    div.onclick = () => selectEgg(petId);
+                    seedContainer.appendChild(div);
+                }
+            }
+            
+            if (!hasSeeds && !hasEggs) {
                 seedContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No seeds - buy some!</p>';
             }
 
@@ -4363,6 +4424,7 @@
         // Select Seed
         function selectSeed(type) {
             gameState.selectedSeed = gameState.selectedSeed === type ? null : type;
+            gameState.selectedEgg = null;
             gameState.shovelSelected = false;
             renderInventory();
         }
@@ -4371,6 +4433,7 @@
             gameState.shovelSelected = !gameState.shovelSelected;
             if (gameState.shovelSelected) {
                 gameState.selectedSeed = null;
+                gameState.selectedEgg = null;
             }
             renderInventory();
             updateShovelUI();
@@ -4399,6 +4462,11 @@
 
         // Plant Seed
         function plantSeed(plotIndex) {
+            // Check if planting an egg
+            if (gameState.selectedEgg) {
+                return plantEgg(plotIndex);
+            }
+            
             if (!gameState.selectedSeed || !gameState.seeds[gameState.selectedSeed]) {
                 showMessage('Select seeds from your inventory first!');
                 return;
@@ -4429,10 +4497,83 @@
             renderInventory();
         }
 
+        function plantEgg(plotIndex) {
+            const petId = gameState.selectedEgg;
+            if (!petId || !gameState.eggInventory || !gameState.eggInventory[petId]) {
+                showMessage('Select an egg from your inventory first!');
+                return;
+            }
+            
+            if (gameState.plots[plotIndex]) {
+                return; // Plot not empty
+            }
+            
+            const pet = PETS[petId];
+            gameState.eggInventory[petId]--;
+            const hatchTime = EGG_HATCH_TIMES[pet.rarity] || 120;
+            
+            gameState.plots[plotIndex] = {
+                isEgg: true,
+                petId: petId,
+                growth: 0,
+                hatchTime: hatchTime,
+                plantedAt: Date.now()
+            };
+            
+            showMessage(`Planted ${pet.name} egg! 🥚 Hatches in ${hatchTime}s`);
+            
+            if (gameState.eggInventory[petId] <= 0) {
+                delete gameState.eggInventory[petId];
+                gameState.selectedEgg = null;
+            }
+            
+            renderFarm();
+            renderInventory();
+        }
+
+        function hatchEgg(plotIndex) {
+            const plot = gameState.plots[plotIndex];
+            if (!plot || !plot.isEgg) return;
+            
+            const pet = PETS[plot.petId];
+            if (!pet) return;
+            
+            // Check if ready to hatch
+            if (plot.growth < plot.hatchTime) {
+                const remaining = Math.ceil(plot.hatchTime - plot.growth);
+                showMessage(`Egg not ready! ${remaining}s remaining 🥚`);
+                return;
+            }
+            
+            // Hatch the egg - add pet to collection
+            if (!gameState.pets) gameState.pets = [];
+            gameState.pets.push(plot.petId);
+            
+            // Clear the plot
+            gameState.plots[plotIndex] = null;
+            
+            // Auto-equip if less than 3 equipped
+            if (!gameState.equippedPets) gameState.equippedPets = [];
+            if (gameState.equippedPets.length < 3) {
+                gameState.equippedPets.push(plot.petId);
+                showMessage(`🐣 ${pet.emoji} ${pet.name} hatched and is now equipped!`);
+            } else {
+                showMessage(`🐣 ${pet.emoji} ${pet.name} hatched! Equip from your pets.`);
+            }
+            
+            renderFarm();
+            renderPetShop();
+        }
+
         // Harvest Crop
         function harvestCrop(plotIndex) {
             const plot = gameState.plots[plotIndex];
             if (!plot) return;
+            
+            // Handle egg hatching
+            if (plot.isEgg) {
+                return hatchEgg(plotIndex);
+            }
             
             // Check inventory limit
             if (gameState.harvested.length >= MAX_INVENTORY) {
@@ -4562,24 +4703,23 @@
             }
             ownedContainer.appendChild(ownedPetsContainer);
 
-            // Render incubating eggs
-            const eggs = gameState.eggs || [];
-            if (eggs.length > 0) {
+            // Render planted eggs (in garden)
+            const plantedEggs = (gameState.plots || []).filter(p => p && p.isEgg);
+            if (plantedEggs.length > 0) {
                 const eggsContainer = document.createElement('div');
                 eggsContainer.className = 'incubating-eggs';
-                eggsContainer.innerHTML = '<div class="owned-header">🥚 Incubating</div>';
-                const now = Date.now();
-                eggs.forEach((egg, idx) => {
+                eggsContainer.innerHTML = '<div class="owned-header">🌱 Planted Eggs</div>';
+                plantedEggs.forEach((egg) => {
                     const pet = PETS[egg.petId];
                     if (!pet) return;
-                    const timeLeft = Math.max(0, Math.ceil((egg.hatchTime - now) / 1000));
+                    const timeLeft = Math.max(0, Math.ceil(egg.hatchTime - egg.growth));
                     const div = document.createElement('div');
                     div.className = 'egg-item';
                     div.innerHTML = `
                         <span class="egg-icon">🥚</span>
                         <span class="egg-info">${pet.name}<br><small>${timeLeft}s</small></span>
                     `;
-                    div.setAttribute('title', `${pet.name} egg - hatching in ${timeLeft}s`);
+                    div.setAttribute('title', `${pet.name} egg - ${timeLeft}s until hatch`);
                     eggsContainer.appendChild(div);
                 });
                 ownedContainer.appendChild(eggsContainer);
@@ -4593,8 +4733,9 @@
             
             for (const [id, pet] of sortedPets) {
                 const ownedCount = getPetCount(id);
-                const incubatingCount = (gameState.eggs || []).filter(e => e.petId === id).length;
-                const totalCount = ownedCount + incubatingCount;
+                const inInventory = (gameState.eggInventory && gameState.eggInventory[id]) || 0;
+                const plantedCount = countPlantedEggs(id);
+                const totalCount = ownedCount + inInventory + plantedCount;
                 const maxedOut = totalCount >= 3;
                 const canAfford = gameState.money >= pet.price && !maxedOut;
                 const rarity = RARITIES[pet.rarity];
@@ -4610,7 +4751,8 @@
                 div.style.background = maxedOut ? 'linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%)' : rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 
-                const ownedText = totalCount > 0 ? ` (${ownedCount}${incubatingCount > 0 ? '+' + incubatingCount + '🥚' : ''}/3)` : '';
+                const pendingCount = inInventory + plantedCount;
+                const ownedText = totalCount > 0 ? ` (${ownedCount}${pendingCount > 0 ? '+' + pendingCount + '🥚' : ''}/3)` : '';
                 div.innerHTML = `
                     <span class="emoji">🥚</span>
                     <div class="info">
@@ -4653,55 +4795,40 @@
             return (gameState.pets || []).filter(p => p === petId).length;
         }
 
+        // Hatch times in seconds (quadrupled): common 120s, uncommon 240s, rare 360s, epic 480s, legendary 720s, godly 1200s
+        const EGG_HATCH_TIMES = { common: 120, uncommon: 240, rare: 360, epic: 480, legendary: 720, godly: 1200 };
+
         function buyEgg(petId) {
             const pet = PETS[petId];
             const owned = getPetCount(petId);
-            const incubating = (gameState.eggs || []).filter(e => e.petId === petId).length;
-            if (gameState.money >= pet.price && (owned + incubating) < 3) {
+            const inInventory = (gameState.eggInventory && gameState.eggInventory[petId]) || 0;
+            const planted = countPlantedEggs(petId);
+            if (gameState.money >= pet.price && (owned + inInventory + planted) < 3) {
                 gameState.money -= pet.price;
-                if (!gameState.eggs) gameState.eggs = [];
-                // Hatch time: 30s for common, 60s uncommon, 90s rare, 120s epic, 180s legendary, 300s godly
-                const hatchTimes = { common: 30, uncommon: 60, rare: 90, epic: 120, legendary: 180, godly: 300 };
-                const hatchTime = Date.now() + (hatchTimes[pet.rarity] || 60) * 1000;
-                gameState.eggs.push({ petId, hatchTime });
-                showMessage(`🥚 ${pet.name} egg purchased! Hatching in ${hatchTimes[pet.rarity]}s...`);
+                if (!gameState.eggInventory) gameState.eggInventory = {};
+                gameState.eggInventory[petId] = (gameState.eggInventory[petId] || 0) + 1;
+                const hatchTime = EGG_HATCH_TIMES[pet.rarity] || 120;
+                showMessage(`🥚 ${pet.name} egg purchased! Plant it in your garden to hatch (${hatchTime}s).`);
                 renderShop();
                 renderPetShop();
                 renderInventory();
             }
         }
 
-        function checkEggHatching() {
-            if (!gameState.eggs || gameState.eggs.length === 0) return;
-            const now = Date.now();
-            const hatched = [];
-            gameState.eggs = gameState.eggs.filter(egg => {
-                if (now >= egg.hatchTime) {
-                    hatched.push(egg.petId);
-                    return false;
-                }
-                return true;
-            });
-            hatched.forEach(petId => {
-                const pet = PETS[petId];
-                if (!gameState.pets) gameState.pets = [];
-                gameState.pets.push(petId);
-                // Auto-equip if less than 3 equipped
-                if (!gameState.equippedPets) gameState.equippedPets = [];
-                if (gameState.equippedPets.length < 3) {
-                    gameState.equippedPets.push(petId);
-                    showMessage(`🐣 ${pet.emoji} ${pet.name} hatched and is now equipped!`);
-                } else {
-                    showMessage(`🐣 ${pet.emoji} ${pet.name} hatched! Equip from your pets.`);
-                }
-            });
-            if (hatched.length > 0) {
-                renderPetShop();
-            }
+        function countPlantedEggs(petId) {
+            return (gameState.plots || []).filter(p => p && p.isEgg && p.petId === petId).length;
         }
 
-        // Check egg hatching every second
-        setInterval(checkEggHatching, 1000);
+        function getSelectedEgg() {
+            return gameState.selectedEgg || null;
+        }
+
+        function selectEgg(petId) {
+            gameState.selectedSeed = null;
+            gameState.selectedEgg = gameState.selectedEgg === petId ? null : petId;
+            gameState.shovelSelected = false;
+            renderInventory();
+        }
 
         // Legacy support
         function buyPet(petId) { buyEgg(petId); }
@@ -4776,6 +4903,15 @@
             
             gameState.plots.forEach((plot, index) => {
                 if (plot) {
+                    // Handle egg growth
+                    if (plot.isEgg) {
+                        if (plot.growth < plot.hatchTime) {
+                            plot.growth += 1;
+                            needsRender = true;
+                        }
+                        return; // Eggs don't get mutations or other crop logic
+                    }
+                    
                     const crop = CROPS[plot.type];
                     const targetTime = crop.growTime;
                     
