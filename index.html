@@ -650,6 +650,94 @@
             bottom: 6px; right: 2px;
             transform: rotate(30deg);
         }
+        /* Blood Tiger - demonic tiger with red/black coloring */
+        .pet-bloodtiger .pet-body {
+            animation: petBob 1s ease-in-out infinite, bloodtigerPulse 2s ease-in-out infinite;
+        }
+        @keyframes bloodtigerPulse {
+            0%, 100% { filter: drop-shadow(0 0 3px #8b0000); }
+            50% { filter: drop-shadow(0 0 8px #dc143c); }
+        }
+        .pet-bloodtiger .pet-body::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(139, 0, 0, 0.6);
+        }
+        .pet-bloodtiger .pet-body::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 12px;
+            background: linear-gradient(135deg, #a00000, #600000);
+            border-radius: 50%;
+            top: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .pet-bloodtiger .pet-ears {
+            position: absolute;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            width: 18px;
+        }
+        .pet-bloodtiger .pet-ears::before, .pet-bloodtiger .pet-ears::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 8px solid #600000;
+        }
+        .pet-bloodtiger .pet-ears::before { left: 0; }
+        .pet-bloodtiger .pet-ears::after { right: 0; }
+        .pet-bloodtiger .pet-eyes {
+            position: absolute;
+            top: 11px; left: 50%; transform: translateX(-50%);
+            width: 10px; display: flex; justify-content: space-between;
+        }
+        .pet-bloodtiger .pet-eyes::before, .pet-bloodtiger .pet-eyes::after {
+            content: '';
+            width: 4px; height: 3px;
+            background: radial-gradient(circle at 50% 50%, #ff0000, #ff4500);
+            border-radius: 50%;
+            box-shadow: 0 0 5px #ff0000, 0 0 10px #ff4500;
+            animation: bloodtigerEyes 3s ease-in-out infinite;
+        }
+        @keyframes bloodtigerEyes {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0.3; }
+        }
+        .pet-bloodtiger .pet-snout {
+            position: absolute;
+            top: 15px; left: 50%; transform: translateX(-50%);
+            width: 6px; height: 4px;
+            background: #300000;
+            border-radius: 50%;
+        }
+        .pet-bloodtiger .pet-tail {
+            position: absolute;
+            width: 4px; height: 12px;
+            background: linear-gradient(to bottom, #8b0000, #4a0000);
+            border-radius: 3px;
+            bottom: 8px; right: 3px;
+            transform: rotate(40deg);
+            animation: tigerTailSwish 1.5s ease-in-out infinite;
+        }
+        @keyframes tigerTailSwish {
+            0%, 100% { transform: rotate(40deg); }
+            50% { transform: rotate(20deg); }
+        }
+        .pet-bloodtiger .pet-stripes {
+            position: absolute;
+            top: 8px; left: 50%; transform: translateX(-50%);
+            width: 12px; height: 8px;
+        }
+        .pet-bloodtiger .pet-stripes::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(90deg, transparent 0px, transparent 2px, #200000 2px, #200000 4px);
+        }
         .roaming-pet .pet-shadow {
             position: absolute;
             width: 20px;
@@ -4089,6 +4177,35 @@
             50% { transform: rotate(10deg); }
         }
 
+        /* Bloodlit mutation - demonic red/black glow */
+        .plant-model.has-bloodlit .plant-fruit {
+            animation: bloodlit-pulse 1.2s ease-in-out infinite;
+        }
+        .plant-model.has-bloodlit .plant-stem {
+            filter: brightness(0.7) saturate(1.5);
+            background: linear-gradient(to top, #2d0a0a, #4a1010) !important;
+        }
+        .plant-model.has-bloodlit .plant-leaf {
+            filter: hue-rotate(-30deg) saturate(2) brightness(0.8);
+        }
+        .plant-model.has-bloodlit.stage-4::before {
+            content: '🩸';
+            position: absolute;
+            font-size: 11px;
+            top: -8px;
+            right: -6px;
+            z-index: 5;
+            animation: blood-drip 2s ease-in-out infinite;
+        }
+        @keyframes bloodlit-pulse {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 8px #8b0000) drop-shadow(0 0 4px #ff0000); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 15px #dc143c) drop-shadow(0 0 8px #ff4500); }
+        }
+        @keyframes blood-drip {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(3px); opacity: 0.7; }
+        }
+
             animation: sway 2s ease-in-out infinite;
         }
 
@@ -6231,7 +6348,8 @@
             starblessed: { name: 'Star Blessed', emoji: '⭐', bonus: 2.0, sprinklerOnly: true },
             crystalized: { name: 'Crystalized', emoji: '💎', bonus: 1.9, sprinklerOnly: true },
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
-            enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true }
+            enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
+            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 1.85 }
         };
 
         const SIZES = [
@@ -6261,7 +6379,8 @@
             fox: { name: 'Arctic Fox', emoji: '🦊', price: 750, ability: 'Frostbite', description: 'Frozen plants worth 3x', effect: 'frostvalue', rarity: 'epic' },
             panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
             kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
-            slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' }
+            slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
+            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 30000, ability: 'Bloodlust', description: 'Bloodlit mutation, 3x cursed bonus, 2x sprinkler duration', effect: 'bloodlust', rarity: 'godly' }
         };
 
         const GEAR = {
@@ -6842,6 +6961,7 @@
                     if (plot.mutations?.includes('crystalized')) mutationClasses += ' has-crystalized';
                     if (plot.mutations?.includes('volcanic')) mutationClasses += ' has-volcanic';
                     if (plot.mutations?.includes('enchanted')) mutationClasses += ' has-enchanted';
+                    if (plot.mutations?.includes('bloodlit')) mutationClasses += ' has-bloodlit';
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
@@ -7006,7 +7126,12 @@
                 const mutations = item.mutations || [];
                 mutations.forEach(m => {
                     const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                    if (weather) value *= weather.bonus;
+                    if (weather) {
+                        let bonus = weather.bonus;
+                        // Blood Tiger triples cursed bonus
+                        if (m === 'cursed' && hasPetEffect('bloodlust')) bonus = 1 + (bonus - 1) * 3;
+                        value *= bonus;
+                    }
                     const special = SPECIAL_MUTATIONS[m];
                     if (special) value *= special.bonus;
                 });
@@ -7144,7 +7269,13 @@
                 harvested: false // tracks if first harvest done (for regrow time)
             };
             
-            showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
+            // Blood Tiger gives bloodlit mutation on planting
+            if (hasPetEffect('bloodlust')) {
+                gameState.plots[plotIndex].mutations.push('bloodlit');
+                showMessage(`Blood Tiger blessed your ${CROPS[seedType].name}! 🩸`);
+            } else {
+                showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
+            }
             
             if (gameState.seeds[seedType] <= 0) {
                 delete gameState.seeds[seedType];
@@ -7691,10 +7822,16 @@
             const gear = GEAR[gearId];
             gameState.unplacedSprinklers.splice(gameState.selectedSprinkler, 1);
             if (!gameState.sprinklers) gameState.sprinklers = [];
-            gameState.sprinklers.push({ id: gearId, plotIndex: plotIndex, timer: 0, remaining: gear.duration || 120 });
             
-            const durationMin = Math.floor((gear.duration || 120) / 60);
-            showMessage(`${gear.emoji} ${gear.name} placed! Lasts ${durationMin} min.`);
+            // Blood Tiger doubles sprinkler duration
+            let duration = gear.duration || 120;
+            if (hasPetEffect('bloodlust')) duration *= 2;
+            
+            gameState.sprinklers.push({ id: gearId, plotIndex: plotIndex, timer: 0, remaining: duration });
+            
+            const durationMin = Math.floor(duration / 60);
+            const bloodBonus = hasPetEffect('bloodlust') ? ' (2x Blood Tiger!)' : '';
+            showMessage(`${gear.emoji} ${gear.name} placed! Lasts ${durationMin} min.${bloodBonus}`);
             
             gameState.selectedSprinkler = null;
             renderInventory();
