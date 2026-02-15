@@ -82,7 +82,8 @@
 
         .player {
             position: absolute;
-            font-size: 2.5rem;
+            width: 40px;
+            height: 60px;
             z-index: 100;
             transition: left 0.15s ease-out, top 0.15s ease-out;
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
@@ -102,6 +103,161 @@
             0% { transform: translateY(0); }
             50% { transform: translateY(-30px); }
             100% { transform: translateY(0); }
+        }
+
+        /* Farmer model */
+        .farmer-model {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Head */
+        .farmer-head {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, #ffdbac, #e8b88a);
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Hat */
+        .farmer-hat {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .farmer-hat::before {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 6px;
+            background: linear-gradient(to bottom, #f4d03f, #c9a227);
+            border-radius: 2px;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .farmer-hat::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 10px;
+            background: linear-gradient(to bottom, #f4d03f, #c9a227);
+            border-radius: 4px 4px 0 0;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Eyes */
+        .farmer-eyes {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .farmer-eyes::before,
+        .farmer-eyes::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: #2c1810;
+            border-radius: 50%;
+        }
+        
+        /* Body/Overalls */
+        .farmer-body {
+            position: absolute;
+            width: 18px;
+            height: 22px;
+            background: linear-gradient(to bottom, #4a90d9, #2e6ab3);
+            border-radius: 4px 4px 0 0;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .farmer-body::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 8px;
+            background: linear-gradient(to bottom, #d35400, #a04000);
+            border-radius: 2px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Arms */
+        .farmer-arms {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+        }
+        .farmer-arms::before,
+        .farmer-arms::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 14px;
+            background: linear-gradient(to bottom, #ffdbac, #e8b88a);
+            border-radius: 3px;
+        }
+        .farmer-arms::before {
+            left: 0;
+            transform: rotate(15deg);
+        }
+        .farmer-arms::after {
+            right: 0;
+            transform: rotate(-15deg);
+        }
+        
+        /* Legs */
+        .farmer-legs {
+            position: absolute;
+            top: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .farmer-legs::before,
+        .farmer-legs::after {
+            content: '';
+            width: 6px;
+            height: 16px;
+            background: linear-gradient(to bottom, #4a90d9, #2e6ab3);
+            border-radius: 0 0 2px 2px;
+        }
+        
+        /* Boots */
+        .farmer-boots {
+            position: absolute;
+            top: 52px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .farmer-boots::before,
+        .farmer-boots::after {
+            content: '';
+            width: 8px;
+            height: 6px;
+            background: linear-gradient(to bottom, #5d4037, #3e2723);
+            border-radius: 2px;
         }
 
         .player-shadow {
@@ -1942,7 +2098,17 @@
             <div class="farm-section">
                 <h2>🏡 Your Farm</h2>
                 <div class="farm-grid" id="farm-grid">
-                    <div class="player" id="player">🧑‍🌾</div>
+                    <div class="player" id="player">
+                        <div class="farmer-model">
+                            <div class="farmer-hat"></div>
+                            <div class="farmer-head"></div>
+                            <div class="farmer-eyes"></div>
+                            <div class="farmer-body"></div>
+                            <div class="farmer-arms"></div>
+                            <div class="farmer-legs"></div>
+                            <div class="farmer-boots"></div>
+                        </div>
+                    </div>
                     <div class="player-shadow" id="player-shadow"></div>
                 </div>
 
@@ -2503,7 +2669,17 @@
             const player = document.createElement('div');
             player.className = 'player' + (playerState.facing === 'left' ? ' walking-left' : '');
             player.id = 'player';
-            player.textContent = '🧑‍🌾';
+            player.innerHTML = `
+                <div class="farmer-model">
+                    <div class="farmer-hat"></div>
+                    <div class="farmer-head"></div>
+                    <div class="farmer-eyes"></div>
+                    <div class="farmer-body"></div>
+                    <div class="farmer-arms"></div>
+                    <div class="farmer-legs"></div>
+                    <div class="farmer-boots"></div>
+                </div>
+            `;
             container.appendChild(player);
 
             const shadow = document.createElement('div');
