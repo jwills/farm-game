@@ -2541,8 +2541,50 @@
         .plant-model.crop-potato .plant-leaf { background: #5a7c4a; }
         .plant-model.crop-potato.stage-4 .plant-crop { bottom: 3px; }
 
-        .plant-model.crop-tomato .plant-stem { background: linear-gradient(to top, #3d5a27, #5a8c3a); }
-        .plant-model.crop-tomato .plant-leaf { background: #4a7c3a; }
+        /* Tomato - persistent bush structure */
+        .plant-model.crop-tomato .plant-stem { background: linear-gradient(to top, #3d5a27, #5a8c3a); width: 4px; }
+        .plant-model.crop-tomato .plant-leaf { background: #4a7c3a; width: 12px; height: 8px; }
+        .plant-model.crop-tomato.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-tomato.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-tomato.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-tomato.stage-3 .plant-stem { height: 24px; }
+        .plant-model.crop-tomato.stage-3 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-tomato.stage-4 .plant-stem { height: 32px; }
+        .plant-model.crop-tomato.stage-4 .plant-leaves { bottom: 30px; }
+        /* Tomato bush canopy - always visible */
+        .plant-model.crop-tomato::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-tomato.stage-2::before {
+            width: 18px; height: 14px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9a4a, #3a7a2a 70%);
+        }
+        .plant-model.crop-tomato.stage-3::before {
+            width: 26px; height: 20px; bottom: 22px;
+            background: radial-gradient(ellipse at 50% 60%, #5a9a4a, #3a7a2a 70%);
+        }
+        .plant-model.crop-tomato.stage-4::before {
+            width: 32px; height: 26px; bottom: 28px;
+            background: radial-gradient(ellipse at 50% 55%, #5aaa4a, #4a8a3a 50%, #3a7a2a 80%);
+            z-index: 1;
+        }
+        /* Tomatoes only appear at stage 4 */
+        .crop-tomato .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-tomato.stage-4 .plant-fruit {
+            width: 22px; height: 22px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #cc0000);
+            border-radius: 50%;
+            bottom: 22px;
+            z-index: 2;
+        }
 
         .plant-model.crop-corn .plant-stem { background: linear-gradient(to top, #5a7c27, #8ca743); width: 6px; }
         .plant-model.crop-corn .plant-leaf { background: #7ca743; width: 20px; height: 6px; border-radius: 2px; }
@@ -2570,12 +2612,142 @@
         .plant-model.crop-lettuce.stage-4 .plant-leaves { bottom: 8px; }
         .plant-model.crop-lettuce.stage-4 .plant-leaf { width: 22px; height: 16px; background: #5aa65a; }
 
-        /* Pepper - tall vine with peppers */
+        /* Pepper - persistent tall bush structure */
         .plant-model.crop-pepper .plant-stem { background: linear-gradient(to top, #3a6a3a, #5a9a5a); width: 4px; }
         .plant-model.crop-pepper .plant-leaf { background: #4a8a4a; width: 14px; height: 8px; }
+        .plant-model.crop-pepper.stage-1 .plant-stem { height: 6px; }
+        .plant-model.crop-pepper.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-pepper.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-pepper.stage-3 .plant-stem { height: 28px; }
+        .plant-model.crop-pepper.stage-3 .plant-leaves { bottom: 30px; }
         .plant-model.crop-pepper.stage-4 .plant-stem { height: 38px; }
-        .plant-model.crop-pepper.stage-4 .plant-crop { bottom: 22px; }
-        .plant-model.crop-pepper.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-pepper.stage-4 .plant-leaves { bottom: 36px; }
+        /* Pepper bush canopy - always visible */
+        .plant-model.crop-pepper::before {
+            content: '';
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-pepper.stage-2::before {
+            width: 16px; height: 12px; bottom: 16px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-pepper.stage-3::before {
+            width: 24px; height: 18px; bottom: 26px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-pepper.stage-4::before {
+            width: 30px; height: 24px; bottom: 32px;
+            background: radial-gradient(ellipse at 50% 55%, #5aba5a, #4a9a4a 50%, #3a8a3a 80%);
+            z-index: 1;
+        }
+        /* Peppers only appear at stage 4 */
+        .crop-pepper .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-pepper.stage-4 .plant-fruit {
+            width: 10px; height: 28px;
+            background: linear-gradient(90deg, #ff3030, #cc0000);
+            border-radius: 5px 5px 8px 8px;
+            bottom: 24px;
+            transform: rotate(10deg);
+            z-index: 2;
+        }
+
+        /* Cucumber - persistent vine structure */
+        .plant-model.crop-cucumber .plant-stem { background: linear-gradient(to top, #3a6a3a, #4a8a4a); width: 3px; }
+        .plant-model.crop-cucumber .plant-leaf { background: #5a9a5a; width: 12px; height: 10px; }
+        .plant-model.crop-cucumber.stage-1 .plant-stem { height: 5px; }
+        .plant-model.crop-cucumber.stage-2 .plant-stem { height: 12px; }
+        .plant-model.crop-cucumber.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-cucumber.stage-3 .plant-stem { height: 22px; }
+        .plant-model.crop-cucumber.stage-3 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-cucumber.stage-4 .plant-stem { height: 30px; }
+        .plant-model.crop-cucumber.stage-4 .plant-leaves { bottom: 28px; }
+        /* Cucumber vine canopy - always visible */
+        .plant-model.crop-cucumber::before {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-cucumber.stage-2::before {
+            width: 16px; height: 12px; bottom: 12px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-cucumber.stage-3::before {
+            width: 22px; height: 16px; bottom: 20px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa5a, #3a8a3a 70%);
+        }
+        .plant-model.crop-cucumber.stage-4::before {
+            width: 28px; height: 22px; bottom: 26px;
+            background: radial-gradient(ellipse at 50% 55%, #5aba5a, #4a9a4a 50%, #3a8a3a 80%);
+            z-index: 1;
+        }
+        /* Cucumbers only appear at stage 4 */
+        .crop-cucumber .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-cucumber.stage-4 .plant-fruit {
+            width: 10px; height: 26px;
+            background: linear-gradient(90deg, #228b22, #32cd32, #228b22);
+            border-radius: 5px;
+            bottom: 18px;
+            z-index: 2;
+        }
+
+        /* Beans - persistent vine structure */
+        .plant-model.crop-beans .plant-stem { background: linear-gradient(to top, #3a5a3a, #4a7a4a); width: 3px; }
+        .plant-model.crop-beans .plant-leaf { background: #4a9a4a; width: 10px; height: 8px; }
+        .plant-model.crop-beans.stage-1 .plant-stem { height: 5px; }
+        .plant-model.crop-beans.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-beans.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-beans.stage-3 .plant-stem { height: 26px; }
+        .plant-model.crop-beans.stage-3 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-beans.stage-4 .plant-stem { height: 36px; }
+        .plant-model.crop-beans.stage-4 .plant-leaves { bottom: 34px; }
+        /* Beans vine canopy - always visible */
+        .plant-model.crop-beans::before {
+            content: '';
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .plant-model.crop-beans.stage-2::before {
+            width: 14px; height: 10px; bottom: 14px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa4a, #3a8a2a 70%);
+        }
+        .plant-model.crop-beans.stage-3::before {
+            width: 22px; height: 18px; bottom: 24px;
+            background: radial-gradient(ellipse at 50% 60%, #5aaa4a, #3a8a2a 70%);
+        }
+        .plant-model.crop-beans.stage-4::before {
+            width: 30px; height: 26px; bottom: 32px;
+            background: radial-gradient(ellipse at 50% 55%, #5aba4a, #4a9a3a 50%, #3a8a2a 80%);
+            z-index: 1;
+        }
+        /* Bean pods only appear at stage 4 */
+        .crop-beans .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-beans.stage-4 .plant-fruit {
+            width: 6px; height: 20px;
+            background: linear-gradient(90deg, #228b22, #32cd32);
+            border-radius: 3px;
+            bottom: 26px;
+            transform: rotate(-10deg);
+            z-index: 2;
+        }
 
         /* Eggplant - purple stem with hanging fruit */
         .plant-model.crop-eggplant .plant-stem { background: linear-gradient(to top, #5a4a6a, #7a6a8a); width: 5px; }
