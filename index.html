@@ -6732,24 +6732,40 @@
         }
 
         function restockShop() {
-            let restocked = [];
+            // Clear all existing stock
+            gameState.shopStock = {};
+            
+            // Group crops by rarity
+            const cropsByRarity = {};
             for (const [id, crop] of Object.entries(CROPS)) {
                 const config = STOCK_CONFIG[crop.rarity];
                 if (config.hellscapeOnly) continue; // Skip demonic
-                const currentStock = gameState.shopStock[id] || 0;
+                if (!cropsByRarity[crop.rarity]) cropsByRarity[crop.rarity] = [];
+                cropsByRarity[crop.rarity].push(id);
+            }
+            
+            // Select random crops from each rarity tier
+            const newStock = [];
+            for (const [rarity, cropIds] of Object.entries(cropsByRarity)) {
+                const config = STOCK_CONFIG[rarity];
+                // Shuffle and pick a subset based on rarity
+                const shuffled = [...cropIds].sort(() => Math.random() - 0.5);
+                const numToStock = rarity === 'common' ? 3 : 
+                                   rarity === 'uncommon' ? 3 : 
+                                   rarity === 'rare' ? 2 : 
+                                   rarity === 'epic' ? 2 : 
+                                   rarity === 'legendary' ? 1 : 
+                                   rarity === 'godly' ? 1 : 2;
                 
-                // Only restock if below max and chance succeeds
-                if (currentStock < config.max && Math.random() < config.restockChance) {
-                    const addAmount = Math.ceil(Math.random() * 2); // Add 1-2
-                    gameState.shopStock[id] = Math.min(currentStock + addAmount, config.max);
-                    if (currentStock === 0 && gameState.shopStock[id] > 0) {
-                        restocked.push(crop.name);
-                    }
+                for (let i = 0; i < Math.min(numToStock, shuffled.length); i++) {
+                    const cropId = shuffled[i];
+                    const stock = config.min + Math.floor(Math.random() * (config.max - config.min + 1));
+                    gameState.shopStock[cropId] = stock;
+                    newStock.push(CROPS[cropId].name);
                 }
             }
-            if (restocked.length > 0) {
-                showMessage(`Shop restocked: ${restocked.slice(0, 3).join(', ')}${restocked.length > 3 ? '...' : ''} 📦`);
-            }
+            
+            showMessage(`New seeds in stock! 📦🌱`);
             renderShop();
         }
 
