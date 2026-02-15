@@ -2776,92 +2776,171 @@
         .plant-model.crop-hellfruit.stage-4 .plant-leaves { bottom: 35px; }
 
         /* Fire Blossom - demonic flower */
-        .plant-model.crop-fireblossom .plant-stem { background: linear-gradient(to top, #4a0a0a, #8b2020); width: 5px; }
-        .plant-model.crop-fireblossom .plant-leaf { background: linear-gradient(135deg, #ff4500, #8b0000); width: 12px; height: 8px; border-radius: 50% 0; }
-        .plant-model.crop-fireblossom.stage-4 .plant-stem { height: 40px; }
-        .plant-model.crop-fireblossom.stage-4 .plant-leaves { bottom: 35px; }
+        /* Fire Blossom - big demonic tree with black trunk and blood red leaves */
+        .plant-model.crop-fireblossom .plant-stem { 
+            background: linear-gradient(to top, #000000, #1a1a1a, #0d0d0d); 
+            width: 10px; 
+            border-radius: 2px;
+            box-shadow: inset 2px 0 4px rgba(0,0,0,0.8), inset -2px 0 4px rgba(0,0,0,0.8);
+        }
+        .plant-model.crop-fireblossom .plant-leaf { 
+            background: linear-gradient(135deg, #8b0000, #660000); 
+            width: 14px; 
+            height: 10px; 
+            border-radius: 50% 0; 
+        }
         
-        /* Fire Blossom - big red flower */
-        .crop-fireblossom .plant-fruit {
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle at 50% 50%, #ffcc00, #ff6600 30%, #ff0000 60%, #cc0000 80%);
-            border-radius: 50%;
-            bottom: 30px;
+        /* Stage 1 - small black sapling */
+        .plant-model.crop-fireblossom.stage-1 .plant-stem { height: 8px; width: 4px; }
+        
+        /* Stage 2 - growing trunk */
+        .plant-model.crop-fireblossom.stage-2 .plant-stem { height: 20px; width: 6px; }
+        .plant-model.crop-fireblossom.stage-2 .plant-leaves { bottom: 18px; }
+        
+        /* Stage 3 - bigger tree forming */
+        .plant-model.crop-fireblossom.stage-3 .plant-stem { height: 32px; width: 8px; }
+        .plant-model.crop-fireblossom.stage-3 .plant-leaves { bottom: 28px; }
+        
+        /* Stage 4 - full demonic tree */
+        .plant-model.crop-fireblossom.stage-4 .plant-stem { 
+            height: 45px; 
+            width: 12px;
+            background: linear-gradient(to top, #000000 0%, #1a0a0a 50%, #0d0505 100%);
+        }
+        .plant-model.crop-fireblossom.stage-4 .plant-leaves { 
+            bottom: 38px; 
+        }
+        
+        /* Blood red tree canopy - always visible */
+        .plant-model.crop-fireblossom::before {
+            content: '';
             position: absolute;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.5);
-        }
-        /* Flower petals using clip-path */
-        .crop-fireblossom.stage-4 .plant-fruit {
-            width: 36px;
-            height: 36px;
-            background: none;
-            bottom: 32px;
-            box-shadow: none;
-        }
-        .crop-fireblossom.stage-4 .plant-fruit::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: conic-gradient(from 0deg, 
-                #ff0000 0deg, #ff3300 30deg, 
-                #ff0000 36deg, #ff3300 66deg,
-                #ff0000 72deg, #ff3300 102deg,
-                #ff0000 108deg, #ff3300 138deg,
-                #ff0000 144deg, #ff3300 174deg,
-                #ff0000 180deg, #ff3300 210deg,
-                #ff0000 216deg, #ff3300 246deg,
-                #ff0000 252deg, #ff3300 282deg,
-                #ff0000 288deg, #ff3300 318deg,
-                #ff0000 324deg, #ff3300 354deg,
-                #ff0000 360deg);
+            width: 0;
+            height: 0;
+            background: transparent;
             border-radius: 50%;
-            clip-path: polygon(
-                50% 0%, 65% 25%, 100% 25%, 75% 45%, 
-                85% 75%, 50% 60%, 15% 75%, 25% 45%, 
-                0% 25%, 35% 25%
-            );
-            box-shadow: 0 0 20px rgba(255, 50, 0, 0.9);
-            animation: fireFlowerPulse 1s ease-in-out infinite;
+            transition: all 0.3s;
         }
-        /* Flower center */
-        .crop-fireblossom.stage-4 .plant-fruit::after {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle at 40% 40%, #ffff00, #ffaa00, #ff6600);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(255, 200, 0, 0.8);
+        .plant-model.crop-fireblossom.stage-2::before {
+            width: 20px;
+            height: 16px;
+            bottom: 18px;
+            background: radial-gradient(ellipse at 50% 60%, #8b0000, #660000 50%, #4a0000 80%);
+            box-shadow: 0 0 5px rgba(139, 0, 0, 0.5);
         }
-        @keyframes fireFlowerPulse {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.1); filter: brightness(1.2); }
+        .plant-model.crop-fireblossom.stage-3::before {
+            width: 32px;
+            height: 26px;
+            bottom: 28px;
+            background: radial-gradient(ellipse at 50% 60%, #990000, #770000 40%, #550000 70%, #330000 90%);
+            box-shadow: 0 0 8px rgba(139, 0, 0, 0.6);
+        }
+        .plant-model.crop-fireblossom.stage-4::before {
+            width: 48px;
+            height: 38px;
+            bottom: 36px;
+            background: radial-gradient(ellipse at 50% 55%, 
+                #aa0000 0%, 
+                #880000 25%, 
+                #660000 50%, 
+                #440000 75%, 
+                #220000 100%);
+            box-shadow: 
+                0 0 15px rgba(139, 0, 0, 0.7),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
         
+        /* Fire Blossom flowers - only appear at stage 4 */
+        .crop-fireblossom .plant-fruit {
+            width: 0;
+            height: 0;
+            background: transparent;
+            bottom: 40px;
+        }
+        .crop-fireblossom.stage-4 .plant-fruit {
+            width: 52px;
+            height: 45px;
+            background: transparent;
+            position: absolute;
+            bottom: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        /* Main big red flower */
+        .crop-fireblossom.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: conic-gradient(from 0deg, 
+                #ff0000 0deg, #cc0000 36deg, 
+                #ff0000 36deg, #cc0000 72deg,
+                #ff0000 72deg, #cc0000 108deg,
+                #ff0000 108deg, #cc0000 144deg,
+                #ff0000 144deg, #cc0000 180deg,
+                #ff0000 180deg, #cc0000 216deg,
+                #ff0000 216deg, #cc0000 252deg,
+                #ff0000 252deg, #cc0000 288deg,
+                #ff0000 288deg, #cc0000 324deg,
+                #ff0000 324deg, #cc0000 360deg);
+            border-radius: 50%;
+            clip-path: polygon(
+                50% 0%, 61% 35%, 98% 35%, 68% 57%, 
+                79% 91%, 50% 70%, 21% 91%, 32% 57%, 
+                2% 35%, 39% 35%
+            );
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 30px rgba(200, 0, 0, 0.5);
+            animation: fireFlowerPulse 1.5s ease-in-out infinite;
+        }
+        /* Flower center - glowing orange/yellow */
+        .crop-fireblossom.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 1px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: radial-gradient(circle at 40% 40%, #ffff00, #ff8800, #ff4400);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 150, 0, 0.9), 0 0 15px rgba(255, 100, 0, 0.6);
+            animation: flowerCenterGlow 1s ease-in-out infinite;
+        }
+        
+        @keyframes fireFlowerPulse {
+            0%, 100% { transform: translateX(-50%) scale(1) rotate(0deg); filter: brightness(1); }
+            50% { transform: translateX(-50%) scale(1.15) rotate(5deg); filter: brightness(1.3); }
+        }
+        @keyframes flowerCenterGlow {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 150, 0, 0.9), 0 0 15px rgba(255, 100, 0, 0.6); }
+            50% { box-shadow: 0 0 15px rgba(255, 200, 0, 1), 0 0 25px rgba(255, 150, 0, 0.8); }
+        }
+        
+        /* Ambient fire glow around tree */
         .plant-model.crop-fireblossom.stage-4::after {
             content: '';
             position: absolute;
-            width: 24px; height: 24px;
-            background: radial-gradient(circle, rgba(255,100,0,0.4) 0%, transparent 70%);
-            bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px;
+            background: radial-gradient(circle, rgba(139,0,0,0.3) 0%, rgba(100,0,0,0.1) 50%, transparent 70%);
+            bottom: 30px; left: 50%; transform: translateX(-50%);
             border-radius: 50%;
-            animation: fireAura 0.8s ease-in-out infinite;
+            animation: fireAura 2s ease-in-out infinite;
+            z-index: 0;
         }
 
-        @keyframes fireblossomGlow {
-            0%, 100% { filter: brightness(1) drop-shadow(0 0 5px #ff4400) drop-shadow(0 0 10px #ff6600); transform: scale(1); }
-            50% { filter: brightness(1.3) drop-shadow(0 0 10px #ff6600) drop-shadow(0 0 20px #ffaa00); transform: scale(1.1); }
-        }
         @keyframes fireAura {
-            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
         }
 
         @keyframes hellglow {
