@@ -4115,6 +4115,11 @@
             if (timerEl) {
                 timerEl.textContent = `📦 Restock in: ${seconds}s`;
             }
+            // Trigger restock when timer hits 0
+            if (timeUntilRestock <= 0) {
+                restockShop();
+                gameState.lastRestock = now;
+            }
         }
 
         // Render Shop
