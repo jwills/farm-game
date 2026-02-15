@@ -143,6 +143,308 @@
 
         .plot .crop-emoji {
             font-size: 2.5rem;
+            display: none;
+        }
+
+        /* Plant Visual Models */
+        .plant-model {
+            position: relative;
+            width: 60px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .plant-stem {
+            width: 4px;
+            background: linear-gradient(to top, #2d5a27, #4a7c43);
+            position: absolute;
+            bottom: 5px;
+            border-radius: 2px;
+        }
+
+        .plant-leaves {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+        }
+
+        .plant-leaf {
+            width: 12px;
+            height: 8px;
+            background: #4a7c43;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+        }
+
+        .plant-leaf.left {
+            transform: rotate(-30deg);
+            left: -8px;
+        }
+
+        .plant-leaf.right {
+            transform: rotate(30deg);
+            right: -8px;
+        }
+
+        .plant-crop {
+            position: absolute;
+            font-size: 1.8rem;
+            z-index: 2;
+        }
+
+        .plant-ground {
+            width: 40px;
+            height: 8px;
+            background: linear-gradient(to top, #3d2914, #5a3d1a);
+            border-radius: 4px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        /* Growth Stage 1: Seed */
+        .plant-model.stage-1 .plant-stem { height: 0; }
+        .plant-model.stage-1 .plant-crop { bottom: 8px; font-size: 0.9rem; }
+        .plant-model.stage-1 .plant-leaves { display: none; }
+
+        /* Growth Stage 2: Sprout */
+        .plant-model.stage-2 .plant-stem { height: 15px; }
+        .plant-model.stage-2 .plant-crop { display: none; }
+        .plant-model.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.stage-2 .plant-leaf { width: 10px; height: 6px; }
+
+        /* Growth Stage 3: Growing */
+        .plant-model.stage-3 .plant-stem { height: 30px; }
+        .plant-model.stage-3 .plant-crop { display: none; }
+        .plant-model.stage-3 .plant-leaves { bottom: 32px; }
+        .plant-model.stage-3 .plant-leaf { width: 14px; height: 9px; }
+
+        /* Growth Stage 4: Ready */
+        .plant-model.stage-4 .plant-stem { height: 35px; }
+        .plant-model.stage-4 .plant-crop { bottom: 35px; }
+        .plant-model.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.stage-4 .plant-leaf { width: 16px; height: 10px; background: #3d6b35; }
+
+        /* Crop-specific colors */
+        .plant-model.crop-carrot .plant-stem { background: linear-gradient(to top, #2d5a27, #5a8c4a); }
+        .plant-model.crop-carrot .plant-leaf { background: #5a8c4a; }
+        .plant-model.crop-carrot.stage-4 .plant-crop { bottom: 5px; }
+        .plant-model.crop-carrot.stage-4 .plant-stem { height: 25px; }
+
+        .plant-model.crop-potato .plant-stem { background: linear-gradient(to top, #4a3728, #6b5a43); }
+        .plant-model.crop-potato .plant-leaf { background: #5a7c4a; }
+        .plant-model.crop-potato.stage-4 .plant-crop { bottom: 3px; }
+
+        .plant-model.crop-tomato .plant-stem { background: linear-gradient(to top, #3d5a27, #5a8c3a); }
+        .plant-model.crop-tomato .plant-leaf { background: #4a7c3a; }
+
+        .plant-model.crop-corn .plant-stem { background: linear-gradient(to top, #5a7c27, #8ca743); width: 6px; }
+        .plant-model.crop-corn .plant-leaf { background: #7ca743; width: 20px; height: 6px; border-radius: 2px; }
+        .plant-model.crop-corn.stage-4 .plant-stem { height: 45px; }
+        .plant-model.crop-corn.stage-4 .plant-crop { bottom: 25px; }
+
+        /* Onion - purple/white bulb plant */
+        .plant-model.crop-onion .plant-stem { background: linear-gradient(to top, #7a6a9a, #9a8aba); width: 3px; }
+        .plant-model.crop-onion .plant-leaf { background: #5a8c5a; width: 8px; height: 20px; border-radius: 2px 2px 0 0; }
+        .plant-model.crop-onion.stage-2 .plant-leaf { height: 12px; }
+        .plant-model.crop-onion.stage-3 .plant-leaf { height: 18px; }
+        .plant-model.crop-onion.stage-4 .plant-crop { bottom: 2px; }
+        .plant-model.crop-onion.stage-4 .plant-stem { height: 20px; }
+        .plant-model.crop-onion.stage-4 .plant-leaves { bottom: 18px; }
+
+        /* Lettuce - bushy green leaves */
+        .plant-model.crop-lettuce .plant-stem { background: #8ac78a; width: 2px; height: 5px !important; }
+        .plant-model.crop-lettuce .plant-leaf { background: #6ab66a; width: 16px; height: 12px; border-radius: 8px; }
+        .plant-model.crop-lettuce .plant-leaf.left { left: -10px; }
+        .plant-model.crop-lettuce .plant-leaf.right { right: -10px; }
+        .plant-model.crop-lettuce.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-lettuce.stage-3 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-lettuce.stage-3 .plant-leaf { width: 20px; height: 15px; }
+        .plant-model.crop-lettuce.stage-4 .plant-crop { bottom: 5px; }
+        .plant-model.crop-lettuce.stage-4 .plant-leaves { bottom: 8px; }
+        .plant-model.crop-lettuce.stage-4 .plant-leaf { width: 22px; height: 16px; background: #5aa65a; }
+
+        /* Pepper - tall vine with peppers */
+        .plant-model.crop-pepper .plant-stem { background: linear-gradient(to top, #3a6a3a, #5a9a5a); width: 4px; }
+        .plant-model.crop-pepper .plant-leaf { background: #4a8a4a; width: 14px; height: 8px; }
+        .plant-model.crop-pepper.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-pepper.stage-4 .plant-crop { bottom: 22px; }
+        .plant-model.crop-pepper.stage-4 .plant-leaves { bottom: 30px; }
+
+        /* Eggplant - purple stem with hanging fruit */
+        .plant-model.crop-eggplant .plant-stem { background: linear-gradient(to top, #5a4a6a, #7a6a8a); width: 5px; }
+        .plant-model.crop-eggplant .plant-leaf { background: #5a7a5a; width: 16px; height: 10px; }
+        .plant-model.crop-eggplant.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-eggplant.stage-4 .plant-crop { bottom: 20px; }
+        .plant-model.crop-eggplant.stage-4 .plant-leaves { bottom: 35px; }
+
+        /* Broccoli - thick stalk with bushy top */
+        .plant-model.crop-broccoli .plant-stem { background: linear-gradient(to top, #4a7a4a, #5a8a5a); width: 8px; }
+        .plant-model.crop-broccoli .plant-leaf { background: #3a7a3a; width: 18px; height: 12px; border-radius: 50%; }
+        .plant-model.crop-broccoli.stage-2 .plant-stem { height: 12px; }
+        .plant-model.crop-broccoli.stage-3 .plant-stem { height: 22px; }
+        .plant-model.crop-broccoli.stage-4 .plant-stem { height: 28px; }
+        .plant-model.crop-broccoli.stage-4 .plant-crop { bottom: 20px; }
+        .plant-model.crop-broccoli.stage-4 .plant-leaves { display: none; }
+
+        /* Grapes - vine with climbing structure */
+        .plant-model.crop-grapes .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a5a4a); width: 3px; }
+        .plant-model.crop-grapes .plant-leaf { background: #5a9a5a; width: 14px; height: 12px; border-radius: 50% 50% 50% 50%; }
+        .plant-model.crop-grapes.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-grapes.stage-4 .plant-crop { bottom: 18px; }
+        .plant-model.crop-grapes.stage-4 .plant-leaves { bottom: 35px; }
+
+        /* Strawberry - low bush with berries */
+        .plant-model.crop-strawberry .plant-stem { height: 20px !important; background: #4a7a4a; width: 3px; }
+        .plant-model.crop-strawberry .plant-leaf { background: #4a8c4a; width: 14px; height: 8px; }
+        .plant-model.crop-strawberry.stage-4 .plant-crop { bottom: 10px; }
+        .plant-model.crop-strawberry.stage-4 .plant-leaves { bottom: 18px; }
+
+        .plant-model.crop-pumpkin .plant-stem { background: #5a7c27; width: 6px; }
+        .plant-model.crop-pumpkin .plant-leaf { background: #4a7c27; width: 18px; }
+        .plant-model.crop-pumpkin.stage-4 .plant-crop { bottom: 3px; font-size: 2.2rem; }
+        .plant-model.crop-pumpkin.stage-4 .plant-stem { height: 20px; }
+
+        .plant-model.crop-watermelon .plant-stem { background: #4a7c27; }
+        .plant-model.crop-watermelon .plant-leaf { background: #5a8c4a; width: 16px; }
+        .plant-model.crop-watermelon.stage-4 .plant-crop { bottom: 2px; font-size: 2rem; }
+
+        /* Cherry Blossom - elegant tree */
+        .plant-model.crop-cherry .plant-stem { background: linear-gradient(to top, #5a4a4a, #7a6a6a); width: 6px; }
+        .plant-model.crop-cherry .plant-leaf { background: #ffb7c5; width: 12px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-cherry.stage-4 .plant-stem { height: 45px; }
+        .plant-model.crop-cherry.stage-4 .plant-crop { bottom: 30px; }
+        .plant-model.crop-cherry.stage-4 .plant-leaves { bottom: 40px; }
+
+        /* Truffle - underground mushroom */
+        .plant-model.crop-truffle .plant-stem { background: linear-gradient(to top, #4a3a2a, #6a5a4a); width: 2px; height: 10px !important; }
+        .plant-model.crop-truffle .plant-leaf { background: #5a7a5a; width: 8px; height: 6px; }
+        .plant-model.crop-truffle.stage-4 .plant-crop { bottom: 2px; }
+        .plant-model.crop-truffle.stage-4 .plant-stem { height: 8px !important; }
+        .plant-model.crop-truffle.stage-4 .plant-leaves { bottom: 12px; }
+
+        /* Golden Apple - magical tree */
+        .plant-model.crop-goldenapple .plant-stem { background: linear-gradient(to top, #6a5a3a, #8a7a5a); width: 7px; }
+        .plant-model.crop-goldenapple .plant-leaf { background: #6a9a5a; width: 16px; height: 12px; border-radius: 50%; }
+        .plant-model.crop-goldenapple.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-goldenapple.stage-4 .plant-crop { bottom: 28px; filter: drop-shadow(0 0 5px gold); }
+        .plant-model.crop-goldenapple.stage-4 .plant-leaves { bottom: 38px; }
+
+        /* Ancient Wheat - tall golden stalks */
+        .plant-model.crop-ancientwheat .plant-stem { background: linear-gradient(to top, #9a8a5a, #baaa7a); width: 3px; }
+        .plant-model.crop-ancientwheat .plant-leaf { background: #baaa6a; width: 20px; height: 4px; border-radius: 2px; }
+        .plant-model.crop-ancientwheat.stage-4 .plant-stem { height: 48px; }
+        .plant-model.crop-ancientwheat.stage-4 .plant-crop { bottom: 38px; }
+        .plant-model.crop-ancientwheat.stage-4 .plant-leaves { bottom: 35px; }
+
+        /* Coconut Palm - tall tropical tree */
+        .plant-model.crop-coconut .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a6a5a); width: 8px; }
+        .plant-model.crop-coconut .plant-leaf { background: #3a8a3a; width: 25px; height: 8px; border-radius: 2px; }
+        .plant-model.crop-coconut.stage-4 .plant-stem { height: 50px; }
+        .plant-model.crop-coconut.stage-4 .plant-crop { bottom: 35px; }
+        .plant-model.crop-coconut.stage-4 .plant-leaves { bottom: 48px; }
+
+        /* Dragon Fruit - exotic cactus-like */
+        .plant-model.crop-dragonfruit .plant-stem { background: linear-gradient(to top, #4a6a4a, #6a8a6a); width: 10px; border-radius: 3px; }
+        .plant-model.crop-dragonfruit .plant-leaf { background: #5a9a5a; width: 8px; height: 15px; border-radius: 2px; }
+        .plant-model.crop-dragonfruit.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-dragonfruit.stage-4 .plant-crop { bottom: 25px; animation: dragonpulse 2s ease-in-out infinite; }
+        .plant-model.crop-dragonfruit.stage-4 .plant-leaves { bottom: 20px; }
+
+        @keyframes dragonpulse {
+            0%, 100% { filter: drop-shadow(0 0 3px #ff6600); }
+            50% { filter: drop-shadow(0 0 8px #ff4400); }
+        }
+
+        /* Candy Tree - colorful fantasy */
+        .plant-model.crop-candytree .plant-stem { background: linear-gradient(to top, #aa5588, #cc77aa); width: 8px; }
+        .plant-model.crop-candytree .plant-leaf { background: #88cc88; width: 18px; height: 14px; border-radius: 50%; }
+        .plant-model.crop-candytree.stage-4 .plant-stem { height: 48px; }
+        .plant-model.crop-candytree.stage-4 .plant-crop { bottom: 35px; }
+        .plant-model.crop-candytree.stage-4 .plant-leaves { bottom: 45px; }
+
+        /* Moon Flower - ethereal night bloomer */
+        .plant-model.crop-moonflower .plant-stem { background: linear-gradient(to top, #4a5a6a, #6a7a8a); width: 4px; }
+        .plant-model.crop-moonflower .plant-leaf { background: #5a7a8a; width: 14px; height: 10px; }
+        .plant-model.crop-moonflower.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-moonflower.stage-4 .plant-crop { bottom: 32px; animation: moonglow 3s ease-in-out infinite; }
+        .plant-model.crop-moonflower.stage-4 .plant-leaves { bottom: 35px; }
+
+        @keyframes moonglow {
+            0%, 100% { filter: drop-shadow(0 0 5px #aaccff); }
+            50% { filter: drop-shadow(0 0 12px #88aaff); }
+        }
+
+        /* Crystal Flower - sparkling gem plant */
+        .plant-model.crop-crystalflower .plant-stem { background: linear-gradient(to top, #6a8aaa, #8abacc); width: 5px; }
+        .plant-model.crop-crystalflower .plant-leaf { background: #7ac aee; width: 12px; height: 10px; }
+        .plant-model.crop-crystalflower.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-crystalflower.stage-4 .plant-crop { bottom: 28px; animation: crystalshine 2s ease-in-out infinite; }
+        .plant-model.crop-crystalflower.stage-4 .plant-leaves { bottom: 32px; }
+
+        @keyframes crystalshine {
+            0%, 100% { filter: drop-shadow(0 0 4px #88ddff) brightness(1); }
+            50% { filter: drop-shadow(0 0 10px #aaeeff) brightness(1.2); }
+        }
+
+        /* Star Fruit - celestial tree */
+        .plant-model.crop-starfruit .plant-stem { background: linear-gradient(to top, #7a7a3a, #9a9a5a); width: 6px; }
+        .plant-model.crop-starfruit .plant-leaf { background: #8a9a4a; width: 16px; height: 10px; }
+        .plant-model.crop-starfruit.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-starfruit.stage-4 .plant-crop { bottom: 30px; animation: starglow 1.5s ease-in-out infinite; }
+        .plant-model.crop-starfruit.stage-4 .plant-leaves { bottom: 38px; }
+
+        @keyframes starglow {
+            0%, 100% { filter: drop-shadow(0 0 5px #ffdd44); }
+            50% { filter: drop-shadow(0 0 10px #ffee66); }
+        }
+
+        /* Rainbow Melon - multicolor fantasy */
+        .plant-model.crop-rainbowmelon .plant-stem { background: linear-gradient(to top, #6a8a4a, #8aaa6a); width: 5px; }
+        .plant-model.crop-rainbowmelon .plant-leaf { background: #7a9a5a; width: 18px; height: 12px; }
+        .plant-model.crop-rainbowmelon.stage-4 .plant-stem { height: 25px; }
+        .plant-model.crop-rainbowmelon.stage-4 .plant-crop { bottom: 3px; font-size: 2rem; animation: rainbowpulse 3s linear infinite; }
+        .plant-model.crop-rainbowmelon.stage-4 .plant-leaves { bottom: 22px; }
+
+        @keyframes rainbowpulse {
+            0% { filter: hue-rotate(0deg) drop-shadow(0 0 5px #ff8888); }
+            33% { filter: hue-rotate(120deg) drop-shadow(0 0 5px #88ff88); }
+            66% { filter: hue-rotate(240deg) drop-shadow(0 0 5px #8888ff); }
+            100% { filter: hue-rotate(360deg) drop-shadow(0 0 5px #ff8888); }
+        }
+
+        /* Hellfruit - demonic plant */
+        .plant-model.crop-hellfruit .plant-stem { background: linear-gradient(to top, #5a1a1a, #8a2a2a); width: 6px; }
+        .plant-model.crop-hellfruit .plant-leaf { background: #7a2a2a; width: 14px; height: 10px; }
+        .plant-model.crop-hellfruit.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-hellfruit.stage-4 .plant-crop { bottom: 25px; animation: hellglow 1s ease-in-out infinite; }
+        .plant-model.crop-hellfruit.stage-4 .plant-leaves { bottom: 35px; }
+
+        @keyframes hellglow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 3px #ff4400); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 8px #ff6600); }
+        }
+
+        /* Mutation visual effects on plant */
+        .plant-model.has-golden .plant-crop { filter: drop-shadow(0 0 5px gold); }
+        .plant-model.has-rainbow .plant-crop { animation: rainbow-glow 2s linear infinite; }
+        @keyframes rainbow-glow {
+            0% { filter: drop-shadow(0 0 5px red); }
+            33% { filter: drop-shadow(0 0 5px lime); }
+            66% { filter: drop-shadow(0 0 5px blue); }
+            100% { filter: drop-shadow(0 0 5px red); }
+        }
+
+        .plant-model.has-wet .plant-stem { background: linear-gradient(to top, #2a4a4a, #3a6a6a) !important; }
+        .plant-model.has-frozen .plant-model, .plant-model.has-frozen .plant-crop { filter: brightness(1.2) hue-rotate(180deg); }
+        .plant-model.has-shocked .plant-crop { animation: shock 0.3s ease-in-out infinite; }
+        @keyframes shock {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
             animation: sway 2s ease-in-out infinite;
         }
 
@@ -1554,10 +1856,11 @@
                         div.classList.add('ready');
                     }
                     
-                    // Show growth stages
-                    let emoji = '🌱';
-                    if (progress >= 66) emoji = crop.growEmoji;
-                    else if (progress >= 33) emoji = '🌿';
+                    // Determine growth stage (1-4)
+                    let stage = 1;
+                    if (progress >= 100) stage = 4;
+                    else if (progress >= 66) stage = 3;
+                    else if (progress >= 33) stage = 2;
                     
                     const plotMutations = (plot.mutations || []).map(m => {
                         const weather = Object.values(WEATHER).find(w => w.mutation === m);
@@ -1567,12 +1870,29 @@
                         return '';
                     }).join('');
                     
+                    // Build mutation classes for visual effects
+                    let mutationClasses = '';
+                    if (plot.mutations?.includes('golden')) mutationClasses += ' has-golden';
+                    if (plot.mutations?.includes('rainbow')) mutationClasses += ' has-rainbow';
+                    if (plot.mutations?.includes('wet')) mutationClasses += ' has-wet';
+                    if (plot.mutations?.includes('frozen')) mutationClasses += ' has-frozen';
+                    if (plot.mutations?.includes('shocked')) mutationClasses += ' has-shocked';
+                    
                     const regrowIcon = crop.regrows ? '🔄' : '';
+                    const seedEmoji = stage === 1 ? '🌰' : '';
                     
                     div.innerHTML = `
-                        <span class="crop-emoji">${emoji}</span>
-                        ${plotMutations ? `<span style="position:absolute;top:3px;right:3px;font-size:1.4rem;text-shadow: 0 0 5px rgba(255,255,255,0.8);">${plotMutations}</span>` : ''}
-                        ${regrowIcon ? `<span style="position:absolute;top:3px;left:3px;font-size:0.9rem;">${regrowIcon}</span>` : ''}
+                        <div class="plant-model stage-${stage} crop-${plot.type}${mutationClasses}">
+                            <div class="plant-crop">${stage === 4 ? crop.growEmoji : seedEmoji}</div>
+                            <div class="plant-leaves">
+                                <div class="plant-leaf left"></div>
+                                <div class="plant-leaf right"></div>
+                            </div>
+                            <div class="plant-stem"></div>
+                            <div class="plant-ground"></div>
+                        </div>
+                        ${plotMutations ? `<span style="position:absolute;top:3px;right:3px;font-size:1.2rem;text-shadow: 0 0 5px rgba(255,255,255,0.8);">${plotMutations}</span>` : ''}
+                        ${regrowIcon ? `<span style="position:absolute;top:3px;left:3px;font-size:0.8rem;">${regrowIcon}</span>` : ''}
                         ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
                     `;
                     
