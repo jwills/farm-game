@@ -2686,6 +2686,31 @@
         .plant-model.crop-hellfruit.stage-4 .plant-crop { bottom: 25px; animation: hellglow 1s ease-in-out infinite; }
         .plant-model.crop-hellfruit.stage-4 .plant-leaves { bottom: 35px; }
 
+        /* Fire Blossom - demonic flower */
+        .plant-model.crop-fireblossom .plant-stem { background: linear-gradient(to top, #4a0a0a, #8b2020); width: 5px; }
+        .plant-model.crop-fireblossom .plant-leaf { background: linear-gradient(135deg, #ff4500, #8b0000); width: 12px; height: 8px; border-radius: 50% 0; }
+        .plant-model.crop-fireblossom.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-fireblossom.stage-4 .plant-crop { bottom: 22px; animation: fireblossomGlow 0.6s ease-in-out infinite; }
+        .plant-model.crop-fireblossom.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-fireblossom.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            background: radial-gradient(circle, rgba(255,100,0,0.4) 0%, transparent 70%);
+            bottom: 20px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: fireAura 0.8s ease-in-out infinite;
+        }
+
+        @keyframes fireblossomGlow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 5px #ff4400) drop-shadow(0 0 10px #ff6600); transform: scale(1); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 10px #ff6600) drop-shadow(0 0 20px #ffaa00); transform: scale(1.1); }
+        }
+        @keyframes fireAura {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
+        }
+
         @keyframes hellglow {
             0%, 100% { filter: brightness(1) drop-shadow(0 0 3px #ff4400); }
             50% { filter: brightness(1.2) drop-shadow(0 0 8px #ff6600); }
@@ -3862,6 +3887,36 @@
             50% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.9); }
         }
 
+        /* Fire Blossom - demonic flower */
+        .crop-icon.fireblossom::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 50% 50%, #ff6600, #ff4500, #8b0000);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(255, 100, 0, 0.8), 0 0 20px rgba(255, 69, 0, 0.5);
+            animation: fireBlossomPulse 0.8s ease-in-out infinite;
+        }
+        .crop-icon.fireblossom::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 16px;
+            background: conic-gradient(from 0deg, #ff0000, #ff6600, #ffcc00, #ff6600, #ff0000, #ff6600, #ffcc00, #ff6600, #ff0000);
+            border-radius: 50%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: fireBlossomSpin 3s linear infinite;
+        }
+        @keyframes fireBlossomPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(255, 100, 0, 0.8), 0 0 20px rgba(255, 69, 0, 0.5); transform: translateX(-50%) scale(1); }
+            50% { box-shadow: 0 0 20px rgba(255, 100, 0, 1), 0 0 35px rgba(255, 69, 0, 0.8); transform: translateX(-50%) scale(1.05); }
+        }
+        @keyframes fireBlossomSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
         /* Lemon - yellow citrus */
         .crop-icon.lemon::before {
             content: '';
@@ -4833,7 +4888,8 @@
             cosmicgrape: { name: 'Cosmic Grape', seedEmoji: '🔮', growEmoji: '🔮', seedPrice: 75000, basePrice: 18000, growTime: 70, rarity: 'godly', yield: [2, 4], regrows: true },
             voidberry: { name: 'Void Berry', seedEmoji: '🖤', growEmoji: '🖤', seedPrice: 150000, basePrice: 35000, growTime: 100, rarity: 'godly', yield: [1, 2], regrows: true },
             // Demonic
-            hellfruit: { name: 'Hellfruit', seedEmoji: '🔥', growEmoji: '👿', seedPrice: 25000000, basePrice: 500000, growTime: 666, rarity: 'demonic', yield: 1, regrows: true }
+            hellfruit: { name: 'Hellfruit', seedEmoji: '🔥', growEmoji: '👿', seedPrice: 25000000, basePrice: 500000, growTime: 666, rarity: 'demonic', yield: 1, regrows: true },
+            fireblossom: { name: 'Fire Blossom', seedEmoji: '🌸', growEmoji: '🔥', seedPrice: 50000000, basePrice: 1000000, growTime: 420, rarity: 'demonic', yield: [1, 3], regrows: true }
         };
 
         const WEATHER = {
@@ -5228,7 +5284,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'tulip', 'voidberry'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'tulip', 'voidberry'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
