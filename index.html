@@ -2428,34 +2428,6 @@
             border-radius: 2px;
         }
 
-        /* Tulip - cup flower */
-        .crop-tulip .plant-fruit {
-            width: 16px;
-            height: 20px;
-            background: linear-gradient(180deg, #ff1493 0%, #ff69b4 100%);
-            border-radius: 50% 50% 30% 30%;
-            bottom: 30px;
-        }
-        .crop-tulip .plant-fruit::before {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 12px;
-            background: #ff69b4;
-            border-radius: 50% 50% 20% 20%;
-            top: 2px;
-            left: -3px;
-        }
-        .crop-tulip .plant-fruit::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            height: 12px;
-            background: #ff69b4;
-            border-radius: 50% 50% 20% 20%;
-            top: 2px;
-            right: -3px;
-        }
 
         /* Cosmic Grape - glowing purple */
         .crop-cosmicgrape .plant-fruit {
@@ -2512,6 +2484,18 @@
         .plant-model.stage-1 .plant-stem { height: 0; }
         .plant-model.stage-1 .plant-crop { bottom: 8px; font-size: 0.9rem; }
         .plant-model.stage-1 .plant-leaves { display: none; }
+
+        /* Regrowing plants keep their full-grown structure, only fruit is hidden */
+        .plant-model.regrowing .plant-fruit { 
+            width: 0 !important; 
+            height: 0 !important; 
+            opacity: 0 !important;
+        }
+        .plant-model.regrowing.stage-4 .plant-fruit { 
+            width: auto !important; 
+            height: auto !important; 
+            opacity: 1 !important;
+        }
 
         /* Growth Stage 2: Sprout */
         .plant-model.stage-2 .plant-stem { height: 15px; }
@@ -5286,23 +5270,6 @@
             top: 0; left: 50%; transform: translateX(-50%);
         }
 
-        /* Tulip - red tulip flower */
-        .crop-icon.tulip::before {
-            content: '';
-            position: absolute;
-            width: 16px; height: 14px;
-            background: linear-gradient(135deg, #ff6b6b, #ff4757, #c0392b);
-            border-radius: 50% 50% 20% 20%;
-            top: 2px; left: 50%; transform: translateX(-50%);
-            box-shadow: inset 2px 0 4px rgba(255,255,255,0.3);
-        }
-        .crop-icon.tulip::after {
-            content: '';
-            position: absolute;
-            width: 4px; height: 14px;
-            background: linear-gradient(to right, #228b22, #32cd32, #228b22);
-            bottom: 0; left: 50%; transform: translateX(-50%);
-        }
 
         /* Void Berry - dark purple with void effect */
         .crop-icon.voidberry::before {
@@ -6128,7 +6095,7 @@
             peach: { name: 'Peach Tree', seedEmoji: '🍑', growEmoji: '🍑', seedPrice: 800, basePrice: 200, growTime: 26, rarity: 'legendary', yield: [2, 4], regrows: true },
             lemon: { name: 'Lemon Tree', seedEmoji: '🍋', growEmoji: '🍋', seedPrice: 650, basePrice: 160, growTime: 24, rarity: 'legendary', yield: [2, 5], regrows: true },
             orange: { name: 'Orange Tree', seedEmoji: '🍊', growEmoji: '🍊', seedPrice: 750, basePrice: 185, growTime: 25, rarity: 'legendary', yield: [2, 4], regrows: true },
-            tulip: { name: 'Tulip', seedEmoji: '🌷', growEmoji: '🌷', seedPrice: 600, basePrice: 150, growTime: 23, rarity: 'legendary', yield: [1, 3] },
+
             // Godly ($15000+) - fantasy endgame
             dragonfruit: { name: 'Dragon Fruit', seedEmoji: '🐲', growEmoji: '🐲', seedPrice: 15000, basePrice: 19518, growTime: 40, rarity: 'godly', yield: 1 },
             candytree: { name: 'Candy Tree', seedEmoji: '🍭', growEmoji: '🍭', seedPrice: 20000, basePrice: 5000, growTime: 45, rarity: 'godly', yield: [2, 3], regrows: true },
@@ -6535,7 +6502,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'tulip', 'voidberry'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
@@ -6699,6 +6666,11 @@
                     else if (progress >= 66) stage = 3;
                     else if (progress >= 33) stage = 2;
                     
+                    // Regrowing plants always show stage-4 structure (fruit hidden via CSS)
+                    if (plot.harvested && crop.regrows) {
+                        stage = 4;
+                    }
+                    
                     const plotMutations = (plot.mutations || []).map(m => {
                         const weather = Object.values(WEATHER).find(w => w.mutation === m);
                         if (weather) return weather.mutationEmoji;
@@ -6719,8 +6691,10 @@
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
                     
+                    const regrowingClass = plot.harvested ? ' regrowing' : '';
+                    
                     div.innerHTML = `
-                        <div class="plant-model stage-${stage} crop-${plot.type}${mutationClasses}">
+                        <div class="plant-model stage-${stage} crop-${plot.type}${mutationClasses}${regrowingClass}">
                             <div class="plant-fruit"></div>
                             <div class="plant-leaves">
                                 <div class="plant-leaf left"></div>
