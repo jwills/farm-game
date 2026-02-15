@@ -3743,6 +3743,280 @@
             box-shadow: 6px 2px 0 #1a1a1a, 3px 5px 0 #1a1a1a;
         }
 
+        /* Ancient Wheat - golden shimmering wheat */
+        .crop-icon.ancientwheat::before {
+            content: '';
+            position: absolute;
+            width: 6px; height: 20px;
+            background: linear-gradient(to top, #daa520, #ffd700, #fff8dc);
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+        .crop-icon.ancientwheat::after {
+            content: '';
+            position: absolute;
+            width: 16px; height: 12px;
+            background: linear-gradient(135deg, #ffd700, #ffec8b, #ffd700);
+            top: 0; left: 50%; transform: translateX(-50%);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Candy Tree - lollipop style */
+        .crop-icon.candytree::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: conic-gradient(from 0deg, #ff69b4, #fff, #ff69b4, #fff, #ff69b4, #fff, #ff69b4, #fff);
+            border-radius: 50%;
+            top: 0; left: 50%; transform: translateX(-50%);
+            border: 2px solid #ff1493;
+        }
+        .crop-icon.candytree::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 14px;
+            background: linear-gradient(to bottom, #fff, #ddd);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Cosmic Grape - purple with stars */
+        .crop-icon.cosmicgrape::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: radial-gradient(circle at 30% 30%, #9370db, #4b0082);
+            border-radius: 50%;
+            bottom: 8px; left: 6px;
+            box-shadow: 6px 0 0 #9370db, 3px -6px 0 #9370db, 9px -6px 0 #9370db, 6px -12px 0 #9370db,
+                        0 0 6px rgba(147, 112, 219, 0.6), 6px 0 6px rgba(147, 112, 219, 0.6);
+        }
+        .crop-icon.cosmicgrape::after {
+            content: '✨';
+            position: absolute;
+            font-size: 8px;
+            top: 0; right: 2px;
+        }
+
+        /* Crystal Flower - diamond/crystal shape */
+        .crop-icon.crystalflower::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 16px;
+            background: linear-gradient(135deg, #e0ffff, #00ced1, #40e0d0, #e0ffff);
+            transform: translateX(-50%) rotate(45deg);
+            bottom: 8px; left: 50%;
+            box-shadow: 0 0 10px rgba(64, 224, 208, 0.6);
+        }
+        .crop-icon.crystalflower::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 10px;
+            background: #20b2aa;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Dragon Fruit - pink with green scales */
+        .crop-icon.dragonfruit::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 22px;
+            background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+        }
+        .crop-icon.dragonfruit::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 8px solid #32cd32;
+            top: 0; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(4px 2px 0 #32cd32) drop-shadow(-4px 2px 0 #32cd32);
+        }
+
+        /* Hell Fruit - fiery red/orange */
+        .crop-icon.hellfruit::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: radial-gradient(circle at 30% 30%, #ff4500, #8b0000, #4a0000);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255, 69, 0, 0.6);
+            animation: hellPulse 1s ease-in-out infinite;
+        }
+        .crop-icon.hellfruit::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 10px;
+            background: linear-gradient(to top, #8b0000, #ff4500, #ff6600);
+            top: 0; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: flicker 0.3s ease-in-out infinite;
+        }
+        @keyframes hellPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 69, 0, 0.6); }
+            50% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.9); }
+        }
+
+        /* Lemon - yellow citrus */
+        .crop-icon.lemon::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 20px;
+            background: linear-gradient(135deg, #fff44f, #ffd700, #ffec8b);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1);
+        }
+        .crop-icon.lemon::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 4px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Moon Flower - glowing crescent */
+        .crop-icon.moonflower::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 70% 30%, transparent 8px, #f5f5dc 8px, #fffacd 12px);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(255, 250, 205, 0.8);
+        }
+        .crop-icon.moonflower::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 8px;
+            background: #9acd32;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Orange - orange citrus */
+        .crop-icon.orange::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 35% 35%, #ffa500, #ff8c00, #ff7f00);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15);
+        }
+        .crop-icon.orange::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 5px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Peach - pink/orange fruit */
+        .crop-icon.peach::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 18px;
+            background: radial-gradient(circle at 35% 35%, #ffcba4, #ffb07c, #ff9966);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1), inset 2px 0 8px rgba(255,182,193,0.5);
+        }
+        .crop-icon.peach::after {
+            content: '';
+            position: absolute;
+            width: 6px; height: 5px;
+            background: #228b22;
+            top: 3px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* Rainbow Melon - colorful stripes */
+        .crop-icon.rainbowmelon::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 18px;
+            background: linear-gradient(180deg, 
+                #ff0000 0%, #ff0000 16%, 
+                #ff8c00 16%, #ff8c00 33%, 
+                #ffff00 33%, #ffff00 50%, 
+                #00ff00 50%, #00ff00 66%, 
+                #0000ff 66%, #0000ff 83%, 
+                #8b00ff 83%, #8b00ff 100%);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255,255,255,0.4);
+        }
+        .crop-icon.rainbowmelon::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 6px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Star Fruit - yellow star shape */
+        .crop-icon.starfruit::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 22px;
+            background: linear-gradient(135deg, #fff44f, #ffd700);
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+        .crop-icon.starfruit::after {
+            content: '';
+            position: absolute;
+            width: 3px; height: 6px;
+            background: #228b22;
+            top: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Tulip - red tulip flower */
+        .crop-icon.tulip::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 14px;
+            background: linear-gradient(135deg, #ff6b6b, #ff4757, #c0392b);
+            border-radius: 50% 50% 20% 20%;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset 2px 0 4px rgba(255,255,255,0.3);
+        }
+        .crop-icon.tulip::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 14px;
+            background: linear-gradient(to right, #228b22, #32cd32, #228b22);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Void Berry - dark purple with void effect */
+        .crop-icon.voidberry::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 18px;
+            background: radial-gradient(circle at 40% 40%, #4a0080, #1a0033, #0d001a);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(75, 0, 130, 0.6), inset 0 0 8px rgba(0,0,0,0.8);
+        }
+        .crop-icon.voidberry::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 5px;
+            background: #228b22;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px 2px 0 0;
+        }
+
         /* Default/fallback for other crops */
         .crop-icon.default::before {
             content: '';
@@ -4954,7 +5228,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'tulip', 'voidberry'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
