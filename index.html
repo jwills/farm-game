@@ -5529,34 +5529,33 @@
         
         .plot-sprinkler {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            text-shadow: 0 0 8px rgba(255,255,255,1), 0 0 15px rgba(33,150,243,0.8), 0 2px 4px rgba(0,0,0,0.5);
+            bottom: 4px;
+            left: 4px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 6px rgba(255,255,255,1), 0 0 10px rgba(33,150,243,0.8), 0 1px 3px rgba(0,0,0,0.5);
             z-index: 10;
             animation: sprinklerPulse 2s ease-in-out infinite;
             pointer-events: none;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
         
         .plot-sprinkler .sprinkler-timer {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             font-weight: bold;
             color: #fff;
             background: rgba(33,150,243,0.95);
-            padding: 2px 6px;
-            border-radius: 8px;
+            padding: 1px 4px;
+            border-radius: 6px;
             white-space: nowrap;
             text-shadow: none;
-            margin-top: -5px;
+            margin-top: -2px;
         }
         
         @keyframes sprinklerPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .tool-item .tool-badge {
