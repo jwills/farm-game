@@ -4414,6 +4414,97 @@
             50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
         }
 
+        /* Zeus' Thunder - divine lightning plant */
+        .plant-model.crop-zeusthunder .plant-stem { 
+            background: linear-gradient(to top, #4a4a4a, #6a6a6a, #8a8a8a); 
+            width: 10px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-zeusthunder .plant-leaf { 
+            background: linear-gradient(135deg, #87CEEB, #4682B4); 
+            width: 12px; height: 8px; border-radius: 50% 0;
+        }
+        .plant-model.crop-zeusthunder.stage-1 .plant-stem { height: 6px; width: 4px; }
+        .plant-model.crop-zeusthunder.stage-2 .plant-stem { height: 16px; width: 6px; }
+        .plant-model.crop-zeusthunder.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-zeusthunder.stage-3 .plant-stem { height: 28px; width: 8px; }
+        .plant-model.crop-zeusthunder.stage-3 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-zeusthunder.stage-4 .plant-stem { height: 45px; width: 12px; }
+        .plant-model.crop-zeusthunder.stage-4 .plant-leaves { bottom: 38px; }
+        
+        /* Zeus' Thunder fruit - massive lightning bolt */
+        .crop-zeusthunder .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-zeusthunder.stage-4 .plant-fruit {
+            width: 60px; height: 70px;
+            background: transparent;
+            position: absolute;
+            bottom: 38px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-zeusthunder.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 40px; height: 60px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFFF00 20%, #FFD700 50%, #FFA500 80%, #FFFFFF 100%);
+            clip-path: polygon(50% 0%, 70% 25%, 100% 25%, 55% 45%, 80% 45%, 40% 70%, 60% 70%, 30% 100%, 35% 65%, 0% 65%, 40% 45%, 15% 45%, 50% 25%, 35% 25%);
+            box-shadow: 0 0 40px rgba(255, 255, 0, 1), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 120px rgba(255, 255, 255, 0.7);
+            animation: zeusThunderBolt 0.3s ease-in-out infinite, zeusThunderFloat 2s ease-in-out infinite;
+        }
+        .crop-zeusthunder.stage-4 .plant-fruit::after {
+            content: '⚡';
+            display: block;
+            position: absolute;
+            font-size: 20px;
+            top: 20px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 15px #FFFF00) drop-shadow(0 0 30px #FFD700);
+            animation: zeusSymbol 1s ease-in-out infinite;
+        }
+        @keyframes zeusThunderBolt {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 255, 0, 1), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 120px rgba(255, 255, 255, 0.7); filter: brightness(1); }
+            50% { box-shadow: 0 0 60px rgba(255, 255, 255, 1), 0 0 100px rgba(255, 255, 0, 1), 0 0 150px rgba(255, 215, 0, 0.9); filter: brightness(1.8); }
+        }
+        @keyframes zeusThunderFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-5px); }
+        }
+        @keyframes zeusSymbol {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+        /* Storm cloud aura */
+        .plant-model.crop-zeusthunder.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 80px; height: 40px;
+            background: radial-gradient(ellipse at 50% 100%, rgba(70,70,90,0.6) 0%, rgba(100,100,120,0.4) 40%, transparent 70%);
+            bottom: 80px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: stormCloud 3s ease-in-out infinite;
+            z-index: 3;
+        }
+        @keyframes stormCloud {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+        /* Electric ground effect */
+        .plant-model.crop-zeusthunder.stage-4::before {
+            content: '';
+            position: absolute;
+            width: 70px; height: 70px;
+            background: radial-gradient(circle, rgba(255,255,0,0.3) 0%, rgba(255,215,0,0.15) 40%, transparent 70%);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: electricGround 0.5s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes electricGround {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
         /* Temporal crop plant styles */
         
         /* Primordial Fern - prehistoric green fern */
@@ -6278,6 +6369,35 @@
         @keyframes edenRoseGlow {
             0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.9), 0 0 40px rgba(255, 215, 0, 0.5); transform: translateX(-50%) scale(1); }
             50% { box-shadow: 0 0 35px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 215, 0, 0.8); transform: translateX(-50%) scale(1.05); filter: brightness(1.2); }
+        }
+
+        /* Zeus' Thunder - divine lightning bolt */
+        .crop-icon.zeusthunder::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 28px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFD700 30%, #FFA500 60%, #FFFF00 100%);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 65% 35%, 100% 35%, 45% 55%, 70% 55%, 30% 100%, 40% 60%, 0% 60%, 50% 40%, 30% 40%);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 165, 0, 0.5);
+            animation: zeusThunderGlow 0.5s ease-in-out infinite;
+        }
+        .crop-icon.zeusthunder::after {
+            content: '';
+            position: absolute;
+            width: 30px; height: 30px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,0,0.4) 40%, transparent 70%);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: zeusAura 1s ease-in-out infinite;
+        }
+        @keyframes zeusThunderGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 0, 1), 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 165, 0, 0.5); filter: brightness(1); }
+            50% { box-shadow: 0 0 35px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 0, 1), 0 0 80px rgba(255, 215, 0, 0.8); filter: brightness(1.5); }
+        }
+        @keyframes zeusAura {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.3); }
         }
 
         /* Lemon - yellow citrus */
@@ -8964,6 +9084,7 @@
             holygrail: { name: 'Holy Grail', seedEmoji: '🏆', growEmoji: '✨', seedPrice: 5000000000, basePrice: 150000000, growTime: 1800, rarity: 'celestial', yield: [3, 6], regrows: true },
             divinehalo: { name: 'Divine Halo', seedEmoji: '🕴️', growEmoji: '💫', seedPrice: 10000000000, basePrice: 15000000000, growTime: 2400, rarity: 'celestial', yield: 1, regrows: false },
             edenrose: { name: 'Eden Rose', seedEmoji: '🌹', growEmoji: '🌟', seedPrice: 20000000000, basePrice: 500000000, growTime: 3600, rarity: 'celestial', yield: [4, 8], regrows: true },
+            zeusthunder: { name: "Zeus' Thunder", seedEmoji: '⚡', growEmoji: '🌩️', seedPrice: 1000000000000, basePrice: 10000000000, growTime: 7200, rarity: 'celestial', yield: [3, 6], regrows: true },
             // Temporal crops (from time wheels only)
             primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: 1, regrows: true, wheelOnly: true },
             dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
@@ -9472,7 +9593,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
