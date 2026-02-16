@@ -5531,10 +5531,7 @@
             position: absolute;
             bottom: 4px;
             left: 4px;
-            font-size: 1.2rem;
-            text-shadow: 0 0 6px rgba(255,255,255,1), 0 0 10px rgba(33,150,243,0.8), 0 1px 3px rgba(0,0,0,0.5);
             z-index: 10;
-            animation: sprinklerPulse 2s ease-in-out infinite;
             pointer-events: none;
             display: flex;
             flex-direction: column;
@@ -5550,12 +5547,273 @@
             border-radius: 6px;
             white-space: nowrap;
             text-shadow: none;
-            margin-top: -2px;
+            margin-top: 2px;
+            margin-left: 2px;
         }
         
-        @keyframes sprinklerPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        /* Sprinkler model base */
+        .sprinkler-model {
+            width: 20px;
+            height: 24px;
+            position: relative;
+        }
+        
+        /* Base/stand */
+        .sprinkler-model .sprinkler-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 4px;
+            background: linear-gradient(to bottom, #666, #444);
+            border-radius: 2px;
+        }
+        
+        /* Pole */
+        .sprinkler-model .sprinkler-pole {
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 12px;
+            background: linear-gradient(to right, #888, #aaa, #888);
+            border-radius: 1px;
+        }
+        
+        /* Head */
+        .sprinkler-model .sprinkler-head {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(to bottom, #2196F3, #1976D2);
+            border-radius: 3px 3px 1px 1px;
+            animation: sprinklerSpin 2s linear infinite;
+        }
+        
+        /* Water drops */
+        .sprinkler-model .sprinkler-drops {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+        }
+        .sprinkler-model .sprinkler-drops::before,
+        .sprinkler-model .sprinkler-drops::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #4FC3F7;
+            border-radius: 50%;
+            animation: waterDrop 0.8s ease-out infinite;
+        }
+        .sprinkler-model .sprinkler-drops::before {
+            left: 2px;
+            animation-delay: 0s;
+        }
+        .sprinkler-model .sprinkler-drops::after {
+            right: 2px;
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes sprinklerSpin {
+            0%, 100% { transform: translateX(-50%) rotate(-15deg); }
+            50% { transform: translateX(-50%) rotate(15deg); }
+        }
+        
+        @keyframes waterDrop {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(8px) scale(0.5); opacity: 0; }
+        }
+        
+        /* Basic sprinkler - simple blue */
+        .sprinkler-basic .sprinkler-head {
+            background: linear-gradient(to bottom, #64B5F6, #2196F3);
+        }
+        .sprinkler-basic .sprinkler-drops::before,
+        .sprinkler-basic .sprinkler-drops::after {
+            background: #90CAF9;
+        }
+        
+        /* Improved sprinkler - green tint */
+        .sprinkler-improved .sprinkler-head {
+            background: linear-gradient(to bottom, #4CAF50, #388E3C);
+            box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
+        }
+        .sprinkler-improved .sprinkler-pole {
+            background: linear-gradient(to right, #5D9E5F, #7CB87E, #5D9E5F);
+        }
+        .sprinkler-improved .sprinkler-drops::before,
+        .sprinkler-improved .sprinkler-drops::after {
+            background: #81C784;
+        }
+        
+        /* Quality sprinkler - silver/steel */
+        .sprinkler-quality .sprinkler-head {
+            background: linear-gradient(to bottom, #B0BEC5, #78909C);
+            box-shadow: 0 0 6px rgba(176, 190, 197, 0.6);
+        }
+        .sprinkler-quality .sprinkler-pole {
+            background: linear-gradient(to right, #90A4AE, #CFD8DC, #90A4AE);
+        }
+        .sprinkler-quality .sprinkler-base {
+            background: linear-gradient(to bottom, #78909C, #546E7A);
+        }
+        .sprinkler-quality .sprinkler-drops::before,
+        .sprinkler-quality .sprinkler-drops::after {
+            background: #B3E5FC;
+            box-shadow: 0 0 3px #03A9F4;
+        }
+        
+        /* Iridium sprinkler - purple glow */
+        .sprinkler-iridium .sprinkler-head {
+            background: linear-gradient(to bottom, #9C27B0, #7B1FA2);
+            box-shadow: 0 0 8px rgba(156, 39, 176, 0.7);
+        }
+        .sprinkler-iridium .sprinkler-pole {
+            background: linear-gradient(to right, #8E24AA, #BA68C8, #8E24AA);
+        }
+        .sprinkler-iridium .sprinkler-base {
+            background: linear-gradient(to bottom, #7B1FA2, #4A148C);
+        }
+        .sprinkler-iridium .sprinkler-drops::before,
+        .sprinkler-iridium .sprinkler-drops::after {
+            background: #E1BEE7;
+            box-shadow: 0 0 4px #CE93D8;
+        }
+        
+        /* Prismatic sprinkler - rainbow */
+        .sprinkler-prismatic .sprinkler-head {
+            background: linear-gradient(90deg, #f44336, #ff9800, #ffeb3b, #4caf50, #2196f3, #9c27b0);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: sprinklerSpin 2s linear infinite, prismaticGlow 1s linear infinite;
+        }
+        .sprinkler-prismatic .sprinkler-pole {
+            background: linear-gradient(to right, #E0E0E0, #FAFAFA, #E0E0E0);
+        }
+        .sprinkler-prismatic .sprinkler-base {
+            background: linear-gradient(to bottom, #FFD700, #FFA000);
+        }
+        .sprinkler-prismatic .sprinkler-drops::before,
+        .sprinkler-prismatic .sprinkler-drops::after {
+            background: linear-gradient(135deg, #ff9800, #4caf50, #2196f3);
+            box-shadow: 0 0 5px #fff;
+        }
+        @keyframes prismaticGlow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        /* Honey sprinkler - golden honey */
+        .sprinkler-honey .sprinkler-head {
+            background: linear-gradient(to bottom, #FFC107, #FF8F00);
+            box-shadow: 0 0 6px rgba(255, 193, 7, 0.6);
+        }
+        .sprinkler-honey .sprinkler-pole {
+            background: linear-gradient(to right, #D4A000, #FFD54F, #D4A000);
+        }
+        .sprinkler-honey .sprinkler-drops::before,
+        .sprinkler-honey .sprinkler-drops::after {
+            background: #FFCA28;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: honeyDrip 1.2s ease-out infinite;
+        }
+        @keyframes honeyDrip {
+            0% { transform: translateY(0) scaleY(1); opacity: 1; }
+            100% { transform: translateY(10px) scaleY(1.5); opacity: 0; }
+        }
+        
+        /* Star sprinkler - glowing star */
+        .sprinkler-star .sprinkler-head {
+            background: linear-gradient(to bottom, #FFF59D, #FFEB3B);
+            box-shadow: 0 0 10px rgba(255, 235, 59, 0.8);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            width: 14px;
+            height: 14px;
+            bottom: 12px;
+        }
+        .sprinkler-star .sprinkler-drops::before,
+        .sprinkler-star .sprinkler-drops::after {
+            background: #FFF176;
+            box-shadow: 0 0 4px #FFEB3B;
+        }
+        
+        /* Crystal sprinkler - gem-like */
+        .sprinkler-crystal .sprinkler-head {
+            background: linear-gradient(135deg, #E1F5FE, #4FC3F7, #0288D1);
+            box-shadow: 0 0 8px rgba(79, 195, 247, 0.7);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 12px;
+            height: 12px;
+            bottom: 13px;
+        }
+        .sprinkler-crystal .sprinkler-pole {
+            background: linear-gradient(to right, #4DD0E1, #80DEEA, #4DD0E1);
+        }
+        .sprinkler-crystal .sprinkler-drops::before,
+        .sprinkler-crystal .sprinkler-drops::after {
+            background: #B2EBF2;
+            box-shadow: 0 0 4px #00BCD4;
+        }
+        
+        /* Volcanic sprinkler - fiery lava */
+        .sprinkler-volcanic .sprinkler-head {
+            background: linear-gradient(to bottom, #FF5722, #D84315);
+            box-shadow: 0 0 10px rgba(255, 87, 34, 0.8);
+            animation: sprinklerSpin 2s linear infinite, volcanicPulse 0.5s ease-in-out infinite;
+        }
+        .sprinkler-volcanic .sprinkler-pole {
+            background: linear-gradient(to right, #4E342E, #6D4C41, #4E342E);
+        }
+        .sprinkler-volcanic .sprinkler-base {
+            background: linear-gradient(to bottom, #3E2723, #1B0000);
+        }
+        .sprinkler-volcanic .sprinkler-drops::before,
+        .sprinkler-volcanic .sprinkler-drops::after {
+            background: #FF8A65;
+            box-shadow: 0 0 5px #FF5722;
+        }
+        @keyframes volcanicPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 87, 34, 0.8); }
+            50% { box-shadow: 0 0 15px rgba(255, 87, 34, 1), 0 0 20px rgba(255, 152, 0, 0.5); }
+        }
+        
+        /* Enchanted sprinkler - magical purple */
+        .sprinkler-enchanted .sprinkler-head {
+            background: linear-gradient(to bottom, #CE93D8, #8E24AA);
+            box-shadow: 0 0 8px rgba(156, 39, 176, 0.6);
+            animation: sprinklerSpin 2s linear infinite, enchantedSparkle 1.5s ease-in-out infinite;
+        }
+        .sprinkler-enchanted .sprinkler-pole {
+            background: linear-gradient(to right, #6A1B9A, #9C27B0, #6A1B9A);
+        }
+        .sprinkler-enchanted .sprinkler-drops::before,
+        .sprinkler-enchanted .sprinkler-drops::after {
+            background: #E1BEE7;
+            box-shadow: 0 0 4px #AB47BC;
+        }
+        .sprinkler-enchanted::after {
+            content: '✨';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            font-size: 8px;
+            animation: sparkleFloat 2s ease-in-out infinite;
+        }
+        @keyframes enchantedSparkle {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-3px) rotate(180deg); opacity: 0.7; }
         }
 
         .tool-item .tool-badge {
@@ -7019,7 +7277,16 @@
                         
                         const sprinklerIcon = document.createElement('div');
                         sprinklerIcon.className = 'plot-sprinkler';
-                        sprinklerIcon.innerHTML = `${sprinklerGear.emoji}<span class="sprinkler-timer">${timeStr}</span>`;
+                        // Get sprinkler type from id (e.g., sprinkler_basic -> basic)
+                        const sprinklerType = sprinklerOnPlot.id.replace('sprinkler_', '');
+                        sprinklerIcon.innerHTML = `
+                            <div class="sprinkler-model sprinkler-${sprinklerType}">
+                                <div class="sprinkler-drops"></div>
+                                <div class="sprinkler-head"></div>
+                                <div class="sprinkler-pole"></div>
+                                <div class="sprinkler-base"></div>
+                            </div>
+                            <span class="sprinkler-timer">${timeStr}</span>`;
                         sprinklerIcon.title = `${sprinklerGear.name}: ${sprinklerGear.description} (${timeStr} remaining)`;
                         div.appendChild(sprinklerIcon);
                     }
