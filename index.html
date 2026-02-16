@@ -4206,6 +4206,60 @@
             50% { transform: translateY(3px); opacity: 0.7; }
         }
 
+        /* Time Warp mutation - temporal distortion effect */
+        .plant-model.has-timewarp .plant-fruit {
+            animation: timewarp-phase 0.8s ease-in-out infinite;
+        }
+        .plant-model.has-timewarp .plant-stem {
+            animation: timewarp-stretch 1.2s ease-in-out infinite;
+        }
+        .plant-model.has-timewarp .plant-leaf {
+            animation: timewarp-flicker 0.5s steps(2) infinite;
+        }
+        .plant-model.has-timewarp.stage-4::before {
+            content: '⏰';
+            position: absolute;
+            font-size: 11px;
+            top: -8px;
+            right: -6px;
+            z-index: 5;
+            animation: clock-spin 2s linear infinite;
+        }
+        .plant-model.has-timewarp::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 50%;
+            animation: timewarp-ring 1.5s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes timewarp-phase {
+            0%, 100% { filter: brightness(1) hue-rotate(0deg); opacity: 1; }
+            25% { filter: brightness(1.5) hue-rotate(30deg); opacity: 0.7; }
+            50% { filter: brightness(0.8) hue-rotate(-30deg); opacity: 1; }
+            75% { filter: brightness(1.3) hue-rotate(15deg); opacity: 0.8; }
+        }
+        @keyframes timewarp-stretch {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.1); }
+        }
+        @keyframes timewarp-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        @keyframes clock-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes timewarp-ring {
+            0% { transform: scale(0.8); opacity: 0.8; border-color: rgba(138, 43, 226, 0.8); }
+            100% { transform: scale(1.5); opacity: 0; border-color: rgba(0, 255, 255, 0); }
+        }
+
             animation: sway 2s ease-in-out infinite;
         }
 
@@ -6344,6 +6398,100 @@
             pointer-events: none;
         }
 
+        /* Time Anomaly */
+        .timeanomaly-tint {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(138,43,226,0.2) 0%, rgba(0,0,0,0.4) 70%, rgba(75,0,130,0.5) 100%);
+            animation: timeanomaly-pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes timeanomaly-pulse {
+            0%, 100% { opacity: 0.6; filter: hue-rotate(0deg); }
+            50% { opacity: 0.9; filter: hue-rotate(30deg); }
+        }
+
+        .time-particle {
+            position: fixed;
+            font-size: 1.5rem;
+            animation: time-float linear infinite;
+            pointer-events: none;
+            opacity: 0.7;
+            text-shadow: 0 0 10px rgba(138,43,226,0.8), 0 0 20px rgba(0,255,255,0.5);
+        }
+        @keyframes time-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(720deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .clock-hand {
+            position: fixed;
+            width: 3px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(138,43,226,0.5));
+            transform-origin: bottom center;
+            animation: clock-sweep 4s linear infinite;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(138,43,226,0.8);
+        }
+        @keyframes clock-sweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .temporal-rift {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(0,255,255,0.6);
+            border-radius: 50%;
+            animation: rift-expand 3s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes rift-expand {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+                border-color: rgba(138,43,226,0.9);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+                border-color: rgba(0,255,255,0);
+            }
+        }
+
+        .time-glitch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            animation: glitch-effect 0.3s steps(2) infinite;
+        }
+        @keyframes glitch-effect {
+            0%, 100% { clip-path: inset(0 0 0 0); filter: hue-rotate(0deg); }
+            25% { clip-path: inset(10% 0 80% 0); filter: hue-rotate(90deg); }
+            50% { clip-path: inset(50% 0 30% 0); filter: hue-rotate(180deg); }
+            75% { clip-path: inset(80% 0 5% 0); filter: hue-rotate(270deg); }
+        }
+
         .snowflake {
             position: fixed;
             top: -20px;
@@ -6594,7 +6742,8 @@
             windy: { name: 'Windy', emoji: '💨', mutation: 'breezy', mutationEmoji: '🍃', bonus: 1.2 },
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 },
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
-            hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 }
+            hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
+            timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
         };
 
         const SPECIAL_MUTATIONS = {
@@ -6606,7 +6755,8 @@
             crystalized: { name: 'Crystalized', emoji: '💎', bonus: 1.9, sprinklerOnly: true },
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
             enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
-            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 3.5 }
+            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 3.5 },
+            timewarp: { name: 'Time Warp', emoji: '⏰', bonus: 2.5 }
         };
 
         const SIZES = [
@@ -7221,6 +7371,7 @@
                     if (plot.mutations?.includes('volcanic')) mutationClasses += ' has-volcanic';
                     if (plot.mutations?.includes('enchanted')) mutationClasses += ' has-enchanted';
                     if (plot.mutations?.includes('bloodlit')) mutationClasses += ' has-bloodlit';
+                    if (plot.mutations?.includes('timewarp')) mutationClasses += ' has-timewarp';
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
@@ -8454,6 +8605,12 @@
                         let growthAmount = 1;
                         if (hasPetEffect('speed')) growthAmount += 0.15;
                         if (hasPetEffect('all')) growthAmount += 0.075;
+                        
+                        // Time Anomaly: 5x growth speed!
+                        if (currentWeather.growthMultiplier) {
+                            growthAmount *= currentWeather.growthMultiplier;
+                        }
+                        
                         plot.growth += growthAmount;
                         needsRender = true;
                         
@@ -8566,11 +8723,19 @@
         }
         
         function changeWeather() {
-            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape');
-            // Sunny is more common, hellscape is very rare
+            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'timeanomaly');
+            // Sunny is more common, special weathers are very rare
             const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
+            const roll = Math.random();
+            
+            // 0.5% chance for Time Anomaly (extremely rare!)
+            if (roll < 0.005) {
+                gameState.currentWeather = 'timeanomaly';
+                gameState.demonicInStock = false;
+                showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
+            }
             // 5% chance for hellscape
-            if (Math.random() < 0.05) {
+            else if (roll < 0.055) {
                 gameState.currentWeather = 'hellscape';
                 // 25% chance demonic seeds are available during hellscape
                 gameState.demonicInStock = Math.random() < 0.25;
@@ -8584,13 +8749,20 @@
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
                 gameState.demonicInStock = false;
             }
-            let weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
+            
+            // Time Anomaly lasts longer (30-60 seconds)
+            let weatherDuration;
+            if (gameState.currentWeather === 'timeanomaly') {
+                weatherDuration = 30 + Math.floor(Math.random() * 30);
+            } else {
+                weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
+            }
             if (hasPetEffect('weather')) weatherDuration *= 1.5;
             if (hasPetEffect('all')) weatherDuration *= 1.25;
             gameState.weatherTimer = weatherDuration;
             
             const weather = WEATHER[gameState.currentWeather];
-            if (weather.mutation && gameState.currentWeather !== 'hellscape') {
+            if (weather.mutation && gameState.currentWeather !== 'hellscape' && gameState.currentWeather !== 'timeanomaly') {
                 showMessage(`Weather changed to ${weather.name}! ${weather.emoji}`);
             }
         }
@@ -8631,6 +8803,8 @@
                     createHellscape();
                 } else if (weather === 'snow') {
                     createSnow();
+                } else if (weather === 'timeanomaly') {
+                    createTimeAnomaly();
                 }
             }
         }
@@ -8669,6 +8843,57 @@
                 ember.style.animationDelay = Math.random() * 2 + 's';
                 overlay.appendChild(ember);
             }
+        }
+        
+        function createTimeAnomaly() {
+            const overlay = document.getElementById('weather-overlay');
+            
+            // Add purple/cyan temporal tint
+            const tint = document.createElement('div');
+            tint.className = 'timeanomaly-tint';
+            overlay.appendChild(tint);
+            
+            // Add floating time symbols
+            const timeSymbols = ['⌛', '⏰', '⏱', '⏲', '⌚', '⧖', '⧗', '✴️', '🔮'];
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'time-particle';
+                particle.textContent = timeSymbols[Math.floor(Math.random() * timeSymbols.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+                overlay.appendChild(particle);
+            }
+            
+            // Add spinning clock hands
+            for (let i = 0; i < 5; i++) {
+                const hand = document.createElement('div');
+                hand.className = 'clock-hand';
+                hand.style.left = (10 + Math.random() * 80) + 'vw';
+                hand.style.top = (10 + Math.random() * 60) + 'vh';
+                hand.style.animationDuration = (2 + Math.random() * 3) + 's';
+                hand.style.animationDelay = Math.random() * 2 + 's';
+                hand.style.height = (40 + Math.random() * 60) + 'px';
+                overlay.appendChild(hand);
+            }
+            
+            // Add temporal rifts
+            for (let i = 0; i < 4; i++) {
+                const rift = document.createElement('div');
+                rift.className = 'temporal-rift';
+                rift.style.left = (20 + Math.random() * 60) + 'vw';
+                rift.style.top = (20 + Math.random() * 60) + 'vh';
+                rift.style.animationDuration = (2 + Math.random() * 2) + 's';
+                rift.style.animationDelay = Math.random() * 3 + 's';
+                overlay.appendChild(rift);
+            }
+            
+            // Add subtle glitch overlay
+            const glitch = document.createElement('div');
+            glitch.className = 'time-glitch';
+            glitch.style.opacity = '0.1';
+            overlay.appendChild(glitch);
         }
         
         function createRain() {
