@@ -4259,84 +4259,6 @@
             50% { opacity: 0.9; height: 100px; }
         }
 
-        /* Sun Orchid - radiant sun flower */
-        .plant-model.crop-sunorchid .plant-stem { 
-            background: linear-gradient(to top, #228b22, #32cd32, #90ee90); 
-            width: 8px; 
-            border-radius: 2px;
-        }
-        .plant-model.crop-sunorchid .plant-leaf { 
-            background: linear-gradient(135deg, #32cd32, #228b22); 
-            width: 14px; height: 10px; border-radius: 50% 0;
-        }
-        .plant-model.crop-sunorchid.stage-1 .plant-stem { height: 8px; width: 4px; }
-        .plant-model.crop-sunorchid.stage-2 .plant-stem { height: 18px; width: 6px; }
-        .plant-model.crop-sunorchid.stage-2 .plant-leaves { bottom: 15px; }
-        .plant-model.crop-sunorchid.stage-3 .plant-stem { height: 30px; width: 8px; }
-        .plant-model.crop-sunorchid.stage-3 .plant-leaves { bottom: 26px; }
-        .plant-model.crop-sunorchid.stage-4 .plant-stem { height: 45px; width: 12px; }
-        .plant-model.crop-sunorchid.stage-4 .plant-leaves { bottom: 38px; }
-        
-        /* Sun Orchid flower - massive radiant sun */
-        .crop-sunorchid .plant-fruit { width: 0; height: 0; background: transparent; }
-        .crop-sunorchid.stage-4 .plant-fruit {
-            width: 55px; height: 55px;
-            background: transparent;
-            position: absolute;
-            bottom: 38px;
-            left: 50%; transform: translateX(-50%);
-            z-index: 2;
-        }
-        .crop-sunorchid.stage-4 .plant-fruit::before {
-            content: '';
-            display: block;
-            position: absolute;
-            width: 50px; height: 50px;
-            top: 0; left: 50%; transform: translateX(-50%);
-            background: conic-gradient(from 0deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500);
-            clip-path: polygon(50% 0%, 63% 25%, 98% 15%, 75% 40%, 100% 50%, 75% 60%, 98% 85%, 63% 75%, 50% 100%, 37% 75%, 2% 85%, 25% 60%, 0% 50%, 25% 40%, 2% 15%, 37% 25%);
-            box-shadow: 0 0 35px rgba(255, 200, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.5);
-            animation: sunOrchidPlantSpin 15s linear infinite, sunOrchidPlantPulse 2s ease-in-out infinite;
-        }
-        .crop-sunorchid.stage-4 .plant-fruit::after {
-            content: '';
-            display: block;
-            position: absolute;
-            width: 22px; height: 22px;
-            top: 14px; left: 50%; transform: translateX(-50%);
-            background: radial-gradient(circle at 40% 40%, #FFFFFF, #FFFACD, #FFD700);
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 255, 200, 1), 0 0 40px rgba(255, 215, 0, 0.8);
-            animation: sunCenterGlow 1.5s ease-in-out infinite;
-        }
-        @keyframes sunOrchidPlantSpin {
-            from { transform: translateX(-50%) rotate(0deg); }
-            to { transform: translateX(-50%) rotate(360deg); }
-        }
-        @keyframes sunOrchidPlantPulse {
-            0%, 100% { box-shadow: 0 0 35px rgba(255, 200, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.5); }
-            50% { box-shadow: 0 0 50px rgba(255, 220, 0, 1), 0 0 80px rgba(255, 165, 0, 1), 0 0 120px rgba(255, 100, 0, 0.7); }
-        }
-        @keyframes sunCenterGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 200, 1), 0 0 40px rgba(255, 215, 0, 0.8); }
-            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 55px rgba(255, 215, 0, 1); transform: translateX(-50%) scale(1.1); }
-        }
-        /* Solar flare aura */
-        .plant-model.crop-sunorchid.stage-4::after {
-            content: '';
-            position: absolute;
-            width: 70px; height: 70px;
-            background: radial-gradient(circle, rgba(255,200,0,0.4) 0%, rgba(255,165,0,0.2) 40%, transparent 70%);
-            bottom: 32px; left: 50%; transform: translateX(-50%);
-            border-radius: 50%;
-            animation: solarAura 2s ease-in-out infinite;
-            z-index: 0;
-        }
-        @keyframes solarAura {
-            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-        }
-
         /* Temporal crop plant styles */
         
         /* Primordial Fern - prehistoric green fern */
@@ -6145,36 +6067,6 @@
         @keyframes holyGrailGlow {
             0%, 100% { box-shadow: 0 0 18px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 223, 186, 0.6); }
             50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.8); filter: brightness(1.3); }
-        }
-
-        /* Sun Orchid - radiant sun flower */
-        .crop-icon.sunorchid::before {
-            content: '';
-            position: absolute;
-            width: 24px; height: 24px;
-            background: radial-gradient(circle at 50% 50%, #FFFF00, #FFD700, #FFA500);
-            border-radius: 50%;
-            bottom: 4px; left: 50%; transform: translateX(-50%);
-            box-shadow: 0 0 20px rgba(255, 200, 0, 1), 0 0 40px rgba(255, 165, 0, 0.7);
-            animation: sunOrchidPulse 2s ease-in-out infinite;
-        }
-        .crop-icon.sunorchid::after {
-            content: '';
-            position: absolute;
-            width: 30px; height: 30px;
-            background: conic-gradient(from 0deg, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700);
-            bottom: 1px; left: 50%; transform: translateX(-50%);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: sunOrchidSpin 10s linear infinite;
-            z-index: -1;
-        }
-        @keyframes sunOrchidPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 200, 0, 1), 0 0 40px rgba(255, 165, 0, 0.7); transform: translateX(-50%) scale(1); }
-            50% { box-shadow: 0 0 30px rgba(255, 220, 0, 1), 0 0 60px rgba(255, 165, 0, 0.9); transform: translateX(-50%) scale(1.1); }
-        }
-        @keyframes sunOrchidSpin {
-            from { transform: translateX(-50%) rotate(0deg); }
-            to { transform: translateX(-50%) rotate(360deg); }
         }
 
         /* Lemon - yellow citrus */
@@ -8857,9 +8749,8 @@
             hadescrown: { name: "Hades' Crown", seedEmoji: '👑', growEmoji: '💀', seedPrice: 200000000, basePrice: 5000000, growTime: 900, rarity: 'demonic', yield: [5, 8], regrows: true },
             doomshroom: { name: 'Doom Shroom', seedEmoji: '🍄', growEmoji: '☠️', seedPrice: 350000000, basePrice: 600000000, growTime: 1200, rarity: 'demonic', yield: 1, regrows: false },
             // Celestial crops (heaven-only)
-            angelwing: { name: 'Angel Wing', seedEmoji: '🪶', growEmoji: '👼', seedPrice: 30000000, basePrice: 800000, growTime: 300, rarity: 'celestial', yield: [2, 4], regrows: true },
-            holygrail: { name: 'Holy Grail', seedEmoji: '🏆', growEmoji: '✨', seedPrice: 150000000, basePrice: 3000000, growTime: 600, rarity: 'celestial', yield: [3, 6], regrows: true },
-            sunorchid: { name: 'Sun Orchid', seedEmoji: '🌼', growEmoji: '☀️', seedPrice: 250000000, basePrice: 500000000, growTime: 900, rarity: 'celestial', yield: 1, regrows: false },
+            angelwing: { name: 'Angel Wing', seedEmoji: '🪶', growEmoji: '👼', seedPrice: 2000000000, basePrice: 50000000, growTime: 300, rarity: 'celestial', yield: [2, 4], regrows: true },
+            holygrail: { name: 'Holy Grail', seedEmoji: '🏆', growEmoji: '✨', seedPrice: 5000000000, basePrice: 150000000, growTime: 600, rarity: 'celestial', yield: [3, 6], regrows: true },
             // Temporal crops (from time wheels only)
             primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: 1, regrows: true, wheelOnly: true },
             dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
@@ -9368,7 +9259,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'sunorchid', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
