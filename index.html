@@ -6874,7 +6874,527 @@
             left: 35%;
             transform: rotate(18deg);
         }
-        
+
+        /* CSS Wheel Icons */
+        .wheel-icon {
+            width: 28px;
+            height: 28px;
+            position: absolute;
+            top: 30%;
+            left: 30%;
+            transform: rotate(18deg);
+        }
+
+        /* Prehistoric Icons */
+        .icon-bone {
+            background: linear-gradient(135deg, #F5F5DC 0%, #DEB887 100%);
+            border-radius: 8px 8px 4px 4px;
+            position: relative;
+            width: 24px;
+            height: 10px;
+            top: 38%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .icon-bone::before, .icon-bone::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #F5F5DC 0%, #DEB887 100%);
+            border-radius: 50%;
+            top: -3px;
+        }
+        .icon-bone::before { left: -4px; }
+        .icon-bone::after { right: -4px; }
+
+        .icon-amber {
+            width: 22px;
+            height: 26px;
+            background: linear-gradient(135deg, #FFD700 0%, #FF8C00 50%, #B8860B 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            box-shadow: 0 0 10px rgba(255,215,0,0.6), inset 0 0 8px rgba(255,255,255,0.4);
+        }
+
+        .icon-volcano {
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-bottom: 24px solid #8B4513;
+            position: relative;
+        }
+        .icon-volcano::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -6px;
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(180deg, #FF4500 0%, #FF6347 50%, #FFD700 100%);
+            border-radius: 50% 50% 0 0;
+            animation: volcanoGlow 1s ease-in-out infinite;
+        }
+        @keyframes volcanoGlow {
+            0%, 100% { box-shadow: 0 -2px 8px #FF4500; }
+            50% { box-shadow: 0 -4px 12px #FF6347; }
+        }
+
+        .icon-fern {
+            width: 4px;
+            height: 22px;
+            background: linear-gradient(180deg, #228B22 0%, #006400 100%);
+            border-radius: 2px;
+            position: relative;
+        }
+        .icon-fern::before, .icon-fern::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 3px;
+            background: #32CD32;
+            border-radius: 0 4px 4px 0;
+        }
+        .icon-fern::before {
+            top: 4px; left: 3px;
+            transform: rotate(-30deg);
+        }
+        .icon-fern::after {
+            top: 10px; left: 3px;
+            transform: rotate(-30deg);
+        }
+
+        .icon-egg {
+            width: 20px;
+            height: 26px;
+            background: linear-gradient(135deg, #FFFACD 0%, #F0E68C 50%, #DAA520 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.1), inset 3px 3px 6px rgba(255,255,255,0.5);
+            position: relative;
+        }
+        .icon-egg::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 5px;
+            width: 6px;
+            height: 8px;
+            background: rgba(139,69,19,0.3);
+            border-radius: 50%;
+            transform: rotate(-20deg);
+        }
+
+        .icon-tree {
+            position: relative;
+            width: 24px;
+            height: 26px;
+        }
+        .icon-tree::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 6px;
+            height: 10px;
+            background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            border-radius: 1px;
+        }
+        .icon-tree::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 18px solid #FFB347;
+            filter: drop-shadow(0 0 4px rgba(255,179,71,0.6));
+        }
+
+        .icon-skull {
+            width: 22px;
+            height: 24px;
+            background: linear-gradient(180deg, #F5F5F5 0%, #D3D3D3 100%);
+            border-radius: 50% 50% 45% 45%;
+            position: relative;
+        }
+        .icon-skull::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 4px;
+            width: 5px;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            box-shadow: 9px 0 0 #1a1a1a;
+        }
+        .icon-skull::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .icon-ash-sprinkler {
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(90deg, #505050 0%, #696969 50%, #505050 100%);
+            border-radius: 2px;
+            position: relative;
+        }
+        .icon-ash-sprinkler::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -4px;
+            width: 16px;
+            height: 8px;
+            background: linear-gradient(180deg, #404040 0%, #606060 100%);
+            border-radius: 4px 4px 0 0;
+        }
+        .icon-ash-sprinkler::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #808080;
+            border-radius: 50%;
+            box-shadow: -6px 2px 0 #888, 6px 2px 0 #888, 0 -4px 6px rgba(128,128,128,0.5);
+        }
+
+        .icon-raptor {
+            width: 28px;
+            height: 28px;
+            position: relative;
+        }
+        .icon-raptor::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 2px;
+            width: 16px;
+            height: 14px;
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 80%, #006400 100%);
+            border-radius: 60% 40% 50% 50%;
+            transform: rotate(-10deg);
+        }
+        .icon-raptor::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 12px;
+            width: 12px;
+            height: 10px;
+            background: linear-gradient(135deg, #32CD32 0%, #228B22 100%);
+            border-radius: 50% 60% 40% 40%;
+            box-shadow: 
+                inset -2px -1px 0 rgba(0,0,0,0.2),
+                4px 4px 0 2px #228B22;
+        }
+
+        .icon-mammoth {
+            width: 28px;
+            height: 26px;
+            position: relative;
+        }
+        .icon-mammoth::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 4px;
+            width: 18px;
+            height: 16px;
+            background: linear-gradient(180deg, #A0522D 0%, #8B4513 50%, #654321 100%);
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: inset 0 -3px 6px rgba(0,0,0,0.2);
+        }
+        .icon-mammoth::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 0px;
+            width: 6px;
+            height: 14px;
+            background: linear-gradient(180deg, #F5F5DC 0%, #DEB887 100%);
+            border-radius: 3px 3px 2px 2px;
+            transform: rotate(20deg);
+            box-shadow: 20px -2px 0 0 #F5F5DC;
+        }
+
+        /* Futuristic Icons */
+        .icon-energy {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 14px solid #FFD700;
+            position: relative;
+            filter: drop-shadow(0 0 6px #FFD700);
+        }
+        .icon-energy::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 12px solid #FFA500;
+        }
+
+        .icon-crystal {
+            width: 20px;
+            height: 24px;
+            background: linear-gradient(135deg, #9400D3 0%, #8A2BE2 50%, #DA70D6 100%);
+            clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
+            box-shadow: 0 0 12px rgba(148,0,211,0.7), inset 0 0 8px rgba(255,255,255,0.3);
+            animation: crystalPulse 2s ease-in-out infinite;
+        }
+        @keyframes crystalPulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .icon-galaxy {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(ellipse at center, #191970 0%, #000033 50%, #0a0020 100%);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        .icon-galaxy::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(30deg);
+            width: 20px;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            border-radius: 50%;
+        }
+        .icon-galaxy::after {
+            content: '✦';
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            font-size: 6px;
+            color: white;
+            text-shadow: 8px 8px 0 white, 4px 12px 0 white;
+        }
+
+        .icon-lotus {
+            width: 24px;
+            height: 24px;
+            position: relative;
+        }
+        .icon-lotus::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 6px;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #00BFFF 0%, #1E90FF 50%, #0080FF 100%);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 8px rgba(0,191,255,0.8);
+        }
+        .icon-lotus::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            width: 4px;
+            height: 4px;
+            background: #00FFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00FFFF;
+        }
+
+        .icon-plasma {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle, #FF00FF 0%, #8B008B 60%, #4B0082 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #FF00FF, 0 0 20px rgba(255,0,255,0.5);
+            animation: plasmaPulse 1s ease-in-out infinite;
+        }
+        @keyframes plasmaPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px #FF00FF; }
+            50% { transform: scale(1.1); box-shadow: 0 0 15px #FF00FF, 0 0 25px rgba(255,0,255,0.5); }
+        }
+
+        .icon-nebula {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(ellipse at 30% 30%, #FF69B4 0%, #9400D3 40%, #191970 80%, #0a0020 100%);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 8px rgba(148,0,211,0.6);
+        }
+        .icon-nebula::after {
+            content: '✦';
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            font-size: 8px;
+            color: white;
+            text-shadow: 0 0 4px white;
+        }
+
+        .icon-tech-flower {
+            width: 22px;
+            height: 22px;
+            border: 3px solid #00FF00;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 8px #00FF00, inset 0 0 6px rgba(0,255,0,0.3);
+        }
+        .icon-tech-flower::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #00FF00;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00FF00;
+        }
+        .icon-tech-flower::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 2px;
+            background: #00FF00;
+            box-shadow: 0 0 4px #00FF00;
+        }
+
+        .icon-uv-sprinkler {
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(90deg, #6A0DAD 0%, #8A2BE2 50%, #6A0DAD 100%);
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 0 0 6px rgba(138,43,226,0.6);
+        }
+        .icon-uv-sprinkler::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -4px;
+            width: 16px;
+            height: 8px;
+            background: linear-gradient(180deg, #4B0082 0%, #8A2BE2 100%);
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 0 8px rgba(138,43,226,0.8);
+        }
+        .icon-uv-sprinkler::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #DA70D6;
+            border-radius: 50%;
+            box-shadow: -6px 2px 0 #DA70D6, 6px 2px 0 #DA70D6, 0 0 10px #8A2BE2;
+            animation: uvDrip 1s ease-in-out infinite;
+        }
+        @keyframes uvDrip {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .icon-cybercat {
+            width: 24px;
+            height: 22px;
+            position: relative;
+        }
+        .icon-cybercat::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 4px;
+            width: 16px;
+            height: 12px;
+            background: linear-gradient(135deg, #505050 0%, #707070 50%, #505050 100%);
+            border-radius: 50%;
+            border: 1px solid #00FFFF;
+            box-shadow: 0 0 4px rgba(0,255,255,0.5);
+        }
+        .icon-cybercat::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 8px solid #606060;
+            box-shadow: 9px 0 0 #606060;
+            filter: drop-shadow(0 0 2px #00FFFF);
+        }
+
+        .icon-cybercat-eyes {
+            position: absolute;
+            top: 10px;
+            left: 7px;
+            width: 4px;
+            height: 4px;
+            background: #00FFFF;
+            border-radius: 50%;
+            box-shadow: 7px 0 0 #00FFFF, 0 0 4px #00FFFF, 7px 0 4px #00FFFF;
+        }
+
+        .icon-alien {
+            width: 22px;
+            height: 26px;
+            background: linear-gradient(180deg, #50C878 0%, #3CB371 40%, #2E8B57 100%);
+            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+            position: relative;
+            box-shadow: 0 0 8px rgba(50,205,50,0.5);
+        }
+        .icon-alien::before {
+            content: '';
+            position: absolute;
+            top: 7px;
+            left: 3px;
+            width: 7px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 9px 0 0 #000;
+        }
+        .icon-alien::after {
+            content: '';
+            position: absolute;
+            top: 9px;
+            left: 5px;
+            width: 3px;
+            height: 4px;
+            background: #90EE90;
+            border-radius: 50%;
+            box-shadow: 9px 0 0 #90EE90, 0 0 3px #90EE90, 9px 0 3px #90EE90;
+        }
+
         .wheel-center {
             position: absolute;
             top: 50%;
@@ -7178,16 +7698,16 @@
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer">▼</div>
                                 <div id="prehistoric-wheel" class="wheel">
-                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><span>🦴</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(18deg)"><span>💎</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(54deg)"><span>🌋</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(90deg)"><span>🌿</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(126deg)"><span>🥚</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(162deg)"><span>🌳</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(198deg)"><span>💀</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(234deg)"><span>🌫️</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(270deg)"><span>🦖</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(306deg)"><span>🦣</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><div class="wheel-icon icon-bone"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(18deg)"><div class="wheel-icon icon-amber"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(54deg)"><div class="wheel-icon icon-volcano"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(90deg)"><div class="wheel-icon icon-fern"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(126deg)"><div class="wheel-icon icon-egg"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(162deg)"><div class="wheel-icon icon-tree"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(198deg)"><div class="wheel-icon icon-skull"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(234deg)"><div class="wheel-icon icon-ash-sprinkler"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(270deg)"><div class="wheel-icon icon-raptor"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(306deg)"><div class="wheel-icon icon-mammoth"></div></div>
                                     <div class="wheel-center">🦖</div>
                                 </div>
                             </div>
@@ -7199,16 +7719,16 @@
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer">▼</div>
                                 <div id="futuristic-wheel" class="wheel">
-                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><span>⚡</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(18deg)"><span>🔮</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(54deg)"><span>🌌</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(90deg)"><span>💠</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(126deg)"><span>⚡</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(162deg)"><span>🌌</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(198deg)"><span>🔌</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(234deg)"><span>🔮</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(270deg)"><span>🤖</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(306deg)"><span>👾</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><div class="wheel-icon icon-energy"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(18deg)"><div class="wheel-icon icon-crystal"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(54deg)"><div class="wheel-icon icon-galaxy"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(90deg)"><div class="wheel-icon icon-lotus"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(126deg)"><div class="wheel-icon icon-plasma"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(162deg)"><div class="wheel-icon icon-nebula"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(198deg)"><div class="wheel-icon icon-tech-flower"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(234deg)"><div class="wheel-icon icon-uv-sprinkler"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(270deg)"><div class="wheel-icon icon-cybercat"></div></div>
+                                    <div class="wheel-segment" style="transform: rotate(306deg)"><div class="wheel-icon icon-alien"></div></div>
                                     <div class="wheel-center">🛸</div>
                                 </div>
                             </div>
