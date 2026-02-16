@@ -505,6 +505,40 @@
             0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
             50% { transform: translateX(-50%) translateY(-3px) rotate(5deg); }
         }
+        .roaming-pet.rarity-temporal {
+            filter: drop-shadow(0 0 12px rgba(148, 0, 211, 0.9)) drop-shadow(0 0 25px rgba(0, 255, 255, 0.7));
+            animation: temporalPetPulse 2s infinite;
+        }
+        @keyframes temporalPetPulse {
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(148, 0, 211, 0.9)) drop-shadow(0 0 25px rgba(0, 255, 255, 0.7)); }
+            50% { filter: drop-shadow(0 0 18px rgba(0, 255, 255, 1)) drop-shadow(0 0 35px rgba(148, 0, 211, 0.8)); }
+        }
+        .roaming-pet.rarity-temporal::before {
+            content: '';
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 30px;
+            background: conic-gradient(from 0deg, #9400D3, #00FFFF, #9400D3);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: temporalRing 3s linear infinite;
+        }
+        @keyframes temporalRing {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        .roaming-pet.rarity-temporal::after {
+            content: '⌛';
+            position: absolute;
+            top: -18px; left: 50%; transform: translateX(-50%);
+            font-size: 14px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            animation: temporalSymbol 1.5s ease-in-out infinite;
+        }
+        @keyframes temporalSymbol {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.2); opacity: 0.7; }
+        }
         /* Special pet-specific effects */
 
         .pet-dragon .pet-body {
@@ -4260,6 +4294,90 @@
             100% { transform: scale(1.5); opacity: 0; border-color: rgba(0, 255, 255, 0); }
         }
 
+        /* Fossilized mutation (prehistoric) */
+        .plant-model.has-fossilized {
+            filter: sepia(0.6) saturate(0.8);
+        }
+        .plant-model.has-fossilized .plant-fruit,
+        .plant-model.has-fossilized .plant-stem,
+        .plant-model.has-fossilized .plant-leaf {
+            filter: drop-shadow(0 0 4px rgba(205, 133, 63, 0.8));
+        }
+        .plant-model.has-fossilized::before {
+            content: '🦴';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            animation: fossil-float 2s ease-in-out infinite;
+            z-index: 10;
+        }
+        .plant-model.has-fossilized::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 10px;
+            background: radial-gradient(ellipse, rgba(139, 90, 43, 0.5), transparent);
+            border-radius: 50%;
+        }
+        @keyframes fossil-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* Quantum mutation (futuristic) */
+        .plant-model.has-quantum {
+            animation: quantum-phase 1s steps(3) infinite;
+        }
+        .plant-model.has-quantum .plant-fruit {
+            animation: quantum-glow 0.5s ease-in-out infinite alternate;
+        }
+        .plant-model.has-quantum::before {
+            content: '⚛️';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            animation: quantum-spin 2s linear infinite;
+            z-index: 10;
+        }
+        .plant-model.has-quantum::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 2px dashed rgba(0, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: quantum-orbit 3s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes quantum-phase {
+            0% { opacity: 1; filter: hue-rotate(0deg); }
+            33% { opacity: 0.8; filter: hue-rotate(90deg); }
+            66% { opacity: 0.9; filter: hue-rotate(180deg); }
+            100% { opacity: 1; filter: hue-rotate(270deg); }
+        }
+        @keyframes quantum-glow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.8)); }
+            100% { filter: drop-shadow(0 0 15px rgba(148, 0, 211, 0.8)); }
+        }
+        @keyframes quantum-spin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes quantum-orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
             animation: sway 2s ease-in-out infinite;
         }
 
@@ -4567,6 +4685,17 @@
         @keyframes demonic-pulse {
             0%, 100% { box-shadow: 0 0 15px rgba(139, 0, 0, 0.7), 0 0 30px rgba(255, 69, 0, 0.4), inset 0 0 10px rgba(255, 0, 0, 0.1); }
             50% { box-shadow: 0 0 25px rgba(139, 0, 0, 1), 0 0 50px rgba(255, 69, 0, 0.7), inset 0 0 20px rgba(255, 0, 0, 0.2); }
+        }
+
+        .shop-item.temporal-glow, .pet-slot.temporal-glow {
+            animation: temporal-pulse 2s ease-in-out infinite;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #9400D3, #00FFFF, #9400D3) 1;
+        }
+        
+        @keyframes temporal-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(148, 0, 211, 0.7), 0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(138, 43, 226, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(148, 0, 211, 1), 0 0 50px rgba(0, 255, 255, 0.7), inset 0 0 20px rgba(138, 43, 226, 0.2); }
         }
 
         .shop-item.disabled {
@@ -6492,6 +6621,291 @@
             75% { clip-path: inset(80% 0 5% 0); filter: hue-rotate(270deg); }
         }
 
+        /* Time Roulette Wheels */
+        .roulette-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            gap: 40px;
+        }
+        .roulette-modal.hidden {
+            display: none;
+        }
+        
+        .roulette-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .roulette-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px currentColor;
+            text-align: center;
+        }
+        .prehistoric-wheel .roulette-title {
+            color: #cd853f;
+        }
+        .futuristic-wheel .roulette-title {
+            color: #00ffff;
+        }
+        
+        .wheel-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            z-index: 10;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.8));
+        }
+        .prehistoric-wheel .wheel-pointer { color: #cd853f; }
+        .futuristic-wheel .wheel-pointer { color: #00ffff; }
+        
+        .wheel {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.3);
+        }
+        
+        .prehistoric-wheel .wheel {
+            background: conic-gradient(
+                #8B4513 0deg 45deg,
+                #D2691E 45deg 90deg,
+                #A0522D 90deg 135deg,
+                #CD853F 135deg 180deg,
+                #8B4513 180deg 225deg,
+                #D2691E 225deg 270deg,
+                #A0522D 270deg 315deg,
+                #CD853F 315deg 360deg
+            );
+            border: 8px solid #5D4037;
+        }
+        
+        .futuristic-wheel .wheel {
+            background: conic-gradient(
+                #0a0a2e 0deg 45deg,
+                #1a1a4e 45deg 90deg,
+                #2a2a6e 90deg 135deg,
+                #0a0a2e 135deg 180deg,
+                #1a1a4e 180deg 225deg,
+                #2a2a6e 225deg 270deg,
+                #0a0a2e 270deg 315deg,
+                #1a1a4e 315deg 360deg
+            );
+            border: 8px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0,255,255,0.5), inset 0 0 30px rgba(0,255,255,0.2);
+        }
+        
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 50%;
+            top: 50%;
+            transform-origin: 0% 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            pointer-events: none;
+        }
+        .wheel-segment span {
+            position: absolute;
+            top: 35%;
+            left: 35%;
+            transform: rotate(22.5deg);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 5;
+        }
+        .prehistoric-wheel .wheel-center {
+            background: radial-gradient(circle, #D2691E, #8B4513);
+            border: 4px solid #5D4037;
+            box-shadow: 0 0 15px rgba(139,69,19,0.8);
+        }
+        .futuristic-wheel .wheel-center {
+            background: radial-gradient(circle, #0a0a3e, #000020);
+            border: 4px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0,255,255,0.8);
+        }
+        
+        .spin-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .spin-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .prehistoric-wheel .spin-btn {
+            background: linear-gradient(135deg, #CD853F, #8B4513);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(139,69,19,0.5);
+        }
+        .prehistoric-wheel .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(139,69,19,0.7);
+        }
+        .futuristic-wheel .spin-btn {
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0,255,255,0.5);
+        }
+        .futuristic-wheel .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,255,255,0.7);
+        }
+        
+        .wheel.spinning {
+            animation: wheel-wobble 0.1s ease-in-out;
+        }
+        @keyframes wheel-wobble {
+            0%, 100% { transform: rotate(var(--spin-deg)); }
+            50% { transform: rotate(calc(var(--spin-deg) + 2deg)); }
+        }
+        
+        .reward-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(30,0,60,0.95));
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 30px 50px;
+            text-align: center;
+            z-index: 2100;
+            animation: reward-appear 0.5s ease-out;
+        }
+        .reward-popup.prehistoric {
+            border-color: #CD853F;
+            box-shadow: 0 0 40px rgba(205,133,63,0.6);
+        }
+        .reward-popup.futuristic {
+            border-color: #00ffff;
+            box-shadow: 0 0 40px rgba(0,255,255,0.6);
+        }
+        @keyframes reward-appear {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .reward-popup h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .reward-popup.prehistoric h2 { color: #CD853F; }
+        .reward-popup.futuristic h2 { color: #00ffff; }
+        
+        .reward-popup .reward-emoji {
+            font-size: 4rem;
+            margin: 15px 0;
+            animation: reward-bounce 0.6s ease-in-out infinite;
+        }
+        @keyframes reward-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        .reward-popup .reward-text {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .reward-popup button {
+            padding: 10px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            transition: transform 0.2s;
+        }
+        .reward-popup button:hover {
+            transform: scale(1.05);
+        }
+        
+        .close-roulette {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(244,67,54,0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 2050;
+            transition: transform 0.2s;
+        }
+        .close-roulette:hover {
+            transform: scale(1.1);
+        }
+        
+        .wheels-intro {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #fff;
+        }
+        .wheels-intro h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #CD853F, #fff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            margin-bottom: 5px;
+        }
+        .wheels-intro p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
         .snowflake {
             position: fixed;
             top: -20px;
@@ -6610,6 +7024,53 @@
                             <div id="visit-farm-stats"></div>
                         </div>
                     </div>
+                    
+                    <!-- Time Anomaly Roulette Wheels -->
+                    <div id="roulette-modal" class="roulette-modal hidden">
+                        <button class="close-roulette" onclick="closeRouletteWheels()">✕</button>
+                        <div class="wheels-intro">
+                            <h1>⏰ TEMPORAL ROULETTE ⏰</h1>
+                            <p>The time rift opens two paths - spin one wheel from each era!</p>
+                        </div>
+                        
+                        <div class="roulette-container prehistoric-wheel">
+                            <div class="roulette-title">🦴 PREHISTORIC ERA 🦴</div>
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer">▼</div>
+                                <div id="prehistoric-wheel" class="wheel">
+                                    <div class="wheel-segment" style="transform: rotate(-22.5deg)"><span>🦖</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(22.5deg)"><span>🦴</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(67.5deg)"><span>🌋</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(112.5deg)"><span>🦕</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(157.5deg)"><span>🥚</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(202.5deg)"><span>🌿</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(247.5deg)"><span>💎</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(292.5deg)"><span>🦣</span></div>
+                                    <div class="wheel-center">🦖</div>
+                                </div>
+                            </div>
+                            <button id="spin-prehistoric" class="spin-btn" onclick="spinPrehistoric()">🦴 SPIN 🦴</button>
+                        </div>
+                        
+                        <div class="roulette-container futuristic-wheel">
+                            <div class="roulette-title">🤖 FUTURISTIC ERA 🤖</div>
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer">▼</div>
+                                <div id="futuristic-wheel" class="wheel">
+                                    <div class="wheel-segment" style="transform: rotate(-22.5deg)"><span>🤖</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(22.5deg)"><span>🚀</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(67.5deg)"><span>⚡</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(112.5deg)"><span>🛸</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(157.5deg)"><span>🔮</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(202.5deg)"><span>💫</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(247.5deg)"><span>🌌</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(292.5deg)"><span>🧬</span></div>
+                                    <div class="wheel-center">🛸</div>
+                                </div>
+                            </div>
+                            <button id="spin-futuristic" class="spin-btn" onclick="spinFuturistic()">🚀 SPIN 🚀</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="instructions">
@@ -6674,7 +7135,8 @@
             epic: { name: 'Epic', color: '#9C27B0', bg: 'linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%)' },
             legendary: { name: 'Legendary', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%)' },
             godly: { name: 'Godly', color: '#FF1493', bg: 'linear-gradient(135deg, #FFE4EC 0%, #FF69B4 30%, #DA70D6 70%, #9400D3 100%)' },
-            demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' }
+            demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' },
+            temporal: { name: 'Temporal', color: '#00FFFF', bg: 'linear-gradient(135deg, #0a0020 0%, #1a0040 30%, #9400D3 60%, #00FFFF 100%)' }
         };
 
         const MAX_INVENTORY = 40;
@@ -6732,7 +7194,14 @@
             voidberry: { name: 'Void Berry', seedEmoji: '🖤', growEmoji: '🖤', seedPrice: 150000, basePrice: 35000, growTime: 100, rarity: 'godly', yield: [1, 2], regrows: true },
             // Demonic
             hellfruit: { name: 'Hellfruit', seedEmoji: '🔥', growEmoji: '👿', seedPrice: 25000000, basePrice: 500000, growTime: 666, rarity: 'demonic', yield: 1, regrows: true },
-            fireblossom: { name: 'Fire Blossom', seedEmoji: '🌸', growEmoji: '🔥', seedPrice: 60000000, basePrice: 1000000, growTime: 420, rarity: 'demonic', yield: [1, 3], regrows: true }
+            fireblossom: { name: 'Fire Blossom', seedEmoji: '🌸', growEmoji: '🔥', seedPrice: 60000000, basePrice: 1000000, growTime: 420, rarity: 'demonic', yield: [1, 3], regrows: true },
+            // Temporal crops (from time wheels only)
+            primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: [2, 4], regrows: true, wheelOnly: true },
+            dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
+            ambertree: { name: 'Amber Tree', seedEmoji: '🌳', growEmoji: '💎', seedPrice: 0, basePrice: 25000, growTime: 60, rarity: 'temporal', yield: [1, 3], regrows: true, wheelOnly: true },
+            cyberlotus: { name: 'Cyber Lotus', seedEmoji: '💠', growEmoji: '🔷', seedPrice: 0, basePrice: 18000, growTime: 40, rarity: 'temporal', yield: [2, 5], regrows: true, wheelOnly: true },
+            plasmafruit: { name: 'Plasma Fruit', seedEmoji: '⚡', growEmoji: '⚡', seedPrice: 0, basePrice: 100000, growTime: 100, rarity: 'temporal', yield: 1, wheelOnly: true },
+            nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌌', growEmoji: '✨', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true }
         };
 
         const WEATHER = {
@@ -6756,8 +7225,35 @@
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
             enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
             bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 3.5 },
-            timewarp: { name: 'Time Warp', emoji: '⏰', bonus: 2.5 }
+            timewarp: { name: 'Time Warp', emoji: '⏰', bonus: 2.5 },
+            // Time wheel mutations
+            fossilized: { name: 'Fossilized', emoji: '🦴', bonus: 4.0 },
+            quantum: { name: 'Quantum', emoji: '⚛️', bonus: 5.0 }
         };
+        
+        // Prehistoric wheel rewards
+        const PREHISTORIC_WHEEL = [
+            { type: 'money', amount: 50000, emoji: '🦴', name: 'Fossil Cache', weight: 20 },
+            { type: 'money', amount: 150000, emoji: '💎', name: 'Amber Treasure', weight: 15 },
+            { type: 'money', amount: 500000, emoji: '🌋', name: 'Volcanic Gold', weight: 8 },
+            { type: 'seed', seedId: 'primordialfern', count: 3, emoji: '🌿', name: 'Primordial Fern Seeds', weight: 12 },
+            { type: 'seed', seedId: 'dinosauregg', count: 1, emoji: '🥚', name: 'Dino Egg Seed', weight: 10 },
+            { type: 'seed', seedId: 'ambertree', count: 2, emoji: '🌳', name: 'Amber Tree Seeds', weight: 10 },
+            { type: 'pet', petId: 'raptor', emoji: '🦖', name: 'Baby Raptor', weight: 5 },
+            { type: 'pet', petId: 'mammoth', emoji: '🦣', name: 'Woolly Mammoth', weight: 3 }
+        ];
+        
+        // Futuristic wheel rewards
+        const FUTURISTIC_WHEEL = [
+            { type: 'money', amount: 75000, emoji: '⚡', name: 'Energy Credits', weight: 20 },
+            { type: 'money', amount: 200000, emoji: '🔮', name: 'Quantum Crystals', weight: 15 },
+            { type: 'money', amount: 750000, emoji: '🌌', name: 'Stellar Fortune', weight: 8 },
+            { type: 'seed', seedId: 'cyberlotus', count: 3, emoji: '💠', name: 'Cyber Lotus Seeds', weight: 12 },
+            { type: 'seed', seedId: 'plasmafruit', count: 1, emoji: '⚡', name: 'Plasma Fruit Seed', weight: 10 },
+            { type: 'seed', seedId: 'nebulabloom', count: 2, emoji: '🌌', name: 'Nebula Bloom Seeds', weight: 10 },
+            { type: 'pet', petId: 'cybercat', emoji: '🤖', name: 'Cyber Cat', weight: 5 },
+            { type: 'pet', petId: 'alienblob', emoji: '👾', name: 'Alien Blob', weight: 3 }
+        ];
 
         const SIZES = [
             { name: 'Tiny', multiplier: 0.5, scale: 0.6 },
@@ -6787,7 +7283,12 @@
             panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
             kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
-            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: '2.5% bloodlit every 2:30, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' }
+            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: '2.5% bloodlit every 2:30, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
+            // Temporal pets (from time wheels only)
+            raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
+            mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
+            cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
+            alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true }
         };
 
         const GEAR = {
@@ -6878,7 +7379,9 @@
             unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
             selectedGear: null, // currently selected watering can
             selectedSprinkler: null, // sprinkler being placed (index in unplacedSprinklers)
-            bloodTigerTimer: 0 // timer for Blood Tiger bloodlit chance (every 150s)
+            bloodTigerTimer: 0, // timer for Blood Tiger bloodlit chance (every 150s)
+            timeWheelsSpun: { prehistoric: false, futuristic: false }, // track wheel spins per time anomaly
+            timeWheelsShown: false // whether we've shown wheels this time anomaly
         };
 
         // Stock settings per rarity
@@ -7100,6 +7603,8 @@
             setInterval(saveGame, 5000);
             setInterval(checkRestock, 30000);
             setInterval(updateBloodTigerTimer, 1000);
+            setInterval(updateRaptorTimer, 1000);
+            setInterval(updateAlienBlobTimer, 1000);
             // Position player after render
             setTimeout(updatePlayerPosition, 100);
             window.addEventListener('resize', updatePlayerPosition);
@@ -7191,8 +7696,10 @@
             const container = document.getElementById('shop-items');
             container.innerHTML = '';
             
-            // Sort by price (cheapest first)
-            const sortedCrops = Object.entries(CROPS).sort((a, b) => a[1].seedPrice - b[1].seedPrice);
+            // Sort by price (cheapest first), filter out wheel-only crops
+            const sortedCrops = Object.entries(CROPS)
+                .filter(([id, crop]) => !crop.wheelOnly)
+                .sort((a, b) => a[1].seedPrice - b[1].seedPrice);
             
             for (const [id, crop] of sortedCrops) {
                 const isDemonic = crop.rarity === 'demonic';
@@ -7372,6 +7879,8 @@
                     if (plot.mutations?.includes('enchanted')) mutationClasses += ' has-enchanted';
                     if (plot.mutations?.includes('bloodlit')) mutationClasses += ' has-bloodlit';
                     if (plot.mutations?.includes('timewarp')) mutationClasses += ' has-timewarp';
+                    if (plot.mutations?.includes('fossilized')) mutationClasses += ' has-fossilized';
+                    if (plot.mutations?.includes('quantum')) mutationClasses += ' has-quantum';
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
@@ -7937,7 +8446,10 @@
             const container = document.getElementById('pet-shop-items');
             container.innerHTML = '';
             
-            const sortedPets = Object.entries(PETS).sort((a, b) => a[1].price - b[1].price);
+            // Filter out wheel-only temporal pets
+            const sortedPets = Object.entries(PETS)
+                .filter(([id, pet]) => !pet.wheelOnly)
+                .sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, pet] of sortedPets) {
                 const ownedCount = getPetCount(id);
@@ -8572,6 +9084,71 @@
                 }
             }
         }
+        
+        // Raptor fossilize timer (adds fossilized mutation to random crops)
+        function updateRaptorTimer() {
+            if (!hasPetEffect('fossilize')) {
+                gameState.raptorTimer = 0;
+                return;
+            }
+            
+            if (!gameState.raptorTimer) gameState.raptorTimer = 0;
+            gameState.raptorTimer++;
+            
+            // Every 60 seconds, 30% chance to fossilize a crop
+            if (gameState.raptorTimer >= 60) {
+                gameState.raptorTimer = 0;
+                
+                if (Math.random() < 0.30) {
+                    const growingPlots = gameState.plots
+                        .map((p, i) => ({ plot: p, index: i }))
+                        .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('fossilized'));
+                    
+                    if (growingPlots.length > 0) {
+                        const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                        if (!plot.mutations) plot.mutations = [];
+                        plot.mutations.push('fossilized');
+                        const crop = CROPS[plot.type];
+                        showMessage(`🦴 Raptor fossilized your ${crop.name}! (+300% value)`);
+                        renderFarm();
+                    }
+                }
+            }
+        }
+        
+        // Alien Blob quantize timer (adds quantum mutation to random crops)
+        function updateAlienBlobTimer() {
+            if (!hasPetEffect('quantize')) {
+                gameState.alienBlobTimer = 0;
+                return;
+            }
+            
+            if (!gameState.alienBlobTimer) gameState.alienBlobTimer = 0;
+            gameState.alienBlobTimer++;
+            
+            // Every 90 seconds, 20% chance to quantize a crop
+            if (gameState.alienBlobTimer >= 90) {
+                gameState.alienBlobTimer = 0;
+                
+                if (Math.random() < 0.20) {
+                    const growingPlots = gameState.plots
+                        .map((p, i) => ({ plot: p, index: i }))
+                        .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('quantum'));
+                    
+                    if (growingPlots.length > 0) {
+                        const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                        if (!plot.mutations) plot.mutations = [];
+                        plot.mutations.push('quantum');
+                        const crop = CROPS[plot.type];
+                        showMessage(`👾 Alien Blob quantized your ${crop.name}! (+400% value)`);
+                        renderFarm();
+                    }
+                }
+            }
+        }
+        
+        // Mammoth ancient speed timer (passive effect, handled in growth calc)
+        // Effect: All crops grow 30% faster - handled in updateCrops growth calculation
 
         // Update Crops (growth) and Weather
         function updateCrops() {
@@ -8605,6 +9182,7 @@
                         let growthAmount = 1;
                         if (hasPetEffect('speed')) growthAmount += 0.15;
                         if (hasPetEffect('all')) growthAmount += 0.075;
+                        if (hasPetEffect('ancientspeed')) growthAmount += 0.30; // Mammoth: +30% growth speed
                         
                         // Time Anomaly: 5x growth speed!
                         if (currentWeather.growthMultiplier) {
@@ -8671,6 +9249,31 @@
                     showMessage(`🐉 Dragon auto-harvested a crop!`);
                 }
             }
+            
+            // Cyber Cat auto-harvest (3 crops every 8 seconds)
+            if (hasPetEffect('cyberharv')) {
+                if (!gameState.cyberCatTimer) gameState.cyberCatTimer = 0;
+                gameState.cyberCatTimer++;
+                if (gameState.cyberCatTimer >= 8) {
+                    gameState.cyberCatTimer = 0;
+                    const readyPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
+                        .filter(({plot}) => {
+                            if (!plot) return false;
+                            const crop = CROPS[plot.type];
+                            return plot.growth >= crop.growTime;
+                        });
+                    let harvested = 0;
+                    while (harvested < 3 && readyPlots.length > 0 && gameState.harvested.length < MAX_INVENTORY) {
+                        const randIdx = Math.floor(Math.random() * readyPlots.length);
+                        const {index} = readyPlots.splice(randIdx, 1)[0];
+                        harvestCrop(index);
+                        harvested++;
+                    }
+                    if (harvested > 0) {
+                        showMessage(`🤖 Cyber Cat harvested ${harvested} crop${harvested > 1 ? 's' : ''}!`);
+                    }
+                }
+            }
 
             // Sea Turtle wet effect (every 15 seconds)
             if (hasPetEffect('wetplant')) {
@@ -8723,6 +9326,12 @@
         }
         
         function changeWeather() {
+            // Reset time wheels when leaving time anomaly
+            if (gameState.currentWeather === 'timeanomaly') {
+                gameState.timeWheelsShown = false;
+                closeRouletteWheels();
+            }
+            
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'timeanomaly');
             // Sunny is more common, special weathers are very rare
             const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
@@ -8732,6 +9341,7 @@
             if (roll < 0.005) {
                 gameState.currentWeather = 'timeanomaly';
                 gameState.demonicInStock = false;
+                gameState.timeWheelsShown = false; // Reset for new anomaly
                 showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
             // 5% chance for hellscape
@@ -8894,6 +9504,122 @@
             glitch.className = 'time-glitch';
             glitch.style.opacity = '0.1';
             overlay.appendChild(glitch);
+            
+            // Show roulette wheels after a brief delay
+            if (!gameState.timeWheelsShown) {
+                gameState.timeWheelsShown = true;
+                gameState.timeWheelsSpun = { prehistoric: false, futuristic: false };
+                setTimeout(() => {
+                    showRouletteWheels();
+                }, 1500);
+            }
+        }
+        
+        function showRouletteWheels() {
+            const modal = document.getElementById('roulette-modal');
+            modal.classList.remove('hidden');
+            
+            // Reset wheels
+            document.getElementById('prehistoric-wheel').style.transform = 'rotate(0deg)';
+            document.getElementById('futuristic-wheel').style.transform = 'rotate(0deg)';
+            document.getElementById('spin-prehistoric').disabled = gameState.timeWheelsSpun.prehistoric;
+            document.getElementById('spin-futuristic').disabled = gameState.timeWheelsSpun.futuristic;
+            
+            showMessage('⏰ Time rift opened! Spin the temporal wheels! ⏰');
+        }
+        
+        function closeRouletteWheels() {
+            document.getElementById('roulette-modal').classList.add('hidden');
+        }
+        
+        function selectWheelReward(wheelData) {
+            const totalWeight = wheelData.reduce((sum, r) => sum + r.weight, 0);
+            let rand = Math.random() * totalWeight;
+            for (const reward of wheelData) {
+                rand -= reward.weight;
+                if (rand <= 0) return reward;
+            }
+            return wheelData[wheelData.length - 1];
+        }
+        
+        function giveReward(reward, wheelType) {
+            if (reward.type === 'money') {
+                gameState.money += reward.amount;
+                return `+$${reward.amount.toLocaleString()}`;
+            } else if (reward.type === 'seed') {
+                gameState.seeds[reward.seedId] = (gameState.seeds[reward.seedId] || 0) + reward.count;
+                const crop = CROPS[reward.seedId];
+                return `${reward.count}x ${crop.name} Seeds`;
+            } else if (reward.type === 'pet') {
+                // Add to pets inventory
+                if (!gameState.pets.includes(reward.petId)) {
+                    gameState.pets.push(reward.petId);
+                }
+                const pet = PETS[reward.petId];
+                return `${pet.name} 🐾`;
+            }
+            return reward.name;
+        }
+        
+        function spinWheel(wheelType, wheelData) {
+            const wheel = document.getElementById(`${wheelType}-wheel`);
+            const btn = document.getElementById(`spin-${wheelType}`);
+            
+            if (gameState.timeWheelsSpun[wheelType]) return;
+            
+            btn.disabled = true;
+            gameState.timeWheelsSpun[wheelType] = true;
+            
+            // Select reward
+            const reward = selectWheelReward(wheelData);
+            const rewardIndex = wheelData.indexOf(reward);
+            
+            // Calculate spin angle (8 segments, 45 degrees each)
+            // We want to land on the segment at the top (pointer at top)
+            const segmentAngle = 45;
+            const baseSpins = 5; // Full rotations
+            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
+            // Spin clockwise, landing on target segment
+            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 22.5; // +22.5 to align with pointer
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Show reward after spin completes
+            setTimeout(() => {
+                const rewardText = giveReward(reward, wheelType);
+                showRewardPopup(reward, rewardText, wheelType);
+                renderInventory();
+                renderPets();
+            }, 4200);
+        }
+        
+        function spinPrehistoric() {
+            spinWheel('prehistoric', PREHISTORIC_WHEEL);
+        }
+        
+        function spinFuturistic() {
+            spinWheel('futuristic', FUTURISTIC_WHEEL);
+        }
+        
+        function showRewardPopup(reward, rewardText, wheelType) {
+            // Remove any existing popup
+            const existing = document.querySelector('.reward-popup');
+            if (existing) existing.remove();
+            
+            const popup = document.createElement('div');
+            popup.className = `reward-popup ${wheelType}`;
+            popup.innerHTML = `
+                <h2>🎉 ${wheelType === 'prehistoric' ? 'Prehistoric' : 'Futuristic'} Reward! 🎉</h2>
+                <div class="reward-emoji">${reward.emoji}</div>
+                <div class="reward-text">${rewardText}</div>
+                <button onclick="this.parentElement.remove();
+                    if (gameState.timeWheelsSpun.prehistoric && gameState.timeWheelsSpun.futuristic) {
+                        closeRouletteWheels();
+                    }">Collect!</button>
+            `;
+            document.body.appendChild(popup);
+            
+            showMessage(`${reward.emoji} ${reward.name}!`);
         }
         
         function createRain() {
