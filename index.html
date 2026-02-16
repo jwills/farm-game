@@ -4115,6 +4115,228 @@
             50% { opacity: 0.9; transform: translateX(-50%) scale(1.2); }
         }
 
+        /* Angel Wing - celestial feather plant */
+        .plant-model.crop-angelwing .plant-stem { 
+            background: linear-gradient(to top, #f5f5dc, #fffaf0, #ffffff); 
+            width: 6px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-angelwing .plant-leaf { 
+            background: linear-gradient(135deg, #ffffff, #ffefd5); 
+            width: 10px; height: 6px; border-radius: 50%;
+        }
+        .plant-model.crop-angelwing.stage-1 .plant-stem { height: 5px; width: 3px; }
+        .plant-model.crop-angelwing.stage-2 .plant-stem { height: 12px; width: 5px; }
+        .plant-model.crop-angelwing.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-angelwing.stage-3 .plant-stem { height: 22px; width: 6px; }
+        .plant-model.crop-angelwing.stage-3 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-angelwing.stage-4 .plant-stem { height: 32px; width: 8px; }
+        .plant-model.crop-angelwing.stage-4 .plant-leaves { bottom: 26px; }
+        
+        /* Angel Wing fruit - glowing feathers */
+        .crop-angelwing .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-angelwing.stage-4 .plant-fruit {
+            width: 45px; height: 40px;
+            background: transparent;
+            position: absolute;
+            bottom: 26px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-angelwing.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 38px; height: 30px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, #ffffff 0%, #fffaf0 40%, #ffefd5 80%, #ffd700 100%);
+            clip-path: polygon(50% 0%, 5% 40%, 20% 50%, 0% 80%, 30% 70%, 25% 100%, 50% 85%, 75% 100%, 70% 70%, 100% 80%, 80% 50%, 95% 40%);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 215, 0, 0.6);
+            animation: angelWingPlantGlow 2s ease-in-out infinite;
+        }
+        .crop-angelwing.stage-4 .plant-fruit::after {
+            content: '✨';
+            display: block;
+            position: absolute;
+            font-size: 14px;
+            top: 8px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 10px #FFD700);
+            animation: angelSparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes angelWingPlantGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 0 0 40px rgba(255, 215, 0, 0.6); filter: brightness(1); }
+            50% { box-shadow: 0 0 40px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 215, 0, 0.9); filter: brightness(1.2); }
+        }
+        @keyframes angelSparkle {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.6; transform: translateX(-50%) scale(1.3); }
+        }
+        /* Divine aura around Angel Wing */
+        .plant-model.crop-angelwing.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 55px; height: 55px;
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,215,0,0.2) 50%, transparent 70%);
+            bottom: 20px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: divineAura 2.5s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes divineAura {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Holy Grail - golden chalice plant */
+        .plant-model.crop-holygrail .plant-stem { 
+            background: linear-gradient(to top, #daa520, #ffd700, #ffec8b); 
+            width: 8px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-holygrail .plant-leaf { 
+            background: linear-gradient(135deg, #ffd700, #daa520); 
+            width: 10px; height: 6px; border-radius: 40% 60%;
+        }
+        .plant-model.crop-holygrail.stage-1 .plant-stem { height: 6px; width: 4px; }
+        .plant-model.crop-holygrail.stage-2 .plant-stem { height: 14px; width: 6px; }
+        .plant-model.crop-holygrail.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-holygrail.stage-3 .plant-stem { height: 24px; width: 7px; }
+        .plant-model.crop-holygrail.stage-3 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-holygrail.stage-4 .plant-stem { height: 36px; width: 10px; }
+        .plant-model.crop-holygrail.stage-4 .plant-leaves { bottom: 30px; }
+        
+        /* Holy Grail fruit - radiant chalice */
+        .crop-holygrail .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-holygrail.stage-4 .plant-fruit {
+            width: 40px; height: 38px;
+            background: transparent;
+            position: absolute;
+            bottom: 30px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-holygrail.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 32px; height: 28px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(180deg, #FFD700 0%, #DAA520 30%, #B8860B 60%, #8B6914 100%);
+            clip-path: polygon(15% 0%, 85% 0%, 100% 35%, 90% 100%, 70% 100%, 70% 85%, 30% 85%, 30% 100%, 10% 100%, 0% 35%);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 45px rgba(255, 223, 186, 0.7);
+            animation: holyGrailPlantGlow 1.5s ease-in-out infinite;
+        }
+        .crop-holygrail.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 18px; height: 10px;
+            top: 4px; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.9), rgba(255,255,200,0.5), transparent);
+            border-radius: 50%;
+            animation: grailLight 1s ease-in-out infinite;
+        }
+        @keyframes holyGrailPlantGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 45px rgba(255, 223, 186, 0.7); filter: brightness(1); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 70px rgba(255, 255, 255, 0.9); filter: brightness(1.3); }
+        }
+        @keyframes grailLight {
+            0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+        /* Holy light beam from grail */
+        .plant-model.crop-holygrail.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 80px;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,200,0.3) 20%, rgba(255,215,0,0.4) 50%, rgba(255,255,200,0.3) 80%, transparent 100%);
+            bottom: 50px; left: 50%; transform: translateX(-50%);
+            animation: holyBeam 2s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes holyBeam {
+            0%, 100% { opacity: 0.5; height: 80px; }
+            50% { opacity: 0.9; height: 100px; }
+        }
+
+        /* Sun Orchid - radiant sun flower */
+        .plant-model.crop-sunorchid .plant-stem { 
+            background: linear-gradient(to top, #228b22, #32cd32, #90ee90); 
+            width: 8px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-sunorchid .plant-leaf { 
+            background: linear-gradient(135deg, #32cd32, #228b22); 
+            width: 14px; height: 10px; border-radius: 50% 0;
+        }
+        .plant-model.crop-sunorchid.stage-1 .plant-stem { height: 8px; width: 4px; }
+        .plant-model.crop-sunorchid.stage-2 .plant-stem { height: 18px; width: 6px; }
+        .plant-model.crop-sunorchid.stage-2 .plant-leaves { bottom: 15px; }
+        .plant-model.crop-sunorchid.stage-3 .plant-stem { height: 30px; width: 8px; }
+        .plant-model.crop-sunorchid.stage-3 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-sunorchid.stage-4 .plant-stem { height: 45px; width: 12px; }
+        .plant-model.crop-sunorchid.stage-4 .plant-leaves { bottom: 38px; }
+        
+        /* Sun Orchid flower - massive radiant sun */
+        .crop-sunorchid .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-sunorchid.stage-4 .plant-fruit {
+            width: 55px; height: 55px;
+            background: transparent;
+            position: absolute;
+            bottom: 38px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-sunorchid.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 50px; height: 50px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: conic-gradient(from 0deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500);
+            clip-path: polygon(50% 0%, 63% 25%, 98% 15%, 75% 40%, 100% 50%, 75% 60%, 98% 85%, 63% 75%, 50% 100%, 37% 75%, 2% 85%, 25% 60%, 0% 50%, 25% 40%, 2% 15%, 37% 25%);
+            box-shadow: 0 0 35px rgba(255, 200, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.5);
+            animation: sunOrchidPlantSpin 15s linear infinite, sunOrchidPlantPulse 2s ease-in-out infinite;
+        }
+        .crop-sunorchid.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 22px; height: 22px;
+            top: 14px; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(circle at 40% 40%, #FFFFFF, #FFFACD, #FFD700);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 200, 1), 0 0 40px rgba(255, 215, 0, 0.8);
+            animation: sunCenterGlow 1.5s ease-in-out infinite;
+        }
+        @keyframes sunOrchidPlantSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes sunOrchidPlantPulse {
+            0%, 100% { box-shadow: 0 0 35px rgba(255, 200, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8), 0 0 100px rgba(255, 100, 0, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 220, 0, 1), 0 0 80px rgba(255, 165, 0, 1), 0 0 120px rgba(255, 100, 0, 0.7); }
+        }
+        @keyframes sunCenterGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 200, 1), 0 0 40px rgba(255, 215, 0, 0.8); }
+            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 55px rgba(255, 215, 0, 1); transform: translateX(-50%) scale(1.1); }
+        }
+        /* Solar flare aura */
+        .plant-model.crop-sunorchid.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 70px; height: 70px;
+            background: radial-gradient(circle, rgba(255,200,0,0.4) 0%, rgba(255,165,0,0.2) 40%, transparent 70%);
+            bottom: 32px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: solarAura 2s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes solarAura {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+
         /* Temporal crop plant styles */
         
         /* Primordial Fern - prehistoric green fern */
@@ -5054,6 +5276,17 @@
             50% { box-shadow: 0 0 25px rgba(139, 0, 0, 1), 0 0 50px rgba(255, 69, 0, 0.7), inset 0 0 20px rgba(255, 0, 0, 0.2); }
         }
 
+        .shop-item.celestial-glow {
+            animation: celestial-pulse 2s ease-in-out infinite;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #FFD700, #FFFFFF, #FFD700) 1;
+        }
+        
+        @keyframes celestial-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 0 30px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 223, 186, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.7), inset 0 0 20px rgba(255, 223, 186, 0.3); }
+        }
+
         .shop-item.temporal-glow, .pet-slot.temporal-glow {
             animation: temporal-pulse 2s ease-in-out infinite;
             border-left: 4px solid;
@@ -5865,6 +6098,83 @@
         @keyframes doomShroomPulse {
             0%, 100% { box-shadow: 0 0 12px rgba(100, 0, 0, 0.9), inset 0 -3px 8px rgba(255, 0, 0, 0.4); }
             50% { box-shadow: 0 0 20px rgba(150, 0, 0, 1), inset 0 -3px 12px rgba(255, 50, 0, 0.6); transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* Angel Wing - celestial feather plant */
+        .crop-icon.angelwing::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 18px;
+            background: linear-gradient(135deg, #ffffff, #fffaf0, #ffefd5);
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 0% 50%, 20% 100%, 50% 75%, 80% 100%, 100% 50%);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 215, 0, 0.5);
+            animation: angelWingGlow 2s ease-in-out infinite;
+        }
+        .crop-icon.angelwing::after {
+            content: '✨';
+            position: absolute;
+            font-size: 10px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 5px #FFD700);
+        }
+        @keyframes angelWingGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 215, 0, 0.8); filter: brightness(1.2); }
+        }
+
+        /* Holy Grail - golden chalice */
+        .crop-icon.holygrail::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 16px;
+            background: linear-gradient(180deg, #FFD700 0%, #DAA520 50%, #B8860B 100%);
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(10% 0%, 90% 0%, 100% 40%, 85% 100%, 15% 100%, 0% 40%);
+            box-shadow: 0 0 18px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 223, 186, 0.6);
+            animation: holyGrailGlow 1.5s ease-in-out infinite;
+        }
+        .crop-icon.holygrail::after {
+            content: '';
+            position: absolute;
+            width: 10px; height: 6px;
+            background: linear-gradient(180deg, #B8860B, #8B6914);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 0 0 3px 3px;
+        }
+        @keyframes holyGrailGlow {
+            0%, 100% { box-shadow: 0 0 18px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 223, 186, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.8); filter: brightness(1.3); }
+        }
+
+        /* Sun Orchid - radiant sun flower */
+        .crop-icon.sunorchid::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            background: radial-gradient(circle at 50% 50%, #FFFF00, #FFD700, #FFA500);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255, 200, 0, 1), 0 0 40px rgba(255, 165, 0, 0.7);
+            animation: sunOrchidPulse 2s ease-in-out infinite;
+        }
+        .crop-icon.sunorchid::after {
+            content: '';
+            position: absolute;
+            width: 30px; height: 30px;
+            background: conic-gradient(from 0deg, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700, #FFA500, #FFD700);
+            bottom: 1px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: sunOrchidSpin 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes sunOrchidPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 200, 0, 1), 0 0 40px rgba(255, 165, 0, 0.7); transform: translateX(-50%) scale(1); }
+            50% { box-shadow: 0 0 30px rgba(255, 220, 0, 1), 0 0 60px rgba(255, 165, 0, 0.9); transform: translateX(-50%) scale(1.1); }
+        }
+        @keyframes sunOrchidSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
         }
 
         /* Lemon - yellow citrus */
@@ -7258,6 +7568,64 @@
             }
         }
 
+        /* Heaven */
+        .heaven-tint {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,200,0.3) 0%, rgba(255,255,255,0.4) 50%, rgba(255,223,186,0.2) 100%);
+            animation: heaven-pulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heaven-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .heaven-particle {
+            position: fixed;
+            top: -30px;
+            animation: heaven-fall linear infinite;
+            pointer-events: none;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes heaven-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .heaven-beam {
+            position: fixed;
+            top: 0;
+            width: 60px;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,223,186,0.3) 30%, transparent 70%);
+            transform: skewX(-15deg);
+            animation: heaven-beam-pulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heaven-beam-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
         /* Snow */
         .snow-tint {
             position: fixed;
@@ -8426,6 +8794,7 @@
             legendary: { name: 'Legendary', color: '#FF9800', bg: 'linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%)' },
             godly: { name: 'Godly', color: '#FF1493', bg: 'linear-gradient(135deg, #FFE4EC 0%, #FF69B4 30%, #DA70D6 70%, #9400D3 100%)' },
             demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' },
+            celestial: { name: 'Celestial', color: '#FFD700', bg: 'linear-gradient(135deg, #fffef0 0%, #fff8dc 20%, #fffacd 40%, #ffd700 70%, #ffffff 100%)' },
             temporal: { name: 'Temporal', color: '#00FFFF', bg: 'linear-gradient(135deg, #0a0020 0%, #1a0040 30%, #9400D3 60%, #00FFFF 100%)' }
         };
 
@@ -8487,6 +8856,10 @@
             fireblossom: { name: 'Fire Blossom', seedEmoji: '🌸', growEmoji: '🔥', seedPrice: 60000000, basePrice: 1000000, growTime: 420, rarity: 'demonic', yield: [1, 3], regrows: true },
             hadescrown: { name: "Hades' Crown", seedEmoji: '👑', growEmoji: '💀', seedPrice: 200000000, basePrice: 5000000, growTime: 900, rarity: 'demonic', yield: [5, 8], regrows: true },
             doomshroom: { name: 'Doom Shroom', seedEmoji: '🍄', growEmoji: '☠️', seedPrice: 350000000, basePrice: 600000000, growTime: 1200, rarity: 'demonic', yield: 1, regrows: false },
+            // Celestial crops (heaven-only)
+            angelwing: { name: 'Angel Wing', seedEmoji: '🪶', growEmoji: '👼', seedPrice: 30000000, basePrice: 800000, growTime: 300, rarity: 'celestial', yield: [2, 4], regrows: true },
+            holygrail: { name: 'Holy Grail', seedEmoji: '🏆', growEmoji: '✨', seedPrice: 150000000, basePrice: 3000000, growTime: 600, rarity: 'celestial', yield: [3, 6], regrows: true },
+            sunorchid: { name: 'Sun Orchid', seedEmoji: '🌼', growEmoji: '☀️', seedPrice: 250000000, basePrice: 500000000, growTime: 900, rarity: 'celestial', yield: 1, regrows: false },
             // Temporal crops (from time wheels only)
             primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: 1, regrows: true, wheelOnly: true },
             dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
@@ -8506,6 +8879,7 @@
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 },
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
+            heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
             timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
         };
 
@@ -8678,6 +9052,7 @@
             shopStock: {}, // seed stock levels
             lastRestock: 0, // timestamp of last restock
             demonicInStock: false, // only true during hellscape with 25% chance
+            celestialInStock: false, // only true during heaven with 25% chance
             gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
             sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
             unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
@@ -8698,6 +9073,7 @@
             legendary: { min: 0, max: 1, restockChance: 0.03 },
             godly: { min: 0, max: 1, restockChance: 0.01 },
             demonic: { min: 0, max: 0, restockChance: 0, hellscapeOnly: true },
+            celestial: { min: 0, max: 0, restockChance: 0, heavenOnly: true },
             temporal: { min: 0, max: 0, restockChance: 0, wheelOnly: true }
         };
 
@@ -8944,7 +9320,7 @@
             const cropsByRarity = {};
             for (const [id, crop] of Object.entries(CROPS)) {
                 const config = STOCK_CONFIG[crop.rarity];
-                if (config.hellscapeOnly) continue; // Skip demonic
+                if (config.hellscapeOnly || config.heavenOnly || config.wheelOnly) continue; // Skip demonic/celestial/temporal
                 if (!cropsByRarity[crop.rarity]) cropsByRarity[crop.rarity] = [];
                 cropsByRarity[crop.rarity].push(id);
             }
@@ -8992,7 +9368,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'sunorchid', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
@@ -9009,14 +9385,22 @@
             
             for (const [id, crop] of sortedCrops) {
                 const isDemonic = crop.rarity === 'demonic';
+                const isCelestial = crop.rarity === 'celestial';
                 const isHellscape = gameState.currentWeather === 'hellscape';
+                const isHeaven = gameState.currentWeather === 'heaven';
                 
                 // Demonic items only available during hellscape with 25% chance per check
+                // Celestial items only available during heaven with 25% chance per check
                 let stock, inStock, stockDisplay, stockColor;
                 if (isDemonic) {
                     inStock = isHellscape && gameState.demonicInStock;
                     stockDisplay = isHellscape ? (inStock ? '🔥 Available' : '👿 Sold Out') : '👿 Requires Hellscape';
                     stockColor = inStock ? '#ff4500' : '#8B0000';
+                    stock = inStock ? 1 : 0;
+                } else if (isCelestial) {
+                    inStock = isHeaven && gameState.celestialInStock;
+                    stockDisplay = isHeaven ? (inStock ? '✨ Available' : '👼 Sold Out') : '👼 Requires Heaven';
+                    stockColor = inStock ? '#FFD700' : '#B8860B';
                     stock = inStock ? 1 : 0;
                 } else {
                     stock = gameState.shopStock[id] || 0;
@@ -9029,7 +9413,7 @@
                 const canBuy = canAfford && inStock;
                 const rarity = RARITIES[crop.rarity];
                 const div = document.createElement('div');
-                div.className = `shop-item ${canBuy ? '' : 'disabled'} ${!inStock ? 'out-of-stock' : ''} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''} ${crop.rarity === 'demonic' ? 'demonic-glow' : ''}`;
+                div.className = `shop-item ${canBuy ? '' : 'disabled'} ${!inStock ? 'out-of-stock' : ''} ${crop.rarity === 'legendary' ? 'legendary-glow' : ''} ${crop.rarity === 'godly' ? 'godly-glow' : ''} ${crop.rarity === 'demonic' ? 'demonic-glow' : ''} ${crop.rarity === 'celestial' ? 'celestial-glow' : ''}`;
                 div.style.background = rarity.bg;
                 div.style.borderLeft = `4px solid ${rarity.color}`;
                 
@@ -9408,6 +9792,7 @@
         function buySeed(type) {
             const crop = CROPS[type];
             const isDemonic = crop.rarity === 'demonic';
+            const isCelestial = crop.rarity === 'celestial';
             
             // Special handling for demonic seeds
             if (isDemonic) {
@@ -9420,6 +9805,23 @@
                     gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
                     gameState.demonicInStock = false; // Only one per hellscape
                     showMessage(`🔥 Bought ${crop.name} seeds! 👿`);
+                    renderShop();
+                    renderInventory();
+                }
+                return;
+            }
+            
+            // Special handling for celestial seeds
+            if (isCelestial) {
+                if (gameState.currentWeather !== 'heaven' || !gameState.celestialInStock) {
+                    showMessage(`${crop.name} requires Heaven weather! 👼`);
+                    return;
+                }
+                if (gameState.money >= crop.seedPrice) {
+                    gameState.money -= crop.seedPrice;
+                    gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                    gameState.celestialInStock = false; // Only one per heaven
+                    showMessage(`✨ Bought ${crop.name} seeds! 👼`);
                     renderShop();
                     renderInventory();
                 }
@@ -10649,7 +11051,7 @@
                 closeRouletteWheels();
             }
             
-            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'timeanomaly');
+            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'timeanomaly');
             // Sunny is more common, special weathers are very rare
             const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
             const roll = Math.random();
@@ -10658,12 +11060,14 @@
             if (roll < 0.02) {
                 gameState.currentWeather = 'timeanomaly';
                 gameState.demonicInStock = false;
+                gameState.celestialInStock = false;
                 gameState.timeWheelsShown = false; // Reset for new anomaly
                 showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
             // 5% chance for hellscape
             else if (roll < 0.07) {
                 gameState.currentWeather = 'hellscape';
+                gameState.celestialInStock = false;
                 // 25% chance demonic seeds are available during hellscape
                 gameState.demonicInStock = Math.random() < 0.25;
                 if (gameState.demonicInStock) {
@@ -10672,9 +11076,23 @@
                     showMessage(`👿 Hellscape arrives! 🔥`);
                 }
                 renderShop();
+            }
+            // 5% chance for heaven
+            else if (roll < 0.12) {
+                gameState.currentWeather = 'heaven';
+                gameState.demonicInStock = false;
+                // 25% chance celestial seeds are available during heaven
+                gameState.celestialInStock = Math.random() < 0.25;
+                if (gameState.celestialInStock) {
+                    showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
+                } else {
+                    showMessage(`👼 Heaven opens! ✨`);
+                }
+                renderShop();
             } else {
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
                 gameState.demonicInStock = false;
+                gameState.celestialInStock = false;
             }
             
             // Time Anomaly lasts longer (30-60 seconds)
@@ -10713,9 +11131,11 @@
                 // Handle special weather messages
                 if (newWeather === 'timeanomaly') {
                     gameState.demonicInStock = false;
+                    gameState.celestialInStock = false;
                     gameState.timeWheelsShown = false;
                     showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
                 } else if (newWeather === 'hellscape') {
+                    gameState.celestialInStock = false;
                     gameState.demonicInStock = Math.random() < 0.25;
                     if (gameState.demonicInStock) {
                         showMessage(`👿 Hellscape arrives! Demonic seeds available! 🔥`);
@@ -10723,8 +11143,18 @@
                         showMessage(`👿 Hellscape arrives! 🔥`);
                     }
                     renderShop();
+                } else if (newWeather === 'heaven') {
+                    gameState.demonicInStock = false;
+                    gameState.celestialInStock = Math.random() < 0.25;
+                    if (gameState.celestialInStock) {
+                        showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
+                    } else {
+                        showMessage(`👼 Heaven opens! ✨`);
+                    }
+                    renderShop();
                 } else {
                     gameState.demonicInStock = false;
+                    gameState.celestialInStock = false;
                     const weather = WEATHER[newWeather];
                     if (weather && weather.mutation) {
                         showMessage(`Weather changed to ${weather.name}! ${weather.emoji}`);
@@ -10779,6 +11209,8 @@
                     createSunRays();
                 } else if (weather === 'hellscape') {
                     createHellscape();
+                } else if (weather === 'heaven') {
+                    createHeaven();
                 } else if (weather === 'snow') {
                     createSnow();
                 } else if (weather === 'timeanomaly') {
@@ -10820,6 +11252,34 @@
                 ember.style.animationDuration = (2 + Math.random() * 3) + 's';
                 ember.style.animationDelay = Math.random() * 2 + 's';
                 overlay.appendChild(ember);
+            }
+        }
+        
+        function createHeaven() {
+            const overlay = document.getElementById('weather-overlay');
+            // Add golden/white tint overlay
+            const tint = document.createElement('div');
+            tint.className = 'heaven-tint';
+            overlay.appendChild(tint);
+            // Add floating feathers and sparkles
+            const heavenSymbols = ['🪶', '✨', '⭐', '🌟', '☄️', '👼', '☆'];
+            for (let i = 0; i < 35; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'heaven-particle';
+                particle.textContent = heavenSymbols[Math.floor(Math.random() * heavenSymbols.length)];
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDuration = (3 + Math.random() * 4) + 's';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+                overlay.appendChild(particle);
+            }
+            // Add light beams from above
+            for (let i = 0; i < 6; i++) {
+                const beam = document.createElement('div');
+                beam.className = 'heaven-beam';
+                beam.style.left = (5 + i * 18) + 'vw';
+                beam.style.animationDelay = (i * 0.5) + 's';
+                overlay.appendChild(beam);
             }
         }
         

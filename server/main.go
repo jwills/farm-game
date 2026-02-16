@@ -456,6 +456,10 @@ func pickNewWeather(current string) string {
 	if roll < 0.07 {
 		return "hellscape"
 	}
+	// 5% chance for heaven (0.07 to 0.12)
+	if roll < 0.12 {
+		return "heaven"
+	}
 
 	// Weighted towards sunny
 	weighted := []string{"sunny", "sunny", "sunny"}
