@@ -216,9 +216,12 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 
 	// Return all farms except the requesting player's
 	farms := make(map[string]FarmData)
+	var myPlots json.RawMessage
 	for id, farm := range hood.Farms {
 		if id != playerID {
 			farms[id] = farm
+		} else {
+			myPlots = farm.Plots
 		}
 	}
 	mu.Unlock()
@@ -228,6 +231,7 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 		"count":        len(farms),
 		"weather":      weather,
 		"weatherUntil": weatherUntil.Unix(),
+		"myPlots":      myPlots,
 	})
 }
 
