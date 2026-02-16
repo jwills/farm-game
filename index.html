@@ -9062,7 +9062,7 @@
             panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
             kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
-            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: '2.5% bloodlit every 2:30, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
+            bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: 'Bloodlit every 1:00, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
             // Temporal pets (from time wheels only)
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
@@ -10868,7 +10868,7 @@
             }
         }
 
-        // Blood Tiger bloodlit timer (2.5% chance every 2:30)
+        // Blood Tiger bloodlit timer (every 60 seconds)
         function updateBloodTigerTimer() {
             if (!hasPetEffect('bloodlust')) {
                 gameState.bloodTigerTimer = 0;
@@ -10877,24 +10877,22 @@
             
             gameState.bloodTigerTimer++;
             
-            // Every 150 seconds (2:30)
-            if (gameState.bloodTigerTimer >= 150) {
+            // Every 60 seconds (1:00)
+            if (gameState.bloodTigerTimer >= 60) {
                 gameState.bloodTigerTimer = 0;
                 
-                // 2.5% chance to apply bloodlit to a random growing crop
-                if (Math.random() < 0.025) {
-                    const growingPlots = gameState.plots
-                        .map((p, i) => ({ plot: p, index: i }))
-                        .filter(({ plot }) => plot && !plot.isEgg && plot.growth < 100 && !plot.mutations?.includes('bloodlit'));
-                    
-                    if (growingPlots.length > 0) {
-                        const { plot, index } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
-                        if (!plot.mutations) plot.mutations = [];
-                        plot.mutations.push('bloodlit');
-                        const crop = CROPS[plot.type];
-                        showMessage(`🩸 Blood Tiger cursed your ${crop.name} with bloodlit! (+250% value)`);
-                        renderFarm();
-                    }
+                // Always apply bloodlit to a random growing crop
+                const growingPlots = gameState.plots
+                    .map((p, i) => ({ plot: p, index: i }))
+                    .filter(({ plot }) => plot && !plot.isEgg && plot.growth < 100 && !plot.mutations?.includes('bloodlit'));
+                
+                if (growingPlots.length > 0) {
+                    const { plot, index } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                    if (!plot.mutations) plot.mutations = [];
+                    plot.mutations.push('bloodlit');
+                    const crop = CROPS[plot.type];
+                    showMessage(`🩸 Blood Tiger cursed your ${crop.name} with bloodlit! (+250% value)`);
+                    renderFarm();
                 }
             }
         }
