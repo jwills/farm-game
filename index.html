@@ -4378,6 +4378,81 @@
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        /* Ash Covered mutation - smoky/volcanic effect */
+        .plant-model.has-ashcovered {
+            filter: sepia(0.4) brightness(0.9) contrast(1.1);
+        }
+        .plant-model.has-ashcovered::before {
+            content: '🌫️';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            animation: ash-drift 3s ease-in-out infinite;
+            z-index: 10;
+        }
+        .plant-model.has-ashcovered::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(80,80,80,0.3) 0%, transparent 60%);
+            pointer-events: none;
+            animation: ash-fall 2s ease-in-out infinite;
+        }
+        @keyframes ash-drift {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.8; }
+            50% { transform: translateX(-30%) translateY(-5px); opacity: 1; }
+        }
+        @keyframes ash-fall {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+        }
+
+        /* UV Lit mutation - ultraviolet glow effect */
+        .plant-model.has-uvlit {
+            filter: brightness(1.2) saturate(1.3);
+        }
+        .plant-model.has-uvlit .plant-fruit,
+        .plant-model.has-uvlit .plant-stem,
+        .plant-model.has-uvlit .plant-leaf {
+            filter: drop-shadow(0 0 8px rgba(138, 43, 226, 0.8));
+        }
+        .plant-model.has-uvlit::before {
+            content: '🔮';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            animation: uv-pulse 1.5s ease-in-out infinite;
+            z-index: 10;
+        }
+        .plant-model.has-uvlit::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+            animation: uv-glow 2s ease-in-out infinite;
+        }
+        @keyframes uv-pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); filter: brightness(1); }
+            50% { transform: translateX(-50%) scale(1.2); filter: brightness(1.5); }
+        }
+        @keyframes uv-glow {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+        }
+
             animation: sway 2s ease-in-out infinite;
         }
 
@@ -5999,6 +6074,71 @@
             50% { transform: translateY(-3px) rotate(180deg); opacity: 0.7; }
         }
 
+        /* Ash Sprinkler - smoky gray/volcanic */
+        .sprinkler-ash .sprinkler-head {
+            background: linear-gradient(to bottom, #696969, #404040);
+            box-shadow: 0 0 8px rgba(80, 80, 80, 0.8);
+            animation: sprinklerSpin 2s linear infinite;
+        }
+        .sprinkler-ash .sprinkler-pole {
+            background: linear-gradient(to right, #2F2F2F, #505050, #2F2F2F);
+        }
+        .sprinkler-ash .sprinkler-base {
+            background: linear-gradient(to bottom, #383838, #1a1a1a);
+        }
+        .sprinkler-ash .sprinkler-drops::before,
+        .sprinkler-ash .sprinkler-drops::after {
+            background: #808080;
+            box-shadow: 0 0 4px #4a4a4a;
+        }
+        .sprinkler-ash::after {
+            content: '🌫️';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 10px;
+            animation: ashFloat 3s ease-in-out infinite;
+        }
+        @keyframes ashFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        /* UV Sprinkler - purple ultraviolet glow */
+        .sprinkler-uv .sprinkler-head {
+            background: linear-gradient(to bottom, #8A2BE2, #4B0082);
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.9);
+            animation: sprinklerSpin 2s linear infinite, uvPulse 1s ease-in-out infinite;
+        }
+        .sprinkler-uv .sprinkler-pole {
+            background: linear-gradient(to right, #4B0082, #8A2BE2, #4B0082);
+        }
+        .sprinkler-uv .sprinkler-base {
+            background: linear-gradient(to bottom, #6A0DAD, #2E0854);
+            box-shadow: 0 0 6px rgba(138, 43, 226, 0.5);
+        }
+        .sprinkler-uv .sprinkler-drops::before,
+        .sprinkler-uv .sprinkler-drops::after {
+            background: #DA70D6;
+            box-shadow: 0 0 6px #8A2BE2;
+        }
+        .sprinkler-uv::after {
+            content: '🔮';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 10px;
+            animation: uvGlowBadge 1.5s ease-in-out infinite;
+        }
+        @keyframes uvPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(138, 43, 226, 0.9); }
+            50% { box-shadow: 0 0 20px rgba(138, 43, 226, 1); }
+        }
+        @keyframes uvGlowBadge {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
         .tool-item .tool-badge {
             position: absolute;
             bottom: -2px;
@@ -6732,7 +6872,7 @@
             position: absolute;
             top: 35%;
             left: 35%;
-            transform: rotate(22.5deg);
+            transform: rotate(18deg);
         }
         
         .wheel-center {
@@ -7038,14 +7178,16 @@
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer">▼</div>
                                 <div id="prehistoric-wheel" class="wheel">
-                                    <div class="wheel-segment" style="transform: rotate(-22.5deg)"><span>🦖</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(22.5deg)"><span>🦴</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(67.5deg)"><span>🌋</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(112.5deg)"><span>🦕</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(157.5deg)"><span>🥚</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(202.5deg)"><span>🌿</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(247.5deg)"><span>💎</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(292.5deg)"><span>🦣</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><span>🦴</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(18deg)"><span>💎</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(54deg)"><span>🌋</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(90deg)"><span>🌿</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(126deg)"><span>🥚</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(162deg)"><span>🌳</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(198deg)"><span>💀</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(234deg)"><span>🌫️</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(270deg)"><span>🦖</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(306deg)"><span>🦣</span></div>
                                     <div class="wheel-center">🦖</div>
                                 </div>
                             </div>
@@ -7057,14 +7199,16 @@
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer">▼</div>
                                 <div id="futuristic-wheel" class="wheel">
-                                    <div class="wheel-segment" style="transform: rotate(-22.5deg)"><span>🤖</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(22.5deg)"><span>🚀</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(67.5deg)"><span>⚡</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(112.5deg)"><span>🛸</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(157.5deg)"><span>🔮</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(202.5deg)"><span>💫</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(247.5deg)"><span>🌌</span></div>
-                                    <div class="wheel-segment" style="transform: rotate(292.5deg)"><span>🧬</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><span>⚡</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(18deg)"><span>🔮</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(54deg)"><span>🌌</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(90deg)"><span>💠</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(126deg)"><span>⚡</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(162deg)"><span>🌌</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(198deg)"><span>🔌</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(234deg)"><span>🔮</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(270deg)"><span>🤖</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(306deg)"><span>👾</span></div>
                                     <div class="wheel-center">🛸</div>
                                 </div>
                             </div>
@@ -7201,7 +7345,9 @@
             ambertree: { name: 'Amber Tree', seedEmoji: '🌳', growEmoji: '💎', seedPrice: 0, basePrice: 25000, growTime: 60, rarity: 'temporal', yield: [1, 3], regrows: true, wheelOnly: true },
             cyberlotus: { name: 'Cyber Lotus', seedEmoji: '💠', growEmoji: '🔷', seedPrice: 0, basePrice: 18000, growTime: 40, rarity: 'temporal', yield: [2, 5], regrows: true, wheelOnly: true },
             plasmafruit: { name: 'Plasma Fruit', seedEmoji: '⚡', growEmoji: '⚡', seedPrice: 0, basePrice: 100000, growTime: 100, rarity: 'temporal', yield: 1, wheelOnly: true },
-            nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌌', growEmoji: '✨', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true }
+            nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌌', growEmoji: '✨', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true },
+            boneflower: { name: 'Bone Flower', seedEmoji: '💀', growEmoji: '🦴', seedPrice: 0, basePrice: 300000, growTime: 75, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true },
+            techflower: { name: 'Tech Flower', seedEmoji: '🔌', growEmoji: '📡', seedPrice: 0, basePrice: 400000, growTime: 80, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true }
         };
 
         const WEATHER = {
@@ -7228,7 +7374,10 @@
             timewarp: { name: 'Time Warp', emoji: '⏰', bonus: 2.5 },
             // Time wheel mutations
             fossilized: { name: 'Fossilized', emoji: '🦴', bonus: 4.0 },
-            quantum: { name: 'Quantum', emoji: '⚛️', bonus: 5.0 }
+            quantum: { name: 'Quantum', emoji: '⚛️', bonus: 5.0 },
+            // Time wheel sprinkler mutations
+            ashcovered: { name: 'Ash Covered', emoji: '🌫️', bonus: 2.2, sprinklerOnly: true },
+            uvlit: { name: 'UV Lit', emoji: '🔮', bonus: 2.1, sprinklerOnly: true }
         };
         
         // Prehistoric wheel rewards
@@ -7239,6 +7388,8 @@
             { type: 'seed', seedId: 'primordialfern', count: 3, emoji: '🌿', name: 'Primordial Fern Seeds', weight: 12 },
             { type: 'seed', seedId: 'dinosauregg', count: 1, emoji: '🥚', name: 'Dino Egg Seed', weight: 10 },
             { type: 'seed', seedId: 'ambertree', count: 2, emoji: '🌳', name: 'Amber Tree Seeds', weight: 10 },
+            { type: 'seed', seedId: 'boneflower', count: 1, emoji: '💀', name: 'Bone Flower Seed', weight: 6 },
+            { type: 'gear', gearId: 'sprinkler_ash', count: 1, emoji: '🌫️', name: 'Ash Sprinkler', weight: 4 },
             { type: 'pet', petId: 'raptor', emoji: '🦖', name: 'Baby Raptor', weight: 5 },
             { type: 'pet', petId: 'mammoth', emoji: '🦣', name: 'Woolly Mammoth', weight: 3 }
         ];
@@ -7251,6 +7402,8 @@
             { type: 'seed', seedId: 'cyberlotus', count: 3, emoji: '💠', name: 'Cyber Lotus Seeds', weight: 12 },
             { type: 'seed', seedId: 'plasmafruit', count: 1, emoji: '⚡', name: 'Plasma Fruit Seed', weight: 10 },
             { type: 'seed', seedId: 'nebulabloom', count: 2, emoji: '🌌', name: 'Nebula Bloom Seeds', weight: 10 },
+            { type: 'seed', seedId: 'techflower', count: 1, emoji: '🔌', name: 'Tech Flower Seed', weight: 6 },
+            { type: 'gear', gearId: 'sprinkler_uv', count: 1, emoji: '🔮', name: 'UV Sprinkler', weight: 4 },
             { type: 'pet', petId: 'cybercat', emoji: '🤖', name: 'Cyber Cat', weight: 5 },
             { type: 'pet', petId: 'alienblob', emoji: '👾', name: 'Alien Blob', weight: 3 }
         ];
@@ -7309,7 +7462,10 @@
             sprinkler_star: { name: 'Starlight Sprinkler', emoji: '⭐', price: 8000, description: 'Star Blessing +100% value (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.30, specialMutation: 'starblessed', range: 6, duration: 300, rarity: 'epic', passive: true },
             sprinkler_crystal: { name: 'Crystal Sprinkler', emoji: '💎', price: 5000, description: 'Crystalize +90% value (lasts 4min)', interval: 18, growthBoost: 4, mutationBoost: 0.20, specialMutation: 'crystalized', range: 5, duration: 240, rarity: 'epic', passive: true },
             sprinkler_volcanic: { name: 'Volcanic Sprinkler', emoji: '🌋', price: 12000, description: 'Volcanic +120% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'volcanic', range: 8, duration: 360, rarity: 'legendary', passive: true },
-            sprinkler_enchanted: { name: 'Enchanted Sprinkler', emoji: '🪄', price: 3500, description: 'Enchantment +75% value (lasts 3min)', interval: 22, growthBoost: 3, mutationBoost: 0.40, specialMutation: 'enchanted', range: 4, duration: 180, rarity: 'rare', passive: true }
+            sprinkler_enchanted: { name: 'Enchanted Sprinkler', emoji: '🪄', price: 3500, description: 'Enchantment +75% value (lasts 3min)', interval: 22, growthBoost: 3, mutationBoost: 0.40, specialMutation: 'enchanted', range: 4, duration: 180, rarity: 'rare', passive: true },
+            // Temporal sprinklers (from time wheels only)
+            sprinkler_ash: { name: 'Ash Sprinkler', emoji: '🌫️', price: 0, description: 'Ash Covered +120% value (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.30, specialMutation: 'ashcovered', range: 6, duration: 300, rarity: 'temporal', passive: true, wheelOnly: true },
+            sprinkler_uv: { name: 'UV Sprinkler', emoji: '🔮', price: 0, description: 'UV Lit +110% value (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.25, specialMutation: 'uvlit', range: 6, duration: 300, rarity: 'temporal', passive: true, wheelOnly: true }
         };
 
         function getRandomSize() {
@@ -9557,6 +9713,11 @@
                 }
                 const pet = PETS[reward.petId];
                 return `${pet.name} 🐾`;
+            } else if (reward.type === 'gear') {
+                // Add gear to inventory
+                gameState.gear[reward.gearId] = (gameState.gear[reward.gearId] || 0) + reward.count;
+                const gear = GEAR[reward.gearId];
+                return `${gear.name} ${gear.emoji}`;
             }
             return reward.name;
         }
@@ -9574,13 +9735,13 @@
             const reward = selectWheelReward(wheelData);
             const rewardIndex = wheelData.indexOf(reward);
             
-            // Calculate spin angle (8 segments, 45 degrees each)
+            // Calculate spin angle (10 segments, 36 degrees each)
             // We want to land on the segment at the top (pointer at top)
-            const segmentAngle = 45;
+            const segmentAngle = 36;
             const baseSpins = 5; // Full rotations
             const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
             // Spin clockwise, landing on target segment
-            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 22.5; // +22.5 to align with pointer
+            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18; // +18 to align with pointer
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
