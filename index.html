@@ -8077,7 +8077,8 @@
             epic: { min: 1, max: 3, restockChance: 0.3 },
             legendary: { min: 0, max: 1, restockChance: 0.03 },
             godly: { min: 0, max: 1, restockChance: 0.01 },
-            demonic: { min: 0, max: 0, restockChance: 0, hellscapeOnly: true }
+            demonic: { min: 0, max: 0, restockChance: 0, hellscapeOnly: true },
+            temporal: { min: 0, max: 0, restockChance: 0, wheelOnly: true }
         };
 
         // Initialize
@@ -10740,12 +10741,15 @@
         }, 10000);
 
         // Start the game
-        init();
-
-        // Initialize neighborhood UI after load
-        setTimeout(() => {
-            renderNeighborhoodStatus();
-        }, 100);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                init();
+                setTimeout(() => renderNeighborhoodStatus(), 100);
+            });
+        } else {
+            init();
+            setTimeout(() => renderNeighborhoodStatus(), 100);
+        }
     </script>
 </body>
 </html>
