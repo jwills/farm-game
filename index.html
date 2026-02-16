@@ -10585,8 +10585,19 @@
                 return `${pet.name} 🐾`;
             } else if (reward.type === 'gear') {
                 // Add gear to inventory
-                gameState.gear[reward.gearId] = (gameState.gear[reward.gearId] || 0) + reward.count;
                 const gear = GEAR[reward.gearId];
+                if (gear.passive) {
+                    // Sprinkler - add to unplaced list
+                    if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                    for (let i = 0; i < reward.count; i++) {
+                        gameState.unplacedSprinklers.push(reward.gearId);
+                    }
+                    renderGearTools();
+                } else {
+                    // Active gear like watering can
+                    if (!gameState.gear) gameState.gear = {};
+                    gameState.gear[reward.gearId] = (gameState.gear[reward.gearId] || 0) + reward.count;
+                }
                 return `${gear.name} ${gear.emoji}`;
             }
             return reward.name;
