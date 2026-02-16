@@ -5666,6 +5666,152 @@
         }
 
         /* Default/fallback for other crops */
+        /* Temporal crop icons */
+        .crop-icon.primordialfern::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 22px;
+            background: linear-gradient(135deg, #228b22, #006400);
+            border-radius: 0 80% 0 80%;
+            bottom: 2px; left: 50%; transform: translateX(-50%) rotate(-15deg);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.3);
+        }
+        .crop-icon.primordialfern::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 18px;
+            background: linear-gradient(135deg, #32cd32, #228b22);
+            border-radius: 0 80% 0 80%;
+            bottom: 6px; left: 35%; transform: rotate(15deg);
+        }
+
+        .crop-icon.dinosauregg::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 24px;
+            background: linear-gradient(135deg, #d4a574, #8b7355);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.3);
+        }
+        .crop-icon.dinosauregg::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 6px;
+            background: linear-gradient(135deg, #ff6b6b, #cc5555);
+            border-radius: 50%;
+            top: 8px; left: 50%; transform: translateX(-50%);
+        }
+
+        .crop-icon.ambertree::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 14px;
+            background: linear-gradient(to top, #5d4037, #8b7355);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+        }
+        .crop-icon.ambertree::after {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: linear-gradient(135deg, #ffb347, #ff8c00);
+            border-radius: 50%;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255,140,0,0.5);
+        }
+
+        .crop-icon.cyberlotus::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            border-radius: 50% 50% 30% 30%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0,255,255,0.6);
+        }
+        .crop-icon.cyberlotus::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: linear-gradient(135deg, #ff00ff, #ff69b4);
+            border-radius: 50%;
+            top: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 6px rgba(255,0,255,0.8);
+        }
+
+        .crop-icon.plasmafruit::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: linear-gradient(135deg, #ffff00, #ffa500);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(255,255,0,0.8), inset -2px -2px 4px rgba(0,0,0,0.2);
+        }
+        .crop-icon.plasmafruit::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 2px;
+            background: linear-gradient(90deg, transparent, #ffff00, transparent);
+            top: 12px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255,255,0,0.9);
+        }
+
+        .crop-icon.nebulabloom::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 20px;
+            background: radial-gradient(ellipse, #4b0082, #8b008b, #000033);
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(138,43,226,0.6);
+        }
+        .crop-icon.nebulabloom::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 4px;
+            background: white;
+            border-radius: 50%;
+            top: 8px; left: 45%;
+            box-shadow: 6px 4px 0 1px white, -2px 6px 0 0 rgba(255,255,255,0.7), 4px -2px 0 0 rgba(255,255,255,0.5);
+        }
+
+        .crop-icon.boneflower::before {
+            content: '';
+            position: absolute;
+            width: 6px; height: 16px;
+            background: linear-gradient(to top, #d4d4d4, #f5f5f5);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .crop-icon.boneflower::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 14px;
+            background: radial-gradient(circle, #ffffff 30%, #e0e0e0 70%);
+            border-radius: 50% 50% 30% 30%;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .crop-icon.techflower::before {
+            content: '';
+            position: absolute;
+            width: 6px; height: 14px;
+            background: linear-gradient(to top, #333, #666);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .crop-icon.techflower::after {
+            content: '';
+            position: absolute;
+            width: 20px; height: 16px;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            border-radius: 4px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(0,255,0,0.6), inset 2px 2px 4px rgba(255,255,255,0.3);
+        }
+
         .crop-icon.default::before {
             content: '';
             position: absolute;
@@ -7950,8 +8096,8 @@
             carrot: { name: 'Carrot', seedEmoji: '🥕', growEmoji: '🥕', seedPrice: 13, basePrice: 17, growTime: 8, rarity: 'common', yield: 1 },
             potato: { name: 'Potato', seedEmoji: '🥔', growEmoji: '🥔', seedPrice: 17, basePrice: 11, growTime: 10, rarity: 'common', yield: [1, 3] },
             onion: { name: 'Onion', seedEmoji: '🧅', growEmoji: '🧅', seedPrice: 10, basePrice: 13, growTime: 7, rarity: 'common', yield: 1 },
-            radish: { name: 'Radish', seedEmoji: '🔴', growEmoji: '🔴', seedPrice: 8, basePrice: 12, growTime: 5, rarity: 'common', yield: 1 },
-            turnip: { name: 'Turnip', seedEmoji: '🤍', growEmoji: '🤍', seedPrice: 15, basePrice: 20, growTime: 9, rarity: 'common', yield: 1 },
+            radish: { name: 'Radish', seedEmoji: '🌱', growEmoji: '🔻', seedPrice: 8, basePrice: 12, growTime: 5, rarity: 'common', yield: 1 },
+            turnip: { name: 'Turnip', seedEmoji: '🌱', growEmoji: '🤍', seedPrice: 15, basePrice: 20, growTime: 9, rarity: 'common', yield: 1 },
             wheat: { name: 'Wheat', seedEmoji: '🌾', growEmoji: '🌾', seedPrice: 12, basePrice: 8, growTime: 6, rarity: 'common', yield: [2, 4] },
             // Uncommon ($30-50) - early game goals
             tomato: { name: 'Tomato', seedEmoji: '🍅', growEmoji: '🍅', seedPrice: 30, basePrice: 12, growTime: 12, rarity: 'uncommon', yield: [1, 2], regrows: true },
@@ -7964,8 +8110,8 @@
             corn: { name: 'Corn', seedEmoji: '🌽', growEmoji: '🌽', seedPrice: 67, basePrice: 29, growTime: 15, rarity: 'rare', yield: [2, 4] },
             eggplant: { name: 'Eggplant', seedEmoji: '🍆', growEmoji: '🍆', seedPrice: 75, basePrice: 22, growTime: 16, rarity: 'rare', yield: [1, 2], regrows: true },
             broccoli: { name: 'Broccoli', seedEmoji: '🥦', growEmoji: '🥦', seedPrice: 92, basePrice: 120, growTime: 17, rarity: 'rare', yield: 1 },
-            cauliflower: { name: 'Cauliflower', seedEmoji: '🤍', growEmoji: '🤍', seedPrice: 85, basePrice: 110, growTime: 16, rarity: 'rare', yield: 1 },
-            spinach: { name: 'Spinach', seedEmoji: '🥬', growEmoji: '🥬', seedPrice: 70, basePrice: 28, growTime: 14, rarity: 'rare', yield: [1, 2], regrows: true },
+            cauliflower: { name: 'Cauliflower', seedEmoji: '🌱', growEmoji: '💠', seedPrice: 85, basePrice: 110, growTime: 16, rarity: 'rare', yield: 1 },
+            spinach: { name: 'Spinach', seedEmoji: '🍃', growEmoji: '🍃', seedPrice: 70, basePrice: 28, growTime: 14, rarity: 'rare', yield: [1, 2], regrows: true },
             bellpepper: { name: 'Bell Pepper', seedEmoji: '🫑', growEmoji: '🫑', seedPrice: 80, basePrice: 32, growTime: 15, rarity: 'rare', yield: [1, 3], regrows: true },
             sunflower: { name: 'Sunflower', seedEmoji: '🌻', growEmoji: '🌻', seedPrice: 100, basePrice: 45, growTime: 18, rarity: 'rare', yield: [2, 5] },
             // Epic ($133-250) - late game
@@ -8002,12 +8148,12 @@
             // Temporal crops (from time wheels only)
             primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: [2, 4], regrows: true, wheelOnly: true },
             dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
-            ambertree: { name: 'Amber Tree', seedEmoji: '🌳', growEmoji: '💎', seedPrice: 0, basePrice: 25000, growTime: 60, rarity: 'temporal', yield: [1, 3], regrows: true, wheelOnly: true },
-            cyberlotus: { name: 'Cyber Lotus', seedEmoji: '💠', growEmoji: '🔷', seedPrice: 0, basePrice: 18000, growTime: 40, rarity: 'temporal', yield: [2, 5], regrows: true, wheelOnly: true },
+            ambertree: { name: 'Amber Tree', seedEmoji: '🌳', growEmoji: '🔶', seedPrice: 0, basePrice: 25000, growTime: 60, rarity: 'temporal', yield: [1, 3], regrows: true, wheelOnly: true },
+            cyberlotus: { name: 'Cyber Lotus', seedEmoji: '🤖', growEmoji: '🌸', seedPrice: 0, basePrice: 18000, growTime: 40, rarity: 'temporal', yield: [2, 5], regrows: true, wheelOnly: true },
             plasmafruit: { name: 'Plasma Fruit', seedEmoji: '⚡', growEmoji: '⚡', seedPrice: 0, basePrice: 100000, growTime: 100, rarity: 'temporal', yield: 1, wheelOnly: true },
-            nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌌', growEmoji: '✨', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true },
-            boneflower: { name: 'Bone Flower', seedEmoji: '💀', growEmoji: '🦴', seedPrice: 0, basePrice: 300000, growTime: 75, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true },
-            techflower: { name: 'Tech Flower', seedEmoji: '🔌', growEmoji: '📡', seedPrice: 0, basePrice: 400000, growTime: 80, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true }
+            nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌟', growEmoji: '🌌', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true },
+            boneflower: { name: 'Bone Flower', seedEmoji: '☠️', growEmoji: '🌼', seedPrice: 0, basePrice: 300000, growTime: 75, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true },
+            techflower: { name: 'Tech Flower', seedEmoji: '🖥️', growEmoji: '🌺', seedPrice: 0, basePrice: 400000, growTime: 80, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true }
         };
 
         const WEATHER = {
@@ -10146,6 +10292,15 @@
         }
         
         function changeWeather() {
+            // If in a neighborhood, don't change weather locally - server handles it
+            if (gameState.neighborhoodCode) {
+                return;
+            }
+            
+            changeWeatherLocal();
+        }
+        
+        function changeWeatherLocal() {
             // Reset time wheels when leaving time anomaly
             if (gameState.currentWeather === 'timeanomaly') {
                 gameState.timeWheelsShown = false;
@@ -10197,8 +10352,59 @@
             }
         }
         
+        function applyNeighborhoodWeather(newWeather, weatherUntil) {
+            const oldWeather = gameState.currentWeather;
+            
+            // Reset time wheels when leaving time anomaly
+            if (oldWeather === 'timeanomaly' && newWeather !== 'timeanomaly') {
+                gameState.timeWheelsShown = false;
+                closeRouletteWheels();
+            }
+            
+            if (oldWeather !== newWeather) {
+                gameState.currentWeather = newWeather;
+                
+                // Set timer based on server's weatherUntil
+                const now = Math.floor(Date.now() / 1000);
+                gameState.weatherTimer = Math.max(1, weatherUntil - now);
+                
+                // Handle special weather messages
+                if (newWeather === 'timeanomaly') {
+                    gameState.demonicInStock = false;
+                    gameState.timeWheelsShown = false;
+                    showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
+                } else if (newWeather === 'hellscape') {
+                    gameState.demonicInStock = Math.random() < 0.25;
+                    if (gameState.demonicInStock) {
+                        showMessage(`👿 Hellscape arrives! Demonic seeds available! 🔥`);
+                    } else {
+                        showMessage(`👿 Hellscape arrives! 🔥`);
+                    }
+                    renderShop();
+                } else {
+                    gameState.demonicInStock = false;
+                    const weather = WEATHER[newWeather];
+                    if (weather && weather.mutation) {
+                        showMessage(`Weather changed to ${weather.name}! ${weather.emoji}`);
+                    }
+                }
+                
+                updateWeatherDisplay();
+                updateWeatherEffects();
+            } else {
+                // Same weather, just update timer
+                const now = Math.floor(Date.now() / 1000);
+                gameState.weatherTimer = Math.max(1, weatherUntil - now);
+            }
+        }
+        
         function updateWeatherDisplay() {
             const weather = WEATHER[gameState.currentWeather];
+            if (!weather) {
+                console.error('Unknown weather type:', gameState.currentWeather);
+                gameState.currentWeather = 'sunny';
+                return updateWeatherDisplay();
+            }
             document.getElementById('weather-display').innerHTML = `${weather.emoji} ${weather.name}`;
             updateWeatherEffects();
         }
@@ -10765,6 +10971,11 @@
                 const res = await fetch(`${API_BASE}/neighborhood/farms?code=${gameState.neighborhoodCode}&playerId=${getPlayerId()}`);
                 const data = await res.json();
                 renderNeighborFarms(data.farms || {});
+                
+                // Apply shared neighborhood weather
+                if (data.weather && data.weatherUntil) {
+                    applyNeighborhoodWeather(data.weather, data.weatherUntil);
+                }
             } catch (err) {
                 console.log('Fetch farms failed:', err);
             }

@@ -27,11 +27,13 @@ type ChatMessage struct {
 }
 
 type Neighborhood struct {
-	Code     string              `json:"code"`
-	Farms    map[string]FarmData `json:"farms"`
-	Messages []ChatMessage       `json:"messages"`
-	MsgID    int64               `json:"msgId"`
-	Created  time.Time           `json:"created"`
+	Code         string              `json:"code"`
+	Farms        map[string]FarmData `json:"farms"`
+	Messages     []ChatMessage       `json:"messages"`
+	MsgID        int64               `json:"msgId"`
+	Weather      string              `json:"weather"`
+	WeatherUntil time.Time           `json:"weatherUntil"`
+	Created      time.Time           `json:"created"`
 }
 
 var (
@@ -51,6 +53,7 @@ func main() {
 	http.HandleFunc("/api/neighborhood/steal", corsMiddleware(handleSteal))
 	http.HandleFunc("/api/neighborhood/chat/send", corsMiddleware(handleChatSend))
 	http.HandleFunc("/api/neighborhood/chat/messages", corsMiddleware(handleChatMessages))
+	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
 
 	// Serve static files from parent directory
 	fs := http.FileServer(http.Dir("/home/exedev/farm-game"))
@@ -105,14 +108,16 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	neighborhoods[code] = &Neighborhood{
-		Code:     code,
-		Farms:    make(map[string]FarmData),
-		Messages: []ChatMessage{},
-		MsgID:    0,
-		Created:  time.Now(),
+		Code:         code,
+		Farms:        make(map[string]FarmData),
+		Messages:     []ChatMessage{},
+		MsgID:        0,
+		Weather:      "sunny",
+		WeatherUntil: time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second),
+		Created:      time.Now(),
 	}
 
-	json.NewEncoder(w).Encode(map[string]string{"code": code})
+	json.NewEncoder(w).Encode(map[string]interface{}{"code": code, "weather": "sunny"})
 }
 
 func handleJoin(w http.ResponseWriter, r *http.Request) {
@@ -192,29 +197,37 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 	playerID := r.URL.Query().Get("playerId")
 
-	mu.RLock()
+	mu.Lock()
 	hood, exists := neighborhoods[code]
-	mu.RUnlock()
-
 	if !exists {
+		mu.Unlock()
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
 		return
 	}
 
+	// Check if weather needs to change
+	if time.Now().After(hood.WeatherUntil) {
+		hood.Weather = pickNewWeather(hood.Weather)
+		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
+	}
+	weather := hood.Weather
+	weatherUntil := hood.WeatherUntil
+
 	// Return all farms except the requesting player's
 	farms := make(map[string]FarmData)
-	mu.RLock()
 	for id, farm := range hood.Farms {
 		if id != playerID {
 			farms[id] = farm
 		}
 	}
-	mu.RUnlock()
+	mu.Unlock()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"farms": farms,
-		"count": len(farms),
+		"farms":        farms,
+		"count":        len(farms),
+		"weather":      weather,
+		"weatherUntil": weatherUntil.Unix(),
 	})
 }
 
@@ -422,5 +435,62 @@ func handleChatMessages(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"messages": messages,
 		"count":    len(messages),
+	})
+}
+
+// Weather types must match frontend WEATHER object keys
+var weatherTypes = []string{"sunny", "rainy", "thunder", "windy", "heatwave", "snow"}
+
+func pickNewWeather(current string) string {
+	roll := rand.Float64()
+
+	// 2% chance for Time Anomaly
+	if roll < 0.02 {
+		return "timeanomaly"
+	}
+	// 5% chance for hellscape
+	if roll < 0.07 {
+		return "hellscape"
+	}
+
+	// Weighted towards sunny
+	weighted := []string{"sunny", "sunny", "sunny"}
+	weighted = append(weighted, weatherTypes...)
+
+	// Pick random, avoid same weather twice
+	for i := 0; i < 10; i++ {
+		newWeather := weighted[rand.Intn(len(weighted))]
+		if newWeather != current {
+			return newWeather
+		}
+	}
+	return "sunny"
+}
+
+func handleWeather(w http.ResponseWriter, r *http.Request) {
+	code := r.URL.Query().Get("code")
+
+	mu.Lock()
+	hood, exists := neighborhoods[code]
+	if !exists {
+		mu.Unlock()
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Check if weather needs to change
+	if time.Now().After(hood.WeatherUntil) {
+		hood.Weather = pickNewWeather(hood.Weather)
+		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
+	}
+
+	weather := hood.Weather
+	weatherUntil := hood.WeatherUntil
+	mu.Unlock()
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"weather":      weather,
+		"weatherUntil": weatherUntil.Unix(),
 	})
 }
