@@ -4259,6 +4259,161 @@
             50% { opacity: 0.9; height: 100px; }
         }
 
+        /* Divine Halo - floating ring of light */
+        .plant-model.crop-divinehalo .plant-stem { 
+            background: linear-gradient(to top, #fffaf0, #ffffff, #fffacd); 
+            width: 6px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-divinehalo .plant-leaf { 
+            background: linear-gradient(135deg, #ffffff, #ffd700); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .plant-model.crop-divinehalo.stage-1 .plant-stem { height: 5px; width: 3px; }
+        .plant-model.crop-divinehalo.stage-2 .plant-stem { height: 12px; width: 4px; }
+        .plant-model.crop-divinehalo.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-divinehalo.stage-3 .plant-stem { height: 20px; width: 5px; }
+        .plant-model.crop-divinehalo.stage-3 .plant-leaves { bottom: 17px; }
+        .plant-model.crop-divinehalo.stage-4 .plant-stem { height: 30px; width: 7px; }
+        .plant-model.crop-divinehalo.stage-4 .plant-leaves { bottom: 25px; }
+        
+        /* Divine Halo fruit - radiant floating ring */
+        .crop-divinehalo .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-divinehalo.stage-4 .plant-fruit {
+            width: 50px; height: 50px;
+            background: transparent;
+            position: absolute;
+            bottom: 28px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-divinehalo.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 40px; height: 40px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: transparent;
+            border: 6px solid;
+            border-color: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.9), 0 0 80px rgba(255, 200, 100, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: divineHaloPlantGlow 2s ease-in-out infinite, divineHaloFloat 3s ease-in-out infinite;
+        }
+        .crop-divinehalo.stage-4 .plant-fruit::after {
+            content: '✨';
+            display: block;
+            position: absolute;
+            font-size: 16px;
+            top: 10px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 15px #FFD700) drop-shadow(0 0 25px #FFFFFF);
+            animation: haloStarSpin 4s linear infinite;
+        }
+        @keyframes divineHaloPlantGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.9), 0 0 80px rgba(255, 200, 100, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.6); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 70px rgba(255, 255, 255, 1), 0 0 100px rgba(255, 200, 100, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.9); }
+        }
+        @keyframes divineHaloFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+        @keyframes haloStarSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+        /* Divine light pillar */
+        .plant-model.crop-divinehalo.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 30px; height: 100px;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,200,0.4) 30%, rgba(255,215,0,0.3) 50%, rgba(255,255,200,0.2) 70%, transparent 100%);
+            bottom: 35px; left: 50%; transform: translateX(-50%);
+            animation: divinePillar 2.5s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes divinePillar {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Eden Rose - paradise flower from the garden */
+        .plant-model.crop-edenrose .plant-stem { 
+            background: linear-gradient(to top, #228b22, #32cd32, #90ee90); 
+            width: 8px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-edenrose .plant-leaf { 
+            background: linear-gradient(135deg, #32cd32, #228b22); 
+            width: 12px; height: 8px; border-radius: 50% 0;
+        }
+        .plant-model.crop-edenrose.stage-1 .plant-stem { height: 6px; width: 4px; }
+        .plant-model.crop-edenrose.stage-2 .plant-stem { height: 16px; width: 6px; }
+        .plant-model.crop-edenrose.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-edenrose.stage-3 .plant-stem { height: 28px; width: 8px; }
+        .plant-model.crop-edenrose.stage-3 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-edenrose.stage-4 .plant-stem { height: 42px; width: 10px; }
+        .plant-model.crop-edenrose.stage-4 .plant-leaves { bottom: 36px; }
+        
+        /* Eden Rose flower - magnificent paradise bloom */
+        .crop-edenrose .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-edenrose.stage-4 .plant-fruit {
+            width: 55px; height: 50px;
+            background: transparent;
+            position: absolute;
+            bottom: 36px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-edenrose.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 45px; height: 45px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(circle at 50% 50%, #FFB6C1 0%, #FF69B4 30%, #FF1493 60%, #C71585 100%);
+            clip-path: polygon(50% 0%, 60% 20%, 85% 10%, 75% 35%, 100% 40%, 80% 55%, 90% 85%, 60% 70%, 50% 100%, 40% 70%, 10% 85%, 20% 55%, 0% 40%, 25% 35%, 15% 10%, 40% 20%);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 215, 0, 0.6), 0 0 90px rgba(255, 182, 193, 0.4);
+            animation: edenRosePlantGlow 2s ease-in-out infinite, edenRoseSpin 20s linear infinite;
+        }
+        .crop-edenrose.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 16px; height: 16px;
+            top: 14px; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(circle at 40% 40%, #FFFFFF, #FFD700, #FFA500);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: edenCenterGlow 1.5s ease-in-out infinite;
+        }
+        @keyframes edenRosePlantGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 215, 0, 0.6), 0 0 90px rgba(255, 182, 193, 0.4); }
+            50% { box-shadow: 0 0 45px rgba(255, 105, 180, 1), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 110px rgba(255, 182, 193, 0.6); filter: brightness(1.2); }
+        }
+        @keyframes edenRoseSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes edenCenterGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 255, 255, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 45px rgba(255, 255, 255, 1); transform: translateX(-50%) scale(1.15); }
+        }
+        /* Paradise aura */
+        .plant-model.crop-edenrose.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 65px; height: 65px;
+            background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, rgba(255,215,0,0.2) 50%, transparent 70%);
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: paradiseAura 2.5s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes paradiseAura {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+
         /* Temporal crop plant styles */
         
         /* Primordial Fern - prehistoric green fern */
@@ -6067,6 +6222,62 @@
         @keyframes holyGrailGlow {
             0%, 100% { box-shadow: 0 0 18px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 223, 186, 0.6); }
             50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 0.8); filter: brightness(1.3); }
+        }
+
+        /* Divine Halo - radiant ring of light */
+        .crop-icon.divinehalo::before {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            background: transparent;
+            border: 4px solid;
+            border-color: #FFD700;
+            border-radius: 50%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: divineHaloGlow 1.5s ease-in-out infinite;
+        }
+        .crop-icon.divinehalo::after {
+            content: '✨';
+            position: absolute;
+            font-size: 12px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 8px #FFD700);
+            animation: haloSparkle 1s ease-in-out infinite;
+        }
+        @keyframes divineHaloGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 255, 255, 0.8), inset 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 255, 255, 1), inset 0 0 15px rgba(255, 215, 0, 0.8); filter: brightness(1.3); }
+        }
+        @keyframes haloSparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; transform: translateX(-50%) scale(1.2); }
+        }
+
+        /* Eden Rose - paradise flower */
+        .crop-icon.edenrose::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 22px;
+            background: radial-gradient(circle at 50% 50%, #FFB6C1, #FF69B4, #FF1493);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            clip-path: polygon(50% 0%, 65% 25%, 100% 25%, 75% 50%, 85% 100%, 50% 75%, 15% 100%, 25% 50%, 0% 25%, 35% 25%);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.9), 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: edenRoseGlow 2s ease-in-out infinite;
+        }
+        .crop-icon.edenrose::after {
+            content: '';
+            position: absolute;
+            width: 8px; height: 8px;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            bottom: 12px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 1);
+        }
+        @keyframes edenRoseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.9), 0 0 40px rgba(255, 215, 0, 0.5); transform: translateX(-50%) scale(1); }
+            50% { box-shadow: 0 0 35px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 215, 0, 0.8); transform: translateX(-50%) scale(1.05); filter: brightness(1.2); }
         }
 
         /* Lemon - yellow citrus */
@@ -8751,6 +8962,8 @@
             // Celestial crops (heaven-only)
             angelwing: { name: 'Angel Wing', seedEmoji: '🪶', growEmoji: '👼', seedPrice: 2000000000, basePrice: 50000000, growTime: 1200, rarity: 'celestial', yield: [2, 4], regrows: true },
             holygrail: { name: 'Holy Grail', seedEmoji: '🏆', growEmoji: '✨', seedPrice: 5000000000, basePrice: 150000000, growTime: 1800, rarity: 'celestial', yield: [3, 6], regrows: true },
+            divinehalo: { name: 'Divine Halo', seedEmoji: '🕴️', growEmoji: '💫', seedPrice: 10000000000, basePrice: 2000000000, growTime: 2400, rarity: 'celestial', yield: 1, regrows: false },
+            edenrose: { name: 'Eden Rose', seedEmoji: '🌹', growEmoji: '🌟', seedPrice: 20000000000, basePrice: 500000000, growTime: 3600, rarity: 'celestial', yield: [4, 8], regrows: true },
             // Temporal crops (from time wheels only)
             primordialfern: { name: 'Primordial Fern', seedEmoji: '🌿', growEmoji: '🦕', seedPrice: 0, basePrice: 15000, growTime: 45, rarity: 'temporal', yield: 1, regrows: true, wheelOnly: true },
             dinosauregg: { name: 'Dino Egg Plant', seedEmoji: '🥚', growEmoji: '🦖', seedPrice: 0, basePrice: 75000, growTime: 90, rarity: 'temporal', yield: 1, wheelOnly: true },
@@ -9259,7 +9472,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
