@@ -9341,7 +9341,9 @@
             if (!container) return;
             container.innerHTML = '';
             
-            const sortedGear = Object.entries(GEAR).sort((a, b) => a[1].price - b[1].price);
+            const sortedGear = Object.entries(GEAR)
+                .filter(([id, gear]) => !gear.wheelOnly)
+                .sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, gear] of sortedGear) {
                 const canAfford = gameState.money >= gear.price;
