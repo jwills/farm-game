@@ -8614,8 +8614,8 @@
                         plot.growth += growthAmount;
                         needsRender = true;
                         
-                        // Chance to gain mutation from current weather
-                        let mutationChance = 0.15;
+                        // Chance to gain mutation from current weather (3% base)
+                        let mutationChance = 0.03;
                         mutationChance = getPetBonus('mutation', mutationChance);
                         if (currentWeather.mutation && Math.random() < mutationChance) {
                             if (!plot.mutations) plot.mutations = [];
