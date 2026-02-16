@@ -6393,6 +6393,122 @@
             color: #666;
         }
 
+        /* Neighborhood Chat */
+        .neighborhood-chat {
+            margin-top: 15px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 10px;
+            display: none;
+        }
+
+        .neighborhood-chat.active {
+            display: block;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: #7B1FA2;
+        }
+
+        .chat-toggle {
+            background: #7B1FA2;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .chat-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .chat-message {
+            padding: 6px 10px;
+            margin-bottom: 6px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .chat-message.own {
+            background: #E8F5E9;
+            margin-left: 20px;
+        }
+
+        .chat-message .sender {
+            font-weight: bold;
+            color: #7B1FA2;
+            margin-right: 6px;
+        }
+
+        .chat-message .time {
+            font-size: 0.7rem;
+            color: #999;
+            float: right;
+        }
+
+        .chat-message .text {
+            color: #333;
+            word-wrap: break-word;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #E1BEE7;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chat-input-row input:focus {
+            border-color: #7B1FA2;
+        }
+
+        .chat-input-row button {
+            background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .chat-input-row button:hover {
+            background: linear-gradient(135deg, #7B1FA2, #6A1B9A);
+        }
+
+        .chat-empty {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
         .visit-modal {
             position: fixed;
             top: 0;
@@ -7685,6 +7801,21 @@
                         </div>
                     </div>
                     <div id="neighborhood-members" class="neighbors"></div>
+                    
+                    <!-- Neighborhood Chat -->
+                    <div id="neighborhood-chat" class="neighborhood-chat">
+                        <div class="chat-header">
+                            <h3>💬 Chat</h3>
+                        </div>
+                        <div id="chat-messages" class="chat-messages">
+                            <div class="chat-empty">No messages yet. Say hi! 👋</div>
+                        </div>
+                        <div class="chat-input-row">
+                            <input type="text" id="chat-input" placeholder="Type a message..." maxlength="200">
+                            <button onclick="sendChatMessage()">Send</button>
+                        </div>
+                    </div>
+                    
                     <div id="visit-modal" class="visit-modal hidden">
                         <div class="visit-modal-content">
                             <button class="close-visit" onclick="closeVisit()">✕</button>
@@ -8066,7 +8197,8 @@
             selectedSprinkler: null, // sprinkler being placed (index in unplacedSprinklers)
             bloodTigerTimer: 0, // timer for Blood Tiger bloodlit chance (every 150s)
             timeWheelsSpun: { prehistoric: false, futuristic: false }, // track wheel spins per time anomaly
-            timeWheelsShown: false // whether we've shown wheels this time anomaly
+            timeWheelsShown: false, // whether we've shown wheels this time anomaly
+            lastChatMsgId: 0 // track last seen chat message ID
         };
 
         // Stock settings per rarity
@@ -10638,6 +10770,131 @@
             }
         }
 
+        // Chat functions
+        async function sendChatMessage() {
+            if (!gameState.neighborhoodCode) return;
+            
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/chat/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerId: getPlayerId(),
+                        playerName: gameState.playerName || 'Anonymous',
+                        message: message
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    input.value = '';
+                    await fetchChatMessages();
+                }
+            } catch (err) {
+                console.log('Send chat failed:', err);
+            }
+        }
+
+        async function fetchChatMessages() {
+            if (!gameState.neighborhoodCode) return;
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/chat/messages?code=${gameState.neighborhoodCode}&since=${gameState.lastChatMsgId || 0}`);
+                const data = await res.json();
+                
+                if (data.messages && data.messages.length > 0) {
+                    renderChatMessages(data.messages, true);
+                }
+            } catch (err) {
+                console.log('Fetch chat failed:', err);
+            }
+        }
+
+        async function fetchAllChatMessages() {
+            if (!gameState.neighborhoodCode) return;
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/chat/messages?code=${gameState.neighborhoodCode}`);
+                const data = await res.json();
+                gameState.lastChatMsgId = 0;
+                renderChatMessages(data.messages || [], false);
+            } catch (err) {
+                console.log('Fetch chat failed:', err);
+            }
+        }
+
+        function renderChatMessages(messages, append) {
+            const container = document.getElementById('chat-messages');
+            const playerId = getPlayerId();
+            
+            if (!append) {
+                container.innerHTML = '';
+            }
+            
+            if (messages.length === 0 && !append) {
+                container.innerHTML = '<div class="chat-empty">No messages yet. Say hi! \uD83D\uDC4B</div>';
+                return;
+            }
+            
+            // Remove empty message placeholder if present
+            const emptyMsg = container.querySelector('.chat-empty');
+            if (emptyMsg) emptyMsg.remove();
+            
+            messages.forEach(msg => {
+                const isOwn = msg.playerId === playerId;
+                const div = document.createElement('div');
+                div.className = `chat-message${isOwn ? ' own' : ''}`;
+                
+                const time = new Date(msg.timestamp);
+                const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                div.innerHTML = `
+                    <span class="time">${timeStr}</span>
+                    <span class="sender">${escapeHtml(msg.playerName)}:</span>
+                    <span class="text">${escapeHtml(msg.message)}</span>
+                `;
+                container.appendChild(div);
+                
+                if (msg.id > gameState.lastChatMsgId) {
+                    gameState.lastChatMsgId = msg.id;
+                }
+            });
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateChatVisibility() {
+            const chatEl = document.getElementById('neighborhood-chat');
+            if (gameState.neighborhoodCode) {
+                chatEl.classList.add('active');
+            } else {
+                chatEl.classList.remove('active');
+            }
+        }
+
+        // Handle Enter key for chat
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        sendChatMessage();
+                    }
+                });
+            }
+        });
+
         function renderNeighborhoodStatus() {
             const container = document.getElementById('neighborhood-status');
             
@@ -10651,6 +10908,8 @@
                     </div>
                 `;
                 fetchNeighborhoodFarms();
+                updateChatVisibility();
+                fetchAllChatMessages();
             } else {
                 container.innerHTML = `
                     <div class="neighborhood-join">
@@ -10665,6 +10924,7 @@
                     </div>
                 `;
                 document.getElementById('neighborhood-members').innerHTML = '';
+                updateChatVisibility();
             }
             updateRaccoonTimerVisibility();
         }
@@ -10739,6 +10999,13 @@
                 fetchNeighborhoodFarms();
             }
         }, 10000);
+
+        // Refresh chat messages periodically
+        setInterval(() => {
+            if (gameState.neighborhoodCode) {
+                fetchChatMessages();
+            }
+        }, 3000);
 
         // Start the game
         if (document.readyState === 'loading') {

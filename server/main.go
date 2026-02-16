@@ -18,10 +18,20 @@ type FarmData struct {
 	LastSync   time.Time       `json:"lastSync"`
 }
 
+type ChatMessage struct {
+	ID         int64     `json:"id"`
+	PlayerID   string    `json:"playerId"`
+	PlayerName string    `json:"playerName"`
+	Message    string    `json:"message"`
+	Timestamp  time.Time `json:"timestamp"`
+}
+
 type Neighborhood struct {
-	Code    string              `json:"code"`
-	Farms   map[string]FarmData `json:"farms"`
-	Created time.Time           `json:"created"`
+	Code     string              `json:"code"`
+	Farms    map[string]FarmData `json:"farms"`
+	Messages []ChatMessage       `json:"messages"`
+	MsgID    int64               `json:"msgId"`
+	Created  time.Time           `json:"created"`
 }
 
 var (
@@ -39,6 +49,8 @@ func main() {
 	http.HandleFunc("/api/neighborhood/farms", corsMiddleware(handleGetFarms))
 	http.HandleFunc("/api/neighborhood/leave", corsMiddleware(handleLeave))
 	http.HandleFunc("/api/neighborhood/steal", corsMiddleware(handleSteal))
+	http.HandleFunc("/api/neighborhood/chat/send", corsMiddleware(handleChatSend))
+	http.HandleFunc("/api/neighborhood/chat/messages", corsMiddleware(handleChatMessages))
 
 	// Serve static files from parent directory
 	fs := http.FileServer(http.Dir("/home/exedev/farm-game"))
@@ -93,9 +105,11 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	neighborhoods[code] = &Neighborhood{
-		Code:    code,
-		Farms:   make(map[string]FarmData),
-		Created: time.Now(),
+		Code:     code,
+		Farms:    make(map[string]FarmData),
+		Messages: []ChatMessage{},
+		MsgID:    0,
+		Created:  time.Now(),
 	}
 
 	json.NewEncoder(w).Encode(map[string]string{"code": code})
@@ -314,5 +328,99 @@ func handleSteal(w http.ResponseWriter, r *http.Request) {
 		"success":    true,
 		"plant":      stolenPlant,
 		"victimName": victim.PlayerName,
+	})
+}
+
+func handleChatSend(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerID   string `json:"playerId"`
+		PlayerName string `json:"playerName"`
+		Message    string `json:"message"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Validate message length
+	if len(req.Message) == 0 || len(req.Message) > 200 {
+		http.Error(w, "Message must be 1-200 characters", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	hood.MsgID++
+	msg := ChatMessage{
+		ID:         hood.MsgID,
+		PlayerID:   req.PlayerID,
+		PlayerName: req.PlayerName,
+		Message:    req.Message,
+		Timestamp:  time.Now(),
+	}
+
+	hood.Messages = append(hood.Messages, msg)
+
+	// Keep only last 50 messages
+	if len(hood.Messages) > 50 {
+		hood.Messages = hood.Messages[len(hood.Messages)-50:]
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": msg,
+	})
+}
+
+func handleChatMessages(w http.ResponseWriter, r *http.Request) {
+	code := r.URL.Query().Get("code")
+	sinceStr := r.URL.Query().Get("since")
+
+	mu.RLock()
+	hood, exists := neighborhoods[code]
+	mu.RUnlock()
+
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	var messages []ChatMessage
+	mu.RLock()
+	if sinceStr != "" {
+		var sinceID int64
+		fmt.Sscanf(sinceStr, "%d", &sinceID)
+		for _, msg := range hood.Messages {
+			if msg.ID > sinceID {
+				messages = append(messages, msg)
+			}
+		}
+	} else {
+		messages = hood.Messages
+	}
+	mu.RUnlock()
+
+	if messages == nil {
+		messages = []ChatMessage{}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"messages": messages,
+		"count":    len(messages),
 	})
 }
