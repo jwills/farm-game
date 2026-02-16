@@ -10025,15 +10025,15 @@
             const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
             const roll = Math.random();
             
-            // 0.5% chance for Time Anomaly (extremely rare!)
-            if (roll < 0.005) {
+            // 2% chance for Time Anomaly
+            if (roll < 0.02) {
                 gameState.currentWeather = 'timeanomaly';
                 gameState.demonicInStock = false;
                 gameState.timeWheelsShown = false; // Reset for new anomaly
                 showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
             // 5% chance for hellscape
-            else if (roll < 0.055) {
+            else if (roll < 0.07) {
                 gameState.currentWeather = 'hellscape';
                 // 25% chance demonic seeds are available during hellscape
                 gameState.demonicInStock = Math.random() < 0.25;
