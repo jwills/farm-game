@@ -75,19 +75,19 @@
 
         .farm-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, 100px);
             gap: 10px;
             position: relative;
         }
 
         .farm-grid.expanded-1 {
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(6, 100px);
         }
         .farm-grid.expanded-2 {
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(7, 100px);
         }
         .farm-grid.expanded-3 {
-            grid-template-columns: repeat(8, 1fr);
+            grid-template-columns: repeat(8, 100px);
         }
 
         .expand-btn {
@@ -1550,6 +1550,8 @@
         
 .plot {
             aspect-ratio: 1;
+            min-width: 100px;
+            min-height: 100px;
             background: linear-gradient(145deg, #8B6914 0%, #6B4E0A 100%);
             border-radius: 10px;
             display: flex;
