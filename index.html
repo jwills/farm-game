@@ -10934,9 +10934,9 @@
                 // Watering can - add to gear inventory
                 if (!gameState.gear) gameState.gear = {};
                 if (gameState.gear[gearId]) {
-                    // Refill existing can
-                    gameState.gear[gearId].uses = gear.uses;
-                    showMessage(`${gear.emoji} ${gear.name} refilled!`);
+                    // Add more uses to existing can
+                    gameState.gear[gearId].uses += gear.uses;
+                    showMessage(`${gear.emoji} ${gear.name} +${gear.uses} uses! (${gameState.gear[gearId].uses} total)`);
                 } else {
                     gameState.gear[gearId] = { uses: gear.uses };
                     showMessage(`${gear.emoji} ${gear.name} purchased! Select it to water plants.`);
