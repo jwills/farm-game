@@ -11291,8 +11291,8 @@
             else if (roll < 0.07) {
                 gameState.currentWeather = 'hellscape';
                 gameState.celestialInStock = false;
-                // 25% chance demonic seeds are available during hellscape
-                gameState.demonicInStock = Math.random() < 0.25;
+                // 75% chance demonic seeds are available during hellscape
+                gameState.demonicInStock = Math.random() < 0.75;
                 if (gameState.demonicInStock) {
                     showMessage(`👿 Hellscape arrives! Demonic seeds available! 🔥`);
                 } else {
@@ -11355,7 +11355,7 @@
                     showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
                 } else if (newWeather === 'hellscape') {
                     gameState.celestialInStock = false;
-                    gameState.demonicInStock = Math.random() < 0.25;
+                    gameState.demonicInStock = Math.random() < 0.75;
                     if (gameState.demonicInStock) {
                         showMessage(`👿 Hellscape arrives! Demonic seeds available! 🔥`);
                     } else {
