@@ -10030,6 +10030,7 @@
                     gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
                     gameState.demonicInStock = false; // Only one per hellscape
                     showMessage(`🔥 Bought ${crop.name} seeds! 👿`);
+                    selectSeed(type); // Auto-equip purchased seed
                     renderShop();
                     renderInventory();
                 }
@@ -10047,6 +10048,7 @@
                     gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
                     gameState.celestialInStock = false; // Only one per heaven
                     showMessage(`✨ Bought ${crop.name} seeds! 👼`);
+                    selectSeed(type); // Auto-equip purchased seed
                     renderShop();
                     renderInventory();
                 }
@@ -10059,6 +10061,7 @@
                 gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
                 gameState.shopStock[type] = stock - 1;
                 showMessage(`Bought ${crop.name} seeds! 🌱`);
+                selectSeed(type); // Auto-equip purchased seed
                 renderShop();
                 renderInventory();
             } else if (stock <= 0) {
