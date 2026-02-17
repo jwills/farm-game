@@ -75,19 +75,19 @@
 
         .farm-grid {
             display: grid;
-            grid-template-columns: repeat(5, 100px);
+            grid-template-columns: repeat(5, var(--plot-size, 100px));
             gap: 10px;
             position: relative;
         }
 
         .farm-grid.expanded-1 {
-            grid-template-columns: repeat(6, 100px);
+            grid-template-columns: repeat(6, var(--plot-size, 110px));
         }
         .farm-grid.expanded-2 {
-            grid-template-columns: repeat(7, 100px);
+            grid-template-columns: repeat(7, var(--plot-size, 120px));
         }
         .farm-grid.expanded-3 {
-            grid-template-columns: repeat(8, 100px);
+            grid-template-columns: repeat(8, var(--plot-size, 130px));
         }
 
         .expand-btn {
@@ -1550,8 +1550,8 @@
         
 .plot {
             aspect-ratio: 1;
-            min-width: 100px;
-            min-height: 100px;
+            width: var(--plot-size, 100px);
+            height: var(--plot-size, 100px);
             background: linear-gradient(145deg, #8B6914 0%, #6B4E0A 100%);
             border-radius: 10px;
             display: flex;
@@ -1581,15 +1581,33 @@
             display: none;
         }
 
+        .mutation-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: calc(var(--plot-size, 100px) * 0.18);
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            line-height: 1;
+        }
+
+        .regrow-badge {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            font-size: calc(var(--plot-size, 100px) * 0.10);
+        }
+
         /* Plant Visual Models */
         .plant-model {
             position: relative;
-            width: 60px;
-            height: 70px;
+            width: calc(var(--plot-size, 100px) * 0.6);
+            height: calc(var(--plot-size, 100px) * 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
+            /* Scale factor for child elements */
+            --scale: calc(var(--plot-size, 100px) / 100);
         }
 
         .plant-stem {
@@ -9833,9 +9851,9 @@
 
         // Farm expansion
         const FARM_EXPANSIONS = [
-            { plots: 30, cost: 200000000, label: '30 plots ($200M)', cols: 6, rows: 5 },
-            { plots: 42, cost: 10000000000, label: '42 plots ($10B)', cols: 7, rows: 6 },
-            { plots: 64, cost: 750000000000, label: '64 plots ($750B)', cols: 8, rows: 8 }
+            { plots: 30, cost: 200000000, label: '30 plots ($200M)', cols: 6, rows: 5, plotSize: 110 },
+            { plots: 42, cost: 10000000000, label: '42 plots ($10B)', cols: 7, rows: 6, plotSize: 120 },
+            { plots: 64, cost: 750000000000, label: '64 plots ($750B)', cols: 8, rows: 8, plotSize: 130 }
         ];
 
         function getFarmDimensions() {
@@ -9843,8 +9861,9 @@
             let level = gameState.farmExpanded;
             if (level === true) level = 1;
             if (!level) level = 0;
-            if (level === 0) return { cols: 5, rows: 4 };
-            return { cols: FARM_EXPANSIONS[level - 1].cols, rows: FARM_EXPANSIONS[level - 1].rows };
+            if (level === 0) return { cols: 5, rows: 4, plotSize: 100 };
+            const expansion = FARM_EXPANSIONS[level - 1];
+            return { cols: expansion.cols, rows: expansion.rows, plotSize: expansion.plotSize };
         }
 
         function getFarmExpansionLevel() {
@@ -9899,9 +9918,11 @@
             const container = document.getElementById('farm-grid');
             container.innerHTML = '';
             
-            // Update grid class based on expansion level
+            // Update grid class and plot size based on expansion level
             container.classList.remove('expanded-1', 'expanded-2', 'expanded-3');
             const level = getFarmExpansionLevel();
+            const { plotSize } = getFarmDimensions();
+            container.style.setProperty('--plot-size', `${plotSize}px`);
             if (level > 0) {
                 container.classList.add(`expanded-${level}`);
             }
@@ -10005,8 +10026,8 @@
                             <div class="plant-stem"></div>
                             <div class="plant-ground"></div>
                         </div>
-                        ${plotMutations ? `<span style="position:absolute;top:3px;right:3px;font-size:1.2rem;text-shadow: 0 0 5px rgba(255,255,255,0.8);">${plotMutations}</span>` : ''}
-                        ${regrowIcon ? `<span style="position:absolute;top:3px;left:3px;font-size:0.8rem;">${regrowIcon}</span>` : ''}
+                        ${plotMutations ? `<span class="mutation-badge">${plotMutations}</span>` : ''}
+                        ${regrowIcon ? `<span class="regrow-badge">${regrowIcon}</span>` : ''}
                         ${!isReady ? `<div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>` : ''}
                     `;
                     
