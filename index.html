@@ -10495,26 +10495,21 @@
             
             // Check inventory limit
             if (gameState.harvested.length >= MAX_INVENTORY) {
-                // Penguin auto-sells ALL crops when full
+                // Penguin auto-sells oldest crop when full to make room
                 if (hasPetEffect('autosell')) {
-                    let totalValue = 0;
-                    let cropCount = gameState.harvested.length;
-                    gameState.harvested.forEach(item => {
-                        const soldCrop = CROPS[item.type];
-                        const soldSize = SIZES[item.sizeIndex];
-                        let soldValue = soldCrop.basePrice * soldSize.multiplier;
-                        (item.mutations || []).forEach(m => {
-                            const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                            if (weather) soldValue *= weather.bonus;
-                            const special = SPECIAL_MUTATIONS[m];
-                            if (special) soldValue *= special.bonus;
-                        });
-                        totalValue += Math.round(getPetBonus('value', soldValue));
+                    const soldItem = gameState.harvested.shift();
+                    const soldCrop = CROPS[soldItem.type];
+                    const soldSize = SIZES[soldItem.sizeIndex];
+                    let soldValue = soldCrop.basePrice * soldSize.multiplier;
+                    (soldItem.mutations || []).forEach(m => {
+                        const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                        if (weather) soldValue *= weather.bonus;
+                        const special = SPECIAL_MUTATIONS[m];
+                        if (special) soldValue *= special.bonus;
                     });
-                    gameState.harvested = [];
-                    gameState.money += totalValue;
-                    showMessage(`🐧 Penguin sold ${cropCount} crops for $${totalValue}!`);
-                    renderInventory();
+                    soldValue = Math.round(getPetBonus('value', soldValue));
+                    gameState.money += soldValue;
+                    showMessage(`🐧 Penguin sold ${soldCrop.name} for $${soldValue}!`);
                 } else {
                     showMessage('Inventory full! Sell some crops first 📦');
                     return;
