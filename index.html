@@ -7636,8 +7636,34 @@
             color: #666;
             text-align: center;
         }
+        .gift-item .mutations {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .gift-select-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .gift-item.selected {
+            border-color: #ff6b9d;
+            background: #fff0f5;
+            box-shadow: 0 0 8px rgba(255,107,157,0.4);
+        }
+        .gift-selected {
+            min-height: 30px;
+            padding: 5px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+        }
+        .gift-buttons {
+            display: flex;
+            gap: 8px;
+        }
         .gift-cancel-btn {
-            width: 100%;
+            flex: 1;
             padding: 8px;
             background: #ccc;
             border: none;
@@ -7646,6 +7672,24 @@
         }
         .gift-cancel-btn:hover {
             background: #bbb;
+        }
+        .gift-send-btn {
+            flex: 1;
+            padding: 8px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .gift-send-btn:hover:not(:disabled) {
+            filter: brightness(1.1);
+        }
+        .gift-send-btn:disabled {
+            background: #ddd;
+            color: #999;
+            cursor: not-allowed;
         }
 
         .chat-message.gift {
@@ -9063,8 +9107,13 @@
                                 <label>To:</label>
                                 <select id="gift-recipient-select"></select>
                             </div>
+                            <div class="gift-select-label">Select a crop to gift:</div>
                             <div class="gift-items" id="gift-items"></div>
-                            <button class="gift-cancel-btn" onclick="toggleGiftPanel()">Cancel</button>
+                            <div class="gift-selected" id="gift-selected"></div>
+                            <div class="gift-buttons">
+                                <button class="gift-cancel-btn" onclick="toggleGiftPanel()">Cancel</button>
+                                <button class="gift-send-btn" id="gift-send-btn" onclick="sendSelectedGift()" disabled>Send Gift 🎁</button>
+                            </div>
                         </div>
                         <div class="chat-input-row">
                             <input type="text" id="chat-input" placeholder="Type a message..." maxlength="200">
@@ -12399,7 +12448,11 @@
             }
         }
 
+        let selectedGiftIndex = null;
+
         function renderGiftPanel() {
+            selectedGiftIndex = null;
+            
             // Populate recipient dropdown with neighborhood players
             const select = document.getElementById('gift-recipient-select');
             select.innerHTML = '';
@@ -12424,6 +12477,10 @@
             const container = document.getElementById('gift-items');
             container.innerHTML = '';
             
+            // Reset selected display and button
+            document.getElementById('gift-selected').innerHTML = '';
+            document.getElementById('gift-send-btn').disabled = true;
+            
             if (gameState.harvested.length === 0) {
                 container.innerHTML = '<div style="color:#999;text-align:center;width:100%;">No harvested crops to gift</div>';
                 return;
@@ -12434,15 +12491,60 @@
                 if (!crop) return;
                 
                 const size = SIZES[item.sizeIndex];
+                const mutations = item.mutations || [];
+                const mutationEmojis = mutations.map(m => {
+                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                    if (weather) return weather.mutationEmoji;
+                    const special = SPECIAL_MUTATIONS[m];
+                    if (special) return special.emoji;
+                    return '';
+                }).join('');
+                
                 const div = document.createElement('div');
                 div.className = 'gift-item';
+                div.dataset.index = index;
                 div.innerHTML = `
-                    <span class="emoji">${crop.stages[crop.stages.length - 1]}</span>
+                    <span class="emoji">${crop.growEmoji}</span>
                     <span class="name">${size?.name || ''} ${crop.name}</span>
+                    ${mutationEmojis ? `<span class="mutations">${mutationEmojis}</span>` : ''}
                 `;
-                div.onclick = () => sendGift(index);
+                div.onclick = () => selectGiftItem(index);
                 container.appendChild(div);
             });
+        }
+
+        function selectGiftItem(index) {
+            selectedGiftIndex = index;
+            const item = gameState.harvested[index];
+            const crop = CROPS[item.type];
+            const size = SIZES[item.sizeIndex];
+            
+            // Update visual selection
+            document.querySelectorAll('.gift-item').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.gift-item[data-index="${index}"]`)?.classList.add('selected');
+            
+            // Show selected item
+            const mutations = item.mutations || [];
+            const mutationNames = mutations.map(m => {
+                const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                if (weather) return weather.mutation;
+                return m;
+            }).join(', ');
+            
+            document.getElementById('gift-selected').innerHTML = 
+                `Selected: <strong>${crop.growEmoji} ${size?.name || ''} ${crop.name}</strong>` +
+                (mutationNames ? ` <span style="color:#888;">(${mutationNames})</span>` : '');
+            
+            // Enable send button
+            document.getElementById('gift-send-btn').disabled = false;
+        }
+
+        async function sendSelectedGift() {
+            if (selectedGiftIndex === null) {
+                showMessage('Select a crop to gift!');
+                return;
+            }
+            await sendGift(selectedGiftIndex);
         }
 
         async function sendGift(itemIndex) {
