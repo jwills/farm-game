@@ -9837,13 +9837,24 @@
         ];
 
         function getFarmDimensions() {
-            const level = gameState.farmExpanded || 0;
+            // Handle old boolean saves (true → 1) and new numeric levels
+            let level = gameState.farmExpanded;
+            if (level === true) level = 1;
+            if (!level) level = 0;
             if (level === 0) return { cols: 5, rows: 4 };
             return { cols: FARM_EXPANSIONS[level - 1].cols, rows: FARM_EXPANSIONS[level - 1].rows };
         }
 
+        function getFarmExpansionLevel() {
+            // Normalize farmExpanded to a number
+            let level = gameState.farmExpanded;
+            if (level === true) level = 1;
+            if (!level) level = 0;
+            return level;
+        }
+
         function expandFarm() {
-            const level = gameState.farmExpanded || 0;
+            const level = getFarmExpansionLevel();
             if (level >= FARM_EXPANSIONS.length) {
                 showMessage('Farm is fully expanded! 🌾');
                 return;
@@ -9868,7 +9879,7 @@
         function updateExpandButton() {
             const btn = document.getElementById('expand-farm-btn');
             if (!btn) return;
-            const level = gameState.farmExpanded || 0;
+            const level = getFarmExpansionLevel();
             if (level >= FARM_EXPANSIONS.length) {
                 btn.textContent = '✅ Fully Expanded!';
                 btn.classList.add('purchased');
@@ -9888,7 +9899,7 @@
             
             // Update grid class based on expansion level
             container.classList.remove('expanded-1', 'expanded-2', 'expanded-3');
-            const level = gameState.farmExpanded || 0;
+            const level = getFarmExpansionLevel();
             if (level > 0) {
                 container.classList.add(`expanded-${level}`);
             }
