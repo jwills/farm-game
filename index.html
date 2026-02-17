@@ -7659,6 +7659,19 @@
             background: #ccc;
             cursor: not-allowed;
         }
+        .chat-message .decline-gift-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .chat-message .decline-gift-btn:hover {
+            filter: brightness(1.1);
+        }
 
         .visit-modal {
             position: fixed;
@@ -12277,15 +12290,19 @@
                     const sizeName = SIZES[msg.gift.sizeIndex]?.name || 'Medium';
                     const isForMe = msg.gift.toPlayer === playerName;
                     const isClaimed = msg.gift.claimed;
+                    const isDeclined = msg.gift.declined;
                     
                     html += `<div class="gift-box">`;
                     html += `<span class="gift-emoji">${crop?.stages?.[crop.stages.length-1] || '🎁'}</span>`;
                     html += `<span class="gift-info">${sizeName} ${crop?.name || msg.gift.cropType}</span>`;
                     
-                    if (isForMe && !isClaimed) {
+                    if (isForMe && !isClaimed && !isDeclined) {
                         html += `<button class="claim-gift-btn" onclick="claimGift(${msg.id})">Claim!</button>`;
+                        html += `<button class="decline-gift-btn" onclick="declineGift(${msg.id})">Decline</button>`;
                     } else if (isClaimed) {
-                        html += `<span style="color:#999;font-size:11px;">Claimed ✓</span>`;
+                        html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
+                    } else if (isDeclined) {
+                        html += `<span style="color:#e74c3c;font-size:11px;">Declined ✗</span>`;
                     }
                     html += `</div>`;
                 }
@@ -12452,6 +12469,33 @@
             } catch (err) {
                 console.log('Claim gift failed:', err);
                 showMessage('Failed to claim gift!');
+            }
+        }
+
+        async function declineGift(messageId) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/decline`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    showMessage(`Gift declined`);
+                    // Refresh chat to show declined status
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to decline gift');
+                }
+            } catch (err) {
+                console.log('Decline gift failed:', err);
+                showMessage('Failed to decline gift!');
             }
         }
 

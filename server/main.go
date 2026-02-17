@@ -33,6 +33,7 @@ type Gift struct {
 	Mutations []string `json:"mutations"`
 	ToPlayer  string   `json:"toPlayer"`
 	Claimed   bool     `json:"claimed"`
+	Declined  bool     `json:"declined"`
 }
 
 type Neighborhood struct {
@@ -64,6 +65,7 @@ func main() {
 	http.HandleFunc("/api/neighborhood/chat/messages", corsMiddleware(handleChatMessages))
 	http.HandleFunc("/api/neighborhood/gift/send", corsMiddleware(handleGiftSend))
 	http.HandleFunc("/api/neighborhood/gift/claim", corsMiddleware(handleGiftClaim))
+	http.HandleFunc("/api/neighborhood/gift/decline", corsMiddleware(handleGiftDecline))
 	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
 
 	// Serve static files from parent directory
@@ -622,6 +624,64 @@ func handleGiftClaim(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 				"gift":    msg.Gift,
+			})
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": false,
+		"error":   "Gift not found",
+	})
+}
+
+func handleGiftDecline(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerName string `json:"playerName"`
+		MessageID  int64  `json:"messageId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Find the message with the gift
+	for i := range hood.Messages {
+		msg := &hood.Messages[i]
+		if msg.ID == req.MessageID && msg.Gift != nil {
+			if msg.Gift.Claimed || msg.Gift.Declined {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Gift already claimed or declined",
+				})
+				return
+			}
+			if msg.Gift.ToPlayer != req.PlayerName {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "This gift is not for you",
+				})
+				return
+			}
+			msg.Gift.Declined = true
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": true,
 			})
 			return
 		}
