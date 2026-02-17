@@ -11304,13 +11304,9 @@
             else if (roll < 0.12) {
                 gameState.currentWeather = 'heaven';
                 gameState.demonicInStock = false;
-                // 25% chance celestial seeds are available during heaven
-                gameState.celestialInStock = Math.random() < 0.25;
-                if (gameState.celestialInStock) {
-                    showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
-                } else {
-                    showMessage(`👼 Heaven opens! ✨`);
-                }
+                // Celestial seeds always available during heaven
+                gameState.celestialInStock = true;
+                showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
                 renderShop();
             } else {
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
@@ -11368,12 +11364,9 @@
                     renderShop();
                 } else if (newWeather === 'heaven') {
                     gameState.demonicInStock = false;
-                    gameState.celestialInStock = Math.random() < 0.25;
-                    if (gameState.celestialInStock) {
-                        showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
-                    } else {
-                        showMessage(`👼 Heaven opens! ✨`);
-                    }
+                    // Celestial seeds always available during heaven
+                    gameState.celestialInStock = true;
+                    showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
                     renderShop();
                 } else {
                     gameState.demonicInStock = false;
