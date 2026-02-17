@@ -9209,8 +9209,8 @@
                     <div id="seed-inventory" class="inventory-items"></div>
                     <div class="sell-section">
                         <h4 style="margin-bottom: 10px; color: #666;">Harvested Crops <span id="inventory-count" style="font-weight: normal; font-size: 0.9em;">(0/10)</span></h4>
-                        <div id="harvest-inventory" class="inventory-items"></div>
                         <button class="sell-btn" id="sell-all-btn" onclick="sellAllCrops()" disabled>Sell All Crops</button>
+                        <div id="harvest-inventory" class="inventory-items"></div>
                     </div>
                 </div>
 
@@ -9412,6 +9412,7 @@
             panda: { name: 'Red Panda', emoji: '🐼', price: 3000, ability: 'Zen', description: 'All timers 20% faster', effect: 'timers', rarity: 'legendary' },
             kraken: { name: 'Baby Kraken', emoji: '🦑', price: 8000, ability: 'Depths', description: 'Wet plants give 3x yield', effect: 'wetbonus', rarity: 'legendary' },
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
+            penguin: { name: 'Merchant Penguin', emoji: '🐧', price: 2000, ability: 'Salesman', description: 'Auto-sells oldest crop when inventory full', effect: 'autosell', rarity: 'epic' },
             bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: 'Bloodlit every 1:00, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
             // Temporal pets (from time wheels only)
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
@@ -10494,8 +10495,25 @@
             
             // Check inventory limit
             if (gameState.harvested.length >= MAX_INVENTORY) {
-                showMessage('Inventory full! Sell some crops first 📦');
-                return;
+                // Penguin auto-sells oldest crop when full
+                if (hasPetEffect('autosell')) {
+                    const soldItem = gameState.harvested.shift();
+                    const soldCrop = CROPS[soldItem.type];
+                    const soldSize = SIZES[soldItem.sizeIndex];
+                    let soldValue = soldCrop.basePrice * soldSize.multiplier;
+                    (soldItem.mutations || []).forEach(m => {
+                        const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                        if (weather) soldValue *= weather.bonus;
+                        const special = SPECIAL_MUTATIONS[m];
+                        if (special) soldValue *= special.bonus;
+                    });
+                    soldValue = Math.round(getPetBonus('value', soldValue));
+                    gameState.money += soldValue;
+                    showMessage(`🐧 Penguin sold ${soldCrop.name} for $${soldValue}!`);
+                } else {
+                    showMessage('Inventory full! Sell some crops first 📦');
+                    return;
+                }
             }
             
             const crop = CROPS[plot.type];
@@ -11436,8 +11454,8 @@
                 }
             });
             
-            // Dragon auto-harvest (only if inventory has space)
-            if (hasPetEffect('autoharvest') && Math.random() < 0.1 && gameState.harvested.length < MAX_INVENTORY) {
+            // Dragon auto-harvest (only if inventory has space, or penguin can sell)
+            if (hasPetEffect('autoharvest') && Math.random() < 0.1 && (gameState.harvested.length < MAX_INVENTORY || hasPetEffect('autosell'))) {
                 const readyPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
                     .filter(({plot}) => {
                         if (!plot) return false;
@@ -11465,7 +11483,7 @@
                             return plot.growth >= crop.growTime;
                         });
                     let harvested = 0;
-                    while (harvested < 3 && readyPlots.length > 0 && gameState.harvested.length < MAX_INVENTORY) {
+                    while (harvested < 3 && readyPlots.length > 0 && (gameState.harvested.length < MAX_INVENTORY || hasPetEffect('autosell'))) {
                         const randIdx = Math.floor(Math.random() * readyPlots.length);
                         const {index} = readyPlots.splice(randIdx, 1)[0];
                         harvestCrop(index);
