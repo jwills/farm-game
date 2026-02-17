@@ -10720,7 +10720,13 @@
             const bloodBonus = hasPetEffect('bloodlust') ? ' (2x Blood Tiger!)' : '';
             showMessage(`${gear.emoji} ${gear.name} placed! Lasts ${durationMin} min.${bloodBonus}`);
             
-            gameState.selectedSprinkler = null;
+            // Auto-select next sprinkler of the same type if available
+            const nextIdx = (gameState.unplacedSprinklers || []).findIndex(id => id === gearId);
+            if (nextIdx !== -1) {
+                gameState.selectedSprinkler = nextIdx;
+            } else {
+                gameState.selectedSprinkler = null;
+            }
             renderInventory();
             renderFarm();
             return true;
