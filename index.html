@@ -12295,23 +12295,7 @@
                     applyNeighborhoodWeather(data.weather, data.weatherUntil);
                 }
                 
-                // Check for stolen plants - if server says a plot is null but we have a plant, it was stolen
-                if (data.myPlots && Array.isArray(data.myPlots)) {
-                    let stolen = false;
-                    for (let i = 0; i < gameState.plots.length && i < data.myPlots.length; i++) {
-                        if (gameState.plots[i] !== null && data.myPlots[i] === null) {
-                            // This plant was stolen!
-                            const plantType = gameState.plots[i].type;
-                            gameState.plots[i] = null;
-                            showMessage(`😱 A raccoon stole your ${CROPS[plantType]?.name || 'plant'}!`);
-                            stolen = true;
-                        }
-                    }
-                    if (stolen) {
-                        renderFarm();
-                        saveGame();
-                    }
-                }
+
             } catch (err) {
                 console.log('Fetch farms failed:', err);
             }
