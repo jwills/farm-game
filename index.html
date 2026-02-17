@@ -9891,10 +9891,18 @@
         }
 
         function formatNumber(num) {
+            if (num >= 1000000000000) return (num / 1000000000000).toFixed(1) + 'T';
             if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
             return num.toString();
+        }
+
+        function formatMoney(num) {
+            if (num >= 1000000000000) return (num / 1000000000000).toFixed(2) + 'T';
+            if (num >= 1000000000) return (num / 1000000000).toFixed(2) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+            return num.toLocaleString();
         }
 
         // Farm expansion
@@ -10268,10 +10276,10 @@
 
             const sellBtn = document.getElementById('sell-all-btn');
             sellBtn.disabled = !hasHarvest;
-            sellBtn.textContent = hasHarvest ? `Sell All ($${totalValue.toLocaleString()})` : 'Sell All Crops';
+            sellBtn.textContent = hasHarvest ? `Sell All ($${formatMoney(totalValue)})` : 'Sell All Crops';
 
             // Update header stats
-            document.getElementById('money').textContent = gameState.money.toLocaleString();
+            document.getElementById('money').textContent = formatMoney(gameState.money);
             document.getElementById('harvested').textContent = gameState.totalHarvested;
         }
 
@@ -10513,7 +10521,7 @@
                     });
                     gameState.harvested = [];
                     gameState.money += totalValue;
-                    showMessage(`🐧 Penguin sold ${cropCount} crops for $${totalValue.toLocaleString()}!`);
+                    showMessage(`🐧 Penguin sold ${cropCount} crops for $${formatMoney(totalValue)}!`);
                     renderInventory();
                 } else {
                     showMessage('Inventory full! Sell some crops first 📦');
@@ -11275,7 +11283,7 @@
             if (total > 0) {
                 gameState.money += total;
                 gameState.harvested = [];
-                showMessage(`Sold crops for $${total.toLocaleString()}! 💰`);
+                showMessage(`Sold crops for $${formatMoney(total)}! 💰`);
                 renderShop();
                 renderInventory();
             }
@@ -12782,7 +12790,7 @@
                 div.innerHTML = `
                     <div class="name">${farm.playerName || 'Unknown'}</div>
                     <div class="preview">${previewCrops || '🌱'}</div>
-                    <div class="stats">💰 $${(farm.money || 0).toLocaleString()} • 🌿 ${cropCount} crops</div>
+                    <div class="stats">💰 $${formatMoney(farm.money || 0)} • 🌿 ${cropCount} crops</div>
                 `;
                 div.onclick = () => visitFarm(id, farm);
                 container.appendChild(div);
@@ -12812,7 +12820,7 @@
 
             const petEmojis = (farm.pets || []).map(p => PETS[p] ? PETS[p].emoji : '').join(' ');
             statsEl.innerHTML = `
-                <span class="stat">💰 $${(farm.money || 0).toLocaleString()}</span>
+                <span class="stat">💰 $${formatMoney(farm.money || 0)}</span>
                 <span class="stat">🐾 ${petEmojis || 'No pets'}</span>
             `;
 
