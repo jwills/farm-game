@@ -7528,6 +7528,138 @@
             font-style: italic;
         }
 
+        .gift-toggle-btn {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .gift-toggle-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 2px 8px rgba(255,107,157,0.5);
+        }
+
+        .gift-panel {
+            display: none;
+            background: linear-gradient(135deg, #fff5f8, #ffe0e8);
+            border: 2px solid #ff6b9d;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px;
+        }
+        .gift-panel.active {
+            display: block;
+        }
+        .gift-panel-header {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #c44569;
+        }
+        .gift-recipient {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .gift-recipient label {
+            font-weight: bold;
+            color: #666;
+        }
+        .gift-recipient select {
+            flex: 1;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .gift-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .gift-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+        }
+        .gift-item:hover {
+            border-color: #ff6b9d;
+            transform: scale(1.05);
+        }
+        .gift-item .emoji {
+            font-size: 24px;
+        }
+        .gift-item .name {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+        }
+        .gift-cancel-btn {
+            width: 100%;
+            padding: 8px;
+            background: #ccc;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .gift-cancel-btn:hover {
+            background: #bbb;
+        }
+
+        .chat-message.gift {
+            background: linear-gradient(135deg, #fff5f8, #ffe0e8);
+            border: 1px solid #ff6b9d;
+        }
+        .chat-message .gift-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            padding: 5px;
+            background: white;
+            border-radius: 4px;
+        }
+        .chat-message .gift-box .gift-emoji {
+            font-size: 24px;
+        }
+        .chat-message .gift-box .gift-info {
+            flex: 1;
+        }
+        .chat-message .claim-gift-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .chat-message .claim-gift-btn:hover {
+            filter: brightness(1.1);
+        }
+        .chat-message .claim-gift-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
         .visit-modal {
             position: fixed;
             top: 0;
@@ -8883,9 +9015,19 @@
                     <div id="neighborhood-chat" class="neighborhood-chat">
                         <div class="chat-header">
                             <h3>💬 Chat</h3>
+                            <button class="gift-toggle-btn" onclick="toggleGiftPanel()" title="Send Gift">🎁</button>
                         </div>
                         <div id="chat-messages" class="chat-messages">
                             <div class="chat-empty">No messages yet. Say hi! 👋</div>
+                        </div>
+                        <div id="gift-panel" class="gift-panel">
+                            <div class="gift-panel-header">Send a Gift 🎁</div>
+                            <div class="gift-recipient">
+                                <label>To:</label>
+                                <select id="gift-recipient-select"></select>
+                            </div>
+                            <div class="gift-items" id="gift-items"></div>
+                            <button class="gift-cancel-btn" onclick="toggleGiftPanel()">Cancel</button>
                         </div>
                         <div class="chat-input-row">
                             <input type="text" id="chat-input" placeholder="Type a message..." maxlength="200">
@@ -12099,6 +12241,7 @@
         function renderChatMessages(messages, append) {
             const container = document.getElementById('chat-messages');
             const playerId = getPlayerId();
+            const playerName = gameState.playerName;
             
             if (!append) {
                 container.innerHTML = '';
@@ -12116,16 +12259,38 @@
             messages.forEach(msg => {
                 const isOwn = msg.playerId === playerId;
                 const div = document.createElement('div');
-                div.className = `chat-message${isOwn ? ' own' : ''}`;
+                const hasGift = msg.gift && msg.gift.cropType;
+                div.className = `chat-message${isOwn ? ' own' : ''}${hasGift ? ' gift' : ''}`;
                 
                 const time = new Date(msg.timestamp);
                 const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
-                div.innerHTML = `
+                let html = `
                     <span class="time">${timeStr}</span>
                     <span class="sender">${escapeHtml(msg.playerName)}:</span>
                     <span class="text">${escapeHtml(msg.message)}</span>
                 `;
+                
+                // Add gift box if this is a gift message
+                if (hasGift) {
+                    const crop = CROPS[msg.gift.cropType];
+                    const sizeName = SIZES[msg.gift.sizeIndex]?.name || 'Medium';
+                    const isForMe = msg.gift.toPlayer === playerName;
+                    const isClaimed = msg.gift.claimed;
+                    
+                    html += `<div class="gift-box">`;
+                    html += `<span class="gift-emoji">${crop?.stages?.[crop.stages.length-1] || '🎁'}</span>`;
+                    html += `<span class="gift-info">${sizeName} ${crop?.name || msg.gift.cropType}</span>`;
+                    
+                    if (isForMe && !isClaimed) {
+                        html += `<button class="claim-gift-btn" onclick="claimGift(${msg.id})">Claim!</button>`;
+                    } else if (isClaimed) {
+                        html += `<span style="color:#999;font-size:11px;">Claimed ✓</span>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                div.innerHTML = html;
                 container.appendChild(div);
                 
                 if (msg.id > gameState.lastChatMsgId) {
@@ -12149,6 +12314,144 @@
                 chatEl.classList.add('active');
             } else {
                 chatEl.classList.remove('active');
+            }
+        }
+
+        // Gift functions
+        function toggleGiftPanel() {
+            const panel = document.getElementById('gift-panel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                renderGiftPanel();
+            }
+        }
+
+        function renderGiftPanel() {
+            // Populate recipient dropdown with neighborhood players
+            const select = document.getElementById('gift-recipient-select');
+            select.innerHTML = '';
+            
+            if (gameState.neighborhoodFarms) {
+                Object.entries(gameState.neighborhoodFarms).forEach(([id, farm]) => {
+                    if (farm.name && farm.name !== gameState.playerName) {
+                        const option = document.createElement('option');
+                        option.value = farm.name;
+                        option.textContent = farm.name;
+                        select.appendChild(option);
+                    }
+                });
+            }
+            
+            if (select.options.length === 0) {
+                select.innerHTML = '<option value="">No neighbors to gift</option>';
+            }
+            
+            // Populate gift items from harvested inventory
+            const container = document.getElementById('gift-items');
+            container.innerHTML = '';
+            
+            if (gameState.harvested.length === 0) {
+                container.innerHTML = '<div style="color:#999;text-align:center;width:100%;">No harvested crops to gift</div>';
+                return;
+            }
+            
+            gameState.harvested.forEach((item, index) => {
+                const crop = CROPS[item.type];
+                if (!crop) return;
+                
+                const size = SIZES[item.sizeIndex];
+                const div = document.createElement('div');
+                div.className = 'gift-item';
+                div.innerHTML = `
+                    <span class="emoji">${crop.stages[crop.stages.length - 1]}</span>
+                    <span class="name">${size?.name || ''} ${crop.name}</span>
+                `;
+                div.onclick = () => sendGift(index);
+                container.appendChild(div);
+            });
+        }
+
+        async function sendGift(itemIndex) {
+            const recipient = document.getElementById('gift-recipient-select').value;
+            if (!recipient) {
+                showMessage('Select a neighbor to gift!');
+                return;
+            }
+            
+            const item = gameState.harvested[itemIndex];
+            if (!item) {
+                showMessage('Item not found!');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerId: getPlayerId(),
+                        playerName: gameState.playerName,
+                        toPlayer: recipient,
+                        cropType: item.type,
+                        sizeIndex: item.sizeIndex,
+                        mutations: item.mutations || []
+                    })
+                });
+                
+                if (res.ok) {
+                    // Remove item from inventory
+                    gameState.harvested.splice(itemIndex, 1);
+                    const crop = CROPS[item.type];
+                    showMessage(`🎁 Sent ${crop?.name || 'gift'} to ${recipient}!`);
+                    toggleGiftPanel();
+                    renderInventory();
+                    await fetchChatMessages();
+                }
+            } catch (err) {
+                console.log('Send gift failed:', err);
+                showMessage('Failed to send gift!');
+            }
+        }
+
+        async function claimGift(messageId) {
+            // Check inventory space
+            if (gameState.harvested.length >= MAX_INVENTORY) {
+                showMessage('Inventory full! Sell some crops first.');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/claim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success && data.gift) {
+                    // Add to inventory
+                    gameState.harvested.push({
+                        type: data.gift.cropType,
+                        sizeIndex: data.gift.sizeIndex,
+                        mutations: data.gift.mutations || []
+                    });
+                    const crop = CROPS[data.gift.cropType];
+                    showMessage(`🎁 Received ${crop?.name || 'gift'}!`);
+                    renderInventory();
+                    // Refresh chat to show claimed status
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to claim gift');
+                }
+            } catch (err) {
+                console.log('Claim gift failed:', err);
+                showMessage('Failed to claim gift!');
             }
         }
 

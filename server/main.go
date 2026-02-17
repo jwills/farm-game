@@ -24,6 +24,15 @@ type ChatMessage struct {
 	PlayerName string    `json:"playerName"`
 	Message    string    `json:"message"`
 	Timestamp  time.Time `json:"timestamp"`
+	Gift       *Gift     `json:"gift,omitempty"`
+}
+
+type Gift struct {
+	CropType  string   `json:"cropType"`
+	SizeIndex int      `json:"sizeIndex"`
+	Mutations []string `json:"mutations"`
+	ToPlayer  string   `json:"toPlayer"`
+	Claimed   bool     `json:"claimed"`
 }
 
 type Neighborhood struct {
@@ -53,6 +62,8 @@ func main() {
 	http.HandleFunc("/api/neighborhood/steal", corsMiddleware(handleSteal))
 	http.HandleFunc("/api/neighborhood/chat/send", corsMiddleware(handleChatSend))
 	http.HandleFunc("/api/neighborhood/chat/messages", corsMiddleware(handleChatMessages))
+	http.HandleFunc("/api/neighborhood/gift/send", corsMiddleware(handleGiftSend))
+	http.HandleFunc("/api/neighborhood/gift/claim", corsMiddleware(handleGiftClaim))
 	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
 
 	// Serve static files from parent directory
@@ -500,5 +511,124 @@ func handleWeather(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"weather":      weather,
 		"weatherUntil": weatherUntil.Unix(),
+	})
+}
+
+func handleGiftSend(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string   `json:"code"`
+		PlayerID   string   `json:"playerId"`
+		PlayerName string   `json:"playerName"`
+		ToPlayer   string   `json:"toPlayer"`
+		CropType   string   `json:"cropType"`
+		SizeIndex  int      `json:"sizeIndex"`
+		Mutations  []string `json:"mutations"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Create gift message
+	hood.MsgID++
+	msg := ChatMessage{
+		ID:         hood.MsgID,
+		PlayerID:   req.PlayerID,
+		PlayerName: req.PlayerName,
+		Message:    fmt.Sprintf("sent a gift to %s!", req.ToPlayer),
+		Timestamp:  time.Now(),
+		Gift: &Gift{
+			CropType:  req.CropType,
+			SizeIndex: req.SizeIndex,
+			Mutations: req.Mutations,
+			ToPlayer:  req.ToPlayer,
+			Claimed:   false,
+		},
+	}
+
+	hood.Messages = append(hood.Messages, msg)
+
+	// Keep only last 50 messages
+	if len(hood.Messages) > 50 {
+		hood.Messages = hood.Messages[len(hood.Messages)-50:]
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": msg,
+	})
+}
+
+func handleGiftClaim(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerName string `json:"playerName"`
+		MessageID  int64  `json:"messageId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Find the message with the gift
+	for i := range hood.Messages {
+		msg := &hood.Messages[i]
+		if msg.ID == req.MessageID && msg.Gift != nil {
+			if msg.Gift.Claimed {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Gift already claimed",
+				})
+				return
+			}
+			if msg.Gift.ToPlayer != req.PlayerName {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "This gift is not for you",
+				})
+				return
+			}
+			msg.Gift.Claimed = true
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": true,
+				"gift":    msg.Gift,
+			})
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": false,
+		"error":   "Gift not found",
 	})
 }
