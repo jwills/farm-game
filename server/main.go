@@ -28,12 +28,14 @@ type ChatMessage struct {
 }
 
 type Gift struct {
-	CropType  string   `json:"cropType"`
-	SizeIndex int      `json:"sizeIndex"`
-	Mutations []string `json:"mutations"`
-	ToPlayer  string   `json:"toPlayer"`
-	Claimed   bool     `json:"claimed"`
-	Declined  bool     `json:"declined"`
+	CropType   string   `json:"cropType"`
+	SizeIndex  int      `json:"sizeIndex"`
+	Mutations  []string `json:"mutations"`
+	ToPlayer   string   `json:"toPlayer"`
+	FromPlayer string   `json:"fromPlayer"`
+	Claimed    bool     `json:"claimed"`
+	Declined   bool     `json:"declined"`
+	Reclaimed  bool     `json:"reclaimed"`
 }
 
 type Neighborhood struct {
@@ -66,6 +68,7 @@ func main() {
 	http.HandleFunc("/api/neighborhood/gift/send", corsMiddleware(handleGiftSend))
 	http.HandleFunc("/api/neighborhood/gift/claim", corsMiddleware(handleGiftClaim))
 	http.HandleFunc("/api/neighborhood/gift/decline", corsMiddleware(handleGiftDecline))
+	http.HandleFunc("/api/neighborhood/gift/reclaim", corsMiddleware(handleGiftReclaim))
 	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
 
 	// Serve static files from parent directory
@@ -555,11 +558,12 @@ func handleGiftSend(w http.ResponseWriter, r *http.Request) {
 		Message:    fmt.Sprintf("sent a gift to %s!", req.ToPlayer),
 		Timestamp:  time.Now(),
 		Gift: &Gift{
-			CropType:  req.CropType,
-			SizeIndex: req.SizeIndex,
-			Mutations: req.Mutations,
-			ToPlayer:  req.ToPlayer,
-			Claimed:   false,
+			CropType:   req.CropType,
+			SizeIndex:  req.SizeIndex,
+			Mutations:  req.Mutations,
+			ToPlayer:   req.ToPlayer,
+			FromPlayer: req.PlayerName,
+			Claimed:    false,
 		},
 	}
 
@@ -682,6 +686,73 @@ func handleGiftDecline(w http.ResponseWriter, r *http.Request) {
 			msg.Gift.Declined = true
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
+			})
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": false,
+		"error":   "Gift not found",
+	})
+}
+
+func handleGiftReclaim(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerName string `json:"playerName"`
+		MessageID  int64  `json:"messageId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Find the message with the gift
+	for i := range hood.Messages {
+		msg := &hood.Messages[i]
+		if msg.ID == req.MessageID && msg.Gift != nil {
+			if msg.Gift.Claimed {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Gift already claimed",
+				})
+				return
+			}
+			if msg.Gift.Reclaimed {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Gift already reclaimed",
+				})
+				return
+			}
+			// Check if requester is the original sender
+			if msg.Gift.FromPlayer != req.PlayerName && msg.PlayerName != req.PlayerName {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "You didn't send this gift",
+				})
+				return
+			}
+			msg.Gift.Reclaimed = true
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": true,
+				"gift":    msg.Gift,
 			})
 			return
 		}

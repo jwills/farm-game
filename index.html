@@ -12401,20 +12401,26 @@
                     const crop = CROPS[msg.gift.cropType];
                     const sizeName = SIZES[msg.gift.sizeIndex]?.name || 'Medium';
                     const isForMe = msg.gift.toPlayer === playerName;
+                    const isFromMe = msg.gift.fromPlayer === playerName || msg.playerName === playerName;
                     const isClaimed = msg.gift.claimed;
                     const isDeclined = msg.gift.declined;
+                    const isReclaimed = msg.gift.reclaimed;
                     
                     html += `<div class="gift-box">`;
                     html += `<span class="gift-emoji">${crop?.stages?.[crop.stages.length-1] || '🎁'}</span>`;
                     html += `<span class="gift-info">${sizeName} ${crop?.name || msg.gift.cropType}</span>`;
                     
-                    if (isForMe && !isClaimed && !isDeclined) {
+                    if (isForMe && !isClaimed && !isDeclined && !isReclaimed) {
                         html += `<button class="claim-gift-btn" onclick="claimGift(${msg.id})">Claim!</button>`;
                         html += `<button class="decline-gift-btn" onclick="declineGift(${msg.id})">Decline</button>`;
+                    } else if (isFromMe && !isClaimed && !isDeclined && !isReclaimed) {
+                        html += `<button class="decline-gift-btn" onclick="reclaimGift(${msg.id})">Take Back</button>`;
                     } else if (isClaimed) {
                         html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
                     } else if (isDeclined) {
                         html += `<span style="color:#e74c3c;font-size:11px;">Declined ✗</span>`;
+                    } else if (isReclaimed) {
+                        html += `<span style="color:#f39c12;font-size:11px;">Taken Back ↩</span>`;
                     }
                     html += `</div>`;
                 }
@@ -12662,6 +12668,46 @@
             } catch (err) {
                 console.log('Decline gift failed:', err);
                 showMessage('Failed to decline gift!');
+            }
+        }
+
+        async function reclaimGift(messageId) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/reclaim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success && data.gift) {
+                    // Add the crop back to inventory
+                    if (gameState.harvested.length < MAX_INVENTORY) {
+                        gameState.harvested.push({
+                            type: data.gift.cropType,
+                            sizeIndex: data.gift.sizeIndex,
+                            mutations: data.gift.mutations || []
+                        });
+                        const crop = CROPS[data.gift.cropType];
+                        showMessage(`🎁 Took back ${crop?.name || 'gift'}!`);
+                        renderInventory();
+                        saveGame();
+                    } else {
+                        showMessage('Inventory full! Gift taken back but could not be stored.');
+                    }
+                    // Refresh chat to show reclaimed status
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to take back gift');
+                }
+            } catch (err) {
+                console.log('Reclaim gift failed:', err);
+                showMessage('Failed to take back gift!');
             }
         }
 
