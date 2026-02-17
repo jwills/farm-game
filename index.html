@@ -10268,10 +10268,10 @@
 
             const sellBtn = document.getElementById('sell-all-btn');
             sellBtn.disabled = !hasHarvest;
-            sellBtn.textContent = hasHarvest ? `Sell All ($${totalValue})` : 'Sell All Crops';
+            sellBtn.textContent = hasHarvest ? `Sell All ($${totalValue.toLocaleString()})` : 'Sell All Crops';
 
             // Update header stats
-            document.getElementById('money').textContent = gameState.money;
+            document.getElementById('money').textContent = gameState.money.toLocaleString();
             document.getElementById('harvested').textContent = gameState.totalHarvested;
         }
 
@@ -10495,21 +10495,26 @@
             
             // Check inventory limit
             if (gameState.harvested.length >= MAX_INVENTORY) {
-                // Penguin auto-sells oldest crop when full to make room
+                // Penguin auto-sells ALL crops when full
                 if (hasPetEffect('autosell')) {
-                    const soldItem = gameState.harvested.shift();
-                    const soldCrop = CROPS[soldItem.type];
-                    const soldSize = SIZES[soldItem.sizeIndex];
-                    let soldValue = soldCrop.basePrice * soldSize.multiplier;
-                    (soldItem.mutations || []).forEach(m => {
-                        const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                        if (weather) soldValue *= weather.bonus;
-                        const special = SPECIAL_MUTATIONS[m];
-                        if (special) soldValue *= special.bonus;
+                    let totalValue = 0;
+                    let cropCount = gameState.harvested.length;
+                    gameState.harvested.forEach(item => {
+                        const soldCrop = CROPS[item.type];
+                        const soldSize = SIZES[item.sizeIndex];
+                        let soldValue = soldCrop.basePrice * soldSize.multiplier;
+                        (item.mutations || []).forEach(m => {
+                            const weather = Object.values(WEATHER).find(w => w.mutation === m);
+                            if (weather) soldValue *= weather.bonus;
+                            const special = SPECIAL_MUTATIONS[m];
+                            if (special) soldValue *= special.bonus;
+                        });
+                        totalValue += Math.round(getPetBonus('value', soldValue));
                     });
-                    soldValue = Math.round(getPetBonus('value', soldValue));
-                    gameState.money += soldValue;
-                    showMessage(`🐧 Penguin sold ${soldCrop.name} for $${soldValue}!`);
+                    gameState.harvested = [];
+                    gameState.money += totalValue;
+                    showMessage(`🐧 Penguin sold ${cropCount} crops for $${totalValue.toLocaleString()}!`);
+                    renderInventory();
                 } else {
                     showMessage('Inventory full! Sell some crops first 📦');
                     return;
@@ -11270,7 +11275,7 @@
             if (total > 0) {
                 gameState.money += total;
                 gameState.harvested = [];
-                showMessage(`Sold crops for $${total}! 💰`);
+                showMessage(`Sold crops for $${total.toLocaleString()}! 💰`);
                 renderShop();
                 renderInventory();
             }
@@ -12731,7 +12736,7 @@
                 div.innerHTML = `
                     <div class="name">${farm.playerName || 'Unknown'}</div>
                     <div class="preview">${previewCrops || '🌱'}</div>
-                    <div class="stats">💰 $${farm.money || 0} • 🌿 ${cropCount} crops</div>
+                    <div class="stats">💰 $${(farm.money || 0).toLocaleString()} • 🌿 ${cropCount} crops</div>
                 `;
                 div.onclick = () => visitFarm(id, farm);
                 container.appendChild(div);
@@ -12761,7 +12766,7 @@
 
             const petEmojis = (farm.pets || []).map(p => PETS[p] ? PETS[p].emoji : '').join(' ');
             statsEl.innerHTML = `
-                <span class="stat">💰 $${farm.money || 0}</span>
+                <span class="stat">💰 $${(farm.money || 0).toLocaleString()}</span>
                 <span class="stat">🐾 ${petEmojis || 'No pets'}</span>
             `;
 
