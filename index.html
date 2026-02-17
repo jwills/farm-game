@@ -10376,8 +10376,6 @@
             }
             const crop = CROPS[plot.type];
             gameState.plots[plotIndex] = null;
-            gameState.shovelSelected = false;
-            updateShovelUI();
             showMessage(`Removed ${crop.name}! 🪏`);
             renderFarm();
         }
