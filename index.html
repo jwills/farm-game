@@ -80,8 +80,14 @@
             position: relative;
         }
 
-        .farm-grid.expanded {
+        .farm-grid.expanded-1 {
             grid-template-columns: repeat(6, 1fr);
+        }
+        .farm-grid.expanded-2 {
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .farm-grid.expanded-3 {
+            grid-template-columns: repeat(8, 1fr);
         }
 
         .expand-btn {
@@ -8989,7 +8995,7 @@
 
         <div class="main-area">
             <div class="farm-section">
-                <h2>🏡 Your Farm <button id="expand-farm-btn" class="expand-btn" onclick="expandFarm()">🔓 Expand Farm ($200M)</button></h2>
+                <h2>🏡 Your Farm <button id="expand-farm-btn" class="expand-btn" onclick="expandFarm()">🔓 Expand to 30 plots ($200M)</button></h2>
                 <div class="farm-grid" id="farm-grid">
                     <div class="player" id="player">
                         <div class="farmer-model">
@@ -9421,7 +9427,7 @@
             selectedSeed: null,
             shovelSelected: false,
             plots: Array(20).fill(null), // 20 plots (5x4 grid), expandable to 30 (6x5)
-            farmExpanded: false,
+            farmExpanded: 0, // 0=20 plots, 1=30 plots, 2=42 plots, 3=64 plots
             currentWeather: 'sunny',
             weatherTimer: 0,
             pets: [], // owned pets
@@ -9501,7 +9507,7 @@
             if (!grid || !petEl || !pet) return;
             const plots = grid.querySelectorAll('.plot');
             if (plots.length === 0) return;
-            const cols = gameState.farmExpanded ? 6 : 5;
+            const cols = getFarmDimensions().cols;
             const plot = plots[pet.y * cols + pet.x];
             if (!plot) return;
             const gridRect = grid.getBoundingClientRect();
@@ -9547,7 +9553,7 @@
 
             const plots = grid.querySelectorAll('.plot');
             if (plots.length === 0) return;
-            const cols = gameState.farmExpanded ? 6 : 5;
+            const cols = getFarmDimensions().cols;
             const plot = plots[playerState.y * cols + playerState.x];
             if (!plot) return;
 
@@ -9568,8 +9574,7 @@
         function movePlayer(dx, dy) {
             const newX = playerState.x + dx;
             const newY = playerState.y + dy;
-            const cols = gameState.farmExpanded ? 6 : 5;
-            const rows = gameState.farmExpanded ? 5 : 4;
+            const { cols, rows } = getFarmDimensions();
 
             if (newX >= 0 && newX < cols && newY >= 0 && newY < rows) {
                 playerState.x = newX;
@@ -9628,7 +9633,7 @@
                 case 'E':
                     // Interact with current plot
                     e.preventDefault();
-                    const plotCols = gameState.farmExpanded ? 6 : 5;
+                    const plotCols = getFarmDimensions().cols;
                     const plotIndex = playerState.y * plotCols + playerState.x;
                     const plot = gameState.plots[plotIndex];
                     if (plot) {
@@ -9825,23 +9830,36 @@
         }
 
         // Farm expansion
+        const FARM_EXPANSIONS = [
+            { plots: 30, cost: 200000000, label: '30 plots ($200M)', cols: 6, rows: 5 },
+            { plots: 42, cost: 10000000000, label: '42 plots ($10B)', cols: 7, rows: 6 },
+            { plots: 64, cost: 750000000000, label: '64 plots ($750B)', cols: 8, rows: 8 }
+        ];
+
+        function getFarmDimensions() {
+            const level = gameState.farmExpanded || 0;
+            if (level === 0) return { cols: 5, rows: 4 };
+            return { cols: FARM_EXPANSIONS[level - 1].cols, rows: FARM_EXPANSIONS[level - 1].rows };
+        }
+
         function expandFarm() {
-            if (gameState.farmExpanded) {
-                showMessage('Farm is already expanded! 🌾');
+            const level = gameState.farmExpanded || 0;
+            if (level >= FARM_EXPANSIONS.length) {
+                showMessage('Farm is fully expanded! 🌾');
                 return;
             }
-            const cost = 200000000;
-            if (gameState.money < cost) {
-                showMessage(`Need $${formatNumber(cost)} to expand farm! 💰`);
+            const expansion = FARM_EXPANSIONS[level];
+            if (gameState.money < expansion.cost) {
+                showMessage(`Need $${formatNumber(expansion.cost)} to expand farm! 💰`);
                 return;
             }
-            gameState.money -= cost;
-            gameState.farmExpanded = true;
-            // Add 10 more plots
-            while (gameState.plots.length < 30) {
+            gameState.money -= expansion.cost;
+            gameState.farmExpanded = level + 1;
+            // Add plots up to the new size
+            while (gameState.plots.length < expansion.plots) {
                 gameState.plots.push(null);
             }
-            showMessage('Farm expanded to 30 plots! 🎉🌾');
+            showMessage(`Farm expanded to ${expansion.plots} plots! 🎉🌾`);
             updateExpandButton();
             renderFarm();
             renderInventory();
@@ -9850,10 +9868,16 @@
         function updateExpandButton() {
             const btn = document.getElementById('expand-farm-btn');
             if (!btn) return;
-            if (gameState.farmExpanded) {
-                btn.textContent = '✅ Expanded!';
+            const level = gameState.farmExpanded || 0;
+            if (level >= FARM_EXPANSIONS.length) {
+                btn.textContent = '✅ Fully Expanded!';
                 btn.classList.add('purchased');
                 btn.onclick = null;
+            } else {
+                const next = FARM_EXPANSIONS[level];
+                btn.textContent = `🔓 Expand to ${next.label}`;
+                btn.classList.remove('purchased');
+                btn.onclick = expandFarm;
             }
         }
 
@@ -9862,11 +9886,11 @@
             const container = document.getElementById('farm-grid');
             container.innerHTML = '';
             
-            // Update grid class based on expansion
-            if (gameState.farmExpanded) {
-                container.classList.add('expanded');
-            } else {
-                container.classList.remove('expanded');
+            // Update grid class based on expansion level
+            container.classList.remove('expanded-1', 'expanded-2', 'expanded-3');
+            const level = gameState.farmExpanded || 0;
+            if (level > 0) {
+                container.classList.add(`expanded-${level}`);
             }
             
             // Update expand button state
@@ -10919,7 +10943,7 @@
                 });
             } else if (gear.range > 1) {
                 // Water additional adjacent plants (range includes clicked plant)
-                const cols = gameState.farmExpanded ? 6 : 5;
+                const cols = getFarmDimensions().cols;
                 const targetCol = plotIndex % cols;
                 const targetRow = Math.floor(plotIndex / cols);
                 
@@ -10973,8 +10997,7 @@
         
         function getAdjacentPlots(plotIndex) {
             // Get plots adjacent to the given plot (including diagonals)
-            const cols = gameState.farmExpanded ? 6 : 5;
-            const rows = gameState.farmExpanded ? 5 : 4;
+            const { cols, rows } = getFarmDimensions();
             const totalPlots = cols * rows;
             const row = Math.floor(plotIndex / cols);
             const col = plotIndex % cols;
