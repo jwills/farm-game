@@ -10705,7 +10705,8 @@
             isNight: false, // day/night cycle
             isDarkestNight: false, // rare darkest night event
             darkestWheelSpun: false, // track if darkest wheel was spun this darkest night
-            dayNightTimer: 0 // timer for day/night changes
+            dayNightTimer: 0, // timer for day/night changes (legacy, kept for save compat)
+            lastDayNightState: null // track previous state for transitions
         };
 
         // Stock settings per rarity
@@ -10919,9 +10920,15 @@
             if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
                 initializeStock();
             }
-            // Initialize day/night timer if not set
-            if (!gameState.dayNightTimer) gameState.dayNightTimer = 60;
-            // Fix sunny weather at night (can happen from saved games)
+            // Sync day/night state from real time on load
+            const cycleLength = 120;
+            const currentCycleTime = Math.floor(Date.now() / 1000) % cycleLength;
+            gameState.isNight = currentCycleTime >= 60;
+            gameState.lastDayNightState = gameState.isNight;
+            // Check if this is a darkest night cycle
+            const cycleNumber = Math.floor(Date.now() / 1000 / cycleLength);
+            gameState.isDarkestNight = gameState.isNight && (cycleNumber % 40) === 0;
+            // Fix sunny weather at night
             if (gameState.isNight && gameState.currentWeather === 'sunny') {
                 changeWeatherLocal();
             }
@@ -12591,26 +12598,40 @@
             }
             updateWeatherDisplay();
             
-            // Update day/night cycle (60 seconds day, 60 seconds night)
-            gameState.dayNightTimer--;
-            if (gameState.dayNightTimer <= 0) {
-                gameState.isNight = !gameState.isNight;
-                // 2.5% chance for darkest night when switching to night
-                if (gameState.isNight && Math.random() < 0.025) {
+            // Update day/night cycle - synchronized across all players using real time
+            // 60 second day, 60 second night cycle based on Unix timestamp
+            const cycleLength = 120; // 120 seconds total (60 day + 60 night)
+            const currentCycleTime = Math.floor(Date.now() / 1000) % cycleLength;
+            const wasNight = gameState.lastDayNightState;
+            gameState.isNight = currentCycleTime >= 60; // Night is second half of cycle
+            
+            // Detect transition to night
+            if (gameState.isNight && wasNight === false) {
+                // Use seeded random based on cycle number for consistent darkest night across players
+                const cycleNumber = Math.floor(Date.now() / 1000 / cycleLength);
+                const isDarkest = (cycleNumber % 40) === 0; // Every 40th cycle is darkest (~80 min)
+                if (isDarkest) {
                     gameState.isDarkestNight = true;
-                    gameState.darkestWheelSpun = false; // Reset wheel for new darkest night
+                    gameState.darkestWheelSpun = false;
                     showMessage('🌑 The Darkest Night has fallen! Spin the Void Wheel!');
                     setTimeout(() => showDarkestWheel(), 1000);
                 } else {
                     gameState.isDarkestNight = false;
                 }
                 // If it becomes night while sunny, change weather
-                if (gameState.isNight && gameState.currentWeather === 'sunny') {
+                if (gameState.currentWeather === 'sunny') {
                     changeWeather();
                 }
-                gameState.dayNightTimer = 60; // 60 seconds per cycle
+                updateDayNightDisplay();
+            } else if (!gameState.isNight && wasNight === true) {
+                // Transition to day
+                gameState.isDarkestNight = false;
+                updateDayNightDisplay();
+            } else if (wasNight === null) {
+                // First load - just update display
                 updateDayNightDisplay();
             }
+            gameState.lastDayNightState = gameState.isNight;
             
             const currentWeather = WEATHER[gameState.currentWeather];
             
