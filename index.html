@@ -16,6 +16,20 @@
             background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%);
             min-height: 100vh;
             padding: 20px;
+            transition: filter 0.5s ease, background 0.5s ease;
+        }
+        
+        body.night-mode {
+            background: linear-gradient(135deg, #1a1a3e 0%, #2d2d5a 100%);
+            filter: brightness(0.85);
+        }
+        
+        body.night-mode .farm-plot {
+            background: linear-gradient(145deg, #3d3522 0%, #2a2518 100%);
+        }
+        
+        body.night-mode header {
+            background: linear-gradient(135deg, #4a2810 0%, #5a3520 100%);
         }
 
         .game-container {
@@ -9050,6 +9064,7 @@
             <h1>🌾 Grow Farm</h1>
             <div class="stats">
                 <div class="stat" id="weather-display">☀️ Sunny</div>
+                <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
             </div>
@@ -9342,7 +9357,7 @@
             rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 1.7, timeRequired: 60, chance: 0.15 },
             // Sprinkler-exclusive mutations
             honeyglazed: { name: 'Honey Glazed', emoji: '🍯', bonus: 1.8, sprinklerOnly: true },
-            starblessed: { name: 'Star Blessed', emoji: '⭐', bonus: 2.0, sprinklerOnly: true },
+            starblessed: { name: 'Star Blessed', emoji: '🤩', bonus: 2.0, sprinklerOnly: true },
             crystalized: { name: 'Crystalized', emoji: '💎', bonus: 1.9, sprinklerOnly: true },
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
             enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
@@ -9353,7 +9368,9 @@
             quantum: { name: 'Quantum', emoji: '⚛️', bonus: 5.0 },
             // Time wheel sprinkler mutations
             ashcovered: { name: 'Ash Covered', emoji: '🌫️', bonus: 2.2, sprinklerOnly: true },
-            uvlit: { name: 'UV Lit', emoji: '🔮', bonus: 2.1, sprinklerOnly: true }
+            uvlit: { name: 'UV Lit', emoji: '🔮', bonus: 2.1, sprinklerOnly: true },
+            // Day/night mutation
+            nightglow: { name: 'Nightglow', emoji: '🌙', bonus: 1.5 }
         };
         
         // Prehistoric wheel rewards
@@ -9516,7 +9533,9 @@
             bloodTigerTimer: 0, // timer for Blood Tiger bloodlit chance (every 150s)
             timeWheelsSpun: { prehistoric: false, futuristic: false }, // track wheel spins per time anomaly
             timeWheelsShown: false, // whether we've shown wheels this time anomaly
-            lastChatMsgId: 0 // track last seen chat message ID
+            lastChatMsgId: 0, // track last seen chat message ID
+            isNight: false, // day/night cycle
+            dayNightTimer: 0 // timer for day/night changes
         };
 
         // Stock settings per rarity
@@ -9729,6 +9748,9 @@
             if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
                 initializeStock();
             }
+            // Initialize day/night timer if not set
+            if (!gameState.dayNightTimer) gameState.dayNightTimer = 60;
+            updateDayNightDisplay();
             renderShop();
             renderPetShop();
             renderGearShop();
@@ -11392,6 +11414,14 @@
             }
             updateWeatherDisplay();
             
+            // Update day/night cycle (60 seconds day, 60 seconds night)
+            gameState.dayNightTimer--;
+            if (gameState.dayNightTimer <= 0) {
+                gameState.isNight = !gameState.isNight;
+                gameState.dayNightTimer = 60; // 60 seconds per cycle
+                updateDayNightDisplay();
+            }
+            
             const currentWeather = WEATHER[gameState.currentWeather];
             
             gameState.plots.forEach((plot, index) => {
@@ -11433,6 +11463,15 @@
                             if (canGetMutation && !plot.mutations.includes(currentWeather.mutation)) {
                                 plot.mutations.push(currentWeather.mutation);
                                 showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
+                            }
+                        }
+                        
+                        // Chance to gain nightglow mutation at night (2% chance)
+                        if (gameState.isNight && Math.random() < 0.02) {
+                            if (!plot.mutations) plot.mutations = [];
+                            if (!plot.mutations.includes('nightglow')) {
+                                plot.mutations.push('nightglow');
+                                showMessage(`A crop gained nightglow! ${SPECIAL_MUTATIONS.nightglow.emoji} (+50% value)`);
                             }
                         }
                         // Reset ready timer when not ready
@@ -11693,6 +11732,17 @@
             }
             document.getElementById('weather-display').innerHTML = `${weather.emoji} ${weather.name}`;
             updateWeatherEffects();
+        }
+        
+        function updateDayNightDisplay() {
+            const display = document.getElementById('daynight-display');
+            if (gameState.isNight) {
+                display.innerHTML = '🌙 Night';
+                document.body.classList.add('night-mode');
+            } else {
+                display.innerHTML = '☀️ Day';
+                document.body.classList.remove('night-mode');
+            }
         }
         
         function updateWeatherEffects() {
