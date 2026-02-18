@@ -13771,6 +13771,63 @@
                     }
                 });
             }
+            
+            // Backfill discoveredCrops from existing harvested items
+            if (!gameState.discoveredCrops) {
+                gameState.discoveredCrops = {};
+            }
+            
+            // Count crops from current harvested inventory
+            if (gameState.harvested && gameState.harvested.length > 0) {
+                gameState.harvested.forEach(item => {
+                    if (item && item.type && CROPS[item.type]) {
+                        if (!gameState.discoveredCrops[item.type]) {
+                            gameState.discoveredCrops[item.type] = { count: 0, firstHarvest: Date.now() };
+                        }
+                        // Only count if not already tracked (avoid double counting on reload)
+                    }
+                });
+            }
+            
+            // Mark planted crops as discovered (you must have harvested to get seeds for rare ones)
+            if (gameState.plots) {
+                gameState.plots.forEach(plot => {
+                    if (plot && plot.type && CROPS[plot.type] && !plot.isEgg) {
+                        if (!gameState.discoveredCrops[plot.type]) {
+                            gameState.discoveredCrops[plot.type] = { count: 0, firstHarvest: Date.now() };
+                        }
+                    }
+                });
+            }
+            
+            // Mark crops with seeds as discovered (for regrow crops you must have harvested)
+            if (gameState.seeds) {
+                Object.keys(gameState.seeds).forEach(seedType => {
+                    if (gameState.seeds[seedType] > 0 && CROPS[seedType]) {
+                        const crop = CROPS[seedType];
+                        // Only auto-discover regrow/wheelOnly crops (you definitely harvested these)
+                        if (crop.regrows || crop.wheelOnly) {
+                            if (!gameState.discoveredCrops[seedType]) {
+                                gameState.discoveredCrops[seedType] = { count: 0, firstHarvest: Date.now() };
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Estimate counts based on totalHarvested if discoveredCrops is mostly empty
+            const discoveredCount = Object.keys(gameState.discoveredCrops).length;
+            const totalTracked = Object.values(gameState.discoveredCrops).reduce((sum, c) => sum + c.count, 0);
+            if (gameState.totalHarvested > 0 && totalTracked === 0) {
+                // Distribute totalHarvested among discovered crops as estimate
+                const discovered = Object.keys(gameState.discoveredCrops);
+                if (discovered.length > 0) {
+                    const perCrop = Math.floor(gameState.totalHarvested / discovered.length);
+                    discovered.forEach(cropType => {
+                        gameState.discoveredCrops[cropType].count = perCrop;
+                    });
+                }
+            }
         }
 
         function manualSave() {
