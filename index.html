@@ -10521,7 +10521,7 @@
             crystalized: { name: 'Crystalized', emoji: '💎', bonus: 1.9, sprinklerOnly: true },
             volcanic: { name: 'Volcanic', emoji: '🌋', bonus: 2.2, sprinklerOnly: true },
             enchanted: { name: 'Enchanted', emoji: '🪄', bonus: 1.75, sprinklerOnly: true },
-            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 3.5 },
+            bloodlit: { name: 'Bloodlit', emoji: '🩸', bonus: 2.0 },
             timewarp: { name: 'Time Warp', emoji: '⏰', bonus: 2.5 },
             // Time wheel mutations
             fossilized: { name: 'Fossilized', emoji: '🦴', bonus: 4.0 },
@@ -10608,6 +10608,7 @@
             slime: { name: 'Gold Slime', emoji: '🟡', price: 25000, ability: 'Midas', description: '+50% sell price on golden crops', effect: 'goldvalue', rarity: 'godly' },
             penguin: { name: 'Merchant Penguin', emoji: '🐧', price: 2000, ability: 'Salesman', description: 'Auto-sells all crops when inventory full', effect: 'autosell', rarity: 'epic' },
             bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: 'Bloodlit every 1:00, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
+            hellbird: { name: 'Hellbird', emoji: '🐦‍🔥', price: 500000, ability: 'Blood Moon', description: 'Crops can become Bloodlit at night (2x value)', effect: 'bloodmoon', rarity: 'demonic' },
             // Temporal pets (from time wheels only)
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
@@ -12729,6 +12730,15 @@
                             if (!plot.mutations.includes('nightglow')) {
                                 plot.mutations.push('nightglow');
                                 showMessage(`A crop gained nightglow! ${SPECIAL_MUTATIONS.nightglow.emoji} (+50% value)`);
+                            }
+                        }
+                        
+                        // Hellbird: Chance to gain bloodlit mutation at night (3% chance)
+                        if (gameState.isNight && hasPetEffect('bloodmoon') && Math.random() < 0.03) {
+                            if (!plot.mutations) plot.mutations = [];
+                            if (!plot.mutations.includes('bloodlit')) {
+                                plot.mutations.push('bloodlit');
+                                showMessage(`A crop became bloodlit! ${SPECIAL_MUTATIONS.bloodlit.emoji} (2x value)`);
                             }
                         }
                         // Reset ready timer when not ready
