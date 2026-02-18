@@ -4166,6 +4166,92 @@
             50% { opacity: 0.9; transform: translateX(-50%) scale(1.2); }
         }
 
+        /* Heaven Tear - celestial teardrop crystal */
+        .plant-model.crop-heaventear .plant-stem { 
+            background: linear-gradient(to top, #e0e8ff, #c8d8ff, #f0f8ff); 
+            width: 5px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-heaventear .plant-leaf { 
+            background: linear-gradient(135deg, #87ceeb, #add8e6); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .plant-model.crop-heaventear.stage-1 .plant-stem { height: 4px; width: 3px; }
+        .plant-model.crop-heaventear.stage-2 .plant-stem { height: 10px; width: 4px; }
+        .plant-model.crop-heaventear.stage-2 .plant-leaves { bottom: 8px; }
+        .plant-model.crop-heaventear.stage-3 .plant-stem { height: 18px; width: 5px; }
+        .plant-model.crop-heaventear.stage-3 .plant-leaves { bottom: 15px; }
+        .plant-model.crop-heaventear.stage-4 .plant-stem { height: 28px; width: 6px; }
+        .plant-model.crop-heaventear.stage-4 .plant-leaves { bottom: 23px; }
+        
+        /* Heaven Tear fruit - floating crystalline teardrop */
+        .crop-heaventear .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-heaventear.stage-4 .plant-fruit {
+            width: 40px; height: 45px;
+            background: transparent;
+            position: absolute;
+            bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-heaventear.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 24px; height: 32px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(180deg, 
+                rgba(255,255,255,0.95) 0%, 
+                rgba(200,220,255,0.9) 20%, 
+                rgba(135,206,250,0.85) 50%, 
+                rgba(100,149,237,0.8) 80%, 
+                rgba(255,255,255,0.9) 100%);
+            border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+            box-shadow: 0 0 20px rgba(135, 206, 250, 0.9), 
+                        0 0 40px rgba(255, 255, 255, 0.7), 
+                        0 0 60px rgba(100, 149, 237, 0.5),
+                        inset 0 -8px 20px rgba(255,255,255,0.8),
+                        inset 3px 3px 10px rgba(255,255,255,0.9);
+            animation: heavenTearGlow 2s ease-in-out infinite, heavenTearFloat 3s ease-in-out infinite;
+        }
+        .crop-heaventear.stage-4 .plant-fruit::after {
+            content: '✦';
+            display: block;
+            position: absolute;
+            font-size: 12px;
+            color: #ffffff;
+            top: 8px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 8px #87ceeb) drop-shadow(0 0 15px #ffffff);
+            animation: heavenTearSparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes heavenTearGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(135, 206, 250, 0.9), 0 0 40px rgba(255, 255, 255, 0.7), 0 0 60px rgba(100, 149, 237, 0.5), inset 0 -8px 20px rgba(255,255,255,0.8), inset 3px 3px 10px rgba(255,255,255,0.9); }
+            50% { box-shadow: 0 0 35px rgba(135, 206, 250, 1), 0 0 60px rgba(255, 255, 255, 0.9), 0 0 80px rgba(100, 149, 237, 0.7), inset 0 -8px 25px rgba(255,255,255,0.9), inset 3px 3px 15px rgba(255,255,255,1); filter: brightness(1.15); }
+        }
+        @keyframes heavenTearFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-6px); }
+        }
+        @keyframes heavenTearSparkle {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.7; transform: translateX(-50%) scale(1.3); }
+        }
+        /* Divine mist around Heaven Tear */
+        .plant-model.crop-heaventear.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 50px; height: 50px;
+            background: radial-gradient(circle, rgba(135,206,250,0.4) 0%, rgba(255,255,255,0.25) 40%, transparent 70%);
+            bottom: 18px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: heavenMist 2.5s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes heavenMist {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+
         /* Angel Wing - celestial feather plant */
         .plant-model.crop-angelwing .plant-stem { 
             background: linear-gradient(to top, #f5f5dc, #fffaf0, #ffffff); 
@@ -6402,6 +6488,42 @@
         @keyframes doomShroomPulse {
             0%, 100% { box-shadow: 0 0 12px rgba(100, 0, 0, 0.9), inset 0 -3px 8px rgba(255, 0, 0, 0.4); }
             50% { box-shadow: 0 0 20px rgba(150, 0, 0, 1), inset 0 -3px 12px rgba(255, 50, 0, 0.6); transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* Heaven Tear - crystalline teardrop */
+        .crop-icon.heaventear::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 22px;
+            background: linear-gradient(180deg, 
+                rgba(255,255,255,0.95) 0%, 
+                rgba(200,220,255,0.9) 30%, 
+                rgba(135,206,250,0.85) 60%, 
+                rgba(100,149,237,0.8) 100%);
+            border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+            bottom: 4px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(135, 206, 250, 0.9), 
+                        0 0 25px rgba(255, 255, 255, 0.7),
+                        inset 2px 2px 8px rgba(255,255,255,0.9),
+                        inset 0 -5px 10px rgba(255,255,255,0.7);
+            animation: heavenTearIconGlow 2s ease-in-out infinite;
+        }
+        .crop-icon.heaventear::after {
+            content: '✦';
+            position: absolute;
+            font-size: 10px;
+            color: #ffffff;
+            top: 6px; left: 50%; transform: translateX(-50%);
+            filter: drop-shadow(0 0 5px #87ceeb) drop-shadow(0 0 8px #ffffff);
+            animation: heavenTearIconSparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes heavenTearIconGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(135, 206, 250, 0.9), 0 0 25px rgba(255, 255, 255, 0.7), inset 2px 2px 8px rgba(255,255,255,0.9), inset 0 -5px 10px rgba(255,255,255,0.7); }
+            50% { box-shadow: 0 0 25px rgba(135, 206, 250, 1), 0 0 40px rgba(255, 255, 255, 0.9), inset 2px 2px 12px rgba(255,255,255,1), inset 0 -5px 15px rgba(255,255,255,0.9); filter: brightness(1.2); }
+        }
+        @keyframes heavenTearIconSparkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; transform: translateX(-50%) scale(1.2); }
         }
 
         /* Angel Wing - celestial feather plant */
@@ -10405,7 +10527,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
