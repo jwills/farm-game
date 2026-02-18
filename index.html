@@ -9401,8 +9401,8 @@
             background: radial-gradient(ellipse at center, rgba(10, 10, 26, 0.98), rgba(0, 0, 0, 0.99));
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 20px;
+            justify-content: center;
+            padding: 20px;
         }
         
         #darkest-modal .wheels-intro {
@@ -9412,6 +9412,11 @@
             transform: none;
             margin-bottom: 10px;
             text-align: center;
+            width: 100%;
+        }
+        
+        #darkest-modal .roulette-container {
+            margin: 0 auto;
         }
         
         #darkest-modal .wheels-intro h1 {
@@ -9988,7 +9993,7 @@
             // Darkest Night crops (from darkest wheel only)
             voidrose: { name: 'Void Rose', seedEmoji: '🥀', growEmoji: '🌹', seedPrice: 0, basePrice: 500000, growTime: 50, rarity: 'nocturnal', yield: [2, 4], wheelOnly: true },
             shadowmelon: { name: 'Shadow Melon', seedEmoji: '🍈', growEmoji: '🌈', seedPrice: 0, basePrice: 1000000, growTime: 75, rarity: 'nocturnal', yield: [1, 2], wheelOnly: true },
-            moonlily: { name: 'Moon Lily', seedEmoji: '🌸', growEmoji: '🌕', seedPrice: 0, basePrice: 750000, growTime: 60, rarity: 'nocturnal', yield: [2, 3], regrows: true, wheelOnly: true },
+            moontree: { name: 'Moon Tree', seedEmoji: '🌸', growEmoji: '🌕', seedPrice: 0, basePrice: 750000, growTime: 60, rarity: 'nocturnal', yield: [2, 3], regrows: true, wheelOnly: true },
             voidlily: { name: 'Void Lily', seedEmoji: '🪷', growEmoji: '🕳️', seedPrice: 0, basePrice: 4000000000, growTime: 300, rarity: 'nocturnal', yield: 1, regrows: true, wheelOnly: true }
         };
 
@@ -10064,7 +10069,7 @@
             { type: 'mutation', mutation: 'nightglow', count: 5, emoji: '🌙', name: 'Nightglow Blessing (5 crops)', weight: 12 },
             { type: 'seed', seedId: 'voidrose', count: 3, emoji: '🥀', name: 'Void Rose Seeds', weight: 10 },
             { type: 'seed', seedId: 'shadowmelon', count: 2, emoji: '🍈', name: 'Shadow Melon Seeds', weight: 10 },
-            { type: 'seed', seedId: 'moonlily', count: 2, emoji: '🌸', name: 'Moon Lily Seeds', weight: 10 },
+            { type: 'seed', seedId: 'moontree', count: 2, emoji: '🌸', name: 'Moon Tree Seeds', weight: 10 },
             { type: 'pet', petId: 'shadowcat', emoji: '🐈‍⬛', name: 'Shadow Cat', weight: 8 },
             { type: 'pet', petId: 'nightowl', emoji: '🦉', name: 'Night Owl', weight: 6 },
             { type: 'seed', seedId: 'voidlily', count: 1, emoji: '🪷', name: 'Void Lily Seed', weight: 1 }
@@ -12775,6 +12780,21 @@
                     if (!gameState.eggInventory[reward.petId]) gameState.eggInventory[reward.petId] = 0;
                     gameState.eggInventory[reward.petId]++;
                     return `${reward.name} Egg!`;
+                case 'gear':
+                    const gearItem = GEAR[reward.gearId];
+                    if (gearItem && gearItem.passive) {
+                        // Sprinkler - add to unplaced list
+                        if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                        for (let i = 0; i < reward.count; i++) {
+                            gameState.unplacedSprinklers.push(reward.gearId);
+                        }
+                        renderGearTools();
+                    } else if (gearItem) {
+                        // Active gear
+                        if (!gameState.gear) gameState.gear = {};
+                        gameState.gear[reward.gearId] = (gameState.gear[reward.gearId] || 0) + reward.count;
+                    }
+                    return `${gearItem ? gearItem.name : reward.name} ${gearItem ? gearItem.emoji : ''}`;
                 case 'mutation':
                     // Apply nightglow to random growing crops
                     let applied = 0;
