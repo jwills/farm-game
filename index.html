@@ -2532,10 +2532,8 @@
         .plant-model.regrowing .plant-leaves { bottom: 28px !important; display: flex !important; }
         .plant-model.regrowing .plant-leaf { width: 16px !important; height: 10px !important; background: #3d6b35 !important; }
         
-        /* Regrowing fruit scales up gradually */
-        .plant-model.regrowing .plant-fruit,
-        .plant-model.regrowing .plant-fruit::before,
-        .plant-model.regrowing .plant-fruit::after {
+        /* Regrowing fruit scales up gradually - scale from center of element */
+        .plant-model.regrowing .plant-fruit {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
         .plant-model.regrowing.stage-1 .plant-fruit {
