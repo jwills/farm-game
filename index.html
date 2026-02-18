@@ -12945,9 +12945,40 @@
                 try {
                     const loaded = JSON.parse(saved);
                     gameState = { ...gameState, ...loaded };
+                    migrateSaveData();
                 } catch (e) {
                     console.error('Failed to load save:', e);
                 }
+            }
+        }
+
+        function migrateSaveData() {
+            // Migrate moonlily -> moontree (renamed in update)
+            if (gameState.plots) {
+                gameState.plots.forEach(plot => {
+                    if (plot && plot.type === 'moonlily') {
+                        plot.type = 'moontree';
+                    }
+                });
+            }
+            if (gameState.inventory) {
+                if (gameState.inventory.moonlily) {
+                    gameState.inventory.moontree = (gameState.inventory.moontree || 0) + gameState.inventory.moonlily;
+                    delete gameState.inventory.moonlily;
+                }
+            }
+            if (gameState.seeds) {
+                if (gameState.seeds.moonlily) {
+                    gameState.seeds.moontree = (gameState.seeds.moontree || 0) + gameState.seeds.moonlily;
+                    delete gameState.seeds.moonlily;
+                }
+            }
+            if (gameState.harvestedItems) {
+                gameState.harvestedItems.forEach(item => {
+                    if (item && item.type === 'moonlily') {
+                        item.type = 'moontree';
+                    }
+                });
             }
         }
 
