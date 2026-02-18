@@ -13281,13 +13281,15 @@
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
-            // Show reward after spin completes (matches 4s CSS transition)
-            setTimeout(() => {
+            // Show reward when spin animation completes
+            const onSpinEnd = () => {
+                wheel.removeEventListener('transitionend', onSpinEnd);
                 const rewardText = giveReward(reward, wheelType);
                 showRewardPopup(reward, rewardText, wheelType);
                 renderInventory();
                 renderPets();
-            }, 4000);
+            };
+            wheel.addEventListener('transitionend', onSpinEnd);
         }
         
         function spinPrehistoric() {
@@ -13319,13 +13321,15 @@
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
-            // Show reward after spin completes (matches 4s CSS transition)
-            setTimeout(() => {
+            // Show reward when spin animation completes
+            const onSpinEnd = () => {
+                wheel.removeEventListener('transitionend', onSpinEnd);
                 const rewardText = giveDarkestReward(reward);
                 showDarkestRewardPopup(reward, rewardText);
                 renderInventory();
                 renderPets();
-            }, 4000);
+            };
+            wheel.addEventListener('transitionend', onSpinEnd);
         }
         
         function giveDarkestReward(reward) {
