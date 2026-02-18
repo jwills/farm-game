@@ -31,6 +31,19 @@
         body.night-mode header {
             background: linear-gradient(135deg, #4a2810 0%, #5a3520 100%);
         }
+        
+        body.darkest-night {
+            background: linear-gradient(135deg, #0a0a1a 0%, #151530 100%);
+            filter: brightness(0.7);
+        }
+        
+        body.darkest-night .farm-plot {
+            background: linear-gradient(145deg, #1a1a10 0%, #0d0d08 100%);
+        }
+        
+        body.darkest-night header {
+            background: linear-gradient(135deg, #1a0808 0%, #2a1010 100%);
+        }
 
         .game-container {
             max-width: 1200px;
@@ -9535,6 +9548,7 @@
             timeWheelsShown: false, // whether we've shown wheels this time anomaly
             lastChatMsgId: 0, // track last seen chat message ID
             isNight: false, // day/night cycle
+            isDarkestNight: false, // rare darkest night event
             dayNightTimer: 0 // timer for day/night changes
         };
 
@@ -11418,6 +11432,13 @@
             gameState.dayNightTimer--;
             if (gameState.dayNightTimer <= 0) {
                 gameState.isNight = !gameState.isNight;
+                // 5% chance for darkest night when switching to night
+                if (gameState.isNight && Math.random() < 0.05) {
+                    gameState.isDarkestNight = true;
+                    showMessage('🌑 The Darkest Night has fallen... (+10% nightglow chance)');
+                } else {
+                    gameState.isDarkestNight = false;
+                }
                 gameState.dayNightTimer = 60; // 60 seconds per cycle
                 updateDayNightDisplay();
             }
@@ -11466,8 +11487,9 @@
                             }
                         }
                         
-                        // Chance to gain nightglow mutation at night (2% chance)
-                        if (gameState.isNight && Math.random() < 0.02) {
+                        // Chance to gain nightglow mutation at night (2% normal, 12% darkest night)
+                        const nightglowChance = gameState.isDarkestNight ? 0.12 : 0.02;
+                        if (gameState.isNight && Math.random() < nightglowChance) {
                             if (!plot.mutations) plot.mutations = [];
                             if (!plot.mutations.includes('nightglow')) {
                                 plot.mutations.push('nightglow');
@@ -11737,11 +11759,17 @@
         function updateDayNightDisplay() {
             const display = document.getElementById('daynight-display');
             if (gameState.isNight) {
-                display.innerHTML = '🌙 Night';
-                document.body.classList.add('night-mode');
+                if (gameState.isDarkestNight) {
+                    display.innerHTML = '🌑 Darkest Night';
+                    document.body.classList.add('night-mode', 'darkest-night');
+                } else {
+                    display.innerHTML = '🌙 Night';
+                    document.body.classList.add('night-mode');
+                    document.body.classList.remove('darkest-night');
+                }
             } else {
                 display.innerHTML = '☀️ Day';
-                document.body.classList.remove('night-mode');
+                document.body.classList.remove('night-mode', 'darkest-night');
             }
         }
         
