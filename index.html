@@ -5764,6 +5764,22 @@
             margin-bottom: 5px;
         }
 
+        .pet-upgrade-btn {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            margin-left: 8px;
+            background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pet-upgrade-btn:hover {
+            background: linear-gradient(135deg, #AB47BC, #8E24AA);
+            transform: scale(1.05);
+        }
+
         .owned-header {
             margin-top: 10px;
             color: #666;
@@ -10684,7 +10700,8 @@
             currentWeather: 'sunny',
             weatherTimer: 0,
             pets: [], // owned pets
-            equippedPets: [], // max 3 equipped
+            equippedPets: [], // equipped pets
+            maxPetSlots: 3, // can upgrade to 5 for $100k
             eggInventory: {}, // bought eggs: { petId: count }
             playerId: null,
             playerName: null,
@@ -10916,6 +10933,7 @@
             loadGame();
             if (!gameState.pets) gameState.pets = [];
             if (!gameState.equippedPets) gameState.equippedPets = [];
+            if (!gameState.maxPetSlots) gameState.maxPetSlots = 3;
             if (!gameState.eggInventory) gameState.eggInventory = {};
             if (!gameState.shopStock || Object.keys(gameState.shopStock).length === 0) {
                 initializeStock();
@@ -11796,10 +11814,18 @@
             ownedContainer.innerHTML = '';
             
             const equippedCount = gameState.equippedPets ? gameState.equippedPets.length : 0;
-            ownedContainer.innerHTML = `<div class="equipped-header">Equipped (${equippedCount}/3)</div>`;
+            const maxSlots = gameState.maxPetSlots || 3;
             
-            // Show 3 slots
-            for (let i = 0; i < 3; i++) {
+            // Header with upgrade button if not maxed
+            let headerHtml = `<div class="equipped-header">Equipped (${equippedCount}/${maxSlots})`;
+            if (maxSlots < 5) {
+                headerHtml += ` <button class="pet-upgrade-btn" onclick="upgradePetSlots()">+2 slots ($100k)</button>`;
+            }
+            headerHtml += `</div>`;
+            ownedContainer.innerHTML = headerHtml;
+            
+            // Show slots based on maxPetSlots
+            for (let i = 0; i < maxSlots; i++) {
                 const petId = gameState.equippedPets && gameState.equippedPets[i];
                 const div = document.createElement('div');
                 div.className = 'equipped-slot' + (petId ? ' filled' : ' empty');
@@ -12000,8 +12026,9 @@
 
         function equipPet(petId) {
             if (!gameState.equippedPets) gameState.equippedPets = [];
-            if (gameState.equippedPets.length >= 3) {
-                showMessage('Unequip a pet first! (3 max) 🐾');
+            const maxSlots = gameState.maxPetSlots || 3;
+            if (gameState.equippedPets.length >= maxSlots) {
+                showMessage(`Unequip a pet first! (${maxSlots} max) 🐾`);
                 return;
             }
             // Check if we have an unequipped copy of this pet
@@ -12013,6 +12040,23 @@
                 showMessage(`${pet.emoji} ${pet.name} equipped!`);
                 renderPetShop();
             }
+        }
+
+        function upgradePetSlots() {
+            const cost = 100000;
+            if (gameState.maxPetSlots >= 5) {
+                showMessage('Pet slots already maxed! 🐾');
+                return;
+            }
+            if (gameState.money < cost) {
+                showMessage(`Need $${formatMoney(cost)} to upgrade pet slots!`);
+                return;
+            }
+            gameState.money -= cost;
+            gameState.maxPetSlots = 5;
+            showMessage('🐾 Pet slots upgraded to 5! 🐾');
+            updateDisplay();
+            renderPetShop();
         }
 
         function unequipPet(petId) {
