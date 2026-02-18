@@ -5518,6 +5518,17 @@
             0%, 100% { box-shadow: 0 0 15px rgba(148, 0, 211, 0.7), 0 0 30px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(138, 43, 226, 0.1); }
             50% { box-shadow: 0 0 25px rgba(148, 0, 211, 1), 0 0 50px rgba(0, 255, 255, 0.7), inset 0 0 20px rgba(138, 43, 226, 0.2); }
         }
+        
+        .shop-item.nocturnal-glow, .pet-slot.nocturnal-glow {
+            animation: nocturnal-pulse 2s ease-in-out infinite;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #1a1a3e, #4a0080, #1a1a3e) 1;
+        }
+        
+        @keyframes nocturnal-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(75, 0, 130, 0.7), 0 0 30px rgba(25, 25, 62, 0.6), inset 0 0 10px rgba(100, 0, 150, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(75, 0, 130, 1), 0 0 50px rgba(25, 25, 62, 0.9), inset 0 0 20px rgba(100, 0, 150, 0.2); }
+        }
 
         .shop-item.disabled {
             opacity: 0.5;
@@ -8895,6 +8906,62 @@
             box-shadow: 0 6px 20px rgba(0,255,255,0.7);
         }
         
+        /* Darkest Night Wheel */
+        .darkest-wheel .roulette-title {
+            color: #9400d3;
+            text-shadow: 0 0 20px rgba(148, 0, 211, 0.8), 0 0 40px rgba(0, 0, 0, 0.9);
+        }
+        
+        .darkest-wheel .wheel-pointer { color: #9400d3; }
+        
+        .darkest-wheel .wheel {
+            background: conic-gradient(
+                from 0deg,
+                #0a0a1a 0deg 36deg,
+                #1a0030 36deg 72deg,
+                #0a0a1a 72deg 108deg,
+                #1a0030 108deg 144deg,
+                #0a0a1a 144deg 180deg,
+                #1a0030 180deg 216deg,
+                #0a0a1a 216deg 252deg,
+                #1a0030 252deg 288deg,
+                #0a0a1a 288deg 324deg,
+                #1a0030 324deg 360deg
+            );
+            box-shadow: 
+                0 0 40px rgba(148, 0, 211, 0.6),
+                inset 0 0 30px rgba(0, 0, 0, 0.8),
+                0 0 80px rgba(75, 0, 130, 0.4);
+        }
+        
+        .darkest-wheel .wheel-center {
+            background: radial-gradient(circle, #1a0030, #0a0a1a);
+            box-shadow: 0 0 15px rgba(148, 0, 211, 0.8);
+        }
+        
+        .darkest-wheel .spin-btn {
+            background: linear-gradient(135deg, #1a0030, #4a0080);
+            box-shadow: 0 4px 15px rgba(148, 0, 211, 0.5);
+        }
+        
+        .darkest-wheel .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(148, 0, 211, 0.7);
+        }
+        
+        #darkest-modal {
+            background: radial-gradient(ellipse at center, rgba(10, 10, 26, 0.98), rgba(0, 0, 0, 0.99));
+        }
+        
+        #darkest-modal .wheels-intro h1 {
+            color: #9400d3;
+            text-shadow: 0 0 30px rgba(148, 0, 211, 0.8);
+        }
+        
+        #darkest-modal .wheels-intro p {
+            color: #b8b8d0;
+        }
+        
         .wheel.spinning {
             animation: wheel-wobble 0.1s ease-in-out;
         }
@@ -9208,6 +9275,36 @@
                             <button id="spin-futuristic" class="spin-btn" onclick="spinFuturistic()">🚀 SPIN 🚀</button>
                         </div>
                     </div>
+                    
+                    <!-- Darkest Night Wheel -->
+                    <div id="darkest-modal" class="roulette-modal hidden">
+                        <button class="close-roulette" onclick="closeDarkestWheel()">✕</button>
+                        <div class="wheels-intro">
+                            <h1>🌑 VOID ROULETTE 🌑</h1>
+                            <p>The darkness reveals its secrets - spin for powerful rewards!</p>
+                        </div>
+                        
+                        <div class="roulette-container darkest-wheel" style="margin: 0 auto;">
+                            <div class="roulette-title">🌌 REALM OF SHADOWS 🌌</div>
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer">▼</div>
+                                <div id="darkest-wheel" class="wheel">
+                                    <div class="wheel-segment" style="transform: rotate(-18deg)"><span style="font-size:24px;">🌑</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(18deg)"><span style="font-size:24px;">💀</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(54deg)"><span style="font-size:24px;">👁️</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(90deg)"><span style="font-size:24px;">🌙</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(126deg)"><span style="font-size:24px;">🥀</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(162deg)"><span style="font-size:24px;">🍈</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(198deg)"><span style="font-size:24px;">🌸</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(234deg)"><span style="font-size:24px;">🐈‍⬛</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(270deg)"><span style="font-size:24px;">🦉</span></div>
+                                    <div class="wheel-segment" style="transform: rotate(306deg)"><span style="font-size:24px;">🌌</span></div>
+                                    <div class="wheel-center">🌑</div>
+                                </div>
+                            </div>
+                            <button id="spin-darkest" class="spin-btn" onclick="spinDarkest()">🌑 SPIN THE VOID 🌑</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="instructions">
@@ -9350,7 +9447,11 @@
             plasmafruit: { name: 'Plasma Fruit', seedEmoji: '⚡', growEmoji: '⚡', seedPrice: 0, basePrice: 100000, growTime: 100, rarity: 'temporal', yield: 1, wheelOnly: true },
             nebulabloom: { name: 'Nebula Bloom', seedEmoji: '🌟', growEmoji: '🌌', seedPrice: 0, basePrice: 30000, growTime: 55, rarity: 'temporal', yield: [1, 4], regrows: true, wheelOnly: true },
             boneflower: { name: 'Bone Flower', seedEmoji: '☠️', growEmoji: '🌼', seedPrice: 0, basePrice: 300000, growTime: 75, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true },
-            techflower: { name: 'Tech Flower', seedEmoji: '🖥️', growEmoji: '🌺', seedPrice: 0, basePrice: 400000, growTime: 80, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true }
+            techflower: { name: 'Tech Flower', seedEmoji: '🖥️', growEmoji: '🌺', seedPrice: 0, basePrice: 400000, growTime: 80, rarity: 'temporal', yield: [1, 2], regrows: true, wheelOnly: true },
+            // Darkest Night crops (from darkest wheel only)
+            voidrose: { name: 'Void Rose', seedEmoji: '🥀', growEmoji: '🌹', seedPrice: 0, basePrice: 500000, growTime: 50, rarity: 'nocturnal', yield: [2, 4], wheelOnly: true },
+            shadowmelon: { name: 'Shadow Melon', seedEmoji: '🍈', growEmoji: '🌈', seedPrice: 0, basePrice: 1000000, growTime: 75, rarity: 'nocturnal', yield: [1, 2], wheelOnly: true },
+            moonlily: { name: 'Moon Lily', seedEmoji: '🌸', growEmoji: '🌕', seedPrice: 0, basePrice: 750000, growTime: 60, rarity: 'nocturnal', yield: [2, 3], regrows: true, wheelOnly: true }
         };
 
         const WEATHER = {
@@ -9414,6 +9515,20 @@
             { type: 'pet', petId: 'alienblob', emoji: '👾', name: 'Alien Blob', weight: 3 }
         ];
 
+        // Darkest Night wheel rewards (better than temporal wheels)
+        const DARKEST_WHEEL = [
+            { type: 'money', amount: 1000000, emoji: '🌑', name: 'Void Treasure', weight: 15 },
+            { type: 'money', amount: 5000000, emoji: '💀', name: 'Shadow Fortune', weight: 10 },
+            { type: 'money', amount: 25000000, emoji: '👁️', name: 'Eldritch Riches', weight: 5 },
+            { type: 'mutation', mutation: 'nightglow', count: 5, emoji: '🌙', name: 'Nightglow Blessing (5 crops)', weight: 12 },
+            { type: 'seed', seedId: 'voidrose', count: 3, emoji: '🥀', name: 'Void Rose Seeds', weight: 10 },
+            { type: 'seed', seedId: 'shadowmelon', count: 2, emoji: '🍈', name: 'Shadow Melon Seeds', weight: 10 },
+            { type: 'seed', seedId: 'moonlily', count: 2, emoji: '🌸', name: 'Moon Lily Seeds', weight: 10 },
+            { type: 'pet', petId: 'shadowcat', emoji: '🐈‍⬛', name: 'Shadow Cat', weight: 8 },
+            { type: 'pet', petId: 'nightowl', emoji: '🦉', name: 'Night Owl', weight: 6 },
+            { type: 'jackpot', amount: 100000000, emoji: '🌌', name: 'VOID JACKPOT!', weight: 2 }
+        ];
+
         const SIZES = [
             { name: 'Tiny', multiplier: 0.5, scale: 0.6 },
             { name: 'Small', multiplier: 0.75, scale: 0.8 },
@@ -9448,7 +9563,10 @@
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
             cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
-            alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true }
+            alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
+            // Darkest Night pets
+            shadowcat: { name: 'Shadow Cat', emoji: '🐈‍⬛', price: 0, ability: 'Shadow Step', description: 'Double nightglow mutation chance', effect: 'shadowstep', rarity: 'nocturnal', wheelOnly: true },
+            nightowl: { name: 'Night Owl', emoji: '🦉', price: 0, ability: 'Night Vision', description: '+25% crop value at night', effect: 'nightvision', rarity: 'nocturnal', wheelOnly: true }
         };
 
         const GEAR = {
@@ -9504,6 +9622,7 @@
             if (type === 'value') {
                 if (hasPetEffect('value')) multiplier += 0.15;
                 if (hasPetEffect('all')) multiplier += 0.075;
+                if (hasPetEffect('nightvision') && gameState.isNight) multiplier += 0.25; // Night Owl: +25% at night
             }
             if (type === 'speed') {
                 if (hasPetEffect('speed')) multiplier += 0.15;
@@ -9549,6 +9668,7 @@
             lastChatMsgId: 0, // track last seen chat message ID
             isNight: false, // day/night cycle
             isDarkestNight: false, // rare darkest night event
+            darkestWheelSpun: false, // track if darkest wheel was spun this darkest night
             dayNightTimer: 0 // timer for day/night changes
         };
 
@@ -11435,7 +11555,9 @@
                 // 5% chance for darkest night when switching to night
                 if (gameState.isNight && Math.random() < 0.05) {
                     gameState.isDarkestNight = true;
-                    showMessage('🌑 The Darkest Night has fallen... (+10% nightglow chance)');
+                    gameState.darkestWheelSpun = false; // Reset wheel for new darkest night
+                    showMessage('🌑 The Darkest Night has fallen! Spin the Void Wheel!');
+                    setTimeout(() => showDarkestWheel(), 1000);
                 } else {
                     gameState.isDarkestNight = false;
                 }
@@ -11488,7 +11610,8 @@
                         }
                         
                         // Chance to gain nightglow mutation at night (2% normal, 12% darkest night)
-                        const nightglowChance = gameState.isDarkestNight ? 0.12 : 0.02;
+                        let nightglowChance = gameState.isDarkestNight ? 0.12 : 0.02;
+                        if (hasPetEffect('shadowstep')) nightglowChance *= 2; // Shadow Cat doubles nightglow chance
                         if (gameState.isNight && Math.random() < nightglowChance) {
                             if (!plot.mutations) plot.mutations = [];
                             if (!plot.mutations.includes('nightglow')) {
@@ -12035,6 +12158,98 @@
         
         function spinFuturistic() {
             spinWheel('futuristic', FUTURISTIC_WHEEL);
+        }
+        
+        function spinDarkest() {
+            const wheel = document.getElementById('darkest-wheel');
+            const btn = document.getElementById('spin-darkest');
+            
+            if (gameState.darkestWheelSpun) return;
+            
+            btn.disabled = true;
+            gameState.darkestWheelSpun = true;
+            
+            // Select reward
+            const reward = selectWheelReward(DARKEST_WHEEL);
+            const rewardIndex = DARKEST_WHEEL.indexOf(reward);
+            
+            // Calculate spin angle
+            const segmentAngle = 36;
+            const baseSpins = 6; // More spins for dramatic effect
+            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
+            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18;
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Show reward after spin completes
+            setTimeout(() => {
+                const rewardText = giveDarkestReward(reward);
+                showDarkestRewardPopup(reward, rewardText);
+                renderInventory();
+                renderPets();
+            }, 4500);
+        }
+        
+        function giveDarkestReward(reward) {
+            switch (reward.type) {
+                case 'money':
+                    gameState.money += reward.amount;
+                    return `+$${formatMoney(reward.amount)}`;
+                case 'jackpot':
+                    gameState.money += reward.amount;
+                    return `JACKPOT! +$${formatMoney(reward.amount)}`;
+                case 'seed':
+                    if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
+                    gameState.seeds[reward.seedId] += reward.count;
+                    return `+${reward.count} ${reward.name}`;
+                case 'pet':
+                    if (!gameState.eggInventory) gameState.eggInventory = {};
+                    if (!gameState.eggInventory[reward.petId]) gameState.eggInventory[reward.petId] = 0;
+                    gameState.eggInventory[reward.petId]++;
+                    return `${reward.name} Egg!`;
+                case 'mutation':
+                    // Apply nightglow to random growing crops
+                    let applied = 0;
+                    const growingPlots = gameState.plots.map((p, i) => ({plot: p, index: i})).filter(p => p.plot && !p.plot.isEgg && p.plot.growth < CROPS[p.plot.type].growTime);
+                    for (let i = 0; i < reward.count && growingPlots.length > 0; i++) {
+                        const randIdx = Math.floor(Math.random() * growingPlots.length);
+                        const {plot} = growingPlots.splice(randIdx, 1)[0];
+                        if (!plot.mutations) plot.mutations = [];
+                        if (!plot.mutations.includes('nightglow')) {
+                            plot.mutations.push('nightglow');
+                            applied++;
+                        }
+                    }
+                    return `Nightglow applied to ${applied} crops!`;
+                default:
+                    return reward.name;
+            }
+        }
+        
+        function showDarkestRewardPopup(reward, rewardText) {
+            const existing = document.querySelector('.reward-popup');
+            if (existing) existing.remove();
+            
+            const popup = document.createElement('div');
+            popup.className = 'reward-popup darkest';
+            popup.innerHTML = `
+                <h2>🌑 Void Reward! 🌑</h2>
+                <div class="reward-emoji">${reward.emoji}</div>
+                <div class="reward-text">${rewardText}</div>
+                <button onclick="this.parentElement.remove(); closeDarkestWheel();">Embrace the Dark!</button>
+            `;
+            popup.style.background = 'linear-gradient(135deg, #0a0a1a, #1a0030)';
+            popup.style.borderColor = '#9400d3';
+            document.body.appendChild(popup);
+        }
+        
+        function showDarkestWheel() {
+            document.getElementById('darkest-modal').classList.remove('hidden');
+            document.getElementById('spin-darkest').disabled = gameState.darkestWheelSpun;
+        }
+        
+        function closeDarkestWheel() {
+            document.getElementById('darkest-modal').classList.add('hidden');
         }
         
         function showRewardPopup(reward, rewardText, wheelType) {
