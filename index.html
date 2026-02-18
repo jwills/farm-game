@@ -13282,14 +13282,24 @@
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
             // Show reward when spin animation completes
-            const onSpinEnd = () => {
-                wheel.removeEventListener('transitionend', onSpinEnd);
+            let rewardGiven = false;
+            const giveRewardOnce = () => {
+                if (rewardGiven) return;
+                rewardGiven = true;
                 const rewardText = giveReward(reward, wheelType);
                 showRewardPopup(reward, rewardText, wheelType);
                 renderInventory();
                 renderPets();
             };
+            const onSpinEnd = (e) => {
+                if (e.propertyName === 'transform') {
+                    wheel.removeEventListener('transitionend', onSpinEnd);
+                    giveRewardOnce();
+                }
+            };
             wheel.addEventListener('transitionend', onSpinEnd);
+            // Fallback timeout in case transitionend doesn't fire
+            setTimeout(giveRewardOnce, 4100);
         }
         
         function spinPrehistoric() {
@@ -13322,14 +13332,24 @@
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
             // Show reward when spin animation completes
-            const onSpinEnd = () => {
-                wheel.removeEventListener('transitionend', onSpinEnd);
+            let rewardGiven = false;
+            const giveRewardOnce = () => {
+                if (rewardGiven) return;
+                rewardGiven = true;
                 const rewardText = giveDarkestReward(reward);
                 showDarkestRewardPopup(reward, rewardText);
                 renderInventory();
                 renderPets();
             };
+            const onSpinEnd = (e) => {
+                if (e.propertyName === 'transform') {
+                    wheel.removeEventListener('transitionend', onSpinEnd);
+                    giveRewardOnce();
+                }
+            };
             wheel.addEventListener('transitionend', onSpinEnd);
+            // Fallback timeout in case transitionend doesn't fire
+            setTimeout(giveRewardOnce, 4100);
         }
         
         function giveDarkestReward(reward) {
