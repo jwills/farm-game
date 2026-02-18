@@ -9600,7 +9600,16 @@
                 grid-template-columns: 1fr;
             }
             .farm-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+            .farm-grid.expanded-1 {
+                grid-template-columns: repeat(5, 1fr) !important;
+            }
+            .farm-grid.expanded-2 {
+                grid-template-columns: repeat(6, 1fr) !important;
+            }
+            .farm-grid.expanded-3 {
+                grid-template-columns: repeat(8, 1fr) !important;
             }
         }
         
