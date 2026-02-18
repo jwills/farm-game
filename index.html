@@ -11558,8 +11558,8 @@
             gameState.dayNightTimer--;
             if (gameState.dayNightTimer <= 0) {
                 gameState.isNight = !gameState.isNight;
-                // 5% chance for darkest night when switching to night
-                if (gameState.isNight && Math.random() < 0.05) {
+                // 2.5% chance for darkest night when switching to night
+                if (gameState.isNight && Math.random() < 0.025) {
                     gameState.isDarkestNight = true;
                     gameState.darkestWheelSpun = false; // Reset wheel for new darkest night
                     showMessage('🌑 The Darkest Night has fallen! Spin the Void Wheel!');
