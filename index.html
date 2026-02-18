@@ -12248,6 +12248,11 @@
         }
         
         function applyNeighborhoodWeather(newWeather, weatherUntil) {
+            // Don't allow sunny at night, even from server
+            if (gameState.isNight && newWeather === 'sunny') {
+                newWeather = 'rainy'; // Default to rainy instead
+            }
+            
             const oldWeather = gameState.currentWeather;
             
             // Reset time wheels when leaving time anomaly
@@ -12309,6 +12314,11 @@
                 // Use rainy at night since sunny can't happen at night
                 gameState.currentWeather = gameState.isNight ? 'rainy' : 'sunny';
                 return updateWeatherDisplay();
+            }
+            // Final safety check: never display sunny at night
+            if (gameState.isNight && gameState.currentWeather === 'sunny') {
+                changeWeatherLocal();
+                return;
             }
             document.getElementById('weather-display').innerHTML = `${weather.emoji} ${weather.name}`;
             updateWeatherEffects();
