@@ -11767,6 +11767,10 @@
                 } else {
                     gameState.isDarkestNight = false;
                 }
+                // If it becomes night while sunny, change weather
+                if (gameState.isNight && gameState.currentWeather === 'sunny') {
+                    changeWeather();
+                }
                 gameState.dayNightTimer = 60; // 60 seconds per cycle
                 updateDayNightDisplay();
             }
@@ -11964,7 +11968,10 @@
             
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'timeanomaly');
             // Sunny is more common, special weathers are very rare
-            const weighted = ['sunny', 'sunny', 'sunny', ...weathers];
+            // But sunny can't happen at night - use 'clear' night weathers instead
+            const weighted = gameState.isNight 
+                ? weathers.filter(w => w !== 'sunny')
+                : ['sunny', 'sunny', 'sunny', ...weathers];
             const roll = Math.random();
             
             // 2% chance for Time Anomaly
