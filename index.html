@@ -79,6 +79,17 @@
             border-radius: 10px;
         }
 
+        .stat.book-btn {
+            cursor: pointer;
+            font-size: 1.4rem;
+            padding: 5px 12px;
+            transition: all 0.2s;
+        }
+        .stat.book-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
         .main-area {
             display: grid;
             grid-template-columns: 1fr 300px;
@@ -4166,6 +4177,338 @@
             50% { opacity: 0.9; transform: translateX(-50%) scale(1.2); }
         }
 
+        /* Void Rose - dark withered rose with purple glow */
+        .plant-model.crop-voidrose .plant-stem { 
+            background: linear-gradient(to top, #1a0a1a, #2d1f2d, #3d2a3d); 
+            width: 4px; 
+            border-radius: 1px;
+        }
+        .plant-model.crop-voidrose .plant-leaf { 
+            background: linear-gradient(135deg, #2d1f2d, #4a3a4a); 
+            width: 7px; height: 5px; border-radius: 50%;
+        }
+        .plant-model.crop-voidrose.stage-1 .plant-stem { height: 5px; width: 2px; }
+        .plant-model.crop-voidrose.stage-2 .plant-stem { height: 12px; width: 3px; }
+        .plant-model.crop-voidrose.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-voidrose.stage-3 .plant-stem { height: 20px; width: 4px; }
+        .plant-model.crop-voidrose.stage-3 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-voidrose.stage-4 .plant-stem { height: 28px; width: 5px; }
+        .plant-model.crop-voidrose.stage-4 .plant-leaves { bottom: 22px; }
+        
+        /* Void Rose fruit - dark rose with purple aura */
+        .crop-voidrose .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-voidrose.stage-4 .plant-fruit {
+            width: 35px; height: 30px;
+            background: transparent;
+            position: absolute;
+            bottom: 20px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-voidrose.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 22px; height: 18px;
+            top: 0; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(ellipse at center, 
+                #4a0a30 0%, 
+                #2d0520 40%, 
+                #1a0312 100%);
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8), 
+                        0 0 40px rgba(75, 0, 75, 0.6),
+                        inset 0 3px 10px rgba(200, 0, 128, 0.4);
+            animation: voidRoseGlow 2s ease-in-out infinite;
+        }
+        /* Rose petals */
+        .crop-voidrose.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 28px; height: 20px;
+            top: -3px; left: 50%; transform: translateX(-50%);
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: 
+                -8px 2px 0 -4px #3d0825,
+                8px 2px 0 -4px #3d0825,
+                -5px -4px 0 -4px #2d0520,
+                5px -4px 0 -4px #2d0520,
+                0px -6px 0 -3px #4a0a30;
+        }
+        @keyframes voidRoseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(128, 0, 128, 0.8), 0 0 40px rgba(75, 0, 75, 0.6), inset 0 3px 10px rgba(200, 0, 128, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(148, 0, 168, 1), 0 0 60px rgba(100, 0, 100, 0.8), inset 0 3px 15px rgba(220, 0, 148, 0.6); filter: brightness(1.2); }
+        }
+        /* Void mist around rose */
+        .plant-model.crop-voidrose.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 45px; height: 45px;
+            background: radial-gradient(circle, rgba(128,0,128,0.3) 0%, rgba(75,0,75,0.15) 50%, transparent 70%);
+            bottom: 15px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: voidMist 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes voidMist {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Shadow Melon - dark purple melon with shadowy aura */
+        .plant-model.crop-shadowmelon .plant-stem { 
+            background: linear-gradient(to top, #1a1a2e, #2a2a4a, #3a3a5a); 
+            width: 6px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-shadowmelon .plant-leaf { 
+            background: linear-gradient(135deg, #2a2a4a, #4a4a6a); 
+            width: 10px; height: 6px; border-radius: 50%;
+        }
+        .plant-model.crop-shadowmelon.stage-1 .plant-stem { height: 4px; width: 3px; }
+        .plant-model.crop-shadowmelon.stage-2 .plant-stem { height: 10px; width: 5px; }
+        .plant-model.crop-shadowmelon.stage-2 .plant-leaves { bottom: 8px; }
+        .plant-model.crop-shadowmelon.stage-3 .plant-stem { height: 16px; width: 6px; }
+        .plant-model.crop-shadowmelon.stage-3 .plant-leaves { bottom: 13px; }
+        .plant-model.crop-shadowmelon.stage-4 .plant-stem { height: 10px; width: 7px; }
+        .plant-model.crop-shadowmelon.stage-4 .plant-leaves { bottom: 8px; opacity: 0.5; }
+        
+        /* Shadow Melon fruit - large dark melon sitting on ground */
+        .crop-shadowmelon .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-shadowmelon.stage-4 .plant-fruit {
+            width: 45px; height: 35px;
+            background: transparent;
+            position: absolute;
+            bottom: 2px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-shadowmelon.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 38px; height: 28px;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(180deg, 
+                #2a1a3a 0%, 
+                #1a0a2a 30%, 
+                #0d051a 70%,
+                #1a0a2a 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(75, 0, 130, 0.7), 
+                        0 0 50px rgba(50, 0, 80, 0.5),
+                        inset 5px -5px 15px rgba(100, 50, 150, 0.3),
+                        inset -5px 5px 15px rgba(0, 0, 20, 0.5);
+            animation: shadowMelonGlow 2.5s ease-in-out infinite;
+        }
+        /* Shadow stripes */
+        .crop-shadowmelon.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 38px; height: 28px;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            background: repeating-linear-gradient(90deg, 
+                transparent 0px, transparent 5px, 
+                rgba(0,0,0,0.3) 5px, rgba(0,0,0,0.3) 7px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        @keyframes shadowMelonGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(75, 0, 130, 0.7), 0 0 50px rgba(50, 0, 80, 0.5), inset 5px -5px 15px rgba(100, 50, 150, 0.3), inset -5px 5px 15px rgba(0, 0, 20, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(100, 0, 160, 0.9), 0 0 70px rgba(75, 0, 120, 0.7), inset 5px -5px 20px rgba(130, 70, 180, 0.4), inset -5px 5px 20px rgba(0, 0, 30, 0.6); }
+        }
+        /* Shadow aura particles */
+        .plant-model.crop-shadowmelon.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 55px; height: 40px;
+            background: radial-gradient(ellipse at center, rgba(75,0,130,0.2) 0%, rgba(50,0,80,0.1) 50%, transparent 70%);
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: shadowAura 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes shadowAura {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Moon Tree - silver trunk with glowing moon fruit */
+        .plant-model.crop-moontree .plant-stem { 
+            background: linear-gradient(to top, #4a4a5a, #6a6a7a, #8a8a9a); 
+            width: 8px; 
+            border-radius: 3px;
+        }
+        .plant-model.crop-moontree .plant-leaf { 
+            background: linear-gradient(135deg, #c0c0d0, #a0a0b0); 
+            width: 12px; height: 7px; border-radius: 50%;
+        }
+        .plant-model.crop-moontree.stage-1 .plant-stem { height: 6px; width: 4px; }
+        .plant-model.crop-moontree.stage-2 .plant-stem { height: 14px; width: 6px; }
+        .plant-model.crop-moontree.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-moontree.stage-3 .plant-stem { height: 24px; width: 7px; }
+        .plant-model.crop-moontree.stage-3 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-moontree.stage-4 .plant-stem { height: 35px; width: 9px; }
+        .plant-model.crop-moontree.stage-4 .plant-leaves { bottom: 28px; }
+        
+        /* Moon Tree fruit - glowing moon orb */
+        .crop-moontree .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-moontree.stage-4 .plant-fruit {
+            width: 40px; height: 40px;
+            background: transparent;
+            position: absolute;
+            bottom: 28px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        .crop-moontree.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 26px; height: 26px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(circle at 35% 35%, 
+                #ffffff 0%, 
+                #f0f0ff 20%, 
+                #d0d0e0 50%, 
+                #a0a0b0 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(200, 200, 255, 0.9), 
+                        0 0 50px rgba(150, 150, 200, 0.7),
+                        0 0 80px rgba(100, 100, 150, 0.5),
+                        inset -3px -3px 10px rgba(150, 150, 180, 0.5);
+            animation: moonGlow 3s ease-in-out infinite;
+        }
+        /* Moon craters */
+        .crop-moontree.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 26px; height: 26px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: 
+                inset 4px 4px 2px -2px rgba(180,180,200,0.4),
+                inset 8px 10px 2px -2px rgba(160,160,180,0.3),
+                inset 12px 5px 3px -3px rgba(170,170,190,0.35);
+        }
+        @keyframes moonGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(200, 200, 255, 0.9), 0 0 50px rgba(150, 150, 200, 0.7), 0 0 80px rgba(100, 100, 150, 0.5), inset -3px -3px 10px rgba(150, 150, 180, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(220, 220, 255, 1), 0 0 70px rgba(180, 180, 220, 0.9), 0 0 100px rgba(130, 130, 180, 0.7), inset -3px -3px 15px rgba(170, 170, 200, 0.6); filter: brightness(1.15); }
+        }
+        /* Moonlight rays */
+        .plant-model.crop-moontree.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(200,200,255,0.3) 0%, rgba(150,150,200,0.15) 40%, transparent 70%);
+            bottom: 22px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: moonlightPulse 4s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes moonlightPulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+
+        /* Void Lily - otherworldly dark flower with portal-like center */
+        .plant-model.crop-voidlily .plant-stem { 
+            background: linear-gradient(to top, #0a0a15, #15152a, #20203f); 
+            width: 5px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-voidlily .plant-leaf { 
+            background: linear-gradient(135deg, #15152a, #2a2a4f); 
+            width: 9px; height: 5px; border-radius: 50%;
+        }
+        .plant-model.crop-voidlily.stage-1 .plant-stem { height: 4px; width: 2px; }
+        .plant-model.crop-voidlily.stage-2 .plant-stem { height: 10px; width: 3px; }
+        .plant-model.crop-voidlily.stage-2 .plant-leaves { bottom: 8px; }
+        .plant-model.crop-voidlily.stage-3 .plant-stem { height: 18px; width: 4px; }
+        .plant-model.crop-voidlily.stage-3 .plant-leaves { bottom: 15px; }
+        .plant-model.crop-voidlily.stage-4 .plant-stem { height: 30px; width: 6px; }
+        .plant-model.crop-voidlily.stage-4 .plant-leaves { bottom: 24px; }
+        
+        /* Void Lily flower - swirling portal with dark petals */
+        .crop-voidlily .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-voidlily.stage-4 .plant-fruit {
+            width: 50px; height: 50px;
+            background: transparent;
+            position: absolute;
+            bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            z-index: 2;
+        }
+        /* Void portal center */
+        .crop-voidlily.stage-4 .plant-fruit::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 20px; height: 20px;
+            top: 12px; left: 50%; transform: translateX(-50%);
+            background: radial-gradient(circle, 
+                #000000 0%, 
+                #0a0020 30%, 
+                #150040 60%,
+                #200060 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(100, 0, 200, 0.9), 
+                        0 0 60px rgba(75, 0, 150, 0.7),
+                        0 0 90px rgba(50, 0, 100, 0.5),
+                        inset 0 0 15px rgba(150, 0, 255, 0.8);
+            animation: voidPortal 2s linear infinite, voidPulse 3s ease-in-out infinite;
+        }
+        /* Void petals */
+        .crop-voidlily.stage-4 .plant-fruit::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 40px; height: 40px;
+            top: 2px; left: 50%; transform: translateX(-50%);
+            background: conic-gradient(from 0deg, 
+                #1a0040 0deg, transparent 30deg,
+                #1a0040 60deg, transparent 90deg,
+                #1a0040 120deg, transparent 150deg,
+                #1a0040 180deg, transparent 210deg,
+                #1a0040 240deg, transparent 270deg,
+                #1a0040 300deg, transparent 330deg);
+            border-radius: 50%;
+            animation: voidPetals 8s linear infinite;
+            opacity: 0.8;
+        }
+        @keyframes voidPortal {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes voidPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(100, 0, 200, 0.9), 0 0 60px rgba(75, 0, 150, 0.7), 0 0 90px rgba(50, 0, 100, 0.5), inset 0 0 15px rgba(150, 0, 255, 0.8); }
+            50% { box-shadow: 0 0 50px rgba(130, 0, 255, 1), 0 0 90px rgba(100, 0, 200, 0.9), 0 0 120px rgba(75, 0, 150, 0.7), inset 0 0 25px rgba(180, 0, 255, 1); transform: translateX(-50%) scale(1.1); }
+        }
+        @keyframes voidPetals {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(-360deg); }
+        }
+        /* Void energy particles */
+        .plant-model.crop-voidlily.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(100,0,200,0.4) 0%, rgba(50,0,100,0.2) 40%, transparent 70%);
+            bottom: 17px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: voidEnergy 2s ease-in-out infinite;
+            z-index: 1;
+        }
+        @keyframes voidEnergy {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.25); }
+        }
+
         /* Heaven Tear - celestial teardrop crystal */
         .plant-model.crop-heaventear .plant-stem { 
             background: linear-gradient(to top, #e0e8ff, #c8d8ff, #f0f8ff); 
@@ -6490,6 +6833,143 @@
             50% { box-shadow: 0 0 20px rgba(150, 0, 0, 1), inset 0 -3px 12px rgba(255, 50, 0, 0.6); transform: translateX(-50%) scale(1.05); }
         }
 
+        /* Void Rose - dark withered rose */
+        .crop-icon.voidrose::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: radial-gradient(ellipse at center, 
+                #4a0a30 0%, 
+                #2d0520 50%, 
+                #1a0312 100%);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(128, 0, 128, 0.8), 
+                        0 0 25px rgba(75, 0, 75, 0.5),
+                        inset 0 2px 6px rgba(200, 0, 128, 0.3);
+            animation: voidRoseIconGlow 2s ease-in-out infinite;
+        }
+        .crop-icon.voidrose::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 10px;
+            background: linear-gradient(to top, #1a0a1a, #2d1f2d);
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            border-radius: 1px;
+        }
+        @keyframes voidRoseIconGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(128, 0, 128, 0.8), 0 0 25px rgba(75, 0, 75, 0.5), inset 0 2px 6px rgba(200, 0, 128, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(148, 0, 168, 1), 0 0 40px rgba(100, 0, 100, 0.7), inset 0 2px 10px rgba(220, 0, 148, 0.5); filter: brightness(1.2); }
+        }
+
+        /* Shadow Melon - dark purple melon */
+        .crop-icon.shadowmelon::before {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: linear-gradient(180deg, 
+                #2a1a3a 0%, 
+                #1a0a2a 40%, 
+                #0d051a 100%);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 18px rgba(75, 0, 130, 0.7), 
+                        0 0 30px rgba(50, 0, 80, 0.5),
+                        inset 3px -3px 10px rgba(100, 50, 150, 0.3);
+            animation: shadowMelonIconGlow 2.5s ease-in-out infinite;
+        }
+        .crop-icon.shadowmelon::after {
+            content: '';
+            position: absolute;
+            width: 22px; height: 16px;
+            background: repeating-linear-gradient(90deg, 
+                transparent 0px, transparent 3px, 
+                rgba(0,0,0,0.25) 3px, rgba(0,0,0,0.25) 5px);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+        }
+        @keyframes shadowMelonIconGlow {
+            0%, 100% { box-shadow: 0 0 18px rgba(75, 0, 130, 0.7), 0 0 30px rgba(50, 0, 80, 0.5), inset 3px -3px 10px rgba(100, 50, 150, 0.3); }
+            50% { box-shadow: 0 0 28px rgba(100, 0, 160, 0.9), 0 0 45px rgba(75, 0, 120, 0.7), inset 3px -3px 15px rgba(130, 70, 180, 0.4); }
+        }
+
+        /* Moon Tree - glowing moon orb */
+        .crop-icon.moontree::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: radial-gradient(circle at 35% 35%, 
+                #ffffff 0%, 
+                #f0f0ff 25%, 
+                #d0d0e0 60%, 
+                #a0a0b0 100%);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 18px rgba(200, 200, 255, 0.9), 
+                        0 0 35px rgba(150, 150, 200, 0.6),
+                        inset -2px -2px 6px rgba(150, 150, 180, 0.4);
+            animation: moonTreeIconGlow 3s ease-in-out infinite;
+        }
+        .crop-icon.moontree::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: transparent;
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 
+                inset 3px 3px 1px -1px rgba(180,180,200,0.3),
+                inset 6px 7px 1px -1px rgba(160,160,180,0.25);
+        }
+        @keyframes moonTreeIconGlow {
+            0%, 100% { box-shadow: 0 0 18px rgba(200, 200, 255, 0.9), 0 0 35px rgba(150, 150, 200, 0.6), inset -2px -2px 6px rgba(150, 150, 180, 0.4); }
+            50% { box-shadow: 0 0 28px rgba(220, 220, 255, 1), 0 0 50px rgba(180, 180, 220, 0.8), inset -2px -2px 10px rgba(170, 170, 200, 0.5); filter: brightness(1.1); }
+        }
+
+        /* Void Lily - swirling portal flower */
+        .crop-icon.voidlily::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 16px;
+            background: radial-gradient(circle, 
+                #000000 0%, 
+                #0a0020 30%, 
+                #150040 70%,
+                #200060 100%);
+            border-radius: 50%;
+            bottom: 7px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(100, 0, 200, 0.9), 
+                        0 0 40px rgba(75, 0, 150, 0.6),
+                        inset 0 0 10px rgba(150, 0, 255, 0.7);
+            animation: voidLilyIconGlow 2s ease-in-out infinite, voidLilyIconSpin 4s linear infinite;
+        }
+        .crop-icon.voidlily::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            background: conic-gradient(from 0deg, 
+                #1a0040 0deg, transparent 40deg,
+                #1a0040 90deg, transparent 130deg,
+                #1a0040 180deg, transparent 220deg,
+                #1a0040 270deg, transparent 310deg);
+            border-radius: 50%;
+            bottom: 3px; left: 50%; transform: translateX(-50%);
+            animation: voidLilyPetals 6s linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes voidLilyIconGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(100, 0, 200, 0.9), 0 0 40px rgba(75, 0, 150, 0.6), inset 0 0 10px rgba(150, 0, 255, 0.7); }
+            50% { box-shadow: 0 0 35px rgba(130, 0, 255, 1), 0 0 60px rgba(100, 0, 200, 0.8), inset 0 0 18px rgba(180, 0, 255, 0.9); }
+        }
+        @keyframes voidLilyIconSpin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+        @keyframes voidLilyPetals {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(-360deg); }
+        }
+
         /* Heaven Tear - crystalline teardrop */
         .crop-icon.heaventear::before {
             content: '';
@@ -8648,6 +9128,193 @@
             75% { clip-path: inset(80% 0 5% 0); filter: hue-rotate(270deg); }
         }
 
+        /* Crop Journal Modal */
+        .journal-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        .journal-modal.hidden {
+            display: none;
+        }
+        .journal-book {
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            max-height: 700px;
+            background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #4a3728 100%);
+            border-radius: 10px 20px 20px 10px;
+            box-shadow: 
+                0 0 50px rgba(0,0,0,0.5),
+                inset 0 0 20px rgba(0,0,0,0.3),
+                5px 5px 15px rgba(0,0,0,0.4);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 3px solid #5D4037;
+        }
+        .journal-book::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #3E2723, #5D4037, #3E2723);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+        }
+        .journal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: #D7CCC8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 50%;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+        .journal-close:hover {
+            background: rgba(0,0,0,0.5);
+            color: white;
+        }
+        .journal-cover {
+            padding: 20px 20px 15px 55px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 100%);
+            border-bottom: 2px solid #5D4037;
+        }
+        .journal-title {
+            font-size: 2rem;
+            color: #FFD54F;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+        .journal-subtitle {
+            color: #D7CCC8;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .journal-stats {
+            color: #FFCC80;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: flex;
+            gap: 20px;
+        }
+        .journal-pages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 20px 20px 55px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            align-content: start;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+        }
+        .journal-pages::-webkit-scrollbar {
+            width: 10px;
+        }
+        .journal-pages::-webkit-scrollbar-track {
+            background: #D7CCC8;
+            border-radius: 5px;
+        }
+        .journal-pages::-webkit-scrollbar-thumb {
+            background: #8D6E63;
+            border-radius: 5px;
+        }
+        .journal-entry {
+            background: #FFFDE7;
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #E0E0E0;
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .journal-entry.discovered {
+            border-color: #81C784;
+            cursor: pointer;
+        }
+        .journal-entry.discovered:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .journal-entry.undiscovered {
+            background: #ECEFF1;
+            border-color: #B0BEC5;
+        }
+        .journal-entry-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+        }
+        .journal-entry.undiscovered .journal-entry-icon {
+            background: #CFD8DC;
+            color: #90A4AE;
+            font-size: 1.5rem;
+        }
+        .journal-entry-name {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #5D4037;
+            margin-bottom: 4px;
+        }
+        .journal-entry.undiscovered .journal-entry-name {
+            color: #90A4AE;
+        }
+        .journal-entry-info {
+            font-size: 0.65rem;
+            color: #8D6E63;
+        }
+        .journal-entry.undiscovered .journal-entry-info {
+            color: #B0BEC5;
+        }
+        .journal-entry-rarity {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .journal-entry-count {
+            font-size: 0.6rem;
+            color: #66BB6A;
+            margin-top: 4px;
+        }
+        .journal-category {
+            grid-column: 1 / -1;
+            background: linear-gradient(90deg, #8D6E63, transparent);
+            color: #FFF8E1;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        .journal-category:first-child {
+            margin-top: 0;
+        }
+
         /* Time Roulette Wheels */
         .roulette-modal {
             position: fixed;
@@ -9684,6 +10351,7 @@
                 <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
+                <div class="stat book-btn" onclick="openCropJournal()" title="Crop Journal">📚</div>
             </div>
         </header>
 
@@ -9904,6 +10572,19 @@
                     <div class="shop-items" id="gear-shop-items"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Crop Journal Modal -->
+    <div id="crop-journal-modal" class="journal-modal hidden">
+        <div class="journal-book">
+            <button class="journal-close" onclick="closeCropJournal()">✕</button>
+            <div class="journal-cover">
+                <div class="journal-title">📖 Crop Journal</div>
+                <div class="journal-subtitle">A record of your harvests</div>
+                <div class="journal-stats" id="journal-stats"></div>
+            </div>
+            <div class="journal-pages" id="journal-pages"></div>
         </div>
     </div>
 
@@ -10223,7 +10904,8 @@
             isNight: false, // day/night cycle
             isDarkestNight: false, // rare darkest night event
             darkestWheelSpun: false, // track if darkest wheel was spun this darkest night
-            dayNightTimer: 0 // timer for day/night changes
+            dayNightTimer: 0, // timer for day/night changes
+            discoveredCrops: {} // track discovered crops: { cropId: { count: number, firstHarvest: timestamp } }
         };
 
         // Stock settings per rarity
@@ -10537,7 +11219,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
@@ -11270,6 +11952,12 @@
                 const sizeIndex = getRandomSize();
                 gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
                 gameState.totalHarvested++;
+                
+                // Track discovery in crop journal
+                if (!gameState.discoveredCrops[plot.type]) {
+                    gameState.discoveredCrops[plot.type] = { count: 0, firstHarvest: Date.now() };
+                }
+                gameState.discoveredCrops[plot.type].count++;
             }
             
             const sizeText = actualYield > 1 ? `${actualYield}x ` : '';
@@ -12651,6 +13339,109 @@
         
         function closeRouletteWheels() {
             document.getElementById('roulette-modal').classList.add('hidden');
+        }
+
+        function openCropJournal() {
+            const modal = document.getElementById('crop-journal-modal');
+            modal.classList.remove('hidden');
+            renderCropJournal();
+        }
+
+        function closeCropJournal() {
+            document.getElementById('crop-journal-modal').classList.add('hidden');
+        }
+
+        function renderCropJournal() {
+            const pagesEl = document.getElementById('journal-pages');
+            const statsEl = document.getElementById('journal-stats');
+            
+            const allCrops = Object.keys(CROPS);
+            const discovered = Object.keys(gameState.discoveredCrops || {});
+            const totalDiscovered = discovered.length;
+            const totalCrops = allCrops.length;
+            const totalHarvested = Object.values(gameState.discoveredCrops || {}).reduce((sum, c) => sum + c.count, 0);
+            
+            statsEl.innerHTML = `
+                <span>🌱 Discovered: ${totalDiscovered}/${totalCrops}</span>
+                <span>🌾 Total Harvested: ${formatNumber(totalHarvested)}</span>
+                <span>✅ Completion: ${Math.round(totalDiscovered/totalCrops*100)}%</span>
+            `;
+            
+            // Group crops by rarity
+            const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythic', 'demonic', 'celestial', 'nocturnal', 'prehistoric', 'futuristic'];
+            const cropsByRarity = {};
+            
+            for (const cropId of allCrops) {
+                const crop = CROPS[cropId];
+                const rarity = crop.rarity || 'common';
+                if (!cropsByRarity[rarity]) cropsByRarity[rarity] = [];
+                cropsByRarity[rarity].push({ id: cropId, ...crop });
+            }
+            
+            let html = '';
+            
+            for (const rarity of rarityOrder) {
+                const crops = cropsByRarity[rarity];
+                if (!crops || crops.length === 0) continue;
+                
+                const rarityData = RARITIES[rarity] || { name: rarity, color: '#666' };
+                const discoveredInRarity = crops.filter(c => gameState.discoveredCrops?.[c.id]).length;
+                
+                html += `<div class="journal-category" style="background: linear-gradient(90deg, ${rarityData.color}, transparent);">
+                    ${rarityData.name} (${discoveredInRarity}/${crops.length})
+                </div>`;
+                
+                for (const crop of crops) {
+                    const isDiscovered = gameState.discoveredCrops?.[crop.id];
+                    const discData = isDiscovered ? gameState.discoveredCrops[crop.id] : null;
+                    
+                    if (isDiscovered) {
+                        html += `
+                            <div class="journal-entry discovered" onclick="showCropDetails('${crop.id}')">
+                                <div class="journal-entry-icon">${getCropIcon(crop.id)}</div>
+                                <div class="journal-entry-name">${crop.name}</div>
+                                <div class="journal-entry-info">${crop.growTime}s • ~$${formatNumber(crop.basePrice)}</div>
+                                <div class="journal-entry-rarity" style="background: ${rarityData.color}20; color: ${rarityData.color};">${rarityData.name}</div>
+                                <div class="journal-entry-count">✅ Harvested: ${formatNumber(discData.count)}</div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="journal-entry undiscovered">
+                                <div class="journal-entry-icon">?</div>
+                                <div class="journal-entry-name">???</div>
+                                <div class="journal-entry-info">Not yet discovered</div>
+                                <div class="journal-entry-rarity" style="background: #CFD8DC; color: #90A4AE;">${rarityData.name}</div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            pagesEl.innerHTML = html;
+        }
+
+        function showCropDetails(cropId) {
+            const crop = CROPS[cropId];
+            const disc = gameState.discoveredCrops[cropId];
+            const rarity = RARITIES[crop.rarity] || { name: crop.rarity, color: '#666' };
+            const yieldText = Array.isArray(crop.yield) ? `${crop.yield[0]}-${crop.yield[1]}` : crop.yield;
+            const firstHarvest = disc ? new Date(disc.firstHarvest).toLocaleDateString() : 'Unknown';
+            
+            const features = [];
+            if (crop.regrows) features.push('🔄 Regrows after harvest');
+            if (crop.wheelOnly) features.push('🎰 Wheel exclusive');
+            
+            showMessage(`
+                <strong>${crop.name}</strong><br>
+                <span style="color:${rarity.color}">${rarity.name}</span><br>
+                Grow time: ${crop.growTime}s<br>
+                Yield: ${yieldText}<br>
+                Base price: $${formatNumber(crop.basePrice)}<br>
+                ${features.length ? features.join('<br>') + '<br>' : ''}
+                First harvested: ${firstHarvest}<br>
+                Total harvested: ${formatNumber(disc?.count || 0)}
+            `, 5000);
         }
         
         function selectWheelReward(wheelData) {
