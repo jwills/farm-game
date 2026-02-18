@@ -10944,9 +10944,11 @@
             const currentCycleTime = Math.floor(Date.now() / 1000) % cycleLength;
             gameState.isNight = currentCycleTime >= 60;
             gameState.lastDayNightState = gameState.isNight;
-            // Check if this is a darkest night cycle
+            // Check if this is a darkest night cycle (3.75% chance, seeded for sync)
             const cycleNumber = Math.floor(Date.now() / 1000 / cycleLength);
-            gameState.isDarkestNight = gameState.isNight && (cycleNumber % 40) === 0;
+            const seed = cycleNumber * 9301 + 49297;
+            const seededRandom = (seed % 233280) / 233280;
+            gameState.isDarkestNight = gameState.isNight && seededRandom < 0.0375;
             // Fix sunny weather at night
             if (gameState.isNight && gameState.currentWeather === 'sunny') {
                 changeWeatherLocal();
@@ -12654,7 +12656,10 @@
             if (gameState.isNight && wasNight === false) {
                 // Use seeded random based on cycle number for consistent darkest night across players
                 const cycleNumber = Math.floor(Date.now() / 1000 / cycleLength);
-                const isDarkest = (cycleNumber % 40) === 0; // Every 40th cycle is darkest (~80 min)
+                // Seeded random: use cycle number to generate consistent result for all players
+                const seed = cycleNumber * 9301 + 49297;
+                const seededRandom = (seed % 233280) / 233280;
+                const isDarkest = seededRandom < 0.0375; // 3.75% chance
                 if (isDarkest) {
                     gameState.isDarkestNight = true;
                     gameState.darkestWheelSpun = false;
