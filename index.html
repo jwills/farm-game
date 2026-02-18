@@ -7921,6 +7921,195 @@
             text-align: center;
         }
 
+        /* Save slots UI */
+        .save-slots-container {
+            margin-top: 12px;
+            border-top: 1px solid #ddd;
+            padding-top: 12px;
+        }
+
+        .save-slots-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .save-slots-header h4 {
+            color: #555;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .new-save-btn {
+            padding: 5px 10px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .new-save-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .save-slots-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .save-slot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 12px;
+            transition: all 0.2s;
+        }
+
+        .save-slot:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .save-slot.active {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #e8f8f5 0%, #d5f5e3 100%);
+        }
+
+        .save-slot-info {
+            flex: 1;
+        }
+
+        .save-slot-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .save-slot-details {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .save-slot-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .save-slot-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-slot-btn.load {
+            background: #27ae60;
+            color: white;
+        }
+
+        .save-slot-btn.delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .save-slot-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .no-saves {
+            text-align: center;
+            color: #999;
+            font-size: 0.85rem;
+            padding: 15px;
+        }
+
+        /* New save modal */
+        .save-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .save-modal {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            min-width: 300px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .save-modal h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .save-modal input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .save-modal input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .save-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-modal-buttons button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .save-modal-buttons .confirm {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .save-modal-buttons .cancel {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .save-modal-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
         #weather-display {
             transition: all 0.5s;
         }
@@ -9321,12 +9510,34 @@
                 <div class="save-section">
                     <h3>💾 Save Game</h3>
                     <div class="save-buttons">
-                        <button onclick="manualSave()" class="save-btn">💾 Save Now</button>
+                        <button onclick="manualSave()" class="save-btn">💾 Quick Save</button>
                         <button onclick="exportSave()" class="save-btn">📤 Export</button>
                         <button onclick="importSave()" class="save-btn">📥 Import</button>
                         <button onclick="resetGame()" class="save-btn danger">🗑️ Reset</button>
                     </div>
                     <p class="save-info">Auto-saves every 5 seconds</p>
+                    
+                    <div class="save-slots-container">
+                        <div class="save-slots-header">
+                            <h4>📁 Named Saves</h4>
+                            <button class="new-save-btn" onclick="showNewSaveModal()">+ New Save</button>
+                        </div>
+                        <div class="save-slots-list" id="save-slots-list">
+                            <div class="no-saves">No named saves yet</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Save Modal -->
+                <div id="save-modal" class="save-modal-overlay" style="display: none;">
+                    <div class="save-modal">
+                        <h3>💾 Save As</h3>
+                        <input type="text" id="save-name-input" placeholder="Enter save name..." maxlength="20">
+                        <div class="save-modal-buttons">
+                            <button class="cancel" onclick="hideSaveModal()">Cancel</button>
+                            <button class="confirm" onclick="confirmNewSave()">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -9907,6 +10118,8 @@
             // Position player after render
             setTimeout(updatePlayerPosition, 100);
             window.addEventListener('resize', updatePlayerPosition);
+            // Render save slots
+            renderSaveSlots();
         }
 
         function initializeStock() {
@@ -11888,6 +12101,7 @@
         
         function updateDayNightDisplay() {
             const display = document.getElementById('daynight-display');
+            if (!display) return;
             if (gameState.isNight) {
                 if (gameState.isDarkestNight) {
                     display.innerHTML = '🌑 Darkest Night';
@@ -12414,6 +12628,160 @@
                 localStorage.removeItem('growFarmSave');
                 location.reload();
             }
+        }
+
+        // Named Save System
+        const SAVES_KEY = 'growFarmNamedSaves';
+
+        function getNamedSaves() {
+            try {
+                const saves = localStorage.getItem(SAVES_KEY);
+                return saves ? JSON.parse(saves) : [];
+            } catch (e) {
+                console.error('Failed to load named saves:', e);
+                return [];
+            }
+        }
+
+        function setNamedSaves(saves) {
+            localStorage.setItem(SAVES_KEY, JSON.stringify(saves));
+        }
+
+        function showNewSaveModal() {
+            const modal = document.getElementById('save-modal');
+            const input = document.getElementById('save-name-input');
+            modal.style.display = 'flex';
+            input.value = '';
+            input.focus();
+            // Enter key to confirm
+            input.onkeyup = (e) => {
+                if (e.key === 'Enter') confirmNewSave();
+                if (e.key === 'Escape') hideSaveModal();
+            };
+        }
+
+        function hideSaveModal() {
+            document.getElementById('save-modal').style.display = 'none';
+        }
+
+        function confirmNewSave() {
+            const input = document.getElementById('save-name-input');
+            const name = input.value.trim();
+            
+            if (!name) {
+                showMessage('Please enter a name! ❌');
+                return;
+            }
+
+            const saves = getNamedSaves();
+            const existingIndex = saves.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+            
+            const saveData = {
+                name: name,
+                data: JSON.parse(JSON.stringify(gameState)),
+                timestamp: Date.now(),
+                money: gameState.money,
+                totalHarvested: gameState.totalHarvested
+            };
+
+            if (existingIndex >= 0) {
+                // Overwrite existing save
+                if (!confirm(`A save named "${name}" already exists. Overwrite it?`)) {
+                    return;
+                }
+                saves[existingIndex] = saveData;
+            } else {
+                // Add new save
+                saves.push(saveData);
+            }
+
+            setNamedSaves(saves);
+            hideSaveModal();
+            renderSaveSlots();
+            showMessage(`Saved as "${name}"! 💾`);
+        }
+
+        function loadNamedSave(index) {
+            const saves = getNamedSaves();
+            const save = saves[index];
+            
+            if (!save) {
+                showMessage('Save not found! ❌');
+                return;
+            }
+
+            if (!confirm(`Load save "${save.name}"? Current progress will be lost!`)) {
+                return;
+            }
+
+            gameState = { ...gameState, ...save.data };
+            saveGame(); // Update autosave
+            renderFarm();
+            renderShop();
+            renderInventory();
+            renderPetShop();
+            renderGearShop();
+            updateUI();
+            renderSaveSlots();
+            showMessage(`Loaded "${save.name}"! 📂`);
+        }
+
+        function deleteNamedSave(index) {
+            const saves = getNamedSaves();
+            const save = saves[index];
+            
+            if (!save) return;
+
+            if (!confirm(`Delete save "${save.name}"? This cannot be undone!`)) {
+                return;
+            }
+
+            saves.splice(index, 1);
+            setNamedSaves(saves);
+            renderSaveSlots();
+            showMessage(`Deleted "${save.name}" 🗑️`);
+        }
+
+        function renderSaveSlots() {
+            const container = document.getElementById('save-slots-list');
+            if (!container) return;
+
+            const saves = getNamedSaves();
+
+            if (saves.length === 0) {
+                container.innerHTML = '<div class="no-saves">No named saves yet</div>';
+                return;
+            }
+
+            // Sort by most recent
+            saves.sort((a, b) => b.timestamp - a.timestamp);
+            setNamedSaves(saves); // Save sorted order
+
+            container.innerHTML = saves.map((save, index) => {
+                const date = new Date(save.timestamp);
+                const timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const moneyStr = save.money ? `$${formatMoney(save.money)}` : '$0';
+                const harvestStr = save.totalHarvested || 0;
+                
+                return `
+                    <div class="save-slot">
+                        <div class="save-slot-info">
+                            <div class="save-slot-name">📁 ${escapeHtml(save.name)}</div>
+                            <div class="save-slot-details">${timeStr} • ${moneyStr} • ${harvestStr} harvested</div>
+                        </div>
+                        <div class="save-slot-actions">
+                            <button class="save-slot-btn load" onclick="loadNamedSave(${index})">Load</button>
+                            <button class="save-slot-btn delete" onclick="deleteNamedSave(${index})">✕</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Neighborhood Functions
@@ -13149,10 +13517,24 @@
             document.addEventListener('DOMContentLoaded', () => {
                 init();
                 setTimeout(() => renderNeighborhoodStatus(), 100);
+                // Ensure farm is rendered
+                setTimeout(() => {
+                    if (document.querySelectorAll('.farm-plot').length === 0) {
+                        console.log('Farm not rendered, retrying...');
+                        renderFarm();
+                    }
+                }, 200);
             });
         } else {
             init();
             setTimeout(() => renderNeighborhoodStatus(), 100);
+            // Ensure farm is rendered
+            setTimeout(() => {
+                if (document.querySelectorAll('.farm-plot').length === 0) {
+                    console.log('Farm not rendered, retrying...');
+                    renderFarm();
+                }
+            }, 200);
         }
     </script>
 </body>
