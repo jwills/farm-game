@@ -9128,193 +9128,6 @@
             75% { clip-path: inset(80% 0 5% 0); filter: hue-rotate(270deg); }
         }
 
-        /* Crop Journal Modal */
-        .journal-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            backdrop-filter: blur(5px);
-        }
-        .journal-modal.hidden {
-            display: none;
-        }
-        .journal-book {
-            width: 90%;
-            max-width: 900px;
-            height: 85vh;
-            max-height: 700px;
-            background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #4a3728 100%);
-            border-radius: 10px 20px 20px 10px;
-            box-shadow: 
-                0 0 50px rgba(0,0,0,0.5),
-                inset 0 0 20px rgba(0,0,0,0.3),
-                5px 5px 15px rgba(0,0,0,0.4);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 3px solid #5D4037;
-        }
-        .journal-book::before {
-            content: '';
-            position: absolute;
-            left: 40px;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, #3E2723, #5D4037, #3E2723);
-            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-        }
-        .journal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: rgba(0,0,0,0.3);
-            border: none;
-            color: #D7CCC8;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 5px 12px;
-            border-radius: 50%;
-            z-index: 10;
-            transition: all 0.2s;
-        }
-        .journal-close:hover {
-            background: rgba(0,0,0,0.5);
-            color: white;
-        }
-        .journal-cover {
-            padding: 20px 20px 15px 55px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 100%);
-            border-bottom: 2px solid #5D4037;
-        }
-        .journal-title {
-            font-size: 2rem;
-            color: #FFD54F;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-weight: bold;
-        }
-        .journal-subtitle {
-            color: #D7CCC8;
-            font-size: 0.9rem;
-            margin-top: 5px;
-        }
-        .journal-stats {
-            color: #FFCC80;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            display: flex;
-            gap: 20px;
-        }
-        .journal-pages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 20px 20px 55px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            align-content: start;
-            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
-        }
-        .journal-pages::-webkit-scrollbar {
-            width: 10px;
-        }
-        .journal-pages::-webkit-scrollbar-track {
-            background: #D7CCC8;
-            border-radius: 5px;
-        }
-        .journal-pages::-webkit-scrollbar-thumb {
-            background: #8D6E63;
-            border-radius: 5px;
-        }
-        .journal-entry {
-            background: #FFFDE7;
-            border-radius: 10px;
-            padding: 12px 8px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 2px solid #E0E0E0;
-            transition: all 0.2s;
-            cursor: default;
-        }
-        .journal-entry.discovered {
-            border-color: #81C784;
-            cursor: pointer;
-        }
-        .journal-entry.discovered:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .journal-entry.undiscovered {
-            background: #ECEFF1;
-            border-color: #B0BEC5;
-        }
-        .journal-entry-icon {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-        }
-        .journal-entry.undiscovered .journal-entry-icon {
-            background: #CFD8DC;
-            color: #90A4AE;
-            font-size: 1.5rem;
-        }
-        .journal-entry-name {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #5D4037;
-            margin-bottom: 4px;
-        }
-        .journal-entry.undiscovered .journal-entry-name {
-            color: #90A4AE;
-        }
-        .journal-entry-info {
-            font-size: 0.65rem;
-            color: #8D6E63;
-        }
-        .journal-entry.undiscovered .journal-entry-info {
-            color: #B0BEC5;
-        }
-        .journal-entry-rarity {
-            font-size: 0.6rem;
-            padding: 2px 6px;
-            border-radius: 8px;
-            display: inline-block;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-        .journal-entry-count {
-            font-size: 0.6rem;
-            color: #66BB6A;
-            margin-top: 4px;
-        }
-        .journal-category {
-            grid-column: 1 / -1;
-            background: linear-gradient(90deg, #8D6E63, transparent);
-            color: #FFF8E1;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-top: 10px;
-        }
-        .journal-category:first-child {
-            margin-top: 0;
-        }
-
         /* Time Roulette Wheels */
         .roulette-modal {
             position: fixed;
@@ -10351,7 +10164,7 @@
                 <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
-                <div class="stat book-btn" onclick="openCropJournal()" title="Crop Journal">📚</div>
+
             </div>
         </header>
 
@@ -10575,18 +10388,6 @@
         </div>
     </div>
 
-    <!-- Crop Journal Modal -->
-    <div id="crop-journal-modal" class="journal-modal hidden">
-        <div class="journal-book">
-            <button class="journal-close" onclick="closeCropJournal()">✕</button>
-            <div class="journal-cover">
-                <div class="journal-title">📖 Crop Journal</div>
-                <div class="journal-subtitle">A record of your harvests</div>
-                <div class="journal-stats" id="journal-stats"></div>
-            </div>
-            <div class="journal-pages" id="journal-pages"></div>
-        </div>
-    </div>
 
     <script>
         // Game Data
@@ -10904,8 +10705,7 @@
             isNight: false, // day/night cycle
             isDarkestNight: false, // rare darkest night event
             darkestWheelSpun: false, // track if darkest wheel was spun this darkest night
-            dayNightTimer: 0, // timer for day/night changes
-            discoveredCrops: {} // track discovered crops: { cropId: { count: number, firstHarvest: timestamp } }
+            dayNightTimer: 0 // timer for day/night changes
         };
 
         // Stock settings per rarity
@@ -11953,11 +11753,7 @@
                 gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
                 gameState.totalHarvested++;
                 
-                // Track discovery in crop journal
-                if (!gameState.discoveredCrops[plot.type]) {
-                    gameState.discoveredCrops[plot.type] = { count: 0, firstHarvest: Date.now() };
-                }
-                gameState.discoveredCrops[plot.type].count++;
+
             }
             
             const sizeText = actualYield > 1 ? `${actualYield}x ` : '';
@@ -13341,108 +13137,6 @@
             document.getElementById('roulette-modal').classList.add('hidden');
         }
 
-        function openCropJournal() {
-            const modal = document.getElementById('crop-journal-modal');
-            modal.classList.remove('hidden');
-            renderCropJournal();
-        }
-
-        function closeCropJournal() {
-            document.getElementById('crop-journal-modal').classList.add('hidden');
-        }
-
-        function renderCropJournal() {
-            const pagesEl = document.getElementById('journal-pages');
-            const statsEl = document.getElementById('journal-stats');
-            
-            const allCrops = Object.keys(CROPS);
-            const discovered = Object.keys(gameState.discoveredCrops || {});
-            const totalDiscovered = discovered.length;
-            const totalCrops = allCrops.length;
-            const totalHarvested = Object.values(gameState.discoveredCrops || {}).reduce((sum, c) => sum + c.count, 0);
-            
-            statsEl.innerHTML = `
-                <span>🌱 Discovered: ${totalDiscovered}/${totalCrops}</span>
-                <span>🌾 Total Harvested: ${formatNumber(totalHarvested)}</span>
-                <span>✅ Completion: ${Math.round(totalDiscovered/totalCrops*100)}%</span>
-            `;
-            
-            // Group crops by rarity
-            const rarityOrder = ['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythic', 'demonic', 'celestial', 'nocturnal', 'prehistoric', 'futuristic'];
-            const cropsByRarity = {};
-            
-            for (const cropId of allCrops) {
-                const crop = CROPS[cropId];
-                const rarity = crop.rarity || 'common';
-                if (!cropsByRarity[rarity]) cropsByRarity[rarity] = [];
-                cropsByRarity[rarity].push({ id: cropId, ...crop });
-            }
-            
-            let html = '';
-            
-            for (const rarity of rarityOrder) {
-                const crops = cropsByRarity[rarity];
-                if (!crops || crops.length === 0) continue;
-                
-                const rarityData = RARITIES[rarity] || { name: rarity, color: '#666' };
-                const discoveredInRarity = crops.filter(c => gameState.discoveredCrops?.[c.id]).length;
-                
-                html += `<div class="journal-category" style="background: linear-gradient(90deg, ${rarityData.color}, transparent);">
-                    ${rarityData.name} (${discoveredInRarity}/${crops.length})
-                </div>`;
-                
-                for (const crop of crops) {
-                    const isDiscovered = gameState.discoveredCrops?.[crop.id];
-                    const discData = isDiscovered ? gameState.discoveredCrops[crop.id] : null;
-                    
-                    if (isDiscovered) {
-                        html += `
-                            <div class="journal-entry discovered" onclick="showCropDetails('${crop.id}')">
-                                <div class="journal-entry-icon">${getCropIcon(crop.id)}</div>
-                                <div class="journal-entry-name">${crop.name}</div>
-                                <div class="journal-entry-info">${crop.growTime}s • ~$${formatNumber(crop.basePrice)}</div>
-                                <div class="journal-entry-rarity" style="background: ${rarityData.color}20; color: ${rarityData.color};">${rarityData.name}</div>
-                                <div class="journal-entry-count">✅ Harvested: ${formatNumber(discData.count)}</div>
-                            </div>
-                        `;
-                    } else {
-                        html += `
-                            <div class="journal-entry undiscovered">
-                                <div class="journal-entry-icon">?</div>
-                                <div class="journal-entry-name">???</div>
-                                <div class="journal-entry-info">Not yet discovered</div>
-                                <div class="journal-entry-rarity" style="background: #CFD8DC; color: #90A4AE;">${rarityData.name}</div>
-                            </div>
-                        `;
-                    }
-                }
-            }
-            
-            pagesEl.innerHTML = html;
-        }
-
-        function showCropDetails(cropId) {
-            const crop = CROPS[cropId];
-            const disc = gameState.discoveredCrops[cropId];
-            const rarity = RARITIES[crop.rarity] || { name: crop.rarity, color: '#666' };
-            const yieldText = Array.isArray(crop.yield) ? `${crop.yield[0]}-${crop.yield[1]}` : crop.yield;
-            const firstHarvest = disc ? new Date(disc.firstHarvest).toLocaleDateString() : 'Unknown';
-            
-            const features = [];
-            if (crop.regrows) features.push('🔄 Regrows after harvest');
-            if (crop.wheelOnly) features.push('🎰 Wheel exclusive');
-            
-            showMessage(`
-                <strong>${crop.name}</strong><br>
-                <span style="color:${rarity.color}">${rarity.name}</span><br>
-                Grow time: ${crop.growTime}s<br>
-                Yield: ${yieldText}<br>
-                Base price: $${formatNumber(crop.basePrice)}<br>
-                ${features.length ? features.join('<br>') + '<br>' : ''}
-                First harvested: ${firstHarvest}<br>
-                Total harvested: ${formatNumber(disc?.count || 0)}
-            `, 5000);
-        }
         
         function selectWheelReward(wheelData) {
             const totalWeight = wheelData.reduce((sum, r) => sum + r.weight, 0);
@@ -13772,62 +13466,6 @@
                 });
             }
             
-            // Backfill discoveredCrops from existing harvested items
-            if (!gameState.discoveredCrops) {
-                gameState.discoveredCrops = {};
-            }
-            
-            // Count crops from current harvested inventory
-            if (gameState.harvested && gameState.harvested.length > 0) {
-                gameState.harvested.forEach(item => {
-                    if (item && item.type && CROPS[item.type]) {
-                        if (!gameState.discoveredCrops[item.type]) {
-                            gameState.discoveredCrops[item.type] = { count: 0, firstHarvest: Date.now() };
-                        }
-                        // Only count if not already tracked (avoid double counting on reload)
-                    }
-                });
-            }
-            
-            // Mark planted crops as discovered (you must have harvested to get seeds for rare ones)
-            if (gameState.plots) {
-                gameState.plots.forEach(plot => {
-                    if (plot && plot.type && CROPS[plot.type] && !plot.isEgg) {
-                        if (!gameState.discoveredCrops[plot.type]) {
-                            gameState.discoveredCrops[plot.type] = { count: 0, firstHarvest: Date.now() };
-                        }
-                    }
-                });
-            }
-            
-            // Mark crops with seeds as discovered (for regrow crops you must have harvested)
-            if (gameState.seeds) {
-                Object.keys(gameState.seeds).forEach(seedType => {
-                    if (gameState.seeds[seedType] > 0 && CROPS[seedType]) {
-                        const crop = CROPS[seedType];
-                        // Only auto-discover regrow/wheelOnly crops (you definitely harvested these)
-                        if (crop.regrows || crop.wheelOnly) {
-                            if (!gameState.discoveredCrops[seedType]) {
-                                gameState.discoveredCrops[seedType] = { count: 0, firstHarvest: Date.now() };
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // Estimate counts based on totalHarvested if discoveredCrops is mostly empty
-            const discoveredCount = Object.keys(gameState.discoveredCrops).length;
-            const totalTracked = Object.values(gameState.discoveredCrops).reduce((sum, c) => sum + c.count, 0);
-            if (gameState.totalHarvested > 0 && totalTracked === 0) {
-                // Distribute totalHarvested among discovered crops as estimate
-                const discovered = Object.keys(gameState.discoveredCrops);
-                if (discovered.length > 0) {
-                    const perCrop = Math.floor(gameState.totalHarvested / discovered.length);
-                    discovered.forEach(cropType => {
-                        gameState.discoveredCrops[cropType].count = perCrop;
-                    });
-                }
-            }
         }
 
         function manualSave() {
