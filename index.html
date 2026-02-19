@@ -12269,7 +12269,7 @@
             gameState.money -= cost;
             gameState.maxPetSlots = 5;
             showMessage('🐾 Pet slots upgraded to 5! 🐾');
-            updateDisplay();
+            renderInventory();
             renderPetShop();
         }
 
@@ -13732,7 +13732,6 @@
             }
             
             showMessage(`📦⚡ Supply Crate opened! Got: ${rewards.join(', ')}`);
-            updateDisplay();
             renderFarm();
             renderInventory();
             renderGearTools();
