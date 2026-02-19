@@ -9039,6 +9039,87 @@
             50% { opacity: 0.7; }
         }
 
+        /* Supercell */
+        .supercell-tint {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(20,20,40,0.6) 0%, rgba(50,50,80,0.4) 30%, rgba(30,30,50,0.5) 100%);
+            animation: supercell-pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes supercell-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.9; }
+        }
+
+        .supercell-lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.9);
+            opacity: 0;
+            animation: lightning-flash 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes lightning-flash {
+            0%, 100% { opacity: 0; }
+            2% { opacity: 0.8; }
+            4% { opacity: 0; }
+            6% { opacity: 0.6; }
+            8% { opacity: 0; }
+        }
+
+        .supercell-rain {
+            position: fixed;
+            top: -50px;
+            width: 3px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent, rgba(150,180,255,0.8));
+            animation: supercell-rain-fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes supercell-rain-fall {
+            0% {
+                transform: translateY(0) rotate(15deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(15deg);
+                opacity: 0.5;
+            }
+        }
+
+        .supercell-hail {
+            position: fixed;
+            top: -20px;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(200,220,255,0.8) 100%);
+            border-radius: 50%;
+            animation: supercell-hail-fall linear infinite;
+            pointer-events: none;
+            box-shadow: 0 0 5px rgba(200,220,255,0.8);
+        }
+
+        @keyframes supercell-hail-fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh);
+                opacity: 0.7;
+            }
+        }
+
         /* Snow */
         .snow-tint {
             position: fixed;
@@ -10509,6 +10590,7 @@
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
             heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
+            supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'stormsurge', mutationEmoji: '🌩️', bonus: 2.5 },
             timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
         };
 
@@ -10533,7 +10615,9 @@
             shadowtouched: { name: 'Shadow Touched', emoji: '💀', bonus: 2.5, sprinklerOnly: true },
             voidinfused: { name: 'Void Infused', emoji: '👁️', bonus: 3.0, sprinklerOnly: true },
             // Day/night mutation
-            nightglow: { name: 'Nightglow', emoji: '🌙', bonus: 1.5 }
+            nightglow: { name: 'Nightglow', emoji: '🌙', bonus: 1.5 },
+            // Supercell weather mutation
+            stormsurge: { name: 'Storm Surge', emoji: '🌩️', bonus: 2.5 }
         };
         
         // Prehistoric wheel rewards
@@ -12883,7 +12967,7 @@
                 closeRouletteWheels();
             }
             
-            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'timeanomaly');
+            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
             // Sunny is more common, special weathers are very rare
             // But sunny can't happen at night - use 'clear' night weathers instead
             const weighted = gameState.isNight 
@@ -12899,8 +12983,15 @@
                 gameState.timeWheelsShown = false; // Reset for new anomaly
                 showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
+            // 4% chance for supercell
+            else if (roll < 0.06) {
+                gameState.currentWeather = 'supercell';
+                gameState.demonicInStock = 0;
+                gameState.celestialInStock = false;
+                showMessage(`🌪️⚡ SUPERCELL! A massive storm engulfs the farm! +150% crop value! 🌩️`);
+            }
             // 5% chance for hellscape
-            else if (roll < 0.07) {
+            else if (roll < 0.11) {
                 gameState.currentWeather = 'hellscape';
                 gameState.celestialInStock = false;
                 // 75% chance demonic seeds are available during hellscape (5 stock)
@@ -12913,7 +13004,7 @@
                 renderShop();
             }
             // 5% chance for heaven
-            else if (roll < 0.12) {
+            else if (roll < 0.16) {
                 gameState.currentWeather = 'heaven';
                 gameState.demonicInStock = 0;
                 // Celestial seeds always available during heaven
@@ -13070,6 +13161,8 @@
                     createHeaven();
                 } else if (weather === 'snow') {
                     createSnow();
+                } else if (weather === 'supercell') {
+                    createSupercell();
                 } else if (weather === 'timeanomaly') {
                     createTimeAnomaly();
                 }
@@ -13092,6 +13185,38 @@
                 flake.style.animationDelay = Math.random() * 3 + 's';
                 flake.style.fontSize = (0.5 + Math.random() * 1) + 'rem';
                 overlay.appendChild(flake);
+            }
+        }
+
+        function createSupercell() {
+            const overlay = document.getElementById('weather-overlay');
+            // Add dark stormy tint
+            const tint = document.createElement('div');
+            tint.className = 'supercell-tint';
+            overlay.appendChild(tint);
+            // Add lightning flash
+            const lightning = document.createElement('div');
+            lightning.className = 'supercell-lightning';
+            overlay.appendChild(lightning);
+            // Add heavy rain
+            for (let i = 0; i < 80; i++) {
+                const rain = document.createElement('div');
+                rain.className = 'supercell-rain';
+                rain.style.left = Math.random() * 100 + 'vw';
+                rain.style.animationDuration = (0.3 + Math.random() * 0.3) + 's';
+                rain.style.animationDelay = Math.random() * 0.5 + 's';
+                overlay.appendChild(rain);
+            }
+            // Add hail
+            for (let i = 0; i < 20; i++) {
+                const hail = document.createElement('div');
+                hail.className = 'supercell-hail';
+                hail.style.left = Math.random() * 100 + 'vw';
+                hail.style.animationDuration = (0.5 + Math.random() * 0.3) + 's';
+                hail.style.animationDelay = Math.random() * 1 + 's';
+                hail.style.width = (5 + Math.random() * 6) + 'px';
+                hail.style.height = hail.style.width;
+                overlay.appendChild(hail);
             }
         }
 
