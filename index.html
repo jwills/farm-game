@@ -9319,6 +9319,7 @@
             background: linear-gradient(180deg, rgba(5,0,20,0.9) 0%, rgba(30,10,60,0.7) 30%, rgba(60,20,100,0.6) 60%, rgba(15,5,40,0.85) 100%);
             animation: supercell-pulse 1s ease-in-out infinite;
             pointer-events: none;
+            z-index: 1500;
         }
 
         @keyframes supercell-pulse {
@@ -9339,6 +9340,7 @@
             animation: lightning-flash 1.5s ease-in-out infinite;
             pointer-events: none;
             mix-blend-mode: screen;
+            z-index: 1500;
         }
 
         @keyframes lightning-flash {
@@ -9369,6 +9371,7 @@
             pointer-events: none;
             filter: blur(0.3px);
             box-shadow: 0 0 6px rgba(100,180,255,0.6);
+            z-index: 1500;
         }
 
         @keyframes supercell-rain-fall {
@@ -9392,6 +9395,7 @@
             animation: supercell-hail-fall linear infinite;
             pointer-events: none;
             box-shadow: 0 0 15px rgba(150,200,255,1), 0 0 30px rgba(100,150,255,0.8), inset 0 0 5px rgba(255,255,255,0.8);
+            z-index: 1500;
         }
 
         @keyframes supercell-hail-fall {
@@ -9419,6 +9423,7 @@
             pointer-events: none;
             filter: blur(1px);
             box-shadow: 0 0 40px rgba(255,255,200,1), 0 0 80px rgba(200,150,255,0.9), 0 0 120px rgba(100,180,255,0.6);
+            z-index: 1500;
         }
 
         .supercell-bolt::before {
@@ -9467,6 +9472,7 @@
             animation: supercell-glow-pulse 1.5s ease-in-out infinite;
             pointer-events: none;
             mix-blend-mode: screen;
+            z-index: 1500;
         }
 
         @keyframes supercell-glow-pulse {
@@ -9484,6 +9490,7 @@
             animation: supercell-vortex-spin 3s linear infinite;
             pointer-events: none;
             filter: blur(10px);
+            z-index: 1500;
         }
 
         @keyframes supercell-vortex-spin {
@@ -9499,6 +9506,7 @@
             animation: supercell-windstreak-move 0.4s linear infinite;
             pointer-events: none;
             filter: blur(1px);
+            z-index: 1500;
         }
 
         @keyframes supercell-windstreak-move {
@@ -9519,6 +9527,7 @@
             animation: supercell-flash-burst 2.5s ease-out infinite;
             pointer-events: none;
             mix-blend-mode: screen;
+            z-index: 1500;
         }
 
         @keyframes supercell-flash-burst {
@@ -10868,6 +10877,158 @@
         }
         .reward-popup button:hover {
             transform: scale(1.05);
+        }
+        
+        /* Crate Reward Modal */
+        #crate-reward-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 100vh;
+            background: rgba(0, 20, 50, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+        }
+        
+        #crate-reward-modal.hidden {
+            display: none;
+        }
+        
+        .crate-reward-content {
+            background: linear-gradient(135deg, #0a1628 0%, #16213e 50%, #1a4970 100%);
+            border: 3px solid #ffcc00;
+            border-radius: 20px;
+            padding: 30px 40px;
+            text-align: center;
+            min-width: 380px;
+            max-width: 500px;
+            box-shadow: 0 0 50px rgba(255, 200, 0, 0.4),
+                        0 0 100px rgba(100, 150, 255, 0.3);
+            animation: crateRewardAppear 0.5s ease-out;
+        }
+        
+        @keyframes crateRewardAppear {
+            from { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .crate-reward-content h2 {
+            color: #ffcc00;
+            margin: 0 0 20px 0;
+            font-size: 1.8rem;
+            text-shadow: 0 0 20px rgba(255, 200, 0, 0.8);
+        }
+        
+        .crate-open-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: crateOpenBounce 0.8s ease-out;
+        }
+        
+        @keyframes crateOpenBounce {
+            0% { transform: scale(0); }
+            40% { transform: scale(1.3) rotate(10deg); }
+            60% { transform: scale(0.9) rotate(-5deg); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        
+        .crate-rewards-list {
+            margin: 20px 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .crate-reward-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 200, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: rewardItemSlide 0.4s ease-out backwards;
+        }
+        
+        .crate-reward-item:nth-child(1) { animation-delay: 0.3s; }
+        .crate-reward-item:nth-child(2) { animation-delay: 0.5s; }
+        .crate-reward-item:nth-child(3) { animation-delay: 0.7s; }
+        
+        @keyframes rewardItemSlide {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .crate-reward-item.rare {
+            border-color: #9400d3;
+            background: rgba(100, 0, 150, 0.3);
+            box-shadow: 0 0 20px rgba(148, 0, 211, 0.4);
+        }
+        
+        .crate-reward-item.epic {
+            border-color: #ff6600;
+            background: rgba(150, 80, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
+        }
+        
+        .crate-reward-item.legendary {
+            border-color: #ffcc00;
+            background: linear-gradient(135deg, rgba(100, 80, 0, 0.5), rgba(150, 100, 0, 0.3));
+            box-shadow: 0 0 30px rgba(255, 200, 0, 0.5);
+            animation: rewardItemSlide 0.4s ease-out backwards, legendaryPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes legendaryPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 200, 0, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(255, 200, 0, 0.8), 0 0 80px rgba(255, 150, 0, 0.4); }
+        }
+        
+        .crate-reward-icon {
+            font-size: 2rem;
+            min-width: 50px;
+        }
+        
+        .crate-reward-text {
+            flex: 1;
+            text-align: left;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        
+        .crate-reward-item.rare .crate-reward-text {
+            color: #da70d6;
+        }
+        
+        .crate-reward-item.epic .crate-reward-text {
+            color: #ff9944;
+        }
+        
+        .crate-reward-item.legendary .crate-reward-text {
+            color: #ffdd44;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 200, 0, 0.6);
+        }
+        
+        .crate-claim-btn {
+            background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+            color: #000;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 200, 0, 0.5);
+            margin-top: 10px;
+        }
+        
+        .crate-claim-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(255, 200, 0, 0.8);
         }
         
         .close-roulette {
@@ -14626,23 +14787,23 @@
             
             gameState.supercellCrate = null;
             
-            // Custom supercell rewards
+            // Custom supercell rewards - collect as objects for popup display
             const rewards = [];
             
             // Storm Essence (always) - 5 to 15
             const essenceAmount = 5 + Math.floor(Math.random() * 11);
             if (!gameState.stormEssence) gameState.stormEssence = 0;
             gameState.stormEssence += essenceAmount;
-            rewards.push(`⚡${essenceAmount} Storm Essence`);
+            rewards.push({ icon: '⚡', text: `${essenceAmount} Storm Essence`, rarity: 'common' });
             
             // Roll for bonus rewards
             const roll = Math.random();
             
             if (roll < 0.0075) {
-                // 0.75% chance: SUPERCELL FLOWER! (ultra-rare)
+                // 0.75% chance: ELECTROBLOSSOM! (ultra-rare)
                 if (!gameState.seeds.supercellflower) gameState.seeds.supercellflower = 0;
                 gameState.seeds.supercellflower += 1;
-                rewards.push(`🌺✨ SUPERCELL FLOWER SEED!! ✨🌺`);
+                rewards.push({ icon: '🌺', text: 'ELECTROBLOSSOM SEED!', rarity: 'legendary' });
             } else if (roll < 0.4575) {
                 // 45% chance: Stormcharged seeds (pre-mutated with stormsurge)
                 const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit'];
@@ -14651,35 +14812,69 @@
                 if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
                 if (!gameState.stormchargedSeeds[seedType]) gameState.stormchargedSeeds[seedType] = 0;
                 gameState.stormchargedSeeds[seedType] += seedCount;
-                rewards.push(`${seedCount}x ⚡${CROPS[seedType].name} (Stormcharged)`);
+                rewards.push({ icon: '⚡🌱', text: `${seedCount}x ${CROPS[seedType].name} (Stormcharged)`, rarity: 'common' });
             } else if (roll < 0.7575) {
                 // 30% chance: Tempest Fruit seeds (exclusive storm crop)
                 const seedCount = 1 + Math.floor(Math.random() * 2);
                 if (!gameState.seeds.tempestfruit) gameState.seeds.tempestfruit = 0;
                 gameState.seeds.tempestfruit += seedCount;
-                rewards.push(`${seedCount}x 🌪️ Tempest Fruit Seeds`);
+                rewards.push({ icon: '🌪️', text: `${seedCount}x Tempest Fruit Seeds`, rarity: 'rare' });
             } else if (roll < 0.9175) {
                 // 16% chance: Bonus storm essence burst
                 const bonusEssence = 15 + Math.floor(Math.random() * 25);
                 gameState.stormEssence += bonusEssence;
-                rewards.push(`⚡${bonusEssence} bonus Storm Essence!`);
+                rewards.push({ icon: '⚡✨', text: `${bonusEssence} bonus Storm Essence!`, rarity: 'rare' });
             } else {
                 // 8.25% chance: Storm Hawk pet! (if not owned)
                 if (!gameState.pets.includes('stormhawk')) {
                     gameState.pets.push('stormhawk');
-                    rewards.push(`🦅 STORM HAWK PET!`);
+                    rewards.push({ icon: '🦅', text: 'STORM HAWK PET!', rarity: 'legendary' });
                 } else {
                     // Already have hawk, give big essence instead
                     const bigEssence = 50 + Math.floor(Math.random() * 50);
                     gameState.stormEssence += bigEssence;
-                    rewards.push(`⚡${bigEssence} Storm Essence (already have Storm Hawk)`);
+                    rewards.push({ icon: '⚡💎', text: `${bigEssence} Storm Essence (already have Storm Hawk)`, rarity: 'epic' });
                 }
             }
             
-            showMessage(`📦⚡ Supply Crate opened! ${rewards.join(', ')}`);
+            showCrateRewardModal(rewards);
             renderFarm();
             renderInventory();
             renderPetShop();
+        }
+        
+        function showCrateRewardModal(rewards) {
+            // Remove existing modal if any
+            const existing = document.getElementById('crate-reward-modal');
+            if (existing) existing.remove();
+            
+            const modal = document.createElement('div');
+            modal.id = 'crate-reward-modal';
+            
+            const rewardItems = rewards.map(r => {
+                return `<li class="crate-reward-item ${r.rarity}">
+                    <span class="crate-reward-icon">${r.icon}</span>
+                    <span class="crate-reward-text">${r.text}</span>
+                </li>`;
+            }).join('');
+            
+            modal.innerHTML = `
+                <div class="crate-reward-content">
+                    <div class="crate-open-icon">📦⚡</div>
+                    <h2>Supply Crate Opened!</h2>
+                    <ul class="crate-rewards-list">
+                        ${rewardItems}
+                    </ul>
+                    <button class="crate-claim-btn" onclick="closeCrateRewardModal()">Awesome!</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function closeCrateRewardModal() {
+            const modal = document.getElementById('crate-reward-modal');
+            if (modal) modal.remove();
         }
         
         // Storm Shop
