@@ -11357,6 +11357,7 @@
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer">▼</div>
                                 <div id="darkest-wheel" class="wheel">
+                                    <!-- Segments match DARKEST_WHEEL array order, -18deg offset for pointer alignment -->
                                     <div class="wheel-segment" style="transform: rotate(-18deg)"><span style="font-size:24px;">🌑</span></div>
                                     <div class="wheel-segment" style="transform: rotate(18deg)"><span style="font-size:24px;">💀</span></div>
                                     <div class="wheel-segment" style="transform: rotate(54deg)"><span style="font-size:24px;">👁️</span></div>
@@ -14110,9 +14111,8 @@
                 : ['sunny', 'sunny', 'sunny', ...weathers];
             const roll = Math.random();
             
-            // 2% chance for Time Anomaly
-            // 2% chance for supercell
-            if (roll < 0.02) {
+            // 2.5% chance for supercell
+            if (roll < 0.025) {
                 gameState.currentWeather = 'supercell';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
@@ -14120,7 +14120,7 @@
                 spawnSupercellCrate();
                 showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
             }
-            // 3% chance for Time Anomaly
+            // 2.5% chance for Time Anomaly
             else if (roll < 0.05) {
                 gameState.currentWeather = 'timeanomaly';
                 gameState.demonicInStock = 0;
@@ -14629,12 +14629,13 @@
             const rewardIndex = wheelData.indexOf(reward);
             
             // Calculate spin angle (10 segments, 36 degrees each)
-            // We want to land on the segment at the top (pointer at top)
+            // Segments are positioned from -18deg, visual top at 0 rotation = segment at 198deg (index 6)
             const segmentAngle = 36;
             const baseSpins = 5; // Full rotations
-            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
-            // Spin clockwise, landing on target segment
-            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18; // +18 to align with pointer
+            const segmentPosition = -18 + (rewardIndex * segmentAngle); // Where segment N is positioned
+            const topPosition = 198; // What's at top at rotation 0 (segment 6)
+            const neededRotation = topPosition - segmentPosition; // How much to rotate to bring segment N to top
+            const totalRotation = (baseSpins * 360) + neededRotation;
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
@@ -14668,11 +14669,15 @@
             const reward = selectWheelReward(DARKEST_WHEEL);
             const rewardIndex = DARKEST_WHEEL.indexOf(reward);
             
-            // Calculate spin angle
+            // Calculate spin angle (10 segments, 36 degrees each)
+            // Segments are positioned from -18deg, visual top at 0 rotation = segment at 198deg (index 6)
+            // To land on segment N, we need to rotate so that segment N goes to the top
             const segmentAngle = 36;
             const baseSpins = 6; // More spins for dramatic effect
-            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
-            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18;
+            const segmentPosition = -18 + (rewardIndex * segmentAngle); // Where segment N is positioned
+            const topPosition = 198; // What's at top at rotation 0 (segment 6)
+            const neededRotation = topPosition - segmentPosition; // How much to rotate to bring segment N to top
+            const totalRotation = (baseSpins * 360) + neededRotation;
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
