@@ -12780,7 +12780,8 @@
                 growth: 0,
                 plantedAt: Date.now(),
                 mutations: isStormcharged ? ['stormsurge'] : [], // Stormcharged starts with stormsurge!
-                harvested: false // tracks if first harvest done (for regrow time)
+                harvested: false, // tracks if first harvest done (for regrow time)
+                isFromStormcharged: isStormcharged // Track if planted from stormcharged seed (can't spread)
             };
             
             if (isStormcharged) {
@@ -14007,14 +14008,14 @@
             }
 
             // Stormsurge spread effect (every 10 seconds, 15% chance per adjacent crop)
-            // Only original stormsurge can spread (not spread-from-spread)
+            // Only original stormsurge can spread (not spread-from-spread, not from stormcharged seeds)
             if (!gameState.stormSpreadTimer) gameState.stormSpreadTimer = 0;
             gameState.stormSpreadTimer++;
             if (gameState.stormSpreadTimer >= 10) {
                 gameState.stormSpreadTimer = 0;
-                // Find all plots with stormsurge that wasn't from spreading
+                // Find all plots with stormsurge that can spread (not from spreading, not from stormcharged seeds)
                 const stormPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
-                    .filter(({plot}) => plot && plot.mutations?.includes('stormsurge') && !plot.stormsurgeFromSpread);
+                    .filter(({plot}) => plot && plot.mutations?.includes('stormsurge') && !plot.stormsurgeFromSpread && !plot.isFromStormcharged);
                 
                 stormPlots.forEach(({index}) => {
                     const adjacent = getAdjacentPlots(index);
@@ -14942,19 +14943,57 @@
             
             switch (item.action) {
                 case 'stormcharge_random':
-                    // Exclude special/rare crops from random stormcharge seeds
+                    // Normal crops (exclude special rarities)
                     const excludedRarities = ['demonic', 'celestial', 'temporal', 'nocturnal'];
-                    const seedTypes = Object.keys(CROPS).filter(cropId => {
+                    const normalSeedTypes = Object.keys(CROPS).filter(cropId => {
                         const crop = CROPS[cropId];
                         return !crop.crateOnly && !excludedRarities.includes(crop.rarity);
                     });
+                    // Demonic crops for rare bonus
+                    const demonicSeeds = Object.keys(CROPS).filter(cropId => {
+                        const crop = CROPS[cropId];
+                        return crop.rarity === 'demonic' && !crop.crateOnly;
+                    });
+                    // Celestial crops for rare bonus
+                    const celestialSeeds = Object.keys(CROPS).filter(cropId => {
+                        const crop = CROPS[cropId];
+                        return crop.rarity === 'celestial' && !crop.crateOnly;
+                    });
+                    
                     if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+                    let gotSpecial = false;
+                    let specialType = null;
+                    
                     for (let i = 0; i < 3; i++) {
-                        const type = seedTypes[Math.floor(Math.random() * seedTypes.length)];
+                        let type;
+                        const roll = Math.random();
+                        
+                        if (roll < 0.02 && celestialSeeds.length > 0) {
+                            // 2% chance for celestial seed
+                            type = celestialSeeds[Math.floor(Math.random() * celestialSeeds.length)];
+                            gotSpecial = true;
+                            specialType = 'celestial';
+                        } else if (roll < 0.07 && demonicSeeds.length > 0) {
+                            // 5% chance for demonic seed (after celestial check)
+                            type = demonicSeeds[Math.floor(Math.random() * demonicSeeds.length)];
+                            gotSpecial = true;
+                            specialType = 'demonic';
+                        } else {
+                            // Normal seed
+                            type = normalSeedTypes[Math.floor(Math.random() * normalSeedTypes.length)];
+                        }
+                        
                         if (!gameState.stormchargedSeeds[type]) gameState.stormchargedSeeds[type] = 0;
                         gameState.stormchargedSeeds[type]++;
                     }
-                    showMessage('⚡ Got 3 random Stormcharged seeds!');
+                    
+                    if (gotSpecial && specialType === 'celestial') {
+                        showMessage('⚡✨ Got 3 Stormcharged seeds including a CELESTIAL! ✨⚡');
+                    } else if (gotSpecial && specialType === 'demonic') {
+                        showMessage('⚡🔥 Got 3 Stormcharged seeds including a DEMONIC! 🔥⚡');
+                    } else {
+                        showMessage('⚡ Got 3 random Stormcharged seeds!');
+                    }
                     break;
                     
                 case 'storm_egg':
