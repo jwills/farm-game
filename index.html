@@ -9316,14 +9316,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(180deg, rgba(20,20,40,0.6) 0%, rgba(50,50,80,0.4) 30%, rgba(30,30,50,0.5) 100%);
-            animation: supercell-pulse 2s ease-in-out infinite;
+            background: linear-gradient(180deg, rgba(10,0,30,0.8) 0%, rgba(40,20,80,0.6) 30%, rgba(20,10,50,0.7) 100%);
+            animation: supercell-pulse 1.5s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes supercell-pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 0.9; }
+            0%, 100% { opacity: 0.8; filter: hue-rotate(0deg); }
+            50% { opacity: 1; filter: hue-rotate(20deg); }
         }
 
         .supercell-lightning {
@@ -9332,38 +9332,44 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255,255,255,0.9);
+            background: rgba(180,200,255,0.95);
             opacity: 0;
-            animation: lightning-flash 4s ease-in-out infinite;
+            animation: lightning-flash 2s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes lightning-flash {
             0%, 100% { opacity: 0; }
-            2% { opacity: 0.8; }
-            4% { opacity: 0; }
-            6% { opacity: 0.6; }
-            8% { opacity: 0; }
+            1% { opacity: 1; }
+            2% { opacity: 0; }
+            3% { opacity: 0.9; }
+            5% { opacity: 0; }
+            40% { opacity: 0; }
+            41% { opacity: 0.7; }
+            42% { opacity: 0; }
+            43% { opacity: 0.5; }
+            44% { opacity: 0; }
         }
 
         .supercell-rain {
             position: fixed;
             top: -50px;
             width: 3px;
-            height: 30px;
-            background: linear-gradient(180deg, transparent, rgba(150,180,255,0.8));
+            height: 40px;
+            background: linear-gradient(180deg, transparent, rgba(100,150,255,0.9), rgba(200,220,255,1));
             animation: supercell-rain-fall linear infinite;
             pointer-events: none;
+            filter: blur(0.5px);
         }
 
         @keyframes supercell-rain-fall {
             0% {
-                transform: translateY(0) rotate(15deg);
+                transform: translateY(0) rotate(20deg);
                 opacity: 1;
             }
             100% {
-                transform: translateY(110vh) rotate(15deg);
-                opacity: 0.5;
+                transform: translateY(110vh) rotate(20deg);
+                opacity: 0.6;
             }
         }
 
@@ -9372,22 +9378,66 @@
             top: -20px;
             width: 8px;
             height: 8px;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(200,220,255,0.8) 100%);
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(180,200,255,0.9) 100%);
             border-radius: 50%;
             animation: supercell-hail-fall linear infinite;
             pointer-events: none;
-            box-shadow: 0 0 5px rgba(200,220,255,0.8);
+            box-shadow: 0 0 10px rgba(150,180,255,0.9), 0 0 20px rgba(100,150,255,0.5);
         }
 
         @keyframes supercell-hail-fall {
             0% {
-                transform: translateY(0);
+                transform: translateY(0) rotate(0deg);
                 opacity: 1;
             }
             100% {
-                transform: translateY(110vh);
-                opacity: 0.7;
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.8;
             }
+        }
+
+        .supercell-bolt {
+            position: fixed;
+            top: 0;
+            width: 4px;
+            height: 100vh;
+            background: linear-gradient(180deg, rgba(255,255,150,1), rgba(150,180,255,1), transparent);
+            opacity: 0;
+            animation: bolt-strike 3s ease-out infinite;
+            pointer-events: none;
+            filter: blur(2px);
+            box-shadow: 0 0 30px rgba(255,255,150,1), 0 0 60px rgba(150,180,255,0.8);
+        }
+
+        .supercell-bolt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -2px;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,1), rgba(200,220,255,0.8), transparent);
+            filter: blur(4px);
+        }
+
+        @keyframes bolt-strike {
+            0%, 100% { opacity: 0; transform: scaleY(0); }
+            5% { opacity: 1; transform: scaleY(1); }
+            10% { opacity: 0.8; }
+            15% { opacity: 0; }
+        }
+
+        .supercell-glow {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100,150,255,0.4) 0%, transparent 70%);
+            animation: supercell-glow-pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes supercell-glow-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
         }
 
         /* Snow */
@@ -13849,28 +13899,54 @@
             const tint = document.createElement('div');
             tint.className = 'supercell-tint';
             overlay.appendChild(tint);
-            // Add lightning flash
-            const lightning = document.createElement('div');
-            lightning.className = 'supercell-lightning';
-            overlay.appendChild(lightning);
+            // Add multiple lightning flashes with different timings
+            for (let i = 0; i < 3; i++) {
+                const lightning = document.createElement('div');
+                lightning.className = 'supercell-lightning';
+                lightning.style.animationDelay = (i * 0.7) + 's';
+                lightning.style.animationDuration = (1.5 + Math.random()) + 's';
+                overlay.appendChild(lightning);
+            }
+            // Add lightning bolts
+            for (let i = 0; i < 5; i++) {
+                const bolt = document.createElement('div');
+                bolt.className = 'supercell-bolt';
+                bolt.style.left = (10 + Math.random() * 80) + 'vw';
+                bolt.style.animationDelay = (i * 0.6 + Math.random()) + 's';
+                bolt.style.animationDuration = (2 + Math.random() * 2) + 's';
+                overlay.appendChild(bolt);
+            }
+            // Add ambient glows
+            for (let i = 0; i < 4; i++) {
+                const glow = document.createElement('div');
+                glow.className = 'supercell-glow';
+                glow.style.left = (Math.random() * 100) + 'vw';
+                glow.style.top = (Math.random() * 50) + 'vh';
+                glow.style.width = (100 + Math.random() * 200) + 'px';
+                glow.style.height = glow.style.width;
+                glow.style.animationDelay = (Math.random() * 2) + 's';
+                overlay.appendChild(glow);
+            }
             // Add heavy rain
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 120; i++) {
                 const rain = document.createElement('div');
                 rain.className = 'supercell-rain';
                 rain.style.left = Math.random() * 100 + 'vw';
-                rain.style.animationDuration = (0.3 + Math.random() * 0.3) + 's';
+                rain.style.animationDuration = (0.2 + Math.random() * 0.2) + 's';
                 rain.style.animationDelay = Math.random() * 0.5 + 's';
+                rain.style.opacity = 0.5 + Math.random() * 0.5;
                 overlay.appendChild(rain);
             }
             // Add hail
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 const hail = document.createElement('div');
                 hail.className = 'supercell-hail';
                 hail.style.left = Math.random() * 100 + 'vw';
-                hail.style.animationDuration = (0.5 + Math.random() * 0.3) + 's';
+                hail.style.animationDuration = (0.4 + Math.random() * 0.3) + 's';
                 hail.style.animationDelay = Math.random() * 1 + 's';
-                hail.style.width = (5 + Math.random() * 6) + 'px';
-                hail.style.height = hail.style.width;
+                const size = 5 + Math.random() * 8;
+                hail.style.width = size + 'px';
+                hail.style.height = size + 'px';
                 overlay.appendChild(hail);
             }
         }
