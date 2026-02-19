@@ -4508,6 +4508,73 @@
             0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
             50% { opacity: 1; transform: translateX(-50%) scale(1.25); }
         }
+        
+        /* Tempest Fruit - storm orb plant */
+        .plant-model.crop-tempestfruit .plant-stem { 
+            background: linear-gradient(to top, #0a1628, #16213e, #1a4970); 
+            width: 5px; 
+            border-radius: 2px;
+        }
+        .plant-model.crop-tempestfruit .plant-leaf { 
+            background: linear-gradient(135deg, #1a4970, #00d4ff); 
+            width: 9px; height: 5px; border-radius: 50%;
+        }
+        .plant-model.crop-tempestfruit.stage-1 .plant-stem { height: 4px; width: 2px; }
+        .plant-model.crop-tempestfruit.stage-2 .plant-stem { height: 12px; width: 4px; }
+        .plant-model.crop-tempestfruit.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-tempestfruit.stage-3 .plant-stem { height: 22px; width: 5px; }
+        .plant-model.crop-tempestfruit.stage-3 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-tempestfruit.stage-4 .plant-stem { height: 35px; width: 7px; }
+        .plant-model.crop-tempestfruit.stage-4 .plant-leaves { bottom: 28px; }
+        
+        /* Tempest Fruit - spinning storm orb */
+        .crop-tempestfruit .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-tempestfruit.stage-4 .plant-fruit {
+            width: 24px; height: 24px;
+            background: radial-gradient(circle, 
+                #00d4ff 0%, 
+                #1a4970 40%, 
+                #0a1628 80%,
+                #000 100%);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 28px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 1), 
+                        0 0 40px rgba(26, 73, 112, 0.7),
+                        inset 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: tempestOrb 1.5s ease-in-out infinite;
+        }
+        .crop-tempestfruit.stage-4 .plant-fruit::before {
+            content: '⚡';
+            position: absolute;
+            font-size: 12px;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-shadow: 0 0 8px #fff;
+            animation: tempestLightningFlash 0.5s ease-in-out infinite;
+        }
+        /* Storm clouds around fruit */
+        .plant-model.crop-tempestfruit.stage-4::after {
+            content: '';
+            position: absolute;
+            width: 50px; height: 30px;
+            background: radial-gradient(ellipse, rgba(26,73,112,0.6) 0%, transparent 70%);
+            bottom: 35px; left: 50%; transform: translateX(-50%);
+            border-radius: 50%;
+            animation: stormClouds 2s ease-in-out infinite;
+        }
+        @keyframes tempestOrb {
+            0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,1), 0 0 40px rgba(26,73,112,0.7); transform: translateX(-50%) scale(1); }
+            50% { box-shadow: 0 0 35px rgba(0,212,255,1), 0 0 60px rgba(26,73,112,0.9); transform: translateX(-50%) scale(1.15); }
+        }
+        @keyframes tempestLightningFlash {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%); }
+            50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.3); }
+        }
+        @keyframes stormClouds {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.9; transform: translateX(-50%) scale(1.2); }
+        }
 
         /* Heaven Tear - celestial teardrop crystal */
         .plant-model.crop-heaventear .plant-stem { 
@@ -6156,6 +6223,17 @@
             0%, 100% { box-shadow: 0 0 15px rgba(75, 0, 130, 0.7), 0 0 30px rgba(25, 25, 62, 0.6), inset 0 0 10px rgba(100, 0, 150, 0.1); }
             50% { box-shadow: 0 0 25px rgba(75, 0, 130, 1), 0 0 50px rgba(25, 25, 62, 0.9), inset 0 0 20px rgba(100, 0, 150, 0.2); }
         }
+        
+        .shop-item.storm-glow, .pet-slot.storm-glow {
+            animation: storm-pulse 1.5s ease-in-out infinite;
+            border-left: 4px solid;
+            border-image: linear-gradient(180deg, #00d4ff, #1a4970, #00d4ff) 1;
+        }
+        
+        @keyframes storm-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.7), 0 0 30px rgba(26, 73, 112, 0.6), inset 0 0 10px rgba(0, 150, 200, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(0, 212, 255, 1), 0 0 50px rgba(26, 73, 112, 0.9), inset 0 0 20px rgba(0, 150, 200, 0.2); }
+        }
 
         .shop-item.disabled {
             opacity: 0.5;
@@ -7094,6 +7172,40 @@
         @keyframes voidLilyPetals {
             0% { transform: translateX(-50%) rotate(0deg); }
             100% { transform: translateX(-50%) rotate(-360deg); }
+        }
+        
+        /* Tempest Fruit - spinning storm orb */
+        .crop-icon.tempestfruit::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: radial-gradient(circle, 
+                #00d4ff 0%, 
+                #1a4970 40%, 
+                #0a1628 80%,
+                #000000 100%);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.9), 
+                        0 0 30px rgba(26, 73, 112, 0.6),
+                        inset 0 0 8px rgba(255, 255, 255, 0.4);
+            animation: tempestFruitSpin 1.5s linear infinite;
+        }
+        .crop-icon.tempestfruit::after {
+            content: '⚡';
+            position: absolute;
+            font-size: 10px;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            text-shadow: 0 0 5px #fff;
+            animation: tempestLightning 0.3s ease-in-out infinite;
+        }
+        @keyframes tempestFruitSpin {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.9), 0 0 30px rgba(26, 73, 112, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(0, 212, 255, 1), 0 0 45px rgba(26, 73, 112, 0.9); transform: translateX(-50%) scale(1.1); }
+        }
+        @keyframes tempestLightning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* Heaven Tear - crystalline teardrop */
@@ -8148,6 +8260,32 @@
             background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
             border-color: #FF6F00;
             box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+        }
+        
+        .inv-item.stormcharged-seed {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00d4ff;
+            position: relative;
+        }
+        
+        .inv-item.stormcharged-seed .storm-icon {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            font-size: 1rem;
+            filter: drop-shadow(0 0 3px #00d4ff);
+            animation: pulse-glow 1s ease-in-out infinite;
+        }
+        
+        .inv-item.stormcharged-seed.selected {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .inv-item .emoji {
@@ -10370,6 +10508,7 @@
                 <div class="stat" id="weather-display">☀️ Sunny</div>
                 <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
+                <div class="stat" id="storm-essence-stat" style="display: none;">⚡ <span id="storm-essence">0</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
 
             </div>
@@ -10607,7 +10746,8 @@
             godly: { name: 'Godly', color: '#FF1493', bg: 'linear-gradient(135deg, #FFE4EC 0%, #FF69B4 30%, #DA70D6 70%, #9400D3 100%)' },
             demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' },
             celestial: { name: 'Celestial', color: '#FFD700', bg: 'linear-gradient(135deg, #fffef0 0%, #fff8dc 20%, #fffacd 40%, #ffd700 70%, #ffffff 100%)' },
-            temporal: { name: 'Temporal', color: '#00FFFF', bg: 'linear-gradient(135deg, #0a0020 0%, #1a0040 30%, #9400D3 60%, #00FFFF 100%)' }
+            temporal: { name: 'Temporal', color: '#00FFFF', bg: 'linear-gradient(135deg, #0a0020 0%, #1a0040 30%, #9400D3 60%, #00FFFF 100%)' },
+            storm: { name: 'Storm', color: '#00d4ff', bg: 'linear-gradient(135deg, #0a1628 0%, #16213e 30%, #1a4970 60%, #00d4ff 100%)' }
         };
 
         const MAX_INVENTORY = 40;
@@ -10688,7 +10828,9 @@
             voidrose: { name: 'Void Rose', seedEmoji: '🥀', growEmoji: '🌹', seedPrice: 0, basePrice: 500000, growTime: 50, rarity: 'nocturnal', yield: [2, 4], wheelOnly: true },
             shadowmelon: { name: 'Shadow Melon', seedEmoji: '🍈', growEmoji: '🌈', seedPrice: 0, basePrice: 1000000, growTime: 75, rarity: 'nocturnal', yield: [1, 2], wheelOnly: true },
             moontree: { name: 'Moon Tree', seedEmoji: '🌸', growEmoji: '🌕', seedPrice: 0, basePrice: 750000, growTime: 60, rarity: 'nocturnal', yield: [2, 3], regrows: true, wheelOnly: true },
-            voidlily: { name: 'Void Lily', seedEmoji: '🪷', growEmoji: '🕳️', seedPrice: 0, basePrice: 4000000000, growTime: 300, rarity: 'nocturnal', yield: 1, regrows: true, wheelOnly: true }
+            voidlily: { name: 'Void Lily', seedEmoji: '🪷', growEmoji: '🕳️', seedPrice: 0, basePrice: 4000000000, growTime: 300, rarity: 'nocturnal', yield: 1, regrows: true, wheelOnly: true },
+            // Storm crops (from supercell crates only)
+            tempestfruit: { name: 'Tempest Fruit', seedEmoji: '⚡', growEmoji: '🌪️', seedPrice: 0, basePrice: 75000000, growTime: 180, rarity: 'storm', yield: [2,4], regrows: false, crateOnly: true }
         };
 
         const WEATHER = {
@@ -10808,6 +10950,8 @@
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
             cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
             alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
+            // Storm pets (from supercell crates only)
+            stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 4x instead of 2.5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
             // Darkest Night pets
             shadowcat: { name: 'Shadow Cat', emoji: '🐈‍⬛', price: 0, ability: 'Shadow Step', description: 'Double nightglow mutation chance', effect: 'shadowstep', rarity: 'nocturnal', wheelOnly: true },
             nightowl: { name: 'Night Owl', emoji: '🦉', price: 0, ability: 'Night Vision', description: '+25% crop value at night', effect: 'nightvision', rarity: 'nocturnal', wheelOnly: true }
@@ -10858,6 +11002,35 @@
             }
             return 2; // default medium
         }
+        
+        // Calculate mutation bonus with pet effects
+        function getMutationBonus(mutation) {
+            // Check WEATHER mutations first
+            const weather = Object.values(WEATHER).find(w => w.mutation === mutation);
+            if (weather) {
+                let bonus = weather.bonus;
+                // Blood Tiger triples cursed bonus
+                if (mutation === 'cursed' && hasPetEffect('bloodlust')) {
+                    bonus = 1 + (bonus - 1) * 3;
+                }
+                // Storm Hawk boosts stormsurge to 4x
+                if (mutation === 'stormsurge' && hasPetEffect('stormpower')) {
+                    bonus = 4.0;
+                }
+                return bonus;
+            }
+            // Check SPECIAL_MUTATIONS
+            const special = SPECIAL_MUTATIONS[mutation];
+            if (special) {
+                let bonus = special.bonus;
+                // Storm Hawk boosts stormsurge to 4x
+                if (mutation === 'stormsurge' && hasPetEffect('stormpower')) {
+                    bonus = 4.0;
+                }
+                return bonus;
+            }
+            return 1;
+        }
 
         function hasPetEffect(effect) {
             return gameState.equippedPets && gameState.equippedPets.some(p => PETS[p]?.effect === effect);
@@ -10906,6 +11079,8 @@
             demonicInStock: 0, // number of demonic seeds available during hellscape (0-5)
             celestialInStock: false, // only true during heaven with 25% chance
             supercellCrate: null, // { plotIndex: number } - supply crate location during supercell
+            stormEssence: 0, // currency from supercell crates
+            stormchargedSeeds: {}, // seeds that auto-apply stormsurge: { cropType: count }
             gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
             sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
             unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
@@ -11242,7 +11417,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily', 'tempestfruit'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
@@ -11630,6 +11805,25 @@
                 }
             }
             
+            // Stormcharged seeds (pre-mutated with stormsurge)
+            for (const [id, count] of Object.entries(gameState.stormchargedSeeds || {})) {
+                if (count > 0) {
+                    hasSeeds = true;
+                    const crop = CROPS[id];
+                    const stormId = 'storm_' + id;
+                    const div = document.createElement('div');
+                    div.className = `inv-item stormcharged-seed ${gameState.selectedSeed === stormId ? 'selected' : ''}`;
+                    div.innerHTML = `
+                        <span class="storm-icon">⚡</span>
+                        ${getCropIcon(id)}
+                        <span class="count">${count}</span>
+                    `;
+                    div.title = `Stormcharged ${crop.name} - plants with Stormsurge mutation!`;
+                    div.onclick = () => selectSeed(stormId);
+                    seedContainer.appendChild(div);
+                }
+            }
+            
             // Eggs in inventory
             let hasEggs = false;
             for (const [petId, count] of Object.entries(gameState.eggInventory || {})) {
@@ -11674,15 +11868,7 @@
                 // Apply mutation bonuses
                 const mutations = item.mutations || [];
                 mutations.forEach(m => {
-                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                    if (weather) {
-                        let bonus = weather.bonus;
-                        // Blood Tiger triples cursed bonus
-                        if (m === 'cursed' && hasPetEffect('bloodlust')) bonus = 1 + (bonus - 1) * 3;
-                        value *= bonus;
-                    }
-                    const special = SPECIAL_MUTATIONS[m];
-                    if (special) value *= special.bonus;
+                    value *= getMutationBonus(m);
                 });
                 // Apply pet value bonus
                 value = getPetBonus('value', value);
@@ -11717,6 +11903,16 @@
             // Update header stats
             document.getElementById('money').textContent = formatMoney(gameState.money);
             document.getElementById('harvested').textContent = gameState.totalHarvested;
+            
+            // Update storm essence display
+            const stormEssenceStat = document.getElementById('storm-essence-stat');
+            const stormEssence = gameState.stormEssence || 0;
+            if (stormEssence > 0) {
+                stormEssenceStat.style.display = 'block';
+                document.getElementById('storm-essence').textContent = stormEssence;
+            } else {
+                stormEssenceStat.style.display = 'none';
+            }
         }
 
         // Buy Seed
@@ -11818,30 +12014,62 @@
 
         // Plant Seed
         function plantSeed(plotIndex) {
-            if (!gameState.selectedSeed || !gameState.seeds[gameState.selectedSeed]) {
-                showMessage('Select seeds from your inventory first!');
-                return;
+            // Check if it's a stormcharged seed
+            const isStormcharged = gameState.selectedSeed && gameState.selectedSeed.startsWith('storm_');
+            const actualSeedType = isStormcharged ? gameState.selectedSeed.replace('storm_', '') : gameState.selectedSeed;
+            
+            if (isStormcharged) {
+                if (!gameState.stormchargedSeeds || !gameState.stormchargedSeeds[actualSeedType]) {
+                    showMessage('Select seeds from your inventory first!');
+                    return;
+                }
+            } else {
+                if (!gameState.selectedSeed || !gameState.seeds[gameState.selectedSeed]) {
+                    showMessage('Select seeds from your inventory first!');
+                    return;
+                }
             }
             
             if (gameState.plots[plotIndex]) {
                 return; // Plot not empty
             }
             
-            const seedType = gameState.selectedSeed;
-            gameState.seeds[seedType]--;
+            // Deduct the seed
+            if (isStormcharged) {
+                gameState.stormchargedSeeds[actualSeedType]--;
+                if (gameState.stormchargedSeeds[actualSeedType] <= 0) {
+                    delete gameState.stormchargedSeeds[actualSeedType];
+                }
+            } else {
+                gameState.seeds[actualSeedType]--;
+                if (gameState.seeds[actualSeedType] <= 0) {
+                    delete gameState.seeds[actualSeedType];
+                }
+            }
+            
             gameState.plots[plotIndex] = {
-                type: seedType,
+                type: actualSeedType,
                 growth: 0,
                 plantedAt: Date.now(),
-                mutations: [], // can gain mutations from weather
+                mutations: isStormcharged ? ['stormsurge'] : [], // Stormcharged starts with stormsurge!
                 harvested: false // tracks if first harvest done (for regrow time)
             };
             
-            showMessage(`Planted ${CROPS[seedType].name}! 🌱`);
+            if (isStormcharged) {
+                showMessage(`⚡ Planted Stormcharged ${CROPS[actualSeedType].name}! Already has Stormsurge! 🌪️`);
+            } else {
+                showMessage(`Planted ${CROPS[actualSeedType].name}! 🌱`);
+            }
             
-            if (gameState.seeds[seedType] <= 0) {
-                delete gameState.seeds[seedType];
-                gameState.selectedSeed = null;
+            // Clear selection if out of that seed type
+            if (isStormcharged) {
+                if (!gameState.stormchargedSeeds[actualSeedType]) {
+                    gameState.selectedSeed = null;
+                }
+            } else {
+                if (!gameState.seeds[actualSeedType]) {
+                    gameState.selectedSeed = null;
+                }
             }
             
             renderFarm();
@@ -12144,6 +12372,8 @@
                 if (pet.rarity === 'legendary') classNames += ' legendary-glow';
                 if (pet.rarity === 'godly') classNames += ' godly-glow';
                 if (pet.rarity === 'demonic') classNames += ' demonic-glow';
+                if (pet.rarity === 'temporal') classNames += ' temporal-glow';
+                if (pet.rarity === 'storm') classNames += ' storm-glow';
                 div.className = classNames;
                 
                 // Use rarity background
@@ -12733,10 +12963,7 @@
                 const size = SIZES[item.sizeIndex];
                 let value = crop.basePrice * size.multiplier;
                 (item.mutations || []).forEach(m => {
-                    const weather = Object.values(WEATHER).find(w => w.mutation === m);
-                    if (weather) value *= weather.bonus;
-                    const special = SPECIAL_MUTATIONS[m];
-                    if (special) value *= special.bonus;
+                    value *= getMutationBonus(m);
                 });
                 value = getPetBonus('value', value);
                 total += Math.round(value);
@@ -13549,7 +13776,7 @@
                 const rewardText = giveReward(reward, wheelType);
                 showRewardPopup(reward, rewardText, wheelType);
                 renderInventory();
-                renderPets();
+                renderPetShop();
             }, 4000);
         }
         
@@ -13587,7 +13814,7 @@
                 const rewardText = giveDarkestReward(reward);
                 showDarkestRewardPopup(reward, rewardText);
                 renderInventory();
-                renderPets();
+                renderPetShop();
             }, 4000);
         }
         
@@ -13691,50 +13918,55 @@
             
             gameState.supercellCrate = null;
             
-            // Random rewards from the crate
+            // Custom supercell rewards
             const rewards = [];
+            
+            // Storm Essence (always) - 5 to 15
+            const essenceAmount = 5 + Math.floor(Math.random() * 11);
+            if (!gameState.stormEssence) gameState.stormEssence = 0;
+            gameState.stormEssence += essenceAmount;
+            rewards.push(`⚡${essenceAmount} Storm Essence`);
+            
+            // Roll for bonus rewards
             const roll = Math.random();
             
-            // Money reward (always)
-            const moneyAmount = 10000 + Math.floor(Math.random() * 40000);
-            gameState.money += moneyAmount;
-            rewards.push(`$${formatMoney(moneyAmount)}`);
-            
-            // Bonus rewards based on luck
-            if (roll < 0.4) {
-                // 40% chance: bonus seeds
-                const seedTypes = ['tomato', 'corn', 'strawberry', 'pumpkin', 'sunflower'];
+            if (roll < 0.45) {
+                // 45% chance: Stormcharged seeds (pre-mutated with stormsurge)
+                const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit'];
                 const seedType = seedTypes[Math.floor(Math.random() * seedTypes.length)];
-                const seedCount = 2 + Math.floor(Math.random() * 4);
-                if (!gameState.seeds[seedType]) gameState.seeds[seedType] = 0;
-                gameState.seeds[seedType] += seedCount;
-                rewards.push(`${seedCount}x ${CROPS[seedType].name} Seeds`);
-            } else if (roll < 0.7) {
-                // 30% chance: more money
-                const bonusMoney = 25000 + Math.floor(Math.random() * 50000);
-                gameState.money += bonusMoney;
-                rewards.push(`+$${formatMoney(bonusMoney)} bonus`);
-            } else if (roll < 0.9) {
-                // 20% chance: rare seeds
-                const rareSeeds = ['watermelon', 'grapes', 'rose', 'starfruit'];
-                const seedType = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
+                const seedCount = 1 + Math.floor(Math.random() * 3);
+                if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+                if (!gameState.stormchargedSeeds[seedType]) gameState.stormchargedSeeds[seedType] = 0;
+                gameState.stormchargedSeeds[seedType] += seedCount;
+                rewards.push(`${seedCount}x ⚡${CROPS[seedType].name} (Stormcharged)`);
+            } else if (roll < 0.75) {
+                // 30% chance: Tempest Fruit seeds (exclusive storm crop)
                 const seedCount = 1 + Math.floor(Math.random() * 2);
-                if (!gameState.seeds[seedType]) gameState.seeds[seedType] = 0;
-                gameState.seeds[seedType] += seedCount;
-                rewards.push(`${seedCount}x ${CROPS[seedType].name} Seeds`);
+                if (!gameState.seeds.tempestfruit) gameState.seeds.tempestfruit = 0;
+                gameState.seeds.tempestfruit += seedCount;
+                rewards.push(`${seedCount}x 🌪️ Tempest Fruit Seeds`);
+            } else if (roll < 0.92) {
+                // 17% chance: Bonus storm essence burst
+                const bonusEssence = 15 + Math.floor(Math.random() * 25);
+                gameState.stormEssence += bonusEssence;
+                rewards.push(`⚡${bonusEssence} bonus Storm Essence!`);
             } else {
-                // 10% chance: sprinkler
-                if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
-                const sprinklers = ['sprinkler_basic', 'sprinkler_improved', 'sprinkler_quality'];
-                const sprinkler = sprinklers[Math.floor(Math.random() * sprinklers.length)];
-                gameState.unplacedSprinklers.push(sprinkler);
-                rewards.push(`${GEAR[sprinkler].name} ${GEAR[sprinkler].emoji}`);
+                // 8% chance: Storm Hawk pet! (if not owned)
+                if (!gameState.pets.includes('stormhawk')) {
+                    gameState.pets.push('stormhawk');
+                    rewards.push(`🦅 STORM HAWK PET!`);
+                } else {
+                    // Already have hawk, give big essence instead
+                    const bigEssence = 50 + Math.floor(Math.random() * 50);
+                    gameState.stormEssence += bigEssence;
+                    rewards.push(`⚡${bigEssence} Storm Essence (already have Storm Hawk)`);
+                }
             }
             
-            showMessage(`📦⚡ Supply Crate opened! Got: ${rewards.join(', ')}`);
+            showMessage(`📦⚡ Supply Crate opened! ${rewards.join(', ')}`);
             renderFarm();
             renderInventory();
-            renderGearTools();
+            renderPetShop();
         }
         
         function showRewardPopup(reward, rewardText, wheelType) {
