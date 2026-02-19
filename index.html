@@ -13846,13 +13846,14 @@
             }
 
             // Stormsurge spread effect (every 10 seconds, 15% chance per adjacent crop)
+            // Only original stormsurge can spread (not spread-from-spread)
             if (!gameState.stormSpreadTimer) gameState.stormSpreadTimer = 0;
             gameState.stormSpreadTimer++;
             if (gameState.stormSpreadTimer >= 10) {
                 gameState.stormSpreadTimer = 0;
-                // Find all plots with stormsurge
+                // Find all plots with stormsurge that wasn't from spreading
                 const stormPlots = gameState.plots.map((p, i) => ({plot: p, index: i}))
-                    .filter(({plot}) => plot && plot.mutations?.includes('stormsurge'));
+                    .filter(({plot}) => plot && plot.mutations?.includes('stormsurge') && !plot.stormsurgeFromSpread);
                 
                 stormPlots.forEach(({index}) => {
                     const adjacent = getAdjacentPlots(index);
@@ -13861,6 +13862,7 @@
                         if (adjPlot && !adjPlot.mutations?.includes('stormsurge') && Math.random() < 0.15) {
                             if (!adjPlot.mutations) adjPlot.mutations = [];
                             adjPlot.mutations.push('stormsurge');
+                            adjPlot.stormsurgeFromSpread = true; // Mark as spread, can't spread again
                             showMessage(`⚡ Storm surge spread to a nearby crop! 🌩️`);
                             needsRender = true;
                         }
