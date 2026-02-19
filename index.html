@@ -14179,7 +14179,12 @@
             
             switch (item.action) {
                 case 'stormcharge_random':
-                    const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit', 'tomato', 'strawberry'];
+                    // Exclude special/rare crops from random stormcharge seeds
+                    const excludedRarities = ['demonic', 'celestial', 'temporal', 'nocturnal'];
+                    const seedTypes = Object.keys(CROPS).filter(cropId => {
+                        const crop = CROPS[cropId];
+                        return !crop.crateOnly && !excludedRarities.includes(crop.rarity);
+                    });
                     if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
                     for (let i = 0; i < 3; i++) {
                         const type = seedTypes[Math.floor(Math.random() * seedTypes.length)];
