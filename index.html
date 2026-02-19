@@ -14775,7 +14775,8 @@
         }
         
         // Storm Egg - gives random storm pet
-        const STORM_PETS = ['stormhawk', 'thunderwolf', 'cyclonedragon', 'staticbunny', 'galephoenix'];
+        // Storm pets available from Storm Egg (excludes Storm Hawk which is crate-only)
+        const STORM_PETS = ['thunderwolf', 'cyclonedragon', 'staticbunny', 'galephoenix'];
         
         function openStormEggHatch() {
             closeStormShop();
