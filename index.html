@@ -4576,6 +4576,392 @@
             50% { opacity: 0.9; transform: translateX(-50%) scale(1.2); }
         }
 
+        /* ===== STORM CROPS - From Supercell Crates & Storm Seed Packs ===== */
+        
+        /* Static Sprout - tiny electric seedling */
+        .plant-model.crop-staticsprout .plant-stem { 
+            background: linear-gradient(to top, #1a1a2e, #16213e); 
+            width: 3px; border-radius: 1px;
+        }
+        .plant-model.crop-staticsprout .plant-leaf { 
+            background: linear-gradient(135deg, #00d4ff, #4169e1); 
+            width: 6px; height: 4px; border-radius: 50%;
+            animation: static-spark 0.5s steps(2) infinite;
+        }
+        .crop-staticsprout .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-staticsprout.stage-4 .plant-fruit {
+            width: 10px; height: 12px;
+            background: radial-gradient(circle, #00ffff 0%, #00d4ff 50%, #4169e1 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute; bottom: 14px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px #00d4ff;
+            animation: static-glow 0.4s ease-in-out infinite;
+        }
+        @keyframes static-spark {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5) drop-shadow(0 0 3px #00ffff); }
+        }
+        @keyframes static-glow {
+            0%, 100% { box-shadow: 0 0 8px #00d4ff; transform: translateX(-50%) scale(1); }
+            50% { box-shadow: 0 0 15px #00ffff; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Zap Zucchini - electric zucchini with lightning bolt pattern */
+        .plant-model.crop-zapzucchini .plant-stem { 
+            background: linear-gradient(to top, #0a1628, #16213e); 
+            width: 4px; border-radius: 2px;
+        }
+        .plant-model.crop-zapzucchini .plant-leaf { 
+            background: linear-gradient(135deg, #228b22, #32cd32); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .crop-zapzucchini .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-zapzucchini.stage-4 .plant-fruit {
+            width: 8px; height: 22px;
+            background: linear-gradient(90deg, #2e8b2e 0%, #3cb371 50%, #2e8b2e 100%);
+            border-radius: 4px;
+            position: absolute; bottom: 18px;
+            left: 50%; transform: translateX(-50%) rotate(-15deg);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+        }
+        .crop-zapzucchini.stage-4 .plant-fruit::before {
+            content: '⚡';
+            position: absolute;
+            font-size: 10px; top: 3px; left: -2px;
+            animation: zap-flash 0.6s steps(2) infinite;
+        }
+        @keyframes zap-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Thunder Melon - melon with electric aura */
+        .plant-model.crop-thundermelon .plant-stem { 
+            background: linear-gradient(to top, #0a1628, #16213e, #1a4970); 
+            width: 5px; border-radius: 2px;
+        }
+        .plant-model.crop-thundermelon .plant-leaf { 
+            background: linear-gradient(135deg, #228b22, #32cd32); 
+            width: 9px; height: 5px; border-radius: 50%;
+        }
+        .crop-thundermelon .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-thundermelon.stage-4 .plant-fruit {
+            width: 20px; height: 16px;
+            background: radial-gradient(ellipse, #90ee90 0%, #3cb371 40%, #228b22 100%);
+            border-radius: 50%;
+            position: absolute; bottom: 20px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+            animation: thunder-pulse 1s ease-in-out infinite;
+        }
+        .crop-thundermelon.stage-4 .plant-fruit::after {
+            content: '';
+            position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 30px;
+            border: 2px solid rgba(0, 212, 255, 0.5);
+            border-radius: 50%;
+            animation: thunder-ring 1.5s ease-out infinite;
+        }
+        @keyframes thunder-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(0, 212, 255, 0.9); }
+        }
+        @keyframes thunder-ring {
+            0% { transform: translateX(-50%) scale(0.5); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.5); opacity: 0; }
+        }
+
+        /* Lightning Lily - glowing electric lily */
+        .plant-model.crop-lightninglily .plant-stem { 
+            background: linear-gradient(to top, #1a1a2e, #2a2a4e); 
+            width: 3px; border-radius: 1px;
+        }
+        .plant-model.crop-lightninglily .plant-leaf { 
+            background: linear-gradient(135deg, #4169e1, #00d4ff); 
+            width: 7px; height: 4px; border-radius: 50%;
+        }
+        .crop-lightninglily .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-lightninglily.stage-4 .plant-fruit {
+            width: 18px; height: 14px;
+            background: radial-gradient(ellipse at top, #fff 0%, #e0e8ff 20%, #9370db 60%, #4169e1 100%);
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            position: absolute; bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px #9370db, 0 0 25px rgba(147, 112, 219, 0.5);
+            animation: lily-glow 1.2s ease-in-out infinite;
+        }
+        .crop-lightninglily.stage-4 .plant-fruit::before {
+            content: '✨';
+            position: absolute; font-size: 8px;
+            top: -3px; left: 50%; transform: translateX(-50%);
+            animation: lily-sparkle 0.8s ease-in-out infinite;
+        }
+        @keyframes lily-glow {
+            0%, 100% { filter: brightness(1); box-shadow: 0 0 15px #9370db; }
+            50% { filter: brightness(1.3); box-shadow: 0 0 25px #dda0dd, 0 0 35px #9370db; }
+        }
+        @keyframes lily-sparkle {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.5; transform: translateX(-50%) scale(1.3); }
+        }
+
+        /* Hailstone Berry - icy blue berries */
+        .plant-model.crop-hailberry .plant-stem { 
+            background: linear-gradient(to top, #1a1a2e, #16213e); 
+            width: 4px; border-radius: 2px;
+        }
+        .plant-model.crop-hailberry .plant-leaf { 
+            background: linear-gradient(135deg, #87ceeb, #add8e6); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .crop-hailberry .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-hailberry.stage-4 .plant-fruit {
+            width: 16px; height: 12px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #87ceeb 30%, #4169e1 80%);
+            border-radius: 50%;
+            position: absolute; bottom: 20px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(135, 206, 235, 0.8), inset 0 0 5px rgba(255,255,255,0.5);
+        }
+        .crop-hailberry.stage-4 .plant-fruit::before {
+            content: '❄️';
+            position: absolute; font-size: 8px;
+            top: -5px; right: -5px;
+            animation: hail-spin 3s linear infinite;
+        }
+        @keyframes hail-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Storm Cloud Cotton - fluffy electric cloud */
+        .plant-model.crop-stormcotton .plant-stem { 
+            background: linear-gradient(to top, #16213e, #1a4970); 
+            width: 4px; border-radius: 2px;
+        }
+        .plant-model.crop-stormcotton .plant-leaf { 
+            background: linear-gradient(135deg, #708090, #b0c4de); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .crop-stormcotton .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-stormcotton.stage-4 .plant-fruit {
+            width: 22px; height: 14px;
+            background: radial-gradient(ellipse at center, #f0f8ff 0%, #b0c4de 40%, #708090 80%);
+            border-radius: 50%;
+            position: absolute; bottom: 24px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(176, 196, 222, 0.7);
+            animation: cloud-float 2s ease-in-out infinite;
+        }
+        .crop-stormcotton.stage-4 .plant-fruit::before {
+            content: '⚡';
+            position: absolute; font-size: 10px;
+            bottom: -8px; left: 50%; transform: translateX(-50%);
+            animation: cloud-lightning 2s steps(1) infinite;
+        }
+        @keyframes cloud-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-3px); }
+        }
+        @keyframes cloud-lightning {
+            0%, 90%, 100% { opacity: 0; }
+            92%, 96% { opacity: 1; }
+        }
+
+        /* Cyclone Corn - spinning vortex corn */
+        .plant-model.crop-cyclonecorn .plant-stem { 
+            background: linear-gradient(to top, #0a1628, #16213e, #1a4970); 
+            width: 5px; border-radius: 2px;
+        }
+        .plant-model.crop-cyclonecorn .plant-leaf { 
+            background: linear-gradient(135deg, #228b22, #32cd32); 
+            width: 10px; height: 6px; border-radius: 50%;
+            animation: cyclone-leaf 1s ease-in-out infinite;
+        }
+        .crop-cyclonecorn .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-cyclonecorn.stage-4 .plant-fruit {
+            width: 10px; height: 24px;
+            background: linear-gradient(0deg, #ffd700 0%, #f0e68c 30%, #daa520 60%, #b8860b 100%);
+            border-radius: 3px 3px 6px 6px;
+            position: absolute; bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        .crop-cyclonecorn.stage-4::after {
+            content: '🌀';
+            position: absolute; font-size: 16px;
+            bottom: 35px; left: 50%; transform: translateX(-50%);
+            animation: cyclone-spin 1s linear infinite;
+            filter: drop-shadow(0 0 5px #00d4ff);
+        }
+        @keyframes cyclone-leaf {
+            0%, 100% { transform: rotate(-45deg) skewX(0deg); }
+            50% { transform: rotate(-45deg) skewX(10deg); }
+        }
+        @keyframes cyclone-spin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        /* Voltage Vine - electric grape vine */
+        .plant-model.crop-voltagevine .plant-stem { 
+            background: linear-gradient(to top, #1a1a2e, #2a1a4a); 
+            width: 4px; border-radius: 2px;
+        }
+        .plant-model.crop-voltagevine .plant-leaf { 
+            background: linear-gradient(135deg, #4b0082, #8a2be2); 
+            width: 9px; height: 5px; border-radius: 50%;
+        }
+        .crop-voltagevine .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-voltagevine.stage-4 .plant-fruit {
+            width: 14px; height: 18px;
+            background: radial-gradient(circle at 40% 30%, #9370db 0%, #8a2be2 40%, #4b0082 100%);
+            border-radius: 40% 40% 50% 50%;
+            position: absolute; bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.8);
+            animation: voltage-zap 0.8s ease-in-out infinite;
+        }
+        .crop-voltagevine.stage-4 .plant-fruit::before {
+            content: '⚡';
+            position: absolute; font-size: 14px;
+            top: -8px; left: 50%; transform: translateX(-50%);
+            color: #fff;
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #8a2be2;
+            animation: voltage-flash 0.4s steps(2) infinite;
+        }
+        @keyframes voltage-zap {
+            0%, 100% { box-shadow: 0 0 10px rgba(138, 43, 226, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(138, 43, 226, 1), 0 0 35px rgba(0, 212, 255, 0.5); }
+        }
+        @keyframes voltage-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Gale Gourd - wind-swept pumpkin */
+        .plant-model.crop-galegourd .plant-stem { 
+            background: linear-gradient(to top, #16213e, #1a4970); 
+            width: 5px; border-radius: 2px;
+        }
+        .plant-model.crop-galegourd .plant-leaf { 
+            background: linear-gradient(135deg, #228b22, #32cd32); 
+            width: 10px; height: 6px; border-radius: 50%;
+            animation: gale-flutter 0.5s ease-in-out infinite alternate;
+        }
+        .crop-galegourd .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-galegourd.stage-4 .plant-fruit {
+            width: 22px; height: 18px;
+            background: radial-gradient(ellipse, #ff7f50 0%, #ff6347 50%, #dc143c 100%);
+            border-radius: 45%;
+            position: absolute; bottom: 22px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+        }
+        .crop-galegourd.stage-4::after {
+            content: '💨';
+            position: absolute; font-size: 12px;
+            bottom: 30px; right: -5px;
+            animation: gale-wind 0.8s linear infinite;
+        }
+        @keyframes gale-flutter {
+            0% { transform: rotate(-45deg) translateX(0); }
+            100% { transform: rotate(-45deg) translateX(3px); }
+        }
+        @keyframes gale-wind {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-15px); opacity: 0; }
+        }
+
+        /* Nimbus Nectar - cloud honey */
+        .plant-model.crop-nimbusnectar .plant-stem { 
+            background: linear-gradient(to top, #16213e, #4169e1); 
+            width: 4px; border-radius: 2px;
+        }
+        .plant-model.crop-nimbusnectar .plant-leaf { 
+            background: linear-gradient(135deg, #87ceeb, #00bfff); 
+            width: 8px; height: 5px; border-radius: 50%;
+        }
+        .crop-nimbusnectar .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-nimbusnectar.stage-4 .plant-fruit {
+            width: 16px; height: 20px;
+            background: linear-gradient(180deg, #ffd700 0%, #ffb347 50%, #ff8c00 100%);
+            border-radius: 50% 50% 45% 45%;
+            position: absolute; bottom: 24px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 0 25px rgba(0, 212, 255, 0.4);
+        }
+        .crop-nimbusnectar.stage-4::before {
+            content: '☁️';
+            position: absolute; font-size: 14px;
+            bottom: 40px; left: 50%; transform: translateX(-50%);
+            animation: nimbus-float 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px #87ceeb);
+        }
+        @keyframes nimbus-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-4px); }
+        }
+
+        /* Electroblossom (Supercell Flower) - ultimate storm flower */
+        .plant-model.crop-supercellflower .plant-stem { 
+            background: linear-gradient(to top, #0a0a1a, #16213e, #1a4970); 
+            width: 6px; border-radius: 3px;
+        }
+        .plant-model.crop-supercellflower .plant-leaf { 
+            background: linear-gradient(135deg, #00d4ff, #4169e1); 
+            width: 10px; height: 6px; border-radius: 50%;
+            animation: supercell-leaf-pulse 1s ease-in-out infinite;
+        }
+        .crop-supercellflower .plant-fruit { width: 0; height: 0; background: transparent; }
+        .crop-supercellflower.stage-4 .plant-fruit {
+            width: 28px; height: 28px;
+            background: radial-gradient(circle, 
+                #fff 0%, 
+                #00d4ff 20%, 
+                #4169e1 40%,
+                #1a1a2e 60%,
+                #0a0a1a 100%);
+            border-radius: 50%;
+            position: absolute; bottom: 30px;
+            left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 20px #00d4ff, 0 0 40px #4169e1, 0 0 60px rgba(0, 212, 255, 0.5);
+            animation: supercell-bloom 1.5s ease-in-out infinite;
+        }
+        .crop-supercellflower.stage-4 .plant-fruit::before {
+            content: '🌀';
+            position: absolute; font-size: 14px;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            animation: supercell-vortex-spin 2s linear infinite;
+            filter: drop-shadow(0 0 5px #fff);
+        }
+        .crop-supercellflower.stage-4::after {
+            content: '⚡';
+            position: absolute; font-size: 12px;
+            top: -5px; left: 50%; transform: translateX(-50%);
+            animation: supercell-lightning-dance 0.5s steps(3) infinite;
+            text-shadow: 0 0 15px #00d4ff, 0 0 25px #fff;
+        }
+        @keyframes supercell-leaf-pulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 3px #00d4ff); }
+        }
+        @keyframes supercell-bloom {
+            0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 20px #00d4ff, 0 0 40px #4169e1; }
+            50% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 30px #00d4ff, 0 0 50px #4169e1, 0 0 70px rgba(255,255,255,0.3); }
+        }
+        @keyframes supercell-vortex-spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes supercell-lightning-dance {
+            0% { transform: translateX(-50%) rotate(-10deg); opacity: 1; }
+            33% { transform: translateX(-50%) rotate(10deg); opacity: 0.3; }
+            66% { transform: translateX(-50%) rotate(-5deg); opacity: 1; }
+            100% { transform: translateX(-50%) rotate(5deg); opacity: 0.7; }
+        }
+
         /* Heaven Tear - celestial teardrop crystal */
         .plant-model.crop-heaventear .plant-stem { 
             background: linear-gradient(to top, #e0e8ff, #c8d8ff, #f0f8ff); 
@@ -5605,6 +5991,55 @@
         @keyframes quantum-orbit {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Stormsurge mutation - electric crackling effect */
+        .plant-model.has-stormsurge {
+            animation: stormsurge-pulse 0.8s ease-in-out infinite;
+        }
+        .plant-model.has-stormsurge .plant-fruit {
+            filter: drop-shadow(0 0 8px #00d4ff) drop-shadow(0 0 15px #4169e1);
+        }
+        .plant-model.has-stormsurge .plant-stem {
+            filter: brightness(1.2) saturate(1.3);
+        }
+        .plant-model.has-stormsurge::before {
+            content: '⚡';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            animation: lightning-flicker 0.3s steps(2) infinite;
+            z-index: 10;
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #fff;
+        }
+        .plant-model.has-stormsurge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.1) 50%, transparent 100%);
+            pointer-events: none;
+            animation: electric-sweep 1.5s linear infinite;
+        }
+        @keyframes stormsurge-pulse {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+            50% { filter: brightness(1.2) drop-shadow(0 0 15px rgba(0, 212, 255, 0.8)); }
+        }
+        @keyframes lightning-flicker {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            25% { opacity: 0.3; transform: translateX(-50%) scale(0.9); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+            75% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+        }
+        @keyframes electric-sweep {
+            0% { opacity: 0; transform: translateY(-100%); }
+            10% { opacity: 0.8; }
+            20% { opacity: 0; transform: translateY(100%); }
+            100% { opacity: 0; transform: translateY(100%); }
         }
 
         /* Ash Covered mutation - smoky/volcanic effect */
@@ -8281,6 +8716,39 @@
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
             border-color: #fff;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+        }
+        
+        /* Storm crop harvested items - blue electric background */
+        .inv-item.storm-crop {
+            background: linear-gradient(135deg, #0a1628 0%, #16213e 50%, #1a4970 100%);
+            border: 2px solid #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4), inset 0 0 15px rgba(0, 212, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .inv-item.storm-crop::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 200%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            animation: storm-crop-sweep 2s linear infinite;
+        }
+        .inv-item.storm-crop::after {
+            content: '⚡';
+            position: absolute;
+            top: 2px; right: 4px;
+            font-size: 0.7rem;
+            filter: drop-shadow(0 0 3px #00d4ff);
+            animation: storm-crop-flash 1s steps(2) infinite;
+        }
+        @keyframes storm-crop-sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        @keyframes storm-crop-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         
         @keyframes pulse-glow {
@@ -12386,6 +12854,7 @@
                     if (plot.mutations?.includes('timewarp')) mutationClasses += ' has-timewarp';
                     if (plot.mutations?.includes('fossilized')) mutationClasses += ' has-fossilized';
                     if (plot.mutations?.includes('quantum')) mutationClasses += ' has-quantum';
+                    if (plot.mutations?.includes('stormsurge')) mutationClasses += ' has-stormsurge';
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
@@ -12613,10 +13082,11 @@
                 }).join('');
                 
                 const div = document.createElement('div');
-                div.className = 'inv-item harvested-item';
+                const stormClass = crop.rarity === 'storm' ? ' storm-crop' : '';
+                div.className = `inv-item harvested-item${stormClass}`;
                 div.innerHTML = `
                     <div style="transform: scale(${size.scale}); display: inline-block;">${getCropIcon(item.type)}</div>
-                    <span style="font-size: 0.65rem; color: #666;">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
+                    <span style="font-size: 0.65rem; color: ${crop.rarity === 'storm' ? '#00d4ff' : '#666'};">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
                 `;
                 harvestContainer.appendChild(div);
             });
