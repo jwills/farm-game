@@ -11072,7 +11072,7 @@
             voltagevine: { name: 'Voltage Vine', seedEmoji: '🍇', growEmoji: '⚡', seedPrice: 0, basePrice: 50000000, growTime: 100, rarity: 'storm', yield: [2, 5], regrows: true, wheelOnly: true },
             galegourd: { name: 'Gale Gourd', seedEmoji: '🎃', growEmoji: '💨', seedPrice: 0, basePrice: 500000000, growTime: 150, rarity: 'storm', yield: [1, 2], wheelOnly: true },
             nimbusnectar: { name: 'Nimbus Nectar', seedEmoji: '🍯', growEmoji: '☁️', seedPrice: 0, basePrice: 5000000000, growTime: 200, rarity: 'storm', yield: [2, 4], regrows: true, wheelOnly: true },
-            supercellflower: { name: 'Supercell Flower', seedEmoji: '🌺', growEmoji: '🌪️', seedPrice: 0, basePrice: 50000000000, growTime: 300, rarity: 'storm', yield: 1, wheelOnly: true }
+            supercellflower: { name: 'Supercell Flower', seedEmoji: '🌺', growEmoji: '🌪️', seedPrice: 0, basePrice: 50000000000, growTime: 300, rarity: 'storm', yield: 1, crateOnly: true }
         };
 
         const WEATHER = {
@@ -14184,7 +14184,12 @@
             // Roll for bonus rewards
             const roll = Math.random();
             
-            if (roll < 0.45) {
+            if (roll < 0.0075) {
+                // 0.75% chance: SUPERCELL FLOWER! (ultra-rare)
+                if (!gameState.seeds.supercellflower) gameState.seeds.supercellflower = 0;
+                gameState.seeds.supercellflower += 1;
+                rewards.push(`🌺✨ SUPERCELL FLOWER SEED!! ✨🌺`);
+            } else if (roll < 0.4575) {
                 // 45% chance: Stormcharged seeds (pre-mutated with stormsurge)
                 const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit'];
                 const seedType = seedTypes[Math.floor(Math.random() * seedTypes.length)];
@@ -14193,19 +14198,19 @@
                 if (!gameState.stormchargedSeeds[seedType]) gameState.stormchargedSeeds[seedType] = 0;
                 gameState.stormchargedSeeds[seedType] += seedCount;
                 rewards.push(`${seedCount}x ⚡${CROPS[seedType].name} (Stormcharged)`);
-            } else if (roll < 0.75) {
+            } else if (roll < 0.7575) {
                 // 30% chance: Tempest Fruit seeds (exclusive storm crop)
                 const seedCount = 1 + Math.floor(Math.random() * 2);
                 if (!gameState.seeds.tempestfruit) gameState.seeds.tempestfruit = 0;
                 gameState.seeds.tempestfruit += seedCount;
                 rewards.push(`${seedCount}x 🌪️ Tempest Fruit Seeds`);
-            } else if (roll < 0.92) {
-                // 17% chance: Bonus storm essence burst
+            } else if (roll < 0.9175) {
+                // 16% chance: Bonus storm essence burst
                 const bonusEssence = 15 + Math.floor(Math.random() * 25);
                 gameState.stormEssence += bonusEssence;
                 rewards.push(`⚡${bonusEssence} bonus Storm Essence!`);
             } else {
-                // 8% chance: Storm Hawk pet! (if not owned)
+                // 8.25% chance: Storm Hawk pet! (if not owned)
                 if (!gameState.pets.includes('stormhawk')) {
                     gameState.pets.push('stormhawk');
                     rewards.push(`🦅 STORM HAWK PET!`);
