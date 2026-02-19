@@ -11352,7 +11352,8 @@
             demonic: { min: 0, max: 0, restockChance: 0, hellscapeOnly: true },
             celestial: { min: 0, max: 0, restockChance: 0, heavenOnly: true },
             temporal: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
-            nocturnal: { min: 0, max: 0, restockChance: 0, wheelOnly: true }
+            nocturnal: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
+            storm: { min: 0, max: 0, restockChance: 0, wheelOnly: true }
         };
 
         // Initialize
@@ -11863,7 +11864,8 @@
                     };
                 } else if (plot) {
                     const crop = CROPS[plot.type];
-                    const targetTime = crop.growTime;
+                    // Regrow time is half of normal grow time
+                    const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
                     const progress = Math.min(100, (plot.growth / targetTime) * 100);
                     const isReady = plot.growth >= targetTime;
                     
@@ -12436,7 +12438,8 @@
             }
             
             const crop = CROPS[plot.type];
-            const targetTime = crop.growTime;
+            // Regrow time is half of normal grow time
+            const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
             if (plot.growth < targetTime) {
                 const remaining = Math.ceil(targetTime - plot.growth);
                 showMessage(`Not ready yet! ${remaining}s remaining ⏳`);
@@ -13170,7 +13173,7 @@
                                 // Small chance for golden/rainbow from higher tier sprinklers
                                 if (gear.mutationBoost >= 0.20) {
                                     const crop = CROPS[plot.type];
-                                    const targetTime = crop?.growTime || 10;
+                                    const targetTime = plot.harvested ? Math.ceil((crop?.growTime || 10) / 2) : (crop?.growTime || 10);
                                     if (plot.growth >= targetTime) {
                                         // Golden chance
                                         if (!plot.mutations.includes('golden') && Math.random() < gear.mutationBoost * 0.3) {
@@ -13379,7 +13382,8 @@
                     }
                     
                     const crop = CROPS[plot.type];
-                    const targetTime = crop.growTime;
+                    // Regrow time is half of normal grow time
+                    const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
                     
                     if (plot.growth < targetTime) {
                         // Apply speed bonus from pets
@@ -13464,7 +13468,7 @@
                     .filter(({plot}) => {
                         if (!plot) return false;
                         const crop = CROPS[plot.type];
-                        const targetTime = crop.growTime;
+                        const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
                         return plot.growth >= targetTime;
                     });
                 if (readyPlots.length > 0) {
@@ -13484,7 +13488,8 @@
                         .filter(({plot}) => {
                             if (!plot) return false;
                             const crop = CROPS[plot.type];
-                            return plot.growth >= crop.growTime;
+                            const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
+                            return plot.growth >= targetTime;
                         });
                     let harvested = 0;
                     while (harvested < 3 && readyPlots.length > 0 && (gameState.harvested.length < MAX_INVENTORY || hasPetEffect('autosell'))) {
@@ -14097,7 +14102,12 @@
                 case 'mutation':
                     // Apply nightglow to random growing crops
                     let applied = 0;
-                    const growingPlots = gameState.plots.map((p, i) => ({plot: p, index: i})).filter(p => p.plot && !p.plot.isEgg && p.plot.growth < CROPS[p.plot.type].growTime);
+                    const growingPlots = gameState.plots.map((p, i) => ({plot: p, index: i})).filter(p => {
+                        if (!p.plot || p.plot.isEgg) return false;
+                        const crop = CROPS[p.plot.type];
+                        const targetTime = p.plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
+                        return p.plot.growth < targetTime;
+                    });
                     for (let i = 0; i < reward.count && growingPlots.length > 0; i++) {
                         const randIdx = Math.floor(Math.random() * growingPlots.length);
                         const {plot} = growingPlots.splice(randIdx, 1)[0];
