@@ -14155,10 +14155,12 @@
                 gameState.celestialInStock = false;
             }
             
-            // Time Anomaly lasts longer (30-60 seconds)
+            // Special weather durations
             let weatherDuration;
             if (gameState.currentWeather === 'timeanomaly') {
-                weatherDuration = 30 + Math.floor(Math.random() * 30);
+                weatherDuration = 60 + Math.floor(Math.random() * 60); // 60-120 seconds
+            } else if (gameState.currentWeather === 'supercell') {
+                weatherDuration = 45 + Math.floor(Math.random() * 45); // 45-90 seconds
             } else {
                 weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
             }
