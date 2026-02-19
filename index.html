@@ -9316,14 +9316,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(180deg, rgba(10,0,30,0.8) 0%, rgba(40,20,80,0.6) 30%, rgba(20,10,50,0.7) 100%);
-            animation: supercell-pulse 1.5s ease-in-out infinite;
+            background: linear-gradient(180deg, rgba(5,0,20,0.9) 0%, rgba(30,10,60,0.7) 30%, rgba(60,20,100,0.6) 60%, rgba(15,5,40,0.85) 100%);
+            animation: supercell-pulse 1s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes supercell-pulse {
-            0%, 100% { opacity: 0.8; filter: hue-rotate(0deg); }
-            50% { opacity: 1; filter: hue-rotate(20deg); }
+            0%, 100% { opacity: 0.85; filter: hue-rotate(0deg) brightness(1); }
+            25% { opacity: 0.95; filter: hue-rotate(15deg) brightness(1.2); }
+            50% { opacity: 1; filter: hue-rotate(-10deg) brightness(1.4); }
+            75% { opacity: 0.9; filter: hue-rotate(25deg) brightness(1.1); }
         }
 
         .supercell-lightning {
@@ -9332,44 +9334,51 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(180,200,255,0.95);
+            background: radial-gradient(ellipse at 50% 30%, rgba(200,220,255,1) 0%, rgba(150,100,255,0.8) 30%, transparent 70%);
             opacity: 0;
-            animation: lightning-flash 2s ease-in-out infinite;
+            animation: lightning-flash 1.5s ease-in-out infinite;
             pointer-events: none;
+            mix-blend-mode: screen;
         }
 
         @keyframes lightning-flash {
             0%, 100% { opacity: 0; }
-            1% { opacity: 1; }
-            2% { opacity: 0; }
-            3% { opacity: 0.9; }
-            5% { opacity: 0; }
-            40% { opacity: 0; }
-            41% { opacity: 0.7; }
-            42% { opacity: 0; }
-            43% { opacity: 0.5; }
-            44% { opacity: 0; }
+            1% { opacity: 1; background: rgba(255,255,255,1); }
+            2% { opacity: 0.2; }
+            3% { opacity: 1; background: rgba(200,180,255,0.95); }
+            4% { opacity: 0; }
+            5% { opacity: 0.8; }
+            6% { opacity: 0; }
+            35% { opacity: 0; }
+            36% { opacity: 0.9; background: rgba(180,200,255,0.95); }
+            37% { opacity: 0; }
+            38% { opacity: 0.7; }
+            39% { opacity: 0; }
+            60% { opacity: 0; }
+            61% { opacity: 0.6; }
+            62% { opacity: 0; }
         }
 
         .supercell-rain {
             position: fixed;
             top: -50px;
-            width: 3px;
-            height: 40px;
-            background: linear-gradient(180deg, transparent, rgba(100,150,255,0.9), rgba(200,220,255,1));
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(180deg, transparent, rgba(100,180,255,0.9), rgba(220,240,255,1));
             animation: supercell-rain-fall linear infinite;
             pointer-events: none;
-            filter: blur(0.5px);
+            filter: blur(0.3px);
+            box-shadow: 0 0 6px rgba(100,180,255,0.6);
         }
 
         @keyframes supercell-rain-fall {
             0% {
-                transform: translateY(0) rotate(20deg);
+                transform: translateY(0) rotate(25deg) scaleY(1);
                 opacity: 1;
             }
             100% {
-                transform: translateY(110vh) rotate(20deg);
-                opacity: 0.6;
+                transform: translateY(115vh) rotate(25deg) scaleY(1.2);
+                opacity: 0.7;
             }
         }
 
@@ -9378,66 +9387,157 @@
             top: -20px;
             width: 8px;
             height: 8px;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(180,200,255,0.9) 100%);
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,1) 0%, rgba(180,220,255,0.95) 50%, rgba(100,150,255,0.8) 100%);
             border-radius: 50%;
             animation: supercell-hail-fall linear infinite;
             pointer-events: none;
-            box-shadow: 0 0 10px rgba(150,180,255,0.9), 0 0 20px rgba(100,150,255,0.5);
+            box-shadow: 0 0 15px rgba(150,200,255,1), 0 0 30px rgba(100,150,255,0.8), inset 0 0 5px rgba(255,255,255,0.8);
         }
 
         @keyframes supercell-hail-fall {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) rotate(0deg) scale(1);
                 opacity: 1;
             }
+            50% {
+                transform: translateY(55vh) rotate(180deg) scale(1.1);
+            }
             100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0.8;
+                transform: translateY(115vh) rotate(360deg) scale(0.9);
+                opacity: 0.9;
             }
         }
 
         .supercell-bolt {
             position: fixed;
             top: 0;
-            width: 4px;
+            width: 6px;
             height: 100vh;
-            background: linear-gradient(180deg, rgba(255,255,150,1), rgba(150,180,255,1), transparent);
+            background: linear-gradient(180deg, rgba(255,255,200,1), rgba(200,150,255,1), rgba(100,180,255,1), transparent);
             opacity: 0;
-            animation: bolt-strike 3s ease-out infinite;
+            animation: bolt-strike 2s ease-out infinite;
             pointer-events: none;
-            filter: blur(2px);
-            box-shadow: 0 0 30px rgba(255,255,150,1), 0 0 60px rgba(150,180,255,0.8);
+            filter: blur(1px);
+            box-shadow: 0 0 40px rgba(255,255,200,1), 0 0 80px rgba(200,150,255,0.9), 0 0 120px rgba(100,180,255,0.6);
         }
 
         .supercell-bolt::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -2px;
-            width: 8px;
+            left: -4px;
+            width: 14px;
             height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,1), rgba(200,220,255,0.8), transparent);
-            filter: blur(4px);
+            background: linear-gradient(180deg, rgba(255,255,255,1), rgba(220,200,255,0.9), rgba(150,180,255,0.7), transparent);
+            filter: blur(6px);
+        }
+
+        .supercell-bolt::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,180,255,0.5) 30%, transparent 70%);
+            transform: translateX(-50%);
+            animation: bolt-impact 2s ease-out infinite;
         }
 
         @keyframes bolt-strike {
             0%, 100% { opacity: 0; transform: scaleY(0); }
+            3% { opacity: 1; transform: scaleY(0.3); }
             5% { opacity: 1; transform: scaleY(1); }
-            10% { opacity: 0.8; }
+            8% { opacity: 0.9; }
+            10% { opacity: 0.4; }
+            12% { opacity: 0.8; }
             15% { opacity: 0; }
+        }
+
+        @keyframes bolt-impact {
+            0%, 100% { opacity: 0; transform: translateX(-50%) scale(0); }
+            5% { opacity: 1; transform: translateX(-50%) scale(1.5); }
+            15% { opacity: 0; transform: translateX(-50%) scale(2); }
         }
 
         .supercell-glow {
             position: fixed;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(100,150,255,0.4) 0%, transparent 70%);
-            animation: supercell-glow-pulse 2s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(150,100,255,0.6) 0%, rgba(100,180,255,0.3) 40%, transparent 70%);
+            animation: supercell-glow-pulse 1.5s ease-in-out infinite;
             pointer-events: none;
+            mix-blend-mode: screen;
         }
 
         @keyframes supercell-glow-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            0%, 100% { transform: scale(1); opacity: 0.6; filter: hue-rotate(0deg); }
+            33% { transform: scale(1.3); opacity: 0.9; filter: hue-rotate(20deg); }
+            66% { transform: scale(0.9); opacity: 0.7; filter: hue-rotate(-20deg); }
+        }
+
+        .supercell-vortex {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, rgba(100,80,180,0.4), transparent, rgba(80,100,200,0.3), transparent);
+            animation: supercell-vortex-spin 3s linear infinite;
+            pointer-events: none;
+            filter: blur(10px);
+        }
+
+        @keyframes supercell-vortex-spin {
+            from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+            to { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+        }
+
+        .supercell-windstreak {
+            position: fixed;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(180,200,255,0.8), rgba(255,255,255,0.9), rgba(180,200,255,0.6), transparent);
+            animation: supercell-windstreak-move 0.4s linear infinite;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        @keyframes supercell-windstreak-move {
+            0% { transform: translateX(-100vw); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100vw); opacity: 0; }
+        }
+
+        .supercell-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at var(--flash-x, 50%) var(--flash-y, 20%), rgba(255,255,255,0.95) 0%, rgba(200,180,255,0.7) 10%, transparent 40%);
+            opacity: 0;
+            animation: supercell-flash-burst 2.5s ease-out infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes supercell-flash-burst {
+            0%, 100% { opacity: 0; }
+            1% { opacity: 1; }
+            3% { opacity: 0; }
+            4% { opacity: 0.7; }
+            5% { opacity: 0; }
+        }
+
+        .supercell-shake {
+            animation: supercell-screen-shake 0.15s ease-in-out;
+        }
+
+        @keyframes supercell-screen-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) translateY(2px); }
+            50% { transform: translateX(5px) translateY(-2px); }
+            75% { transform: translateX(-3px) translateY(1px); }
         }
 
         /* Snow */
@@ -13899,56 +13999,117 @@
             const tint = document.createElement('div');
             tint.className = 'supercell-tint';
             overlay.appendChild(tint);
-            // Add multiple lightning flashes with different timings
+            
+            // Add vortex swirls in background
             for (let i = 0; i < 3; i++) {
+                const vortex = document.createElement('div');
+                vortex.className = 'supercell-vortex';
+                vortex.style.left = (20 + i * 30) + 'vw';
+                vortex.style.top = (10 + Math.random() * 30) + 'vh';
+                vortex.style.animationDelay = (i * 1) + 's';
+                vortex.style.animationDuration = (2.5 + Math.random() * 1.5) + 's';
+                const size = 200 + Math.random() * 200;
+                vortex.style.width = size + 'px';
+                vortex.style.height = size + 'px';
+                overlay.appendChild(vortex);
+            }
+            
+            // Add multiple lightning flashes with different timings and positions
+            for (let i = 0; i < 5; i++) {
                 const lightning = document.createElement('div');
                 lightning.className = 'supercell-lightning';
-                lightning.style.animationDelay = (i * 0.7) + 's';
-                lightning.style.animationDuration = (1.5 + Math.random()) + 's';
+                lightning.style.animationDelay = (i * 0.5) + 's';
+                lightning.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
                 overlay.appendChild(lightning);
             }
-            // Add lightning bolts
-            for (let i = 0; i < 5; i++) {
+            
+            // Add targeted flash bursts
+            for (let i = 0; i < 4; i++) {
+                const flash = document.createElement('div');
+                flash.className = 'supercell-flash';
+                flash.style.setProperty('--flash-x', (15 + Math.random() * 70) + '%');
+                flash.style.setProperty('--flash-y', (10 + Math.random() * 40) + '%');
+                flash.style.animationDelay = (i * 0.8 + Math.random() * 0.5) + 's';
+                flash.style.animationDuration = (2 + Math.random() * 1) + 's';
+                overlay.appendChild(flash);
+            }
+            
+            // Add lightning bolts - more of them!
+            for (let i = 0; i < 8; i++) {
                 const bolt = document.createElement('div');
                 bolt.className = 'supercell-bolt';
-                bolt.style.left = (10 + Math.random() * 80) + 'vw';
-                bolt.style.animationDelay = (i * 0.6 + Math.random()) + 's';
-                bolt.style.animationDuration = (2 + Math.random() * 2) + 's';
+                bolt.style.left = (5 + Math.random() * 90) + 'vw';
+                bolt.style.animationDelay = (i * 0.4 + Math.random() * 0.5) + 's';
+                bolt.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+                // Random color variation
+                const hue = Math.random() > 0.5 ? 'hue-rotate(' + (Math.random() * 40 - 20) + 'deg)' : '';
+                bolt.style.filter = 'blur(1px) ' + hue;
                 overlay.appendChild(bolt);
             }
-            // Add ambient glows
-            for (let i = 0; i < 4; i++) {
+            
+            // Add ambient glows - more and brighter
+            for (let i = 0; i < 8; i++) {
                 const glow = document.createElement('div');
                 glow.className = 'supercell-glow';
                 glow.style.left = (Math.random() * 100) + 'vw';
-                glow.style.top = (Math.random() * 50) + 'vh';
-                glow.style.width = (100 + Math.random() * 200) + 'px';
-                glow.style.height = glow.style.width;
+                glow.style.top = (Math.random() * 60) + 'vh';
+                const size = 150 + Math.random() * 300;
+                glow.style.width = size + 'px';
+                glow.style.height = size + 'px';
                 glow.style.animationDelay = (Math.random() * 2) + 's';
+                glow.style.animationDuration = (1 + Math.random() * 1) + 's';
                 overlay.appendChild(glow);
             }
-            // Add heavy rain
-            for (let i = 0; i < 120; i++) {
+            
+            // Add wind streaks
+            for (let i = 0; i < 15; i++) {
+                const streak = document.createElement('div');
+                streak.className = 'supercell-windstreak';
+                streak.style.top = (Math.random() * 100) + 'vh';
+                streak.style.width = (100 + Math.random() * 200) + 'px';
+                streak.style.animationDelay = (Math.random() * 2) + 's';
+                streak.style.animationDuration = (0.3 + Math.random() * 0.3) + 's';
+                overlay.appendChild(streak);
+            }
+            
+            // Add heavy rain - more intense
+            for (let i = 0; i < 180; i++) {
                 const rain = document.createElement('div');
                 rain.className = 'supercell-rain';
                 rain.style.left = Math.random() * 100 + 'vw';
-                rain.style.animationDuration = (0.2 + Math.random() * 0.2) + 's';
+                rain.style.animationDuration = (0.15 + Math.random() * 0.15) + 's';
                 rain.style.animationDelay = Math.random() * 0.5 + 's';
-                rain.style.opacity = 0.5 + Math.random() * 0.5;
+                rain.style.opacity = 0.6 + Math.random() * 0.4;
+                // Vary height for depth
+                const height = 35 + Math.random() * 30;
+                rain.style.height = height + 'px';
                 overlay.appendChild(rain);
             }
-            // Add hail
-            for (let i = 0; i < 30; i++) {
+            
+            // Add hail - more dramatic
+            for (let i = 0; i < 50; i++) {
                 const hail = document.createElement('div');
                 hail.className = 'supercell-hail';
                 hail.style.left = Math.random() * 100 + 'vw';
-                hail.style.animationDuration = (0.4 + Math.random() * 0.3) + 's';
-                hail.style.animationDelay = Math.random() * 1 + 's';
-                const size = 5 + Math.random() * 8;
+                hail.style.animationDuration = (0.3 + Math.random() * 0.3) + 's';
+                hail.style.animationDelay = Math.random() * 1.5 + 's';
+                const size = 6 + Math.random() * 12;
                 hail.style.width = size + 'px';
                 hail.style.height = size + 'px';
                 overlay.appendChild(hail);
             }
+            
+            // Add screen shake effect periodically
+            const shakeInterval = setInterval(() => {
+                if (gameState.currentWeather !== 'supercell') {
+                    clearInterval(shakeInterval);
+                    return;
+                }
+                if (Math.random() < 0.3) {
+                    document.body.classList.add('supercell-shake');
+                    setTimeout(() => document.body.classList.remove('supercell-shake'), 150);
+                }
+            }, 1500);
         }
 
         function createHellscape() {
