@@ -10651,6 +10651,147 @@
             box-shadow: none;
         }
         
+        /* Storm Egg Modal */
+        #storm-egg-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 20, 40, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+        }
+        
+        .storm-egg-content {
+            background: linear-gradient(135deg, #0a1628 0%, #16213e 50%, #1a4970 100%);
+            border: 3px solid #00d4ff;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            min-width: 350px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4),
+                        0 0 100px rgba(100, 150, 255, 0.3);
+            animation: stormEggAppear 0.4s ease-out;
+        }
+        
+        @keyframes stormEggAppear {
+            from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .storm-egg-content h2 {
+            color: #00d4ff;
+            margin: 0 0 25px 0;
+            font-size: 1.8rem;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+        
+        .storm-egg-container {
+            margin: 30px 0;
+        }
+        
+        .storm-egg {
+            font-size: 6rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
+            transition: all 0.3s ease;
+        }
+        
+        .storm-egg.hatching {
+            animation: eggShake 0.1s ease-in-out infinite, eggGlow 0.5s ease-in-out infinite;
+        }
+        
+        .storm-egg.hatched {
+            animation: eggHatched 0.5s ease-out;
+            filter: drop-shadow(0 0 40px rgba(0, 212, 255, 1));
+        }
+        
+        @keyframes eggShake {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.05); }
+            50% { transform: rotate(-8deg) scale(1); }
+            75% { transform: rotate(8deg) scale(1.05); }
+        }
+        
+        @keyframes eggGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6)) brightness(1); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 255, 150, 1)) brightness(1.3); }
+        }
+        
+        @keyframes eggHatched {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.5); }
+            50% { transform: scale(0.8); }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .hatch-btn {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+        
+        .hatch-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.8);
+        }
+        
+        .hatch-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+        
+        .egg-result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #00d4ff;
+        }
+        
+        .egg-result.hidden {
+            display: none;
+        }
+        
+        .pet-hatched {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .pet-hatched .pet-emoji {
+            font-size: 3rem;
+        }
+        
+        .pet-hatched .pet-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+        }
+        
+        .pet-ability {
+            color: #ffcc00;
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .pet-desc {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+        
         .wheel.spinning {
             animation: wheel-wobble 0.1s ease-in-out;
         }
@@ -11364,8 +11505,12 @@
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
             cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
             alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
-            // Storm pets (from supercell crates only)
+            // Storm pets (from storm eggs and supercell crates)
             stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 10x instead of 5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
+            thunderwolf: { name: 'Thunder Wolf', emoji: '🐺', price: 0, ability: 'Lightning Stride', description: '+50% crop growth during supercell weather', effect: 'lightningstride', rarity: 'storm', crateOnly: true },
+            cyclonedragon: { name: 'Cyclone Dragon', emoji: '🐉', price: 0, ability: 'Vortex Breath', description: 'Storm crops worth 3x more', effect: 'vortexbreath', rarity: 'storm', crateOnly: true },
+            staticbunny: { name: 'Static Bunny', emoji: '🐰', price: 0, ability: 'Spark Hop', description: '+20% chance for double yield on storm crops', effect: 'sparkhop', rarity: 'storm', crateOnly: true },
+            galephoenix: { name: 'Gale Phoenix', emoji: '🦚', price: 0, ability: 'Storm Rebirth', description: 'Storm crops always regrow once', effect: 'stormrebirth', rarity: 'storm', crateOnly: true },
             // Darkest Night pets
             shadowcat: { name: 'Shadow Cat', emoji: '🐈‍⬛', price: 0, ability: 'Shadow Step', description: 'Double nightglow mutation chance', effect: 'shadowstep', rarity: 'nocturnal', wheelOnly: true },
             nightowl: { name: 'Night Owl', emoji: '🦉', price: 0, ability: 'Night Vision', description: '+25% crop value at night', effect: 'nightvision', rarity: 'nocturnal', wheelOnly: true }
@@ -11396,8 +11541,7 @@
             // Void sprinklers (from darkest night wheel only)
             sprinkler_shadow: { name: 'Shadow Sprinkler', emoji: '💀', price: 0, description: 'Shadow Touch +150% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'shadowtouched', range: 8, duration: 360, rarity: 'void', passive: true, wheelOnly: true },
             sprinkler_void: { name: 'Void Sprinkler', emoji: '👁️', price: 0, description: 'Void Infused +200% value (lasts 8min)', interval: 10, growthBoost: 8, mutationBoost: 0.50, specialMutation: 'voidinfused', range: 'all', duration: 480, rarity: 'void', passive: true, wheelOnly: true },
-            // Storm sprinkler (from storm shop only)
-            sprinkler_storm: { name: 'Storm Sprinkler', emoji: '⚡', price: 0, description: 'Stormsurge +400% value (lasts 5min)', interval: 15, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'stormsurge', range: 6, duration: 300, rarity: 'storm', passive: true, shopOnly: true }
+
         };
 
         function getRandomSize() {
@@ -12291,6 +12435,10 @@
                 });
                 // Apply pet value bonus
                 value = getPetBonus('value', value);
+                // Cyclone Dragon: Storm crops worth 3x
+                if (hasPetEffect('vortexbreath') && crop.rarity === 'storm') {
+                    value *= 3;
+                }
                 value = Math.round(value);
                 totalValue += value;
                 
@@ -12630,6 +12778,11 @@
             // Bunny bonus yield
             if (hasPetEffect('yield')) yieldAmount += 1;
             if (hasPetEffect('all')) yieldAmount += Math.random() < 0.5 ? 1 : 0;
+            // Static Bunny: 20% chance double yield on storm crops
+            if (hasPetEffect('sparkhop') && crop.rarity === 'storm' && Math.random() < 0.20) {
+                yieldAmount *= 2;
+                showMessage('⚡ Static Bunny sparked a double yield!');
+            }
             
             // Harvest each item (limited by inventory space)
             const spaceAvailable = MAX_INVENTORY - gameState.harvested.length;
@@ -12647,12 +12800,19 @@
             const lostCrops = yieldAmount - actualYield;
             
             // Check if crop regrows
-            if (crop.regrows) {
+            // Gale Phoenix: storm crops always regrow once
+            const phoenixRegrow = hasPetEffect('stormrebirth') && crop.rarity === 'storm' && !plot.phoenixRegrew;
+            if (crop.regrows || phoenixRegrow) {
                 plot.growth = 0; // Reset growth
                 plot.harvested = true; // Mark as harvested before (uses regrow time)
                 plot.mutations = [];
-                const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
-                showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄${lostMsg}`);
+                if (phoenixRegrow && !crop.regrows) {
+                    plot.phoenixRegrew = true; // Mark so it only regrows once
+                    showMessage(`Harvested ${sizeText}${crop.name}! 🦚 Phoenix rebirth! Regrowing...`);
+                } else {
+                    const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
+                    showMessage(`Harvested ${sizeText}${crop.name}! Regrowing... 🔄${lostMsg}`);
+                }
             } else {
                 gameState.plots[plotIndex] = null;
                 const lostMsg = lostCrops > 0 ? ` (${lostCrops} lost - inventory full!)` : '';
@@ -13386,6 +13546,10 @@
                     value *= getMutationBonus(m);
                 });
                 value = getPetBonus('value', value);
+                // Cyclone Dragon: Storm crops worth 3x
+                if (hasPetEffect('vortexbreath') && crop.rarity === 'storm') {
+                    value *= 3;
+                }
                 total += Math.round(value);
             });
             
@@ -13564,6 +13728,10 @@
                         if (hasPetEffect('speed')) growthAmount += 0.15;
                         if (hasPetEffect('all')) growthAmount += 0.075;
                         if (hasPetEffect('ancientspeed')) growthAmount += 0.30; // Mammoth: +30% growth speed
+                        // Thunder Wolf: +50% growth during supercell
+                        if (hasPetEffect('lightningstride') && gameState.currentWeather === 'supercell') {
+                            growthAmount += 0.50;
+                        }
                         
                         // Time Anomaly: 5x growth speed!
                         if (currentWeather.growthMultiplier) {
@@ -14514,7 +14682,7 @@
         // Storm Shop
         const STORM_SHOP_ITEMS = [
             { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 15, action: 'stormcharge_random' },
-            { id: 'storm_sprinkler', name: 'Storm Sprinkler', icon: '💧⚡', desc: 'Quality sprinkler that applies stormsurge', price: 75, action: 'sprinkler' },
+            { id: 'storm_egg', name: 'Storm Egg', icon: '🌪️🥚', desc: 'Hatch a random storm pet!', price: 75, action: 'storm_egg' },
             { id: 'storm_seed_pack', name: 'Storm Seed Pack', icon: '🌪️🎁', desc: 'Spin for a random storm crop seed!', price: 60, action: 'storm_wheel' },
         ];
         
@@ -14591,10 +14759,8 @@
                     showMessage('⚡ Got 3 random Stormcharged seeds!');
                     break;
                     
-                case 'sprinkler':
-                    if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
-                    gameState.unplacedSprinklers.push('sprinkler_storm');
-                    showMessage('⚡ Got a Storm Sprinkler! Place it in Gear Shop.');
+                case 'storm_egg':
+                    openStormEggHatch();
                     break;
                     
                 case 'storm_wheel':
@@ -14606,6 +14772,86 @@
             renderInventory();
             renderFarm();
             renderGearTools();
+        }
+        
+        // Storm Egg - gives random storm pet
+        const STORM_PETS = ['stormhawk', 'thunderwolf', 'cyclonedragon', 'staticbunny', 'galephoenix'];
+        
+        function openStormEggHatch() {
+            closeStormShop();
+            
+            // Check if player already owns all storm pets
+            const ownedStormPets = STORM_PETS.filter(petId => gameState.pets && gameState.pets.includes(petId));
+            const unownedStormPets = STORM_PETS.filter(petId => !gameState.pets || !gameState.pets.includes(petId));
+            
+            if (unownedStormPets.length === 0) {
+                // Player owns all storm pets, give essence refund
+                gameState.stormEssence = (gameState.stormEssence || 0) + 50;
+                showMessage('\u26a1 You own all storm pets! Refunded 50 Storm Essence.');
+                renderStormShop();
+                return;
+            }
+            
+            // Show egg hatching modal
+            const modal = document.createElement('div');
+            modal.id = 'storm-egg-modal';
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content storm-egg-content">
+                    <h2>\ud83c\udf2a\ufe0f Storm Egg \ud83e\udd5a</h2>
+                    <div class="storm-egg-container">
+                        <div class="storm-egg" id="storm-egg-anim">\ud83e\udd5a</div>
+                    </div>
+                    <button class="hatch-btn" id="hatch-storm-egg">\u26a1 Hatch Egg \u26a1</button>
+                    <div id="storm-egg-result" class="egg-result hidden"></div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            document.getElementById('hatch-storm-egg').onclick = () => {
+                const egg = document.getElementById('storm-egg-anim');
+                const btn = document.getElementById('hatch-storm-egg');
+                const result = document.getElementById('storm-egg-result');
+                
+                btn.disabled = true;
+                btn.textContent = 'Hatching...';
+                egg.classList.add('hatching');
+                
+                // Shake animation for 2 seconds then hatch
+                setTimeout(() => {
+                    // Pick random unowned pet
+                    const petId = unownedStormPets[Math.floor(Math.random() * unownedStormPets.length)];
+                    const pet = PETS[petId];
+                    
+                    // Add pet to player
+                    if (!gameState.pets) gameState.pets = [];
+                    gameState.pets.push(petId);
+                    
+                    // Show result
+                    egg.classList.remove('hatching');
+                    egg.classList.add('hatched');
+                    egg.textContent = pet.emoji;
+                    
+                    result.innerHTML = `
+                        <div class="pet-hatched storm-glow">
+                            <span class="pet-emoji">${pet.emoji}</span>
+                            <span class="pet-name">${pet.name}</span>
+                        </div>
+                        <div class="pet-ability">\u26a1 ${pet.ability}</div>
+                        <div class="pet-desc">${pet.description}</div>
+                    `;
+                    result.classList.remove('hidden');
+                    
+                    btn.textContent = 'Close';
+                    btn.disabled = false;
+                    btn.onclick = () => {
+                        modal.remove();
+                        showMessage(`\u26a1 ${pet.name} hatched! ${pet.emoji}`);
+                        renderPets();
+                        renderPetShop();
+                    };
+                }, 2000);
+            };
         }
         
         function openStormWheel() {
