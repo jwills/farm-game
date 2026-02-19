@@ -12593,9 +12593,9 @@
             const container = document.getElementById('pet-shop-items');
             container.innerHTML = '';
             
-            // Filter out wheel-only temporal pets
+            // Filter out wheel-only and crate-only pets
             const sortedPets = Object.entries(PETS)
-                .filter(([id, pet]) => !pet.wheelOnly)
+                .filter(([id, pet]) => !pet.wheelOnly && !pet.crateOnly)
                 .sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, pet] of sortedPets) {
