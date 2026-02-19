@@ -14777,21 +14777,15 @@
         // Storm Egg - gives random storm pet
         // Storm pets available from Storm Egg (excludes Storm Hawk which is crate-only)
         const STORM_PETS = ['thunderwolf', 'cyclonedragon', 'staticbunny', 'galephoenix'];
+        const MAX_STORM_PET_COPIES = 3;
+        
+        function getStormPetCount(petId) {
+            if (!gameState.pets) return 0;
+            return gameState.pets.filter(p => p === petId).length;
+        }
         
         function openStormEggHatch() {
             closeStormShop();
-            
-            // Check if player already owns all storm pets
-            const ownedStormPets = STORM_PETS.filter(petId => gameState.pets && gameState.pets.includes(petId));
-            const unownedStormPets = STORM_PETS.filter(petId => !gameState.pets || !gameState.pets.includes(petId));
-            
-            if (unownedStormPets.length === 0) {
-                // Player owns all storm pets, give essence refund
-                gameState.stormEssence = (gameState.stormEssence || 0) + 50;
-                showMessage('\u26a1 You own all storm pets! Refunded 50 Storm Essence.');
-                renderStormShop();
-                return;
-            }
             
             // Show egg hatching modal
             const modal = document.createElement('div');
@@ -14820,37 +14814,68 @@
                 
                 // Shake animation for 2 seconds then hatch
                 setTimeout(() => {
-                    // Pick random unowned pet
-                    const petId = unownedStormPets[Math.floor(Math.random() * unownedStormPets.length)];
+                    // Pick random pet from the pool
+                    const petId = STORM_PETS[Math.floor(Math.random() * STORM_PETS.length)];
                     const pet = PETS[petId];
+                    const currentCount = getStormPetCount(petId);
                     
-                    // Add pet to player
-                    if (!gameState.pets) gameState.pets = [];
-                    gameState.pets.push(petId);
-                    
-                    // Show result
                     egg.classList.remove('hatching');
                     egg.classList.add('hatched');
-                    egg.textContent = pet.emoji;
                     
-                    result.innerHTML = `
-                        <div class="pet-hatched storm-glow">
-                            <span class="pet-emoji">${pet.emoji}</span>
-                            <span class="pet-name">${pet.name}</span>
-                        </div>
-                        <div class="pet-ability">\u26a1 ${pet.ability}</div>
-                        <div class="pet-desc">${pet.description}</div>
-                    `;
-                    result.classList.remove('hidden');
-                    
-                    btn.textContent = 'Close';
-                    btn.disabled = false;
-                    btn.onclick = () => {
-                        modal.remove();
-                        showMessage(`\u26a1 ${pet.name} hatched! ${pet.emoji}`);
-                        renderPets();
-                        renderPetShop();
-                    };
+                    if (currentCount >= MAX_STORM_PET_COPIES) {
+                        // Already have 3 of this pet, give stormcharged seed instead
+                        const seedTypes = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !['demonic','celestial','temporal','nocturnal','storm'].includes(CROPS[c].rarity));
+                        const randomSeed = seedTypes[Math.floor(Math.random() * seedTypes.length)];
+                        if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+                        if (!gameState.stormchargedSeeds[randomSeed]) gameState.stormchargedSeeds[randomSeed] = 0;
+                        gameState.stormchargedSeeds[randomSeed]++;
+                        const crop = CROPS[randomSeed];
+                        
+                        egg.textContent = '\u26a1';
+                        result.innerHTML = `
+                            <div class="pet-hatched storm-glow">
+                                <span class="pet-emoji">\u26a1${crop.seedEmoji}</span>
+                                <span class="pet-name">Stormcharged ${crop.name}!</span>
+                            </div>
+                            <div class="pet-ability" style="color: #aaa;">You already have 3 ${pet.name}s</div>
+                            <div class="pet-desc">Received a stormcharged ${crop.name} seed instead!</div>
+                        `;
+                        result.classList.remove('hidden');
+                        
+                        btn.textContent = 'Close';
+                        btn.disabled = false;
+                        btn.onclick = () => {
+                            modal.remove();
+                            showMessage(`\u26a1 Got a Stormcharged ${crop.name} seed!`);
+                            renderInventory();
+                        };
+                    } else {
+                        // Add pet to player
+                        if (!gameState.pets) gameState.pets = [];
+                        gameState.pets.push(petId);
+                        const newCount = currentCount + 1;
+                        
+                        egg.textContent = pet.emoji;
+                        result.innerHTML = `
+                            <div class="pet-hatched storm-glow">
+                                <span class="pet-emoji">${pet.emoji}</span>
+                                <span class="pet-name">${pet.name}</span>
+                            </div>
+                            <div class="pet-ability">\u26a1 ${pet.ability}</div>
+                            <div class="pet-desc">${pet.description}</div>
+                            <div class="pet-count" style="margin-top: 10px; color: #00d4ff; font-size: 0.9rem;">Owned: ${newCount}/${MAX_STORM_PET_COPIES}</div>
+                        `;
+                        result.classList.remove('hidden');
+                        
+                        btn.textContent = 'Close';
+                        btn.disabled = false;
+                        btn.onclick = () => {
+                            modal.remove();
+                            showMessage(`\u26a1 ${pet.name} hatched! ${pet.emoji} (${newCount}/${MAX_STORM_PET_COPIES})`);
+                            renderPets();
+                            renderPetShop();
+                        };
+                    }
                 }, 2000);
             };
         }
