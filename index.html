@@ -13947,21 +13947,22 @@
             const roll = Math.random();
             
             // 2% chance for Time Anomaly
+            // 2% chance for supercell
             if (roll < 0.02) {
-                gameState.currentWeather = 'timeanomaly';
-                gameState.demonicInStock = 0;
-                gameState.celestialInStock = false;
-                gameState.timeWheelsShown = false; // Reset for new anomaly
-                showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
-            }
-            // 3% chance for supercell
-            else if (roll < 0.05) {
                 gameState.currentWeather = 'supercell';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
                 // Spawn supply crate on a random empty plot
                 spawnSupercellCrate();
                 showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
+            }
+            // 3% chance for Time Anomaly
+            else if (roll < 0.05) {
+                gameState.currentWeather = 'timeanomaly';
+                gameState.demonicInStock = 0;
+                gameState.celestialInStock = false;
+                gameState.timeWheelsShown = false; // Reset for new anomaly
+                showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
             // 5% chance for hellscape
             else if (roll < 0.10) {
