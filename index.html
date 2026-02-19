@@ -10249,6 +10249,78 @@
             color: #b8b8d0;
         }
         
+        /* Storm Wheel Theme */
+        .storm-wheel-theme {
+            background: radial-gradient(ellipse at center, rgba(0, 20, 40, 0.98), rgba(0, 5, 15, 0.99));
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px 20px 20px;
+        }
+        
+        .storm-wheel-theme .wheels-intro {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .storm-wheel-theme .wheels-intro h1 {
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+        }
+        
+        .storm-wheel-theme .wheels-intro p {
+            color: #b8d4e8;
+        }
+        
+        .storm-wheel .roulette-title {
+            background: linear-gradient(135deg, #001a33, #003366);
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+        }
+        
+        .storm-wheel .wheel {
+            background: conic-gradient(
+                from 0deg,
+                #001a33 0deg, #003366 36deg,
+                #002244 36deg, #004488 72deg,
+                #001a33 72deg, #003366 108deg,
+                #002244 108deg, #004488 144deg,
+                #001a33 144deg, #003366 180deg,
+                #002244 180deg, #004488 216deg,
+                #001a33 216deg, #003366 252deg,
+                #002244 252deg, #004488 288deg,
+                #001a33 288deg, #003366 324deg,
+                #002244 324deg, #004488 360deg
+            );
+            border: 4px solid #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6), inset 0 0 40px rgba(0, 100, 150, 0.3);
+        }
+        
+        .storm-wheel .wheel-center {
+            background: radial-gradient(circle, #00d4ff, #0066aa);
+            box-shadow: 0 0 20px #00d4ff;
+        }
+        
+        .storm-wheel .wheel-pointer {
+            color: #00d4ff;
+            filter: drop-shadow(0 0 10px #00d4ff);
+        }
+        
+        .storm-wheel .spin-btn {
+            background: linear-gradient(135deg, #003366, #0066aa);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.5);
+        }
+        
+        .storm-wheel .spin-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.7);
+        }
+        
         /* Storm Shop */
         .storm-essence-btn {
             cursor: pointer;
@@ -10988,7 +11060,19 @@
             moontree: { name: 'Moon Tree', seedEmoji: '🌸', growEmoji: '🌕', seedPrice: 0, basePrice: 750000, growTime: 60, rarity: 'nocturnal', yield: [2, 3], regrows: true, wheelOnly: true },
             voidlily: { name: 'Void Lily', seedEmoji: '🪷', growEmoji: '🕳️', seedPrice: 0, basePrice: 4000000000, growTime: 300, rarity: 'nocturnal', yield: 1, regrows: true, wheelOnly: true },
             // Storm crops (from supercell crates only)
-            tempestfruit: { name: 'Tempest Fruit', seedEmoji: '⚡', growEmoji: '🌪️', seedPrice: 0, basePrice: 75000000, growTime: 180, rarity: 'storm', yield: [2,4], regrows: false, crateOnly: true }
+            tempestfruit: { name: 'Tempest Fruit', seedEmoji: '⚡', growEmoji: '🌪️', seedPrice: 0, basePrice: 75000000, growTime: 180, rarity: 'storm', yield: [2,4], regrows: false, crateOnly: true },
+            // Storm wheel crops
+            staticsprout: { name: 'Static Sprout', seedEmoji: '🌱', growEmoji: '⚡', seedPrice: 0, basePrice: 15, growTime: 8, rarity: 'storm', yield: 1, wheelOnly: true },
+            zapzucchini: { name: 'Zap Zucchini', seedEmoji: '🥒', growEmoji: '⚡', seedPrice: 0, basePrice: 50, growTime: 12, rarity: 'storm', yield: [1, 2], regrows: true, wheelOnly: true },
+            thundermelon: { name: 'Thunder Melon', seedEmoji: '🍈', growEmoji: '⚡', seedPrice: 0, basePrice: 500, growTime: 18, rarity: 'storm', yield: 1, wheelOnly: true },
+            lightninglily: { name: 'Lightning Lily', seedEmoji: '🪷', growEmoji: '⚡', seedPrice: 0, basePrice: 5000, growTime: 25, rarity: 'storm', yield: [1, 2], regrows: true, wheelOnly: true },
+            hailberry: { name: 'Hailstone Berry', seedEmoji: '🫐', growEmoji: '❄️', seedPrice: 0, basePrice: 50000, growTime: 35, rarity: 'storm', yield: [2, 4], regrows: true, wheelOnly: true },
+            stormcotton: { name: 'Storm Cloud Cotton', seedEmoji: '☁️', growEmoji: '🌩️', seedPrice: 0, basePrice: 500000, growTime: 50, rarity: 'storm', yield: [1, 3], regrows: true, wheelOnly: true },
+            cyclonecorn: { name: 'Cyclone Corn', seedEmoji: '🌀', growEmoji: '🌪️', seedPrice: 0, basePrice: 5000000, growTime: 70, rarity: 'storm', yield: [2, 4], wheelOnly: true },
+            voltagevine: { name: 'Voltage Vine', seedEmoji: '🍇', growEmoji: '⚡', seedPrice: 0, basePrice: 50000000, growTime: 100, rarity: 'storm', yield: [2, 5], regrows: true, wheelOnly: true },
+            galegourd: { name: 'Gale Gourd', seedEmoji: '🎃', growEmoji: '💨', seedPrice: 0, basePrice: 500000000, growTime: 150, rarity: 'storm', yield: [1, 2], wheelOnly: true },
+            nimbusnectar: { name: 'Nimbus Nectar', seedEmoji: '🍯', growEmoji: '☁️', seedPrice: 0, basePrice: 5000000000, growTime: 200, rarity: 'storm', yield: [2, 4], regrows: true, wheelOnly: true },
+            supercellflower: { name: 'Supercell Flower', seedEmoji: '🌺', growEmoji: '🌪️', seedPrice: 0, basePrice: 50000000000, growTime: 300, rarity: 'storm', yield: 1, wheelOnly: true }
         };
 
         const WEATHER = {
@@ -14133,6 +14217,21 @@
         const STORM_SHOP_ITEMS = [
             { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 15, action: 'stormcharge_random' },
             { id: 'storm_sprinkler', name: 'Storm Sprinkler', icon: '💧⚡', desc: 'Quality sprinkler that applies stormsurge', price: 75, action: 'sprinkler' },
+            { id: 'storm_seed_pack', name: 'Storm Seed Pack', icon: '🌪️🎁', desc: 'Spin for a random storm crop seed!', price: 60, action: 'storm_wheel' },
+        ];
+        
+        // Storm Wheel rewards
+        const STORM_WHEEL = [
+            { type: 'seed', seedId: 'staticsprout', name: 'Static Sprout', icon: '🌱', weight: 20 },
+            { type: 'seed', seedId: 'zapzucchini', name: 'Zap Zucchini', icon: '🥒', weight: 18 },
+            { type: 'seed', seedId: 'thundermelon', name: 'Thunder Melon', icon: '🍈', weight: 16 },
+            { type: 'seed', seedId: 'lightninglily', name: 'Lightning Lily', icon: '🪷', weight: 14 },
+            { type: 'seed', seedId: 'hailberry', name: 'Hailstone Berry', icon: '🫐', weight: 12 },
+            { type: 'seed', seedId: 'stormcotton', name: 'Storm Cloud Cotton', icon: '☁️', weight: 10 },
+            { type: 'seed', seedId: 'cyclonecorn', name: 'Cyclone Corn', icon: '🌀', weight: 8 },
+            { type: 'seed', seedId: 'voltagevine', name: 'Voltage Vine', icon: '🍇', weight: 6 },
+            { type: 'seed', seedId: 'galegourd', name: 'Gale Gourd', icon: '🎃', weight: 4 },
+            { type: 'seed', seedId: 'nimbusnectar', name: 'Nimbus Nectar', icon: '🍯', weight: 2 },
         ];
         
         function openStormShop() {
@@ -14199,12 +14298,89 @@
                     gameState.unplacedSprinklers.push('sprinkler_storm');
                     showMessage('⚡ Got a Storm Sprinkler! Place it in Gear Shop.');
                     break;
+                    
+                case 'storm_wheel':
+                    openStormWheel();
+                    break;
             }
             
             renderStormShop();
             renderInventory();
             renderFarm();
             renderGearTools();
+        }
+        
+        function openStormWheel() {
+            closeStormShop();
+            const modal = document.getElementById('storm-wheel-modal');
+            modal.classList.remove('hidden');
+            // Reset wheel and button
+            const wheel = document.getElementById('storm-wheel');
+            const btn = document.getElementById('spin-storm');
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)'; }, 50);
+            btn.disabled = false;
+        }
+        
+        function closeStormWheel() {
+            document.getElementById('storm-wheel-modal').classList.add('hidden');
+        }
+        
+        function spinStormWheel() {
+            const wheel = document.getElementById('storm-wheel');
+            const btn = document.getElementById('spin-storm');
+            
+            btn.disabled = true;
+            
+            // Select reward using weights
+            const totalWeight = STORM_WHEEL.reduce((sum, r) => sum + r.weight, 0);
+            let random = Math.random() * totalWeight;
+            let reward;
+            for (const r of STORM_WHEEL) {
+                random -= r.weight;
+                if (random <= 0) { reward = r; break; }
+            }
+            if (!reward) reward = STORM_WHEEL[0];
+            
+            const rewardIndex = STORM_WHEEL.indexOf(reward);
+            
+            // Calculate spin angle (10 segments, 36 degrees each)
+            const segmentAngle = 36;
+            const baseSpins = 5;
+            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
+            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18;
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Show reward after spin completes
+            setTimeout(() => {
+                // Give seed
+                if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
+                gameState.seeds[reward.seedId]++;
+                
+                const cropName = CROPS[reward.seedId]?.name || reward.name;
+                showStormRewardPopup(reward, cropName);
+                renderInventory();
+            }, 4000);
+        }
+        
+        function showStormRewardPopup(reward, cropName) {
+            const existing = document.querySelector('.reward-popup');
+            if (existing) existing.remove();
+            
+            const popup = document.createElement('div');
+            popup.className = 'reward-popup storm-reward';
+            popup.innerHTML = `
+                <h2>⚡ Storm Seed! ⚡</h2>
+                <div class="reward-emoji">${reward.icon}</div>
+                <div class="reward-text">+1 ${cropName} Seed</div>
+                <button onclick="this.parentElement.remove(); closeStormWheel();">Collect!</button>
+            `;
+            popup.style.cssText = 'background: linear-gradient(135deg, #001a33, #003366); border: 3px solid #00d4ff; box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);';
+            document.body.appendChild(popup);
+            
+            showMessage(`⚡ Got ${cropName} seed!`);
         }
         
         function showRewardPopup(reward, rewardText, wheelType) {
@@ -15275,6 +15451,36 @@
             <div class="storm-shop-items" id="storm-shop-items">
                 <!-- Items rendered by JS -->
             </div>
+        </div>
+    </div>
+    
+    <!-- Storm Wheel Modal -->
+    <div id="storm-wheel-modal" class="roulette-modal storm-wheel-theme hidden">
+        <button class="close-roulette" onclick="closeStormWheel()">✕</button>
+        <div class="wheels-intro">
+            <h1>🌪️ STORM SEED PACK 🌪️</h1>
+            <p>The tempest reveals its bounty - spin for a storm seed!</p>
+        </div>
+        
+        <div class="roulette-container storm-wheel" style="margin: 0 auto;">
+            <div class="roulette-title">⚡ SUPERCELL SEEDS ⚡</div>
+            <div class="wheel-wrapper">
+                <div class="wheel-pointer">▼</div>
+                <div id="storm-wheel" class="wheel">
+                    <div class="wheel-segment" style="transform: rotate(-18deg)"><div class="wheel-icon">🌱</div></div>
+                    <div class="wheel-segment" style="transform: rotate(18deg)"><div class="wheel-icon">🥒</div></div>
+                    <div class="wheel-segment" style="transform: rotate(54deg)"><div class="wheel-icon">🍈</div></div>
+                    <div class="wheel-segment" style="transform: rotate(90deg)"><div class="wheel-icon">🪷</div></div>
+                    <div class="wheel-segment" style="transform: rotate(126deg)"><div class="wheel-icon">🫐</div></div>
+                    <div class="wheel-segment" style="transform: rotate(162deg)"><div class="wheel-icon">☁️</div></div>
+                    <div class="wheel-segment" style="transform: rotate(198deg)"><div class="wheel-icon">🌀</div></div>
+                    <div class="wheel-segment" style="transform: rotate(234deg)"><div class="wheel-icon">🍇</div></div>
+                    <div class="wheel-segment" style="transform: rotate(270deg)"><div class="wheel-icon">🎃</div></div>
+                    <div class="wheel-segment" style="transform: rotate(306deg)"><div class="wheel-icon">🍯</div></div>
+                    <div class="wheel-center">🌪️</div>
+                </div>
+            </div>
+            <button id="spin-storm" class="spin-btn" onclick="spinStormWheel()">⚡ SPIN ⚡</button>
         </div>
     </div>
 </body>
