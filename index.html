@@ -14131,10 +14131,7 @@
         
         // Storm Shop
         const STORM_SHOP_ITEMS = [
-            { id: 'tempest_seeds', name: 'Tempest Fruit Seeds', icon: '🌪️', desc: 'Exclusive storm crop worth $75M', price: 25, action: 'seeds', seedType: 'tempestfruit', amount: 1 },
             { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 15, action: 'stormcharge_random' },
-            { id: 'summon_supercell', name: 'Summon Supercell', icon: '🌩️', desc: 'Trigger a supercell (with crate!)', price: 50, action: 'summon' },
-            { id: 'lightning_strike', name: 'Lightning Strike', icon: '⚡🌾', desc: 'Instantly grow one random crop to 100%', price: 20, action: 'lightning' },
             { id: 'storm_sprinkler', name: 'Storm Sprinkler', icon: '💧⚡', desc: 'Quality sprinkler that applies stormsurge', price: 75, action: 'sprinkler' },
         ];
         
@@ -14181,12 +14178,6 @@
             gameState.stormEssence -= item.price;
             
             switch (item.action) {
-                case 'seeds':
-                    if (!gameState.seeds[item.seedType]) gameState.seeds[item.seedType] = 0;
-                    gameState.seeds[item.seedType] += item.amount;
-                    showMessage(`⚡ Bought ${item.amount}x ${item.name}!`);
-                    break;
-                    
                 case 'stormcharge_random':
                     const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit', 'tomato', 'strawberry'];
                     if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
@@ -14196,42 +14187,6 @@
                         gameState.stormchargedSeeds[type]++;
                     }
                     showMessage('⚡ Got 3 random Stormcharged seeds!');
-                    break;
-                    
-                case 'summon':
-                    if (gameState.currentWeather === 'supercell') {
-                        gameState.stormEssence += item.price; // Refund
-                        showMessage('Already in a Supercell! 🌪️');
-                        return;
-                    }
-                    gameState.currentWeather = 'supercell';
-                    gameState.weatherTimer = 45;
-                    createSupercell();
-                    spawnSupercellCrate();
-                    updateWeatherDisplay();
-                    showMessage('🌩️ SUPERCELL SUMMONED! A crate has appeared!');
-                    closeStormShop();
-                    break;
-                    
-                case 'lightning':
-                    const growingPlots = gameState.plots
-                        .map((p, i) => ({ plot: p, index: i }))
-                        .filter(({ plot }) => plot && !plot.isEgg && plot.growth < CROPS[plot.type]?.growTime);
-                    
-                    if (growingPlots.length === 0) {
-                        gameState.stormEssence += item.price; // Refund
-                        showMessage('No growing crops to strike! ⚡');
-                        return;
-                    }
-                    
-                    const target = growingPlots[Math.floor(Math.random() * growingPlots.length)];
-                    const crop = CROPS[target.plot.type];
-                    target.plot.growth = crop.growTime;
-                    if (!target.plot.mutations) target.plot.mutations = [];
-                    if (!target.plot.mutations.includes('stormsurge')) {
-                        target.plot.mutations.push('stormsurge');
-                    }
-                    showMessage(`⚡ Lightning struck your ${crop.name}! Fully grown + Stormsurge!`);
                     break;
                     
                 case 'sprinkler':
