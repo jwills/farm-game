@@ -11672,9 +11672,9 @@
             const container = document.getElementById('shop-items');
             container.innerHTML = '';
             
-            // Sort by price (cheapest first), filter out wheel-only crops
+            // Sort by price (cheapest first), filter out wheel-only and crate-only crops
             const sortedCrops = Object.entries(CROPS)
-                .filter(([id, crop]) => !crop.wheelOnly)
+                .filter(([id, crop]) => !crop.wheelOnly && !crop.crateOnly)
                 .sort((a, b) => a[1].seedPrice - b[1].seedPrice);
             
             for (const [id, crop] of sortedCrops) {
