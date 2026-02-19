@@ -10249,6 +10249,164 @@
             color: #b8b8d0;
         }
         
+        /* Storm Shop */
+        .storm-essence-btn {
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #0a1628, #16213e) !important;
+            border: 1px solid #00d4ff !important;
+            border-radius: 8px;
+            padding: 5px 12px !important;
+        }
+        .storm-essence-btn:hover {
+            background: linear-gradient(135deg, #16213e, #1a4970) !important;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .storm-shop-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 20, 40, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .storm-shop-modal.hidden { display: none; }
+        
+        .storm-shop-content {
+            background: linear-gradient(135deg, #0a1628 0%, #16213e 50%, #1a4970 100%);
+            border: 3px solid #00d4ff;
+            border-radius: 20px;
+            padding: 0;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4),
+                        0 0 100px rgba(0, 100, 150, 0.2),
+                        inset 0 0 30px rgba(0, 150, 200, 0.1);
+            animation: stormShopAppear 0.3s ease-out;
+        }
+        
+        @keyframes stormShopAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .storm-shop-header {
+            background: linear-gradient(135deg, #1a4970, #0a1628);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid #00d4ff;
+        }
+        
+        .storm-shop-header h2 {
+            margin: 0;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+            flex: 1;
+        }
+        
+        .storm-shop-essence {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 1px solid #00d4ff;
+        }
+        
+        .storm-shop-header .close-btn {
+            background: none;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .storm-shop-header .close-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .storm-shop-items {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        
+        .storm-shop-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s;
+        }
+        .storm-shop-item:hover {
+            border-color: #00d4ff;
+            background: rgba(0, 50, 80, 0.4);
+        }
+        .storm-shop-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .storm-shop-item .item-icon {
+            font-size: 2rem;
+            width: 50px;
+            text-align: center;
+        }
+        
+        .storm-shop-item .item-info {
+            flex: 1;
+        }
+        .storm-shop-item .item-name {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .storm-shop-item .item-desc {
+            color: #8ec8e8;
+            font-size: 0.85rem;
+            margin-top: 3px;
+        }
+        
+        .storm-shop-item .item-price {
+            background: linear-gradient(135deg, #00d4ff, #0088aa);
+            color: #000;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .storm-shop-item .item-price:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+        }
+        .storm-shop-item .item-price:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
         .wheel.spinning {
             animation: wheel-wobble 0.1s ease-in-out;
         }
@@ -10508,7 +10666,7 @@
                 <div class="stat" id="weather-display">☀️ Sunny</div>
                 <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
-                <div class="stat" id="storm-essence-stat" style="display: none;">⚡ <span id="storm-essence">0</span></div>
+                <div class="stat storm-essence-btn" id="storm-essence-stat" style="display: none;" onclick="openStormShop()" title="Click to open Storm Shop">⚡ <span id="storm-essence">0</span></div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
 
             </div>
@@ -10981,7 +11139,9 @@
             sprinkler_uv: { name: 'UV Sprinkler', emoji: '🔮', price: 0, description: 'UV Lit +110% value (lasts 5min)', interval: 15, growthBoost: 5, mutationBoost: 0.25, specialMutation: 'uvlit', range: 6, duration: 300, rarity: 'temporal', passive: true, wheelOnly: true },
             // Void sprinklers (from darkest night wheel only)
             sprinkler_shadow: { name: 'Shadow Sprinkler', emoji: '💀', price: 0, description: 'Shadow Touch +150% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'shadowtouched', range: 8, duration: 360, rarity: 'void', passive: true, wheelOnly: true },
-            sprinkler_void: { name: 'Void Sprinkler', emoji: '👁️', price: 0, description: 'Void Infused +200% value (lasts 8min)', interval: 10, growthBoost: 8, mutationBoost: 0.50, specialMutation: 'voidinfused', range: 'all', duration: 480, rarity: 'void', passive: true, wheelOnly: true }
+            sprinkler_void: { name: 'Void Sprinkler', emoji: '👁️', price: 0, description: 'Void Infused +200% value (lasts 8min)', interval: 10, growthBoost: 8, mutationBoost: 0.50, specialMutation: 'voidinfused', range: 'all', duration: 480, rarity: 'void', passive: true, wheelOnly: true },
+            // Storm sprinkler (from storm shop only)
+            sprinkler_storm: { name: 'Storm Sprinkler', emoji: '⚡', price: 0, description: 'Stormsurge +150% value (lasts 5min)', interval: 15, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'stormsurge', range: 6, duration: 300, rarity: 'storm', passive: true, shopOnly: true }
         };
 
         function getRandomSize() {
@@ -13969,6 +14129,124 @@
             renderPetShop();
         }
         
+        // Storm Shop
+        const STORM_SHOP_ITEMS = [
+            { id: 'tempest_seeds', name: 'Tempest Fruit Seeds', icon: '🌪️', desc: 'Exclusive storm crop worth $75M', price: 25, action: 'seeds', seedType: 'tempestfruit', amount: 1 },
+            { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 15, action: 'stormcharge_random' },
+            { id: 'summon_supercell', name: 'Summon Supercell', icon: '🌩️', desc: 'Trigger a supercell (with crate!)', price: 50, action: 'summon' },
+            { id: 'lightning_strike', name: 'Lightning Strike', icon: '⚡🌾', desc: 'Instantly grow one random crop to 100%', price: 20, action: 'lightning' },
+            { id: 'storm_sprinkler', name: 'Storm Sprinkler', icon: '💧⚡', desc: 'Quality sprinkler that applies stormsurge', price: 75, action: 'sprinkler' },
+        ];
+        
+        function openStormShop() {
+            const modal = document.getElementById('storm-shop-modal');
+            modal.classList.remove('hidden');
+            renderStormShop();
+        }
+        
+        function closeStormShop() {
+            document.getElementById('storm-shop-modal').classList.add('hidden');
+        }
+        
+        function renderStormShop() {
+            const balance = gameState.stormEssence || 0;
+            document.getElementById('storm-shop-balance').textContent = balance;
+            
+            const container = document.getElementById('storm-shop-items');
+            container.innerHTML = '';
+            
+            STORM_SHOP_ITEMS.forEach(item => {
+                const canAfford = balance >= item.price;
+                const div = document.createElement('div');
+                div.className = `storm-shop-item ${canAfford ? '' : 'disabled'}`;
+                div.innerHTML = `
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-desc">${item.desc}</div>
+                    </div>
+                    <button class="item-price" ${canAfford ? '' : 'disabled'}>⚡${item.price}</button>
+                `;
+                div.querySelector('button').onclick = () => buyStormItem(item);
+                container.appendChild(div);
+            });
+        }
+        
+        function buyStormItem(item) {
+            if ((gameState.stormEssence || 0) < item.price) {
+                showMessage('Not enough Storm Essence! ⚡');
+                return;
+            }
+            
+            gameState.stormEssence -= item.price;
+            
+            switch (item.action) {
+                case 'seeds':
+                    if (!gameState.seeds[item.seedType]) gameState.seeds[item.seedType] = 0;
+                    gameState.seeds[item.seedType] += item.amount;
+                    showMessage(`⚡ Bought ${item.amount}x ${item.name}!`);
+                    break;
+                    
+                case 'stormcharge_random':
+                    const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit', 'tomato', 'strawberry'];
+                    if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+                    for (let i = 0; i < 3; i++) {
+                        const type = seedTypes[Math.floor(Math.random() * seedTypes.length)];
+                        if (!gameState.stormchargedSeeds[type]) gameState.stormchargedSeeds[type] = 0;
+                        gameState.stormchargedSeeds[type]++;
+                    }
+                    showMessage('⚡ Got 3 random Stormcharged seeds!');
+                    break;
+                    
+                case 'summon':
+                    if (gameState.currentWeather === 'supercell') {
+                        gameState.stormEssence += item.price; // Refund
+                        showMessage('Already in a Supercell! 🌪️');
+                        return;
+                    }
+                    gameState.currentWeather = 'supercell';
+                    gameState.weatherTimer = 45;
+                    createSupercell();
+                    spawnSupercellCrate();
+                    updateWeatherDisplay();
+                    showMessage('🌩️ SUPERCELL SUMMONED! A crate has appeared!');
+                    closeStormShop();
+                    break;
+                    
+                case 'lightning':
+                    const growingPlots = gameState.plots
+                        .map((p, i) => ({ plot: p, index: i }))
+                        .filter(({ plot }) => plot && !plot.isEgg && plot.growth < CROPS[plot.type]?.growTime);
+                    
+                    if (growingPlots.length === 0) {
+                        gameState.stormEssence += item.price; // Refund
+                        showMessage('No growing crops to strike! ⚡');
+                        return;
+                    }
+                    
+                    const target = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                    const crop = CROPS[target.plot.type];
+                    target.plot.growth = crop.growTime;
+                    if (!target.plot.mutations) target.plot.mutations = [];
+                    if (!target.plot.mutations.includes('stormsurge')) {
+                        target.plot.mutations.push('stormsurge');
+                    }
+                    showMessage(`⚡ Lightning struck your ${crop.name}! Fully grown + Stormsurge!`);
+                    break;
+                    
+                case 'sprinkler':
+                    if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                    gameState.unplacedSprinklers.push('sprinkler_storm');
+                    showMessage('⚡ Got a Storm Sprinkler! Place it in Gear Shop.');
+                    break;
+            }
+            
+            renderStormShop();
+            renderInventory();
+            renderFarm();
+            renderGearTools();
+        }
+        
         function showRewardPopup(reward, rewardText, wheelType) {
             // Remove any existing popup
             const existing = document.querySelector('.reward-popup');
@@ -15025,5 +15303,19 @@
             setTimeout(() => renderNeighborhoodStatus(), 100);
         }
     </script>
+    
+    <!-- Storm Shop Modal -->
+    <div id="storm-shop-modal" class="storm-shop-modal hidden">
+        <div class="storm-shop-content">
+            <div class="storm-shop-header">
+                <h2>⚡ Storm Shop</h2>
+                <span class="storm-shop-essence">⚡ <span id="storm-shop-balance">0</span></span>
+                <button class="close-btn" onclick="closeStormShop()">×</button>
+            </div>
+            <div class="storm-shop-items" id="storm-shop-items">
+                <!-- Items rendered by JS -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
