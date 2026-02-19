@@ -40,6 +40,7 @@ type Gift struct {
 
 type Neighborhood struct {
 	Code         string              `json:"code"`
+	OwnerID      string              `json:"ownerId"`
 	Farms        map[string]FarmData `json:"farms"`
 	Messages     []ChatMessage       `json:"messages"`
 	MsgID        int64               `json:"msgId"`
@@ -62,6 +63,7 @@ func main() {
 	http.HandleFunc("/api/neighborhood/sync", corsMiddleware(handleSync))
 	http.HandleFunc("/api/neighborhood/farms", corsMiddleware(handleGetFarms))
 	http.HandleFunc("/api/neighborhood/leave", corsMiddleware(handleLeave))
+	http.HandleFunc("/api/neighborhood/kick", corsMiddleware(handleKick))
 	http.HandleFunc("/api/neighborhood/steal", corsMiddleware(handleSteal))
 	http.HandleFunc("/api/neighborhood/chat/send", corsMiddleware(handleChatSend))
 	http.HandleFunc("/api/neighborhood/chat/messages", corsMiddleware(handleChatMessages))
@@ -125,6 +127,7 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 
 	neighborhoods[code] = &Neighborhood{
 		Code:         code,
+		OwnerID:      req.PlayerID,
 		Farms:        make(map[string]FarmData),
 		Messages:     []ChatMessage{},
 		MsgID:        0,
@@ -248,6 +251,7 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 		"weather":      weather,
 		"weatherUntil": weatherUntil.Unix(),
 		"myPlots":      myPlots,
+		"ownerId":      hood.OwnerID,
 	})
 }
 
@@ -273,6 +277,53 @@ func handleLeave(w http.ResponseWriter, r *http.Request) {
 		delete(hood.Farms, req.PlayerID)
 	}
 
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+}
+
+func handleKick(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerID   string `json:"playerId"`
+		TargetID   string `json:"targetId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Neighborhood not found"})
+		return
+	}
+
+	// Only owner can kick
+	if hood.OwnerID != req.PlayerID {
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Only the neighborhood owner can kick players"})
+		return
+	}
+
+	// Can't kick yourself
+	if req.TargetID == req.PlayerID {
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Cannot kick yourself"})
+		return
+	}
+
+	// Check if target exists
+	if _, exists := hood.Farms[req.TargetID]; !exists {
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "error": "Player not found"})
+		return
+	}
+
+	delete(hood.Farms, req.TargetID)
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
