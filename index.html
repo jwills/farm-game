@@ -13988,6 +13988,13 @@
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
+                
+                // Thunder has 15% chance to escalate into supercell
+                if (gameState.currentWeather === 'thunder' && Math.random() < 0.15) {
+                    gameState.currentWeather = 'supercell';
+                    spawnSupercellCrate();
+                    showMessage(`⛈️➡️🌪️ Thunder escalates into SUPERCELL! A Supply Crate has landed! 📦`);
+                }
             }
             
             // Time Anomaly lasts longer (30-60 seconds)
