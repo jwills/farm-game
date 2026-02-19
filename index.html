@@ -11106,7 +11106,7 @@
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
             heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
-            supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'stormsurge', mutationEmoji: '🌩️', bonus: 2.5 },
+            supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'stormsurge', mutationEmoji: '🌩️', bonus: 5 },
             timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
         };
 
@@ -11133,7 +11133,7 @@
             // Day/night mutation
             nightglow: { name: 'Nightglow', emoji: '🌙', bonus: 1.5 },
             // Supercell weather mutation
-            stormsurge: { name: 'Storm Surge', emoji: '🌩️', bonus: 2.5 }
+            stormsurge: { name: 'Storm Surge', emoji: '🌩️', bonus: 5 }
         };
         
         // Prehistoric wheel rewards
@@ -11215,7 +11215,7 @@
             cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
             alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
             // Storm pets (from supercell crates only)
-            stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 4x instead of 2.5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
+            stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 10x instead of 5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
             // Darkest Night pets
             shadowcat: { name: 'Shadow Cat', emoji: '🐈‍⬛', price: 0, ability: 'Shadow Step', description: 'Double nightglow mutation chance', effect: 'shadowstep', rarity: 'nocturnal', wheelOnly: true },
             nightowl: { name: 'Night Owl', emoji: '🦉', price: 0, ability: 'Night Vision', description: '+25% crop value at night', effect: 'nightvision', rarity: 'nocturnal', wheelOnly: true }
@@ -11247,7 +11247,7 @@
             sprinkler_shadow: { name: 'Shadow Sprinkler', emoji: '💀', price: 0, description: 'Shadow Touch +150% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'shadowtouched', range: 8, duration: 360, rarity: 'void', passive: true, wheelOnly: true },
             sprinkler_void: { name: 'Void Sprinkler', emoji: '👁️', price: 0, description: 'Void Infused +200% value (lasts 8min)', interval: 10, growthBoost: 8, mutationBoost: 0.50, specialMutation: 'voidinfused', range: 'all', duration: 480, rarity: 'void', passive: true, wheelOnly: true },
             // Storm sprinkler (from storm shop only)
-            sprinkler_storm: { name: 'Storm Sprinkler', emoji: '⚡', price: 0, description: 'Stormsurge +150% value (lasts 5min)', interval: 15, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'stormsurge', range: 6, duration: 300, rarity: 'storm', passive: true, shopOnly: true }
+            sprinkler_storm: { name: 'Storm Sprinkler', emoji: '⚡', price: 0, description: 'Stormsurge +400% value (lasts 5min)', interval: 15, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'stormsurge', range: 6, duration: 300, rarity: 'storm', passive: true, shopOnly: true }
         };
 
         function getRandomSize() {
@@ -11279,9 +11279,9 @@
                 if (mutation === 'cursed' && hasPetEffect('bloodlust')) {
                     bonus = 1 + (bonus - 1) * 3;
                 }
-                // Storm Hawk boosts stormsurge to 4x
+                // Storm Hawk boosts stormsurge to 10x
                 if (mutation === 'stormsurge' && hasPetEffect('stormpower')) {
-                    bonus = 4.0;
+                    bonus = 10.0;
                 }
                 return bonus;
             }
@@ -11289,9 +11289,9 @@
             const special = SPECIAL_MUTATIONS[mutation];
             if (special) {
                 let bonus = special.bonus;
-                // Storm Hawk boosts stormsurge to 4x
+                // Storm Hawk boosts stormsurge to 10x
                 if (mutation === 'stormsurge' && hasPetEffect('stormpower')) {
-                    bonus = 4.0;
+                    bonus = 10.0;
                 }
                 return bonus;
             }
