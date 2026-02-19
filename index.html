@@ -12824,7 +12824,7 @@
             container.innerHTML = '';
             
             const sortedGear = Object.entries(GEAR)
-                .filter(([id, gear]) => !gear.wheelOnly)
+                .filter(([id, gear]) => !gear.wheelOnly && !gear.shopOnly)
                 .sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, gear] of sortedGear) {
