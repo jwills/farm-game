@@ -5714,6 +5714,116 @@
             border-color: #FFD700;
         }
 
+        /* Supercell Supply Crate */
+        .plot.has-crate {
+            background: linear-gradient(135deg, #1a1a3a 0%, #2a2a5a 100%);
+            border-color: #6366f1;
+            animation: crate-pulse 1.5s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes crate-pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.8), 0 0 40px rgba(99, 102, 241, 0.4); }
+        }
+
+        .supply-crate {
+            position: relative;
+            width: 50px;
+            height: 45px;
+            margin: 0 auto;
+            animation: crate-float 2s ease-in-out infinite;
+        }
+
+        @keyframes crate-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .crate-box {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #4a3728 100%);
+            border: 2px solid #D2691E;
+            border-radius: 4px;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.3);
+        }
+
+        .crate-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #D2691E;
+            transform: translateY(-50%);
+        }
+
+        .crate-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: #D2691E;
+            transform: translateX(-50%);
+        }
+
+        .crate-lid {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px;
+            height: 8px;
+            background: linear-gradient(180deg, #A0522D 0%, #8B4513 100%);
+            border: 2px solid #D2691E;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .crate-glow {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 20px;
+            background: radial-gradient(ellipse, rgba(99, 102, 241, 0.8) 0%, transparent 70%);
+            animation: crate-glow-pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes crate-glow-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .crate-label {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 5px rgba(99, 102, 241, 0.8));
+        }
+
+        .crate-text {
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.6rem;
+            color: #a5b4fc;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(99, 102, 241, 0.8);
+        }
+
         @keyframes sway {
             0%, 100% { transform: rotate(-3deg); }
             50% { transform: rotate(3deg); }
@@ -10795,6 +10905,7 @@
             lastRestock: 0, // timestamp of last restock
             demonicInStock: 0, // number of demonic seeds available during hellscape (0-5)
             celestialInStock: false, // only true during heaven with 25% chance
+            supercellCrate: null, // { plotIndex: number } - supply crate location during supercell
             gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
             sprinklers: [], // placed sprinklers: [{ id: gearId, plotIndex: number, timer: number }]
             unplacedSprinklers: [], // sprinklers waiting to be placed: [gearId, gearId, ...]
@@ -11408,15 +11519,31 @@
                     };
                 } else {
                     div.classList.add('empty');
-                    div.onclick = () => {
-                        if (gameState.selectedSprinkler !== null) {
-                            placeSprinkler(index);
-                        } else if (gameState.selectedGear) {
-                            showMessage('No plant here to water!');
-                        } else {
-                            plantSeed(index);
-                        }
-                    };
+                    
+                    // Check if supercell crate is on this plot
+                    if (gameState.supercellCrate && gameState.supercellCrate.plotIndex === index) {
+                        div.classList.add('has-crate');
+                        div.innerHTML = `
+                            <div class="supply-crate">
+                                <div class="crate-box"></div>
+                                <div class="crate-lid"></div>
+                                <div class="crate-glow"></div>
+                                <div class="crate-label">📦</div>
+                            </div>
+                            <div class="crate-text">Click to open!</div>
+                        `;
+                        div.onclick = () => claimSupercellCrate();
+                    } else {
+                        div.onclick = () => {
+                            if (gameState.selectedSprinkler !== null) {
+                                placeSprinkler(index);
+                            } else if (gameState.selectedGear) {
+                                showMessage('No plant here to water!');
+                            } else {
+                                plantSeed(index);
+                            }
+                        };
+                    }
                 }
                 
                 // Add sprinkler icon if there's a sprinkler on this plot
@@ -12966,6 +13093,10 @@
                 gameState.timeWheelsShown = false;
                 closeRouletteWheels();
             }
+            // Clear supercell crate when leaving supercell
+            if (gameState.currentWeather === 'supercell') {
+                gameState.supercellCrate = null;
+            }
             
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
             // Sunny is more common, special weathers are very rare
@@ -12988,7 +13119,9 @@
                 gameState.currentWeather = 'supercell';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
-                showMessage(`🌪️⚡ SUPERCELL! A massive storm engulfs the farm! +150% crop value! 🌩️`);
+                // Spawn supply crate on a random empty plot
+                spawnSupercellCrate();
+                showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
             }
             // 5% chance for hellscape
             else if (roll < 0.11) {
@@ -13533,6 +13666,76 @@
         
         function closeDarkestWheel() {
             document.getElementById('darkest-modal').classList.add('hidden');
+        }
+        
+        function spawnSupercellCrate() {
+            // Find empty plots
+            const emptyPlots = [];
+            gameState.plots.forEach((plot, index) => {
+                if (!plot) emptyPlots.push(index);
+            });
+            
+            if (emptyPlots.length === 0) {
+                // No empty plots, spawn on a random plot anyway
+                gameState.supercellCrate = { plotIndex: Math.floor(Math.random() * gameState.plots.length) };
+            } else {
+                // Pick random empty plot
+                const randomIndex = emptyPlots[Math.floor(Math.random() * emptyPlots.length)];
+                gameState.supercellCrate = { plotIndex: randomIndex };
+            }
+            renderFarm();
+        }
+        
+        function claimSupercellCrate() {
+            if (!gameState.supercellCrate) return;
+            
+            gameState.supercellCrate = null;
+            
+            // Random rewards from the crate
+            const rewards = [];
+            const roll = Math.random();
+            
+            // Money reward (always)
+            const moneyAmount = 10000 + Math.floor(Math.random() * 40000);
+            gameState.money += moneyAmount;
+            rewards.push(`$${formatMoney(moneyAmount)}`);
+            
+            // Bonus rewards based on luck
+            if (roll < 0.4) {
+                // 40% chance: bonus seeds
+                const seedTypes = ['tomato', 'corn', 'strawberry', 'pumpkin', 'sunflower'];
+                const seedType = seedTypes[Math.floor(Math.random() * seedTypes.length)];
+                const seedCount = 2 + Math.floor(Math.random() * 4);
+                if (!gameState.seeds[seedType]) gameState.seeds[seedType] = 0;
+                gameState.seeds[seedType] += seedCount;
+                rewards.push(`${seedCount}x ${CROPS[seedType].name} Seeds`);
+            } else if (roll < 0.7) {
+                // 30% chance: more money
+                const bonusMoney = 25000 + Math.floor(Math.random() * 50000);
+                gameState.money += bonusMoney;
+                rewards.push(`+$${formatMoney(bonusMoney)} bonus`);
+            } else if (roll < 0.9) {
+                // 20% chance: rare seeds
+                const rareSeeds = ['watermelon', 'grapes', 'rose', 'starfruit'];
+                const seedType = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
+                const seedCount = 1 + Math.floor(Math.random() * 2);
+                if (!gameState.seeds[seedType]) gameState.seeds[seedType] = 0;
+                gameState.seeds[seedType] += seedCount;
+                rewards.push(`${seedCount}x ${CROPS[seedType].name} Seeds`);
+            } else {
+                // 10% chance: sprinkler
+                if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                const sprinklers = ['sprinkler_basic', 'sprinkler_improved', 'sprinkler_quality'];
+                const sprinkler = sprinklers[Math.floor(Math.random() * sprinklers.length)];
+                gameState.unplacedSprinklers.push(sprinkler);
+                rewards.push(`${GEAR[sprinkler].name} ${GEAR[sprinkler].emoji}`);
+            }
+            
+            showMessage(`📦⚡ Supply Crate opened! Got: ${rewards.join(', ')}`);
+            updateDisplay();
+            renderFarm();
+            renderInventory();
+            renderGearTools();
         }
         
         function showRewardPopup(reward, rewardText, wheelType) {
