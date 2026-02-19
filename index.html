@@ -15160,10 +15160,12 @@
             const rewardIndex = STORM_WHEEL.indexOf(reward);
             
             // Calculate spin angle (10 segments, 36 degrees each)
+            // Segments are positioned from -18deg, visual top at 0 rotation = segment at 198deg (index 6)
             const segmentAngle = 36;
             const baseSpins = 5;
-            const targetAngle = rewardIndex * segmentAngle + (segmentAngle / 2);
-            const totalRotation = (baseSpins * 360) + (360 - targetAngle) + 18;
+            const segmentPosition = -18 + (rewardIndex * segmentAngle); // Where segment N is positioned
+            const topPosition = 198; // What's at top at rotation 0 (segment 6)
+            const totalRotation = (baseSpins * 360) + (topPosition - segmentPosition);
             
             wheel.style.transform = `rotate(${totalRotation}deg)`;
             
