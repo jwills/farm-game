@@ -12411,10 +12411,10 @@
             bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: 'Bloodlit every 1:00, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
             hellbird: { name: 'Hellbird', emoji: '🐦‍🔥', price: 500000, ability: 'Blood Moon', description: 'Crops can become Bloodlit at night (2x value)', effect: 'bloodmoon', rarity: 'demonic' },
             // Temporal pets (from time wheels only)
-            raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value)', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
-            mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
-            cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
-            alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value)', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
+            raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value) [Stackable]', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
+            mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster per mammoth [Stackable]', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
+            cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s per cat [Stackable]', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
+            alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value) [Stackable]', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
             // Storm pets (from storm eggs and supercell crates)
             stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 10x instead of 5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
             thunderwolf: { name: 'Thunder Wolf', emoji: '🐺', price: 0, ability: 'Lightning Stride', description: '+50% crop growth during supercell weather', effect: 'lightningstride', rarity: 'storm', crateOnly: true },
@@ -12504,6 +12504,12 @@
 
         function hasPetEffect(effect) {
             return gameState.equippedPets && gameState.equippedPets.some(p => PETS[p]?.effect === effect);
+        }
+        
+        // Count how many equipped pets have a specific effect (for stackable pets)
+        function countPetEffect(effect) {
+            if (!gameState.equippedPets) return 0;
+            return gameState.equippedPets.filter(p => PETS[p]?.effect === effect).length;
         }
 
         function getPetBonus(type, base) {
@@ -14507,8 +14513,10 @@
         }
         
         // Raptor fossilize timer (adds fossilized mutation to random crops)
+        // Multiple raptors: each has 30% chance to fossilize, timer shared
         function updateRaptorTimer() {
-            if (!hasPetEffect('fossilize')) {
+            const raptorCount = countPetEffect('fossilize');
+            if (raptorCount === 0) {
                 gameState.raptorTimer = 0;
                 return;
             }
@@ -14516,30 +14524,37 @@
             if (!gameState.raptorTimer) gameState.raptorTimer = 0;
             gameState.raptorTimer++;
             
-            // Every 60 seconds, 30% chance to fossilize a crop
+            // Every 60 seconds, each raptor has 30% chance to fossilize a crop
             if (gameState.raptorTimer >= 60) {
                 gameState.raptorTimer = 0;
                 
-                if (Math.random() < 0.30) {
-                    const growingPlots = gameState.plots
-                        .map((p, i) => ({ plot: p, index: i }))
-                        .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('fossilized'));
-                    
-                    if (growingPlots.length > 0) {
-                        const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
-                        if (!plot.mutations) plot.mutations = [];
-                        plot.mutations.push('fossilized');
-                        const crop = CROPS[plot.type];
-                        showMessage(`🦴 Raptor fossilized your ${crop.name}! (+300% value)`);
-                        renderFarm();
+                let fossilized = 0;
+                for (let i = 0; i < raptorCount; i++) {
+                    if (Math.random() < 0.30) {
+                        const growingPlots = gameState.plots
+                            .map((p, idx) => ({ plot: p, index: idx }))
+                            .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('fossilized'));
+                        
+                        if (growingPlots.length > 0) {
+                            const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                            if (!plot.mutations) plot.mutations = [];
+                            plot.mutations.push('fossilized');
+                            fossilized++;
+                        }
                     }
+                }
+                if (fossilized > 0) {
+                    showMessage(`🦴 Raptor${raptorCount > 1 ? 's' : ''} fossilized ${fossilized} crop${fossilized > 1 ? 's' : ''}! (+300% value)`);
+                    renderFarm();
                 }
             }
         }
         
         // Alien Blob quantize timer (adds quantum mutation to random crops)
+        // Multiple blobs: each has 20% chance to quantize, timer shared
         function updateAlienBlobTimer() {
-            if (!hasPetEffect('quantize')) {
+            const blobCount = countPetEffect('quantize');
+            if (blobCount === 0) {
                 gameState.alienBlobTimer = 0;
                 return;
             }
@@ -14547,23 +14562,28 @@
             if (!gameState.alienBlobTimer) gameState.alienBlobTimer = 0;
             gameState.alienBlobTimer++;
             
-            // Every 90 seconds, 20% chance to quantize a crop
+            // Every 90 seconds, each blob has 20% chance to quantize a crop
             if (gameState.alienBlobTimer >= 90) {
                 gameState.alienBlobTimer = 0;
                 
-                if (Math.random() < 0.20) {
-                    const growingPlots = gameState.plots
-                        .map((p, i) => ({ plot: p, index: i }))
-                        .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('quantum'));
-                    
-                    if (growingPlots.length > 0) {
-                        const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
-                        if (!plot.mutations) plot.mutations = [];
-                        plot.mutations.push('quantum');
-                        const crop = CROPS[plot.type];
-                        showMessage(`👾 Alien Blob quantized your ${crop.name}! (+400% value)`);
-                        renderFarm();
+                let quantized = 0;
+                for (let i = 0; i < blobCount; i++) {
+                    if (Math.random() < 0.20) {
+                        const growingPlots = gameState.plots
+                            .map((p, idx) => ({ plot: p, index: idx }))
+                            .filter(({ plot }) => plot && !plot.isEgg && !plot.mutations?.includes('quantum'));
+                        
+                        if (growingPlots.length > 0) {
+                            const { plot } = growingPlots[Math.floor(Math.random() * growingPlots.length)];
+                            if (!plot.mutations) plot.mutations = [];
+                            plot.mutations.push('quantum');
+                            quantized++;
+                        }
                     }
+                }
+                if (quantized > 0) {
+                    showMessage(`👾 Alien Blob${blobCount > 1 ? 's' : ''} quantized ${quantized} crop${quantized > 1 ? 's' : ''}! (+400% value)`);
+                    renderFarm();
                 }
             }
         }
@@ -14642,7 +14662,7 @@
                         let growthAmount = 1;
                         if (hasPetEffect('speed')) growthAmount += 0.15;
                         if (hasPetEffect('all')) growthAmount += 0.075;
-                        if (hasPetEffect('ancientspeed')) growthAmount += 0.30; // Mammoth: +30% growth speed
+                        growthAmount += countPetEffect('ancientspeed') * 0.30; // Mammoth: +30% growth speed each
                         // Thunder Wolf: +50% growth during supercell
                         if (hasPetEffect('lightningstride') && gameState.currentWeather === 'supercell') {
                             growthAmount += 0.50;
@@ -14734,8 +14754,9 @@
                 }
             }
             
-            // Cyber Cat auto-harvest (3 crops every 8 seconds)
-            if (hasPetEffect('cyberharv')) {
+            // Cyber Cat auto-harvest (3 crops per cyber cat every 8 seconds)
+            const cyberCatCount = countPetEffect('cyberharv');
+            if (cyberCatCount > 0) {
                 if (!gameState.cyberCatTimer) gameState.cyberCatTimer = 0;
                 gameState.cyberCatTimer++;
                 if (gameState.cyberCatTimer >= 8) {
@@ -14748,14 +14769,15 @@
                             return plot.growth >= targetTime;
                         });
                     let harvested = 0;
-                    while (harvested < 3 && readyPlots.length > 0 && (gameState.harvested.length < MAX_INVENTORY || hasPetEffect('autosell'))) {
+                    const maxHarvest = 3 * cyberCatCount; // 3 crops per cyber cat
+                    while (harvested < maxHarvest && readyPlots.length > 0 && (gameState.harvested.length < MAX_INVENTORY || hasPetEffect('autosell'))) {
                         const randIdx = Math.floor(Math.random() * readyPlots.length);
                         const {index} = readyPlots.splice(randIdx, 1)[0];
                         harvestCrop(index);
                         harvested++;
                     }
                     if (harvested > 0) {
-                        showMessage(`🤖 Cyber Cat harvested ${harvested} crop${harvested > 1 ? 's' : ''}!`);
+                        showMessage(`🤖 Cyber Cat${cyberCatCount > 1 ? 's' : ''} harvested ${harvested} crop${harvested > 1 ? 's' : ''}!`);
                     }
                 }
             }
@@ -15321,11 +15343,14 @@
                 return `${reward.count}x ${crop.name} Seeds`;
             } else if (reward.type === 'pet') {
                 // Add to pets inventory
-                if (!gameState.pets.includes(reward.petId)) {
+                // Stackable pets can be won multiple times
+                const stackablePets = ['mammoth', 'raptor', 'cybercat', 'alienblob'];
+                if (stackablePets.includes(reward.petId) || !gameState.pets.includes(reward.petId)) {
                     gameState.pets.push(reward.petId);
                 }
                 const pet = PETS[reward.petId];
-                return `${pet.name} 🐾`;
+                const count = getPetCount(reward.petId);
+                return count > 1 ? `${pet.name} 🐾 (x${count})` : `${pet.name} 🐾`;
             } else if (reward.type === 'gear') {
                 // Add gear to inventory
                 const gear = GEAR[reward.gearId];
