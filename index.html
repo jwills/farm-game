@@ -16205,6 +16205,20 @@
             const message = input.value.trim();
             if (!message) return;
             
+            // Secret code: 67 spawns supercell
+            if (message === '67') {
+                input.value = '';
+                gameState.currentWeather = 'supercell';
+                gameState.weatherTimer = 45 + Math.floor(Math.random() * 45);
+                gameState.demonicInStock = 0;
+                gameState.celestialInStock = false;
+                spawnSupercellCrate();
+                showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
+                updateWeatherDisplay();
+                updateWeatherEffects();
+                return;
+            }
+            
             try {
                 const res = await fetch(`${API_BASE}/neighborhood/chat/send`, {
                     method: 'POST',
