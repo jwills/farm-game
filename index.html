@@ -14581,8 +14581,8 @@
                 : ['sunny', 'sunny', 'sunny', ...weathers];
             const roll = Math.random();
             
-            // 2.5% chance for supercell
-            if (roll < 0.025) {
+            // 5% chance for supercell
+            if (roll < 0.05) {
                 gameState.currentWeather = 'supercell';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
@@ -14591,7 +14591,7 @@
                 showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
             }
             // 2.5% chance for Time Anomaly
-            else if (roll < 0.05) {
+            else if (roll < 0.075) {
                 gameState.currentWeather = 'timeanomaly';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
@@ -14599,7 +14599,7 @@
                 showMessage(`⌛✨ TIME ANOMALY! Reality warps... crops grow 5x faster! ⏰✨`);
             }
             // 5% chance for hellscape
-            else if (roll < 0.10) {
+            else if (roll < 0.125) {
                 gameState.currentWeather = 'hellscape';
                 gameState.celestialInStock = false;
                 // 75% chance demonic seeds are available during hellscape (5 stock)
@@ -14612,7 +14612,7 @@
                 renderShop();
             }
             // 5% chance for heaven
-            else if (roll < 0.15) {
+            else if (roll < 0.175) {
                 gameState.currentWeather = 'heaven';
                 gameState.demonicInStock = 0;
                 // Celestial seeds always available during heaven
