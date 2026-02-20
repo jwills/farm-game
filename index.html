@@ -14830,9 +14830,10 @@
                 gameState.timeWheelsShown = false;
                 closeRouletteWheels();
             }
-            // Clear supercell crate when leaving supercell
+            // Spawn supply crate when supercell ENDS (reward for surviving the storm)
             if (gameState.currentWeather === 'supercell') {
-                gameState.supercellCrate = null;
+                spawnSupercellCrate();
+                showMessage(`📦 The storm left behind a Supply Crate! 🌪️`);
             }
             
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
@@ -14848,9 +14849,7 @@
                 gameState.currentWeather = 'supercell';
                 gameState.demonicInStock = 0;
                 gameState.celestialInStock = false;
-                // Spawn supply crate on a random empty plot
-                spawnSupercellCrate();
-                showMessage(`🌪️⚡ SUPERCELL! A Supply Crate has landed on your farm! 📦`);
+                showMessage(`🌪️⚡ SUPERCELL! Survive the storm for a reward! 🌪️`);
             }
             // 2.5% chance for Time Anomaly
             else if (roll < 0.10) {
