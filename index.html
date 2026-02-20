@@ -7643,6 +7643,286 @@
             50% { opacity: 0.3; }
         }
 
+        /* Static Sprout - tiny electric seedling */
+        .crop-icon.staticsprout::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 12px;
+            background: linear-gradient(to top, #1a4970, #00d4ff);
+            border-radius: 50% 50% 40% 40%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.8);
+        }
+        .crop-icon.staticsprout::after {
+            content: '⚡';
+            position: absolute;
+            font-size: 8px;
+            bottom: 12px; left: 50%; transform: translateX(-50%);
+            animation: staticFlicker 0.4s steps(2) infinite;
+        }
+        @keyframes staticFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Zap Zucchini - electric zucchini */
+        .crop-icon.zapzucchini::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 20px;
+            background: linear-gradient(90deg, #2e8b2e 0%, #3cb371 50%, #2e8b2e 100%);
+            border-radius: 4px;
+            bottom: 5px; left: 50%; transform: translateX(-50%) rotate(-15deg);
+            box-shadow: 0 0 6px rgba(0, 212, 255, 0.5);
+        }
+        .crop-icon.zapzucchini::after {
+            content: '⚡';
+            position: absolute;
+            font-size: 10px;
+            bottom: 15px; left: 55%;
+            text-shadow: 0 0 5px #00d4ff;
+            animation: zapFlash 0.5s steps(2) infinite;
+        }
+        @keyframes zapFlash {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        /* Thunder Melon - glowing melon */
+        .crop-icon.thundermelon::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: radial-gradient(ellipse, #90ee90 0%, #3cb371 40%, #228b22 100%);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.7);
+            animation: thunderPulse 1s ease-in-out infinite;
+        }
+        .crop-icon.thundermelon::after {
+            content: '';
+            position: absolute;
+            width: 24px; height: 24px;
+            border: 2px solid rgba(0, 212, 255, 0.4);
+            border-radius: 50%;
+            bottom: 0; left: 50%; transform: translateX(-50%);
+            animation: thunderRing 1.5s ease-out infinite;
+        }
+        @keyframes thunderPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.9); }
+        }
+        @keyframes thunderRing {
+            0% { transform: translateX(-50%) scale(0.5); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.3); opacity: 0; }
+        }
+
+        /* Lightning Lily - glowing purple lily */
+        .crop-icon.lightninglily::before {
+            content: '';
+            position: absolute;
+            width: 16px; height: 12px;
+            background: radial-gradient(ellipse at top, #fff 0%, #e0e8ff 20%, #9370db 60%, #4169e1 100%);
+            border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px #9370db, 0 0 20px rgba(147, 112, 219, 0.5);
+            animation: lilyGlow 1.2s ease-in-out infinite;
+        }
+        .crop-icon.lightninglily::after {
+            content: '✨';
+            position: absolute;
+            font-size: 8px;
+            bottom: 16px; left: 50%; transform: translateX(-50%);
+            animation: lilySparkle 0.8s ease-in-out infinite;
+        }
+        @keyframes lilyGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); box-shadow: 0 0 20px #dda0dd, 0 0 30px #9370db; }
+        }
+        @keyframes lilySparkle {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.5; transform: translateX(-50%) scale(1.3); }
+        }
+
+        /* Hailstone Berry - icy blue berries */
+        .crop-icon.hailberry::before {
+            content: '';
+            position: absolute;
+            width: 14px; height: 10px;
+            background: radial-gradient(circle at 30% 30%, #fff 0%, #87ceeb 30%, #4169e1 80%);
+            border-radius: 50%;
+            bottom: 6px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(135, 206, 235, 0.8), inset 0 0 4px rgba(255,255,255,0.5);
+        }
+        .crop-icon.hailberry::after {
+            content: '❄️';
+            position: absolute;
+            font-size: 8px;
+            bottom: 14px; right: 2px;
+            animation: hailSpin 3s linear infinite;
+        }
+        @keyframes hailSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Storm Cloud Cotton - fluffy cloud */
+        .crop-icon.stormcotton::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 12px;
+            background: radial-gradient(ellipse at center, #f0f8ff 0%, #b0c4de 40%, #708090 80%);
+            border-radius: 50%;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(176, 196, 222, 0.7);
+            animation: cloudFloat 2s ease-in-out infinite;
+        }
+        .crop-icon.stormcotton::after {
+            content: '⚡';
+            position: absolute;
+            font-size: 8px;
+            bottom: 2px; left: 50%; transform: translateX(-50%);
+            animation: cloudLightning 2s steps(1) infinite;
+        }
+        @keyframes cloudFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-2px); }
+        }
+        @keyframes cloudLightning {
+            0%, 85%, 100% { opacity: 0; }
+            87%, 93% { opacity: 1; }
+        }
+
+        /* Cyclone Corn - corn with vortex */
+        .crop-icon.cyclonecorn::before {
+            content: '';
+            position: absolute;
+            width: 8px; height: 18px;
+            background: linear-gradient(0deg, #ffd700 0%, #f0e68c 30%, #daa520 60%, #b8860b 100%);
+            border-radius: 3px 3px 5px 5px;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
+        }
+        .crop-icon.cyclonecorn::after {
+            content: '🌀';
+            position: absolute;
+            font-size: 12px;
+            bottom: 15px; left: 50%; transform: translateX(-50%);
+            animation: cycloneSpin 1s linear infinite;
+            filter: drop-shadow(0 0 3px #00d4ff);
+        }
+        @keyframes cycloneSpin {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        /* Voltage Vine - electric purple grapes */
+        .crop-icon.voltagevine::before {
+            content: '';
+            position: absolute;
+            width: 12px; height: 16px;
+            background: radial-gradient(circle at 40% 30%, #9370db 0%, #8a2be2 40%, #4b0082 100%);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.8);
+            animation: voltageZap 0.8s ease-in-out infinite;
+        }
+        .crop-icon.voltagevine::after {
+            content: '⚡';
+            position: absolute;
+            font-size: 12px;
+            bottom: 14px; left: 50%; transform: translateX(-50%);
+            color: #fff;
+            text-shadow: 0 0 8px #00d4ff, 0 0 15px #8a2be2;
+            animation: voltageFlash 0.4s steps(2) infinite;
+        }
+        @keyframes voltageZap {
+            0%, 100% { box-shadow: 0 0 8px rgba(138, 43, 226, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(138, 43, 226, 1), 0 0 30px rgba(0, 212, 255, 0.5); }
+        }
+        @keyframes voltageFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Gale Gourd - wind-swept pumpkin */
+        .crop-icon.galegourd::before {
+            content: '';
+            position: absolute;
+            width: 18px; height: 14px;
+            background: radial-gradient(ellipse, #ff7f50 0%, #ff6347 50%, #dc143c 100%);
+            border-radius: 45%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        .crop-icon.galegourd::after {
+            content: '💨';
+            position: absolute;
+            font-size: 10px;
+            bottom: 12px; right: 0;
+            animation: galeWind 0.8s linear infinite;
+        }
+        @keyframes galeWind {
+            0% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-12px); opacity: 0; }
+        }
+
+        /* Nimbus Nectar - cloud honey */
+        .crop-icon.nimbusnectar::before {
+            content: '';
+            position: absolute;
+            width: 14px; height: 18px;
+            background: linear-gradient(180deg, #ffd700 0%, #ffb347 50%, #ff8c00 100%);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.7), 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        .crop-icon.nimbusnectar::after {
+            content: '☁️';
+            position: absolute;
+            font-size: 10px;
+            bottom: 18px; left: 50%; transform: translateX(-50%);
+            animation: nimbusFloat 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 3px #87ceeb);
+        }
+        @keyframes nimbusFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-3px); }
+        }
+
+        /* Electroblossom (Supercell Flower) - ultimate storm flower */
+        .crop-icon.supercellflower::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            background: radial-gradient(circle, 
+                #fff 0%, 
+                #00d4ff 20%, 
+                #4169e1 40%,
+                #1a1a2e 60%,
+                #0a0a1a 100%);
+            border-radius: 50%;
+            bottom: 5px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px #00d4ff, 0 0 30px #4169e1, 0 0 45px rgba(0, 212, 255, 0.4);
+            animation: supercellBloom 1.5s ease-in-out infinite;
+        }
+        .crop-icon.supercellflower::after {
+            content: '🌀';
+            position: absolute;
+            font-size: 10px;
+            bottom: 8px; left: 50%; transform: translateX(-50%);
+            animation: supercellVortex 2s linear infinite;
+            filter: drop-shadow(0 0 3px #fff);
+        }
+        @keyframes supercellBloom {
+            0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 15px #00d4ff, 0 0 30px #4169e1; }
+            50% { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 25px #00d4ff, 0 0 40px #4169e1, 0 0 55px rgba(255,255,255,0.3); }
+        }
+        @keyframes supercellVortex {
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
+        }
+
         /* Heaven Tear - crystalline teardrop */
         .crop-icon.heaventear::before {
             content: '';
