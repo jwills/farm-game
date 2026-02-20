@@ -14554,8 +14554,13 @@
         }
         
         function changeWeather() {
-            // If in a neighborhood, don't change weather locally - server handles it
+            // If in a neighborhood, server handles weather - but use local as fallback
             if (gameState.neighborhoodCode) {
+                // Set a minimum timer to prevent stuck weather, server will override
+                if (gameState.weatherTimer <= 0) {
+                    gameState.weatherTimer = 30;
+                    changeWeatherLocal();
+                }
                 return;
             }
             
@@ -16200,11 +16205,20 @@
                 // Apply shared neighborhood weather
                 if (data.weather && data.weatherUntil) {
                     applyNeighborhoodWeather(data.weather, data.weatherUntil);
+                } else {
+                    // No weather from server, use local weather
+                    if (gameState.weatherTimer <= 0) {
+                        changeWeatherLocal();
+                    }
                 }
                 
 
             } catch (err) {
                 console.log('Fetch farms failed:', err);
+                // On error, fall back to local weather
+                if (gameState.weatherTimer <= 0) {
+                    changeWeatherLocal();
+                }
             }
         }
 
