@@ -515,16 +515,20 @@ var weatherTypes = []string{"sunny", "rainy", "thunder", "windy", "heatwave", "s
 func pickNewWeather(current string) string {
 	roll := rand.Float64()
 
-	// 2% chance for Time Anomaly
-	if roll < 0.02 {
+	// 5% chance for supercell
+	if roll < 0.05 {
+		return "supercell"
+	}
+	// 2.5% chance for Time Anomaly
+	if roll < 0.075 {
 		return "timeanomaly"
 	}
 	// 5% chance for hellscape
-	if roll < 0.07 {
+	if roll < 0.125 {
 		return "hellscape"
 	}
-	// 5% chance for heaven (0.07 to 0.12)
-	if roll < 0.12 {
+	// 5% chance for heaven
+	if roll < 0.175 {
 		return "heaven"
 	}
 
@@ -539,7 +543,7 @@ func pickNewWeather(current string) string {
 			return newWeather
 		}
 	}
-	return "sunny"
+	return "rainy" // Default to rainy (works day or night)
 }
 
 func handleWeather(w http.ResponseWriter, r *http.Request) {
