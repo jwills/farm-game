@@ -13436,9 +13436,11 @@
             // Gale Phoenix: storm crops always regrow once
             const phoenixRegrow = hasPetEffect('stormrebirth') && crop.rarity === 'storm' && !plot.phoenixRegrew;
             if (crop.regrows || phoenixRegrow) {
+                // Preserve stormsurge mutation on regrow
+                const hadStormsurge = plot.mutations?.includes('stormsurge');
                 plot.growth = 0; // Reset growth
                 plot.harvested = true; // Mark as harvested before (uses regrow time)
-                plot.mutations = [];
+                plot.mutations = hadStormsurge ? ['stormsurge'] : [];
                 if (phoenixRegrow && !crop.regrows) {
                     plot.phoenixRegrew = true; // Mark so it only regrows once
                     showMessage(`Harvested ${sizeText}${crop.name}! 🦚 Phoenix rebirth! Regrowing...`);
