@@ -225,13 +225,8 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if weather needs to change
-	if time.Now().After(hood.WeatherUntil) {
-		hood.Weather = pickNewWeather(hood.Weather)
-		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
-	}
-	weather := hood.Weather
-	weatherUntil := hood.WeatherUntil
+	// Use deterministic weather based on neighborhood code and time
+	weather, weatherUntil := getCurrentWeatherEpoch(code)
 
 	// Return all farms except the requesting player's
 	farms := make(map[string]FarmData)
@@ -512,19 +507,98 @@ func handleChatMessages(w http.ResponseWriter, r *http.Request) {
 // Weather types must match frontend WEATHER object keys
 var weatherTypes = []string{"sunny", "rainy", "thunder", "windy", "heatwave", "snow"}
 
+// getWeatherEpoch returns the current weather epoch (changes every 30-90 seconds)
+// and a deterministic seed for that epoch based on neighborhood code
+func getWeatherForEpoch(code string, epochNum int64) (string, int) {
+	// Create deterministic seed from code + epoch
+	seed := int64(0)
+	for _, c := range code {
+		seed = seed*31 + int64(c)
+	}
+	seed += epochNum * 7919 // Large prime for good distribution
+	
+	// Use seeded random for this epoch
+	r := rand.New(rand.NewSource(seed))
+	
+	// Determine duration (30-90 seconds)
+	duration := 30 + r.Intn(60)
+	
+	// Pick weather deterministically
+	roll := r.Float64()
+	
+	// 5% chance for supercell
+	if roll < 0.05 {
+		return "supercell", duration
+	}
+	// 2.5% chance for Time Anomaly
+	if roll < 0.075 {
+		return "timeanomaly", duration
+	}
+	// 5% chance for hellscape
+	if roll < 0.125 {
+		return "hellscape", duration
+	}
+	// 5% chance for heaven
+	if roll < 0.175 {
+		return "heaven", duration
+	}
+
+	// Weighted towards sunny for normal weather
+	weighted := []string{"sunny", "sunny", "sunny"}
+	weighted = append(weighted, weatherTypes...)
+	
+	return weighted[r.Intn(len(weighted))], duration
+}
+
+// getCurrentWeatherEpoch calculates which weather epoch we're in for a neighborhood
+func getCurrentWeatherEpoch(code string) (string, time.Time) {
+	// Start from a fixed reference point (Jan 1, 2025)
+	refTime := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
+	now := time.Now()
+	
+	// Walk through epochs to find current one
+	// Each epoch has variable duration, so we need to calculate sequentially
+	epochNum := int64(0)
+	epochStart := refTime
+	
+	for {
+		_, duration := getWeatherForEpoch(code, epochNum)
+		epochEnd := epochStart.Add(time.Duration(duration) * time.Second)
+		
+		if now.Before(epochEnd) {
+			// We're in this epoch
+			weather, _ := getWeatherForEpoch(code, epochNum)
+			return weather, epochEnd
+		}
+		
+		// Move to next epoch
+		epochStart = epochEnd
+		epochNum++
+		
+		// Safety: don't loop forever (max ~3 years of epochs)
+		if epochNum > 3000000 {
+			return "sunny", now.Add(60 * time.Second)
+		}
+	}
+}
+
 func pickNewWeather(current string) string {
 	roll := rand.Float64()
 
-	// 2% chance for Time Anomaly
-	if roll < 0.02 {
+	// 5% chance for supercell
+	if roll < 0.05 {
+		return "supercell"
+	}
+	// 2.5% chance for Time Anomaly
+	if roll < 0.075 {
 		return "timeanomaly"
 	}
 	// 5% chance for hellscape
-	if roll < 0.07 {
+	if roll < 0.125 {
 		return "hellscape"
 	}
-	// 5% chance for heaven (0.07 to 0.12)
-	if roll < 0.12 {
+	// 5% chance for heaven
+	if roll < 0.175 {
 		return "heaven"
 	}
 
@@ -545,24 +619,18 @@ func pickNewWeather(current string) string {
 func handleWeather(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 
-	mu.Lock()
-	hood, exists := neighborhoods[code]
+	mu.RLock()
+	_, exists := neighborhoods[code]
+	mu.RUnlock()
+	
 	if !exists {
-		mu.Unlock()
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
 		return
 	}
 
-	// Check if weather needs to change
-	if time.Now().After(hood.WeatherUntil) {
-		hood.Weather = pickNewWeather(hood.Weather)
-		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
-	}
-
-	weather := hood.Weather
-	weatherUntil := hood.WeatherUntil
-	mu.Unlock()
+	// Use deterministic weather based on neighborhood code and time
+	weather, weatherUntil := getCurrentWeatherEpoch(code)
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"weather":      weather,
