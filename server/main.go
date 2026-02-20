@@ -515,20 +515,20 @@ var weatherTypes = []string{"sunny", "rainy", "thunder", "windy", "heatwave", "s
 func pickNewWeather(current string) string {
 	roll := rand.Float64()
 
-	// 5% chance for supercell
-	if roll < 0.05 {
+	// 7.5% chance for supercell
+	if roll < 0.075 {
 		return "supercell"
 	}
 	// 2.5% chance for Time Anomaly
-	if roll < 0.075 {
+	if roll < 0.10 {
 		return "timeanomaly"
 	}
 	// 5% chance for hellscape
-	if roll < 0.125 {
+	if roll < 0.15 {
 		return "hellscape"
 	}
 	// 5% chance for heaven
-	if roll < 0.175 {
+	if roll < 0.20 {
 		return "heaven"
 	}
 
