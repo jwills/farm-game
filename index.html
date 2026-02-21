@@ -16911,6 +16911,7 @@
                 const data = await res.json();
                 if (data.code) {
                     gameState.neighborhoodCode = data.code;
+                    gameState.neighborhoodOwnerId = getPlayerId(); // Creator is the owner
                     saveGame();
                     showMessage(`Neighborhood created! Code: ${data.code} 🌟`);
                     renderNeighborhoodStatus();

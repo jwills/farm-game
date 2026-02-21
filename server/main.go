@@ -136,7 +136,7 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 		Created:      time.Now(),
 	}
 
-	json.NewEncoder(w).Encode(map[string]interface{}{"code": code, "weather": "sunny"})
+	json.NewEncoder(w).Encode(map[string]interface{}{"code": code, "weather": "sunny", "ownerId": req.PlayerID})
 }
 
 func handleJoin(w http.ResponseWriter, r *http.Request) {
