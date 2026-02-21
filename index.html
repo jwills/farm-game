@@ -16332,37 +16332,31 @@
             starter: { 
                 name: 'Starter Seed Pack', 
                 seeds: ['questberry', 'taskroot', 'dailydaisy', 'goalgrain'],
-                seedCount: [2, 4],
                 icon: '🌱🎁' 
             },
             hero: { 
                 name: 'Hero Seed Pack', 
                 seeds: ['heroflower', 'bravebulb', 'valorvine', 'couragecorn'],
-                seedCount: [2, 3],
                 icon: '🦸🎁' 
             },
             champion: { 
                 name: 'Champion Seed Pack', 
                 seeds: ['achievemelon', 'trophytomato', 'victoryviolet', 'winnerswheat'],
-                seedCount: [2, 3],
                 icon: '🏅🎁' 
             },
             glory: { 
                 name: 'Glory Seed Pack', 
                 seeds: ['gloryfruit', 'royalrose', 'crowncarrot', 'majestymelon'],
-                seedCount: [2, 3],
                 icon: '👑🎁' 
             },
             legend: { 
                 name: 'Legend Seed Pack', 
                 seeds: ['legendleaf', 'epicember', 'sagespinach', 'fabledbean'],
-                seedCount: [1, 2],
                 icon: '📜🎁' 
             },
             mythic: { 
                 name: 'Mythic Seed Pack', 
                 seeds: ['mythicmango', 'cosmiccherry', 'eternaleggplant', 'infinityivy'],
-                seedCount: [1, 2],
                 icon: '✨🎁' 
             }
         };
@@ -16576,50 +16570,29 @@
                 const crop = CROPS[rewardSeedId];
                 giveSeed(rewardSeedId);
                 
-                // Also give extra random seeds from pack based on seedCount
-                const [minCount, maxCount] = pack.seedCount;
-                const extraCount = minCount + Math.floor(Math.random() * (maxCount - minCount));
-                const extraSeeds = [];
-                for (let i = 0; i < extraCount; i++) {
-                    const extraSeed = pack.seeds[Math.floor(Math.random() * pack.seeds.length)];
-                    giveSeed(extraSeed);
-                    extraSeeds.push(extraSeed);
-                }
-                
-                showSeedPackReward(rewardSeedId, extraSeeds, pack);
+                showSeedPackReward(rewardSeedId, pack);
                 renderInventory();
                 saveGame();
             }, 4000);
         }
         
-        function showSeedPackReward(mainSeedId, extraSeeds, pack) {
+        function showSeedPackReward(seedId, pack) {
             const existing = document.querySelector('.reward-popup');
             if (existing) existing.remove();
             
-            const mainCrop = CROPS[mainSeedId];
-            
-            // Count all seeds including main
-            const allSeeds = [mainSeedId, ...extraSeeds];
-            const seedCounts = {};
-            allSeeds.forEach(s => seedCounts[s] = (seedCounts[s] || 0) + 1);
-            
-            let seedsHtml = '';
-            for (const [seedId, count] of Object.entries(seedCounts)) {
-                const crop = CROPS[seedId];
-                seedsHtml += `<div style="font-size:1.1em;color:#ffd700;margin:5px 0;">+${count}x ${crop.seedEmoji} ${crop.name}</div>`;
-            }
+            const crop = CROPS[seedId];
             
             const popup = document.createElement('div');
             popup.className = 'reward-popup seed-pack-reward';
             popup.innerHTML = `
-                <h2>🎯✨ Quest Seeds! ✨🎯</h2>
-                <div style="font-size:1.5em;margin:10px 0;">${pack.icon}</div>
-                ${seedsHtml}
+                <h2>🎯✨ Quest Seed! ✨🎯</h2>
+                <div style="font-size:3em;margin:10px 0;">${crop.seedEmoji}</div>
+                <div style="font-size:1.2em;color:#ffd700;margin:5px 0;">+1 ${crop.name} Seed</div>
                 <div style="font-size:0.8em;color:#ff69b4;margin-top:10px;">Quest Exclusive!</div>
                 <button onclick="this.parentElement.remove(); closeSeedPackWheel();">Amazing! 🎉</button>
             `;
             popup.style.cssText = 'background: linear-gradient(135deg, #2a0a2a, #1a0a1a); border: 3px solid #ff69b4; box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);';
-            showMessage(`🎯✨ Got ${allSeeds.length} Quest Exclusive seeds!`);
+            showMessage(`🎯✨ Got ${crop.name} seed!`);
             
             document.body.appendChild(popup);
         }
