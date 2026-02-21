@@ -16893,7 +16893,7 @@
                         const unlockedRars = getUnlockedRarities();
                         const seedTypes = Object.keys(CROPS).filter(c => {
                             const crop = CROPS[c];
-                            return !crop.crateOnly && crop.rarity !== 'storm' && unlockedRars.includes(crop.rarity);
+                            return !crop.crateOnly && !crop.questOnly && crop.rarity !== 'storm' && unlockedRars.includes(crop.rarity);
                         });
                         const randomSeed = seedTypes[Math.floor(Math.random() * seedTypes.length)];
                         giveStormchargedSeed(randomSeed);
