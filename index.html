@@ -8632,6 +8632,24 @@
             background: #388E3C;
         }
         
+        .tool-item.seed-pack {
+            background: linear-gradient(135deg, #2a1810 0%, #4a3020 100%);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            cursor: pointer;
+            animation: seed-pack-glow 2s ease-in-out infinite;
+        }
+        
+        .tool-item.seed-pack:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        @keyframes seed-pack-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+        }
+        
         .plot-sprinkler {
             position: absolute;
             bottom: 4px;
@@ -11343,6 +11361,83 @@
             padding: 40px 20px 20px 20px;
         }
         
+        .seed-pack-wheel-theme {
+            background: radial-gradient(ellipse at center, rgba(40, 20, 10, 0.98), rgba(15, 8, 4, 0.99));
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px 20px 20px;
+        }
+        
+        .seed-pack-wheel-theme .wheels-intro {
+            position: relative;
+            top: auto;
+            left: auto;
+            transform: none;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .seed-pack-wheel-theme .wheels-intro h1 {
+            color: #ffd700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+        
+        .seed-pack-wheel-theme .wheels-intro p {
+            color: #e8d4b8;
+        }
+        
+        .seed-pack-wheel .roulette-title {
+            background: linear-gradient(135deg, #2a1810, #4a3020);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+        }
+        
+        .seed-pack-wheel .wheel {
+            background: conic-gradient(
+                from 0deg,
+                #2a1810 0deg, #4a3020 36deg,
+                #3a2418 36deg, #5a4028 72deg,
+                #2a1810 72deg, #4a3020 108deg,
+                #3a2418 108deg, #5a4028 144deg,
+                #2a1810 144deg, #4a3020 180deg,
+                #3a2418 180deg, #5a4028 216deg,
+                #2a1810 216deg, #4a3020 252deg,
+                #3a2418 252deg, #5a4028 288deg,
+                #ff69b4 288deg, #ff1493 324deg,
+                #ff69b4 324deg, #ff1493 360deg
+            );
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 40px rgba(150, 100, 0, 0.3);
+        }
+        
+        .seed-pack-wheel .wheel-center {
+            background: radial-gradient(circle, #ffd700, #aa8800);
+            box-shadow: 0 0 20px #ffd700;
+        }
+        
+        .seed-pack-wheel .wheel-pointer {
+            color: #ffd700;
+            filter: drop-shadow(0 0 10px #ffd700);
+        }
+        
+        .seed-pack-wheel .spin-btn {
+            background: linear-gradient(135deg, #aa6600, #ffd700);
+            border: 2px solid #ffd700;
+            color: #1a0f08;
+            font-weight: bold;
+        }
+        
+        .seed-pack-wheel .spin-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #ffd700, #ffec8b);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        
+        .seed-pack-wheel .bonus-segment {
+            background: linear-gradient(to center, #ff69b4, #ff1493) !important;
+        }
+        
         .storm-wheel-theme .wheels-intro {
             position: relative;
             top: auto;
@@ -13015,6 +13110,7 @@
             equippedPets: [], // equipped pets
             maxPetSlots: 3, // can upgrade to 5 for $100k
             eggInventory: {}, // bought eggs: { petId: count }
+            seedPacks: {}, // quest seed packs: { packType: count }
             playerId: null,
             playerName: null,
             neighborhoodCode: null,
@@ -14600,6 +14696,19 @@
                 div.className = 'tool-item sprinkler placed';
                 div.innerHTML = `${gear.emoji}<span class="tool-badge placed">✓${count}</span>`;
                 div.title = `${gear.name}: ${count} placed on farm`;
+                toolsSection.appendChild(div);
+            }
+            
+            // Add seed packs
+            for (const [packId, count] of Object.entries(gameState.seedPacks || {})) {
+                if (count <= 0) continue;
+                const pack = QUEST_SEED_PACKS[packId];
+                if (!pack) continue;
+                const div = document.createElement('div');
+                div.className = 'tool-item seed-pack';
+                div.innerHTML = `${pack.icon}<span class="tool-badge">${count}</span>`;
+                div.title = `${pack.name}: Click to open!`;
+                div.onclick = () => openSeedPackWheel(packId);
                 toolsSection.appendChild(div);
             }
         }
@@ -16335,10 +16444,13 @@
                 gameState.stormEssence += task.reward.amount;
                 showMessage(`🎁 Task complete! +${task.reward.amount} ⚡ Storm Essence`);
             } else if (task.reward.type === 'seedpack') {
+                // Give seed pack to inventory
+                if (!gameState.seedPacks) gameState.seedPacks = {};
+                if (!gameState.seedPacks[task.reward.pack]) gameState.seedPacks[task.reward.pack] = 0;
+                gameState.seedPacks[task.reward.pack]++;
                 const pack = QUEST_SEED_PACKS[task.reward.pack];
-                if (pack) {
-                    openQuestSeedPack(pack);
-                }
+                showMessage(`🎁 Task complete! Got ${pack.name}! Check your tools to open it.`);
+                renderGearTools();
             }
             
             tasks.claimed.push(taskId);
@@ -16352,65 +16464,189 @@
             saveGame();
         }
         
-        function openQuestSeedPack(pack) {
-            // Create modal for seed pack opening
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:10000;';
-            
-            const content = document.createElement('div');
-            content.style.cssText = 'background:linear-gradient(135deg,#2a1810,#1a0f08);border:3px solid #ffd700;border-radius:20px;padding:30px;text-align:center;max-width:400px;animation:popIn 0.3s ease-out;';
-            
-            // Determine seeds to give
-            const seedsGiven = [];
-            let gotBonus = false;
-            
-            // Give main seeds (random from pool)
-            const mainCount = pack.mainCount[0] + Math.floor(Math.random() * (pack.mainCount[1] - pack.mainCount[0] + 1));
-            for (let i = 0; i < mainCount; i++) {
-                const seedId = pack.mainSeeds[Math.floor(Math.random() * pack.mainSeeds.length)];
-                giveSeed(seedId);
-                seedsGiven.push(seedId);
+        // Current seed pack being opened
+        let currentSeedPack = null;
+        
+        function openSeedPackWheel(packId) {
+            const pack = QUEST_SEED_PACKS[packId];
+            if (!pack) return;
+            if (!gameState.seedPacks || !gameState.seedPacks[packId] || gameState.seedPacks[packId] <= 0) {
+                showMessage('No seed packs of this type!');
+                return;
             }
             
-            // Check for bonus quest crop
-            if (Math.random() < pack.bonusChance) {
-                giveSeed(pack.bonusSeed);
-                seedsGiven.push(pack.bonusSeed);
-                gotBonus = true;
+            currentSeedPack = { packId, pack };
+            
+            // Build wheel segments from pack seeds (8 main + bonus + bonus)
+            const wheelSeeds = [...pack.mainSeeds];
+            // Pad to 8 if needed
+            while (wheelSeeds.length < 8) {
+                wheelSeeds.push(pack.mainSeeds[Math.floor(Math.random() * pack.mainSeeds.length)]);
+            }
+            // Add 2 bonus slots
+            wheelSeeds.push(pack.bonusSeed);
+            wheelSeeds.push(pack.bonusSeed);
+            
+            // Create/update modal
+            let modal = document.getElementById('seed-pack-wheel-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'seed-pack-wheel-modal';
+                modal.className = 'roulette-modal seed-pack-wheel-theme';
+                document.body.appendChild(modal);
             }
             
-            // Count seeds for display
-            const seedCounts = {};
-            seedsGiven.forEach(s => seedCounts[s] = (seedCounts[s] || 0) + 1);
-            
-            let seedsHtml = '';
-            for (const [seedId, count] of Object.entries(seedCounts)) {
-                const crop = CROPS[seedId];
-                const isQuest = crop.rarity === 'quest';
-                const style = isQuest ? 'color:#ff69b4;text-shadow:0 0 10px #ff69b4;' : 'color:#ffd700;';
-                const label = isQuest ? ' 🎯 RARE!' : '';
-                seedsHtml += `<div style="font-size:1.3em;margin:8px 0;${style}">${crop.seedEmoji} ${count}x ${crop.name}${label}</div>`;
+            // Build wheel HTML
+            let segmentsHtml = '';
+            const segmentAngle = 36;
+            for (let i = 0; i < 10; i++) {
+                const seed = wheelSeeds[i];
+                const crop = CROPS[seed];
+                const isBonus = i >= 8;
+                const rotation = -18 + (i * segmentAngle);
+                segmentsHtml += `<div class="wheel-segment ${isBonus ? 'bonus-segment' : ''}" style="transform: rotate(${rotation}deg)"><div class="wheel-icon">${crop?.seedEmoji || '🌱'}</div></div>`;
             }
             
-            const bonusText = gotBonus ? '<div style="color:#ff69b4;font-size:1.1em;margin-bottom:15px;animation:pulse 0.5s ease-in-out infinite;">🌟 BONUS: Quest-Exclusive Seed! 🌟</div>' : '';
-            
-            content.innerHTML = `
-                <div style="font-size:2em;margin-bottom:15px;">${pack.icon}</div>
-                <h2 style="color:#ffd700;margin:0 0 10px 0;text-shadow:0 0 10px rgba(255,215,0,0.5);">${pack.name}</h2>
-                ${bonusText}
-                <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:15px;margin-bottom:20px;">
-                    ${seedsHtml}
+            modal.innerHTML = `
+                <button class="close-roulette" onclick="closeSeedPackWheel()">✕</button>
+                <div class="wheels-intro">
+                    <h1>${pack.icon} ${pack.name} ${pack.icon}</h1>
+                    <p>Spin the wheel to reveal your seeds!</p>
                 </div>
-                <button onclick="this.closest('.modal-overlay').remove()" style="background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;padding:12px 30px;border-radius:10px;font-size:1.1em;cursor:pointer;font-weight:bold;">Awesome! 🎉</button>
+                
+                <div class="roulette-container seed-pack-wheel" style="margin: 0 auto;">
+                    <div class="roulette-title">🌟 SEED WHEEL 🌟</div>
+                    <div class="wheel-wrapper">
+                        <div class="wheel-pointer">▼</div>
+                        <div id="seed-pack-wheel" class="wheel">
+                            ${segmentsHtml}
+                            <div class="wheel-center">🎁</div>
+                        </div>
+                    </div>
+                    <button id="spin-seed-pack" class="spin-btn" onclick="spinSeedPackWheel()">🌟 SPIN 🌟</button>
+                </div>
             `;
             
-            modal.appendChild(content);
-            document.body.appendChild(modal);
+            modal.classList.remove('hidden');
             
-            const msg = gotBonus ? `🎁🌟 Opened ${pack.name} - GOT RARE BONUS!` : `🎁 Opened ${pack.name}!`;
-            showMessage(msg);
-            renderInventory();
+            // Reset wheel
+            const wheel = document.getElementById('seed-pack-wheel');
+            wheel.style.transition = 'none';
+            wheel.style.transform = 'rotate(0deg)';
+            setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)'; }, 50);
+        }
+        
+        function closeSeedPackWheel() {
+            const modal = document.getElementById('seed-pack-wheel-modal');
+            if (modal) modal.classList.add('hidden');
+            currentSeedPack = null;
+        }
+        
+        function spinSeedPackWheel() {
+            if (!currentSeedPack) return;
+            
+            const { packId, pack } = currentSeedPack;
+            const wheel = document.getElementById('seed-pack-wheel');
+            const btn = document.getElementById('spin-seed-pack');
+            
+            btn.disabled = true;
+            
+            // Consume the seed pack
+            gameState.seedPacks[packId]--;
+            if (gameState.seedPacks[packId] <= 0) delete gameState.seedPacks[packId];
+            renderGearTools();
+            
+            // Build wheel data
+            const wheelSeeds = [...pack.mainSeeds];
+            while (wheelSeeds.length < 8) {
+                wheelSeeds.push(pack.mainSeeds[Math.floor(Math.random() * pack.mainSeeds.length)]);
+            }
+            wheelSeeds.push(pack.bonusSeed);
+            wheelSeeds.push(pack.bonusSeed);
+            
+            // Select reward - weighted towards main seeds, bonus is rare
+            let rewardIndex;
+            if (Math.random() < pack.bonusChance) {
+                // Bonus!
+                rewardIndex = 8 + Math.floor(Math.random() * 2);
+            } else {
+                // Main seed
+                rewardIndex = Math.floor(Math.random() * 8);
+            }
+            
+            const rewardSeedId = wheelSeeds[rewardIndex];
+            const isBonus = rewardIndex >= 8;
+            
+            // Calculate spin
+            const segmentAngle = 36;
+            const baseSpins = 5;
+            const segmentPosition = -18 + (rewardIndex * segmentAngle);
+            const topPosition = 198;
+            const totalRotation = (baseSpins * 360) + (topPosition - segmentPosition);
+            
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+            
+            // Show reward after spin
+            setTimeout(() => {
+                const crop = CROPS[rewardSeedId];
+                giveSeed(rewardSeedId);
+                
+                // Also give 1-2 extra random seeds from main pool
+                const extraCount = 1 + Math.floor(Math.random() * 2);
+                const extraSeeds = [];
+                for (let i = 0; i < extraCount; i++) {
+                    const extraSeed = pack.mainSeeds[Math.floor(Math.random() * pack.mainSeeds.length)];
+                    giveSeed(extraSeed);
+                    extraSeeds.push(extraSeed);
+                }
+                
+                showSeedPackReward(rewardSeedId, isBonus, extraSeeds, pack);
+                renderInventory();
+                saveGame();
+            }, 4000);
+        }
+        
+        function showSeedPackReward(mainSeedId, isBonus, extraSeeds, pack) {
+            const existing = document.querySelector('.reward-popup');
+            if (existing) existing.remove();
+            
+            const mainCrop = CROPS[mainSeedId];
+            
+            // Count extras
+            const extraCounts = {};
+            extraSeeds.forEach(s => extraCounts[s] = (extraCounts[s] || 0) + 1);
+            let extrasHtml = '';
+            for (const [seedId, count] of Object.entries(extraCounts)) {
+                const crop = CROPS[seedId];
+                extrasHtml += `<div style="font-size:0.9em;color:#aaa;">+${count}x ${crop.seedEmoji} ${crop.name}</div>`;
+            }
+            
+            const popup = document.createElement('div');
+            popup.className = 'reward-popup seed-pack-reward';
+            
+            if (isBonus) {
+                popup.innerHTML = `
+                    <h2>🎯✨ QUEST SEED! ✨🎯</h2>
+                    <div class="reward-emoji" style="font-size:3em;">${mainCrop.seedEmoji}</div>
+                    <div class="reward-text" style="color:#ff69b4;text-shadow:0 0 10px #ff69b4;">+1 ${mainCrop.name} Seed<br><span style="font-size:0.8em;">Quest Exclusive!</span></div>
+                    ${extrasHtml}
+                    <button onclick="this.parentElement.remove(); closeSeedPackWheel();">Amazing! 🎉</button>
+                `;
+                popup.style.cssText = 'background: linear-gradient(135deg, #2a0a2a, #1a0a1a); border: 3px solid #ff69b4; box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);';
+                showMessage(`🎯✨ Got QUEST EXCLUSIVE ${mainCrop.name} seed!`);
+            } else {
+                popup.innerHTML = `
+                    <h2>🌟 Seed Pack Reward! 🌟</h2>
+                    <div class="reward-emoji" style="font-size:3em;">${mainCrop.seedEmoji}</div>
+                    <div class="reward-text" style="color:#ffd700;">+1 ${mainCrop.name} Seed</div>
+                    ${extrasHtml}
+                    <button onclick="this.parentElement.remove(); closeSeedPackWheel();">Collect!</button>
+                `;
+                popup.style.cssText = 'background: linear-gradient(135deg, #2a1810, #1a0f08); border: 3px solid #ffd700; box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);';
+                showMessage(`🌟 Got ${mainCrop.name} seed!`);
+            }
+            
+            document.body.appendChild(popup);
         }
         
         function checkAllTasksBonus() {
@@ -16419,11 +16655,17 @@
             
             if (completedCount === DAILY_TASKS.length && !tasks.bonusClaimed) {
                 tasks.bonusClaimed = true;
-                // Bonus reward: 50,000 money + 25 storm essence
+                // Bonus reward: 50,000 money + 25 storm essence + one of each seed pack
                 gameState.money += 50000;
                 if (!gameState.stormEssence) gameState.stormEssence = 0;
                 gameState.stormEssence += 25;
-                showMessage('🌟🌟 ALL TASKS COMPLETE! Bonus: $50,000 + 25 ⚡ 🌟🌟');
+                // Give one of each seed pack type
+                if (!gameState.seedPacks) gameState.seedPacks = {};
+                Object.keys(QUEST_SEED_PACKS).forEach(packType => {
+                    gameState.seedPacks[packType] = (gameState.seedPacks[packType] || 0) + 1;
+                });
+                showMessage('🌟🌟 ALL TASKS COMPLETE! Bonus: $50,000 + 25 ⚡ + 6 Seed Packs! 🌟🌟');
+                saveGame();
             }
         }
         
