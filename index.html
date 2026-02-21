@@ -8034,6 +8034,197 @@
         .crop-icon.eternaleggplant::before { content: '♾️'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: drop-shadow(0 0 12px #ff69b4); animation: mythicSparkle 1s infinite; }
         .crop-icon.infinityivy::before { content: '🔮'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: drop-shadow(0 0 12px #9932cc); animation: mythicSparkle 1s infinite; }
 
+        /* ========== QUEST CROP PLANT MODELS ========== */
+        
+        /* STARTER TIER - Golden glow theme */
+        .plant-model.crop-questberry .plant-stem { background: linear-gradient(to top, #8b6914, #d4a017); width: 6px; }
+        .plant-model.crop-questberry .plant-leaf { background: #c9a227; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-questberry.stage-4 .plant-stem { height: 32px; }
+        .plant-model.crop-questberry.stage-4 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-questberry.stage-4 .plant-crop { filter: drop-shadow(0 0 8px gold); }
+        
+        .plant-model.crop-taskroot .plant-stem { background: linear-gradient(to top, #5a4a3a, #8a7a5a); width: 8px; }
+        .plant-model.crop-taskroot .plant-leaf { background: #6a8a4a; width: 14px; height: 8px; }
+        .plant-model.crop-taskroot.stage-4 .plant-stem { height: 28px; }
+        .plant-model.crop-taskroot.stage-4 .plant-leaves { bottom: 22px; }
+        .plant-model.crop-taskroot.stage-4 .plant-crop { filter: drop-shadow(0 0 6px gold); }
+        
+        .plant-model.crop-dailydaisy .plant-stem { background: linear-gradient(to top, #4a7a3a, #6a9a5a); width: 5px; }
+        .plant-model.crop-dailydaisy .plant-leaf { background: #5a9a4a; width: 10px; height: 6px; border-radius: 40%; }
+        .plant-model.crop-dailydaisy.stage-4 .plant-stem { height: 30px; }
+        .plant-model.crop-dailydaisy.stage-4 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-dailydaisy.stage-4 .plant-crop { filter: drop-shadow(0 0 6px gold); }
+        
+        .plant-model.crop-goalgrain .plant-stem { background: linear-gradient(to top, #9a8a3a, #c9b84a); width: 4px; }
+        .plant-model.crop-goalgrain .plant-leaf { background: #b9a84a; width: 18px; height: 5px; }
+        .plant-model.crop-goalgrain.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-goalgrain.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-goalgrain.stage-4 .plant-crop { filter: drop-shadow(0 0 6px gold); }
+        
+        /* HERO TIER - Red/orange heroic theme */
+        .plant-model.crop-heroflower .plant-stem { background: linear-gradient(to top, #5a3a2a, #8a5a4a); width: 6px; }
+        .plant-model.crop-heroflower .plant-leaf { background: #7a5a4a; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-heroflower.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-heroflower.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-heroflower.stage-4 .plant-crop { filter: drop-shadow(0 0 10px #ff6b6b); animation: heroPulse 1.5s ease-in-out infinite; }
+        @keyframes heroPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px #ff6b6b); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 15px #ff4040); }
+        }
+        
+        .plant-model.crop-bravebulb .plant-stem { background: linear-gradient(to top, #4a4a5a, #6a6a8a); width: 7px; }
+        .plant-model.crop-bravebulb .plant-leaf { background: #5a6a7a; width: 10px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-bravebulb.stage-4 .plant-stem { height: 30px; }
+        .plant-model.crop-bravebulb.stage-4 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-bravebulb.stage-4 .plant-crop { filter: drop-shadow(0 0 8px #ff6b6b); }
+        
+        .plant-model.crop-valorvine .plant-stem { background: linear-gradient(to top, #3a5a3a, #5a8a5a); width: 5px; border-radius: 2px; }
+        .plant-model.crop-valorvine .plant-leaf { background: #4a7a4a; width: 14px; height: 6px; }
+        .plant-model.crop-valorvine.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-valorvine.stage-4 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-valorvine.stage-4 .plant-crop { filter: drop-shadow(0 0 8px #ff6b6b); }
+        
+        .plant-model.crop-couragecorn .plant-stem { background: linear-gradient(to top, #6a5a2a, #9a8a4a); width: 6px; }
+        .plant-model.crop-couragecorn .plant-leaf { background: #8a9a3a; width: 20px; height: 6px; }
+        .plant-model.crop-couragecorn.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-couragecorn.stage-4 .plant-leaves { bottom: 34px; }
+        .plant-model.crop-couragecorn.stage-4 .plant-crop { filter: drop-shadow(0 0 8px #ff6b6b); }
+        
+        /* CHAMPION TIER - Gold/bronze medal theme */
+        .plant-model.crop-achievemelon .plant-stem { background: linear-gradient(to top, #3a6a3a, #5a9a5a); width: 8px; }
+        .plant-model.crop-achievemelon .plant-leaf { background: #4a8a4a; width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-achievemelon.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-achievemelon.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-achievemelon.stage-4 .plant-crop { filter: drop-shadow(0 0 12px #ffd700); animation: championShine 2s ease-in-out infinite; }
+        @keyframes championShine {
+            0%, 100% { filter: drop-shadow(0 0 12px #ffd700) brightness(1); }
+            50% { filter: drop-shadow(0 0 20px #ffec8b) brightness(1.2); }
+        }
+        
+        .plant-model.crop-trophytomato .plant-stem { background: linear-gradient(to top, #4a5a3a, #6a8a5a); width: 6px; }
+        .plant-model.crop-trophytomato .plant-leaf { background: #5a8a4a; width: 14px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-trophytomato.stage-4 .plant-stem { height: 32px; }
+        .plant-model.crop-trophytomato.stage-4 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-trophytomato.stage-4 .plant-crop { filter: drop-shadow(0 0 10px #ffd700); }
+        
+        .plant-model.crop-victoryviolet .plant-stem { background: linear-gradient(to top, #4a3a5a, #6a5a8a); width: 5px; }
+        .plant-model.crop-victoryviolet .plant-leaf { background: #7a5a9a; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-victoryviolet.stage-4 .plant-stem { height: 34px; }
+        .plant-model.crop-victoryviolet.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-victoryviolet.stage-4 .plant-crop { filter: drop-shadow(0 0 10px #ffd700); }
+        
+        .plant-model.crop-winnerswheat .plant-stem { background: linear-gradient(to top, #8a7a3a, #baa84a); width: 4px; }
+        .plant-model.crop-winnerswheat .plant-leaf { background: #a9983a; width: 16px; height: 5px; }
+        .plant-model.crop-winnerswheat.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-winnerswheat.stage-4 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-winnerswheat.stage-4 .plant-crop { filter: drop-shadow(0 0 10px #ffd700); }
+        
+        /* GLORY TIER - Royal purple/crown theme */
+        .plant-model.crop-gloryfruit .plant-stem { background: linear-gradient(to top, #5a3a6a, #8a5a9a); width: 7px; }
+        .plant-model.crop-gloryfruit .plant-leaf { background: #9a6aaa; width: 14px; height: 9px; border-radius: 50%; }
+        .plant-model.crop-gloryfruit.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-gloryfruit.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-gloryfruit.stage-4 .plant-crop { filter: drop-shadow(0 0 14px #9932cc); animation: gloryGlow 2s ease-in-out infinite; }
+        @keyframes gloryGlow {
+            0%, 100% { filter: drop-shadow(0 0 14px #9932cc) brightness(1); }
+            50% { filter: drop-shadow(0 0 22px #ba55d3) brightness(1.15); }
+        }
+        
+        .plant-model.crop-royalrose .plant-stem { background: linear-gradient(to top, #3a5a3a, #5a7a5a); width: 5px; }
+        .plant-model.crop-royalrose .plant-leaf { background: #4a7a4a; width: 10px; height: 7px; border-radius: 50%; }
+        .plant-model.crop-royalrose.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-royalrose.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-royalrose.stage-4 .plant-crop { filter: drop-shadow(0 0 12px #9932cc); }
+        
+        .plant-model.crop-crowncarrot .plant-stem { background: linear-gradient(to top, #5a4a3a, #8a6a5a); width: 6px; }
+        .plant-model.crop-crowncarrot .plant-leaf { background: #6a8a5a; width: 12px; height: 6px; }
+        .plant-model.crop-crowncarrot.stage-4 .plant-stem { height: 28px; }
+        .plant-model.crop-crowncarrot.stage-4 .plant-leaves { bottom: 22px; }
+        .plant-model.crop-crowncarrot.stage-4 .plant-crop { filter: drop-shadow(0 0 12px #9932cc); }
+        
+        .plant-model.crop-majestymelon .plant-stem { background: linear-gradient(to top, #3a5a4a, #5a8a6a); width: 8px; }
+        .plant-model.crop-majestymelon .plant-leaf { background: #4a7a5a; width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-majestymelon.stage-4 .plant-stem { height: 36px; }
+        .plant-model.crop-majestymelon.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-majestymelon.stage-4 .plant-crop { filter: drop-shadow(0 0 12px #9932cc); }
+        
+        /* LEGEND TIER - Ancient golden/amber theme */
+        .plant-model.crop-legendleaf .plant-stem { background: linear-gradient(to top, #6a5a2a, #9a8a4a); width: 6px; }
+        .plant-model.crop-legendleaf .plant-leaf { background: #8a9a4a; width: 18px; height: 12px; border-radius: 30%; }
+        .plant-model.crop-legendleaf.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-legendleaf.stage-4 .plant-leaves { bottom: 34px; }
+        .plant-model.crop-legendleaf.stage-4 .plant-crop { filter: drop-shadow(0 0 16px #daa520); animation: legendPulse 2.5s ease-in-out infinite; }
+        @keyframes legendPulse {
+            0%, 100% { filter: drop-shadow(0 0 16px #daa520) brightness(1); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.2); transform: scale(1.05); }
+        }
+        
+        .plant-model.crop-epicember .plant-stem { background: linear-gradient(to top, #5a2a1a, #8a4a2a); width: 7px; }
+        .plant-model.crop-epicember .plant-leaf { background: #aa5a3a; width: 12px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-epicember.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-epicember.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-epicember.stage-4 .plant-crop { filter: drop-shadow(0 0 14px #ff4500); animation: emberFlicker 0.5s ease-in-out infinite; }
+        @keyframes emberFlicker {
+            0%, 100% { filter: drop-shadow(0 0 14px #ff4500) brightness(1); }
+            50% { filter: drop-shadow(0 0 20px #ff6a00) brightness(1.3); }
+        }
+        
+        .plant-model.crop-sagespinach .plant-stem { background: linear-gradient(to top, #2a5a3a, #4a8a5a); width: 5px; }
+        .plant-model.crop-sagespinach .plant-leaf { background: #3a7a4a; width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-sagespinach.stage-4 .plant-stem { height: 34px; }
+        .plant-model.crop-sagespinach.stage-4 .plant-leaves { bottom: 26px; }
+        .plant-model.crop-sagespinach.stage-4 .plant-crop { filter: drop-shadow(0 0 14px #daa520); }
+        
+        .plant-model.crop-fabledbean .plant-stem { background: linear-gradient(to top, #5a4a3a, #7a6a5a); width: 6px; }
+        .plant-model.crop-fabledbean .plant-leaf { background: #6a7a5a; width: 14px; height: 8px; }
+        .plant-model.crop-fabledbean.stage-4 .plant-stem { height: 36px; }
+        .plant-model.crop-fabledbean.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-fabledbean.stage-4 .plant-crop { filter: drop-shadow(0 0 14px #daa520); }
+        
+        /* MYTHIC TIER - Cosmic/ethereal theme with sparkles */
+        .plant-model.crop-mythicmango .plant-stem { background: linear-gradient(to top, #4a3a5a, #7a5a8a); width: 7px; }
+        .plant-model.crop-mythicmango .plant-leaf { background: #8a6a9a; width: 14px; height: 9px; border-radius: 50%; }
+        .plant-model.crop-mythicmango.stage-4 .plant-stem { height: 45px; }
+        .plant-model.crop-mythicmango.stage-4 .plant-leaves { bottom: 36px; }
+        .plant-model.crop-mythicmango.stage-4 .plant-crop { filter: drop-shadow(0 0 18px #ff69b4); animation: mythicGlow 1.5s ease-in-out infinite; }
+        @keyframes mythicGlow {
+            0%, 100% { filter: drop-shadow(0 0 18px #ff69b4) brightness(1); transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(2deg); }
+            50% { filter: drop-shadow(0 0 28px #ff1493) brightness(1.3); transform: scale(1.1) rotate(0deg); }
+            75% { transform: scale(1.05) rotate(-2deg); }
+        }
+        
+        .plant-model.crop-cosmiccherry .plant-stem { background: linear-gradient(to top, #2a2a4a, #4a4a7a); width: 5px; }
+        .plant-model.crop-cosmiccherry .plant-leaf { background: #5a5a8a; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-cosmiccherry.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-cosmiccherry.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-cosmiccherry.stage-4 .plant-crop { filter: drop-shadow(0 0 16px #9932cc); animation: cosmicPulse 2s ease-in-out infinite; }
+        @keyframes cosmicPulse {
+            0%, 100% { filter: drop-shadow(0 0 16px #9932cc) brightness(1); }
+            50% { filter: drop-shadow(0 0 25px #da70d6) brightness(1.25); }
+        }
+        
+        .plant-model.crop-eternaleggplant .plant-stem { background: linear-gradient(to top, #3a2a4a, #5a4a6a); width: 7px; }
+        .plant-model.crop-eternaleggplant .plant-leaf { background: #6a5a7a; width: 14px; height: 9px; border-radius: 40%; }
+        .plant-model.crop-eternaleggplant.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-eternaleggplant.stage-4 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-eternaleggplant.stage-4 .plant-crop { filter: drop-shadow(0 0 16px #ff69b4); animation: eternalShimmer 3s ease-in-out infinite; }
+        @keyframes eternalShimmer {
+            0%, 100% { filter: drop-shadow(0 0 16px #ff69b4) brightness(1); }
+            33% { filter: drop-shadow(0 0 22px #9932cc) brightness(1.15); }
+            66% { filter: drop-shadow(0 0 22px #ff1493) brightness(1.15); }
+        }
+        
+        .plant-model.crop-infinityivy .plant-stem { background: linear-gradient(to top, #2a4a3a, #4a7a5a); width: 5px; }
+        .plant-model.crop-infinityivy .plant-leaf { background: #5a8a6a; width: 16px; height: 8px; }
+        .plant-model.crop-infinityivy.stage-4 .plant-stem { height: 48px; }
+        .plant-model.crop-infinityivy.stage-4 .plant-leaves { bottom: 38px; }
+        .plant-model.crop-infinityivy.stage-4 .plant-crop { filter: drop-shadow(0 0 16px #9932cc); animation: infinitySwirl 4s linear infinite; }
+        @keyframes infinitySwirl {
+            0% { filter: drop-shadow(0 0 16px #9932cc) hue-rotate(0deg); }
+            100% { filter: drop-shadow(0 0 16px #9932cc) hue-rotate(360deg); }
+        }
+
         /* Heaven Tear - crystalline teardrop */
         .crop-icon.heaventear::before {
             content: '';
