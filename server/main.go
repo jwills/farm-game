@@ -132,7 +132,7 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 		Messages:     []ChatMessage{},
 		MsgID:        0,
 		Weather:      "sunny",
-		WeatherUntil: time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second),
+		WeatherUntil: time.Now().Add(getWeatherDuration("sunny")),
 		Created:      time.Now(),
 	}
 
@@ -228,7 +228,7 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 	// Check if weather needs to change
 	if time.Now().After(hood.WeatherUntil) {
 		hood.Weather = pickNewWeather(hood.Weather)
-		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
+		hood.WeatherUntil = time.Now().Add(getWeatherDuration(hood.Weather))
 	}
 	weather := hood.Weather
 	weatherUntil := hood.WeatherUntil
@@ -546,6 +546,18 @@ func pickNewWeather(current string) string {
 	return "rainy" // Default to rainy (works day or night)
 }
 
+// getWeatherDuration returns the duration for a given weather type
+func getWeatherDuration(weather string) time.Duration {
+	switch weather {
+	case "supercell", "timeanomaly":
+		// 60-120 seconds for special weather
+		return time.Duration(60+rand.Intn(60)) * time.Second
+	default:
+		// 10-30 seconds for normal weather
+		return time.Duration(10+rand.Intn(20)) * time.Second
+	}
+}
+
 func handleWeather(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 
@@ -561,7 +573,7 @@ func handleWeather(w http.ResponseWriter, r *http.Request) {
 	// Check if weather needs to change
 	if time.Now().After(hood.WeatherUntil) {
 		hood.Weather = pickNewWeather(hood.Weather)
-		hood.WeatherUntil = time.Now().Add(time.Duration(30+rand.Intn(60)) * time.Second)
+		hood.WeatherUntil = time.Now().Add(getWeatherDuration(hood.Weather))
 	}
 
 	weather := hood.Weather
