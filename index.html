@@ -15692,8 +15692,8 @@
         
         // Storm Shop
         const STORM_SHOP_ITEMS = [
-            { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 15, action: 'stormcharge_random' },
-            { id: 'storm_egg', name: 'Storm Egg', icon: '🌪️🥚', desc: 'Hatch a random storm pet!', price: 75, action: 'storm_egg' },
+            { id: 'stormcharge_random', name: 'Stormcharge Seeds', icon: '⚡🌱', desc: 'Get 3 random stormcharged seeds', price: 5, action: 'stormcharge_random' },
+            { id: 'storm_egg', name: 'Storm Egg', icon: '🌪️🥚', desc: 'Hatch a random storm pet!', price: 25, action: 'storm_egg' },
             { id: 'storm_seed_pack', name: 'Storm Seed Pack', icon: '🌪️🎁', desc: 'Spin for a random storm crop seed!', price: 60, action: 'storm_wheel' },
         ];
         
@@ -15755,8 +15755,8 @@
             
             switch (item.action) {
                 case 'stormcharge_random':
-                    // Normal crops (exclude special rarities)
-                    const excludedRarities = ['demonic', 'celestial', 'temporal', 'nocturnal'];
+                    // Normal crops (exclude special rarities including storm)
+                    const excludedRarities = ['demonic', 'celestial', 'temporal', 'nocturnal', 'storm'];
                     const normalSeedTypes = Object.keys(CROPS).filter(cropId => {
                         const crop = CROPS[cropId];
                         return !crop.crateOnly && !excludedRarities.includes(crop.rarity);
@@ -15773,23 +15773,21 @@
                     });
                     
                     if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
-                    let gotSpecial = false;
-                    let specialType = null;
+                    let gotCelestial = false;
+                    let gotDemonic = false;
                     
                     for (let i = 0; i < 3; i++) {
                         let type;
                         const roll = Math.random();
                         
-                        if (roll < 0.02 && celestialSeeds.length > 0) {
-                            // 2% chance for celestial seed
+                        if (roll < 0.10 && celestialSeeds.length > 0) {
+                            // 10% chance for celestial seed
                             type = celestialSeeds[Math.floor(Math.random() * celestialSeeds.length)];
-                            gotSpecial = true;
-                            specialType = 'celestial';
-                        } else if (roll < 0.07 && demonicSeeds.length > 0) {
-                            // 5% chance for demonic seed (after celestial check)
+                            gotCelestial = true;
+                        } else if (roll < 0.30 && demonicSeeds.length > 0) {
+                            // 20% chance for demonic seed (after celestial check)
                             type = demonicSeeds[Math.floor(Math.random() * demonicSeeds.length)];
-                            gotSpecial = true;
-                            specialType = 'demonic';
+                            gotDemonic = true;
                         } else {
                             // Normal seed
                             type = normalSeedTypes[Math.floor(Math.random() * normalSeedTypes.length)];
@@ -15799,9 +15797,11 @@
                         gameState.stormchargedSeeds[type]++;
                     }
                     
-                    if (gotSpecial && specialType === 'celestial') {
+                    if (gotCelestial && gotDemonic) {
+                        showMessage('⚡✨🔥 Got 3 Stormcharged seeds with CELESTIAL and DEMONIC! 🔥✨⚡');
+                    } else if (gotCelestial) {
                         showMessage('⚡✨ Got 3 Stormcharged seeds including a CELESTIAL! ✨⚡');
-                    } else if (gotSpecial && specialType === 'demonic') {
+                    } else if (gotDemonic) {
                         showMessage('⚡🔥 Got 3 Stormcharged seeds including a DEMONIC! 🔥⚡');
                     } else {
                         showMessage('⚡ Got 3 random Stormcharged seeds!');
