@@ -8037,31 +8037,181 @@
         /* ========== QUEST CROP PLANT MODELS ========== */
         
         /* STARTER TIER - Golden glow theme */
-        .crop-questberry .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 8px gold); }
-        .crop-questberry .plant-fruit::after { content: '🏆'; }
+        
+        /* Quest Berry - Golden trophy berry with sparkle crown */
+        .crop-questberry .plant-fruit {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle at 35% 35%, #ffd700, #b8860b);
+            border-radius: 50%;
+            bottom: 26px;
+            box-shadow: 0 0 12px #ffd700, inset 2px 2px 4px rgba(255,255,255,0.5);
+            animation: questberryGlow 2s ease-in-out infinite;
+        }
+        .crop-questberry .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffec8b 50%, #ffd700 100%);
+            top: -6px;
+            left: 3px;
+            clip-path: polygon(50% 0%, 0% 100%, 25% 100%, 50% 50%, 75% 100%, 100% 100%);
+            filter: drop-shadow(0 0 3px #ffd700);
+        }
+        .crop-questberry .plant-fruit::after {
+            content: '✦';
+            position: absolute;
+            font-size: 8px;
+            color: #fff;
+            top: 3px;
+            left: 5px;
+            animation: questStar 1s ease-in-out infinite;
+        }
+        @keyframes questberryGlow {
+            0%, 100% { box-shadow: 0 0 12px #ffd700, inset 2px 2px 4px rgba(255,255,255,0.5); }
+            50% { box-shadow: 0 0 20px #ffec8b, inset 2px 2px 6px rgba(255,255,255,0.7); }
+        }
+        @keyframes questStar {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
         .plant-model.crop-questberry .plant-stem { background: linear-gradient(to top, #8b6914, #d4a017); width: 6px; }
-        .plant-model.crop-questberry .plant-leaf { background: #c9a227; width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-questberry .plant-leaf { background: linear-gradient(135deg, #c9a227, #e6c84a); width: 12px; height: 8px; border-radius: 50%; }
         .plant-model.crop-questberry.stage-4 .plant-stem { height: 32px; }
         .plant-model.crop-questberry.stage-4 .plant-leaves { bottom: 26px; }
         
-        .crop-taskroot .plant-fruit { font-size: 20px; filter: drop-shadow(0 0 6px gold); }
-        .crop-taskroot .plant-fruit::after { content: '📋'; }
+        /* Task Root - Orange carrot with clipboard check pattern */
+        .crop-taskroot .plant-fruit {
+            width: 10px;
+            height: 22px;
+            background: linear-gradient(180deg, #ff8c00 0%, #ff6600 50%, #cc4400 100%);
+            border-radius: 4px 4px 50% 50%;
+            bottom: 4px;
+            box-shadow: 0 0 8px rgba(255,140,0,0.6);
+            transform: rotate(5deg);
+        }
+        .crop-taskroot .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 3px;
+            background: #ffd700;
+            top: 4px;
+            left: 2px;
+            border-radius: 1px;
+            box-shadow: 0 5px 0 #ffd700, 0 10px 0 #ffd700;
+        }
+        .crop-taskroot .plant-fruit::after {
+            content: '✓';
+            position: absolute;
+            font-size: 7px;
+            font-weight: bold;
+            color: #228b22;
+            top: 2px;
+            left: 1px;
+            text-shadow: 0 0 2px #fff;
+        }
         .plant-model.crop-taskroot .plant-stem { background: linear-gradient(to top, #5a4a3a, #8a7a5a); width: 8px; }
-        .plant-model.crop-taskroot .plant-leaf { background: #6a8a4a; width: 14px; height: 8px; }
+        .plant-model.crop-taskroot .plant-leaf { background: linear-gradient(135deg, #6a8a4a, #8ab06a); width: 14px; height: 8px; }
         .plant-model.crop-taskroot.stage-4 .plant-stem { height: 28px; }
         .plant-model.crop-taskroot.stage-4 .plant-leaves { bottom: 22px; }
         
-        .crop-dailydaisy .plant-fruit { font-size: 20px; filter: drop-shadow(0 0 6px gold); }
-        .crop-dailydaisy .plant-fruit::after { content: '📅'; }
+        /* Daily Daisy - White/gold daisy with calendar center */
+        .crop-dailydaisy .plant-fruit {
+            width: 22px;
+            height: 22px;
+            background: radial-gradient(circle, #ffd700 35%, transparent 36%);
+            border-radius: 50%;
+            bottom: 24px;
+            box-shadow: 0 0 10px rgba(255,215,0,0.5);
+        }
+        .crop-dailydaisy .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: 
+                conic-gradient(from 0deg, 
+                    white 0deg 20deg, transparent 20deg 40deg,
+                    white 40deg 60deg, transparent 60deg 80deg,
+                    white 80deg 100deg, transparent 100deg 120deg,
+                    white 120deg 140deg, transparent 140deg 160deg,
+                    white 160deg 180deg, transparent 180deg 200deg,
+                    white 200deg 220deg, transparent 220deg 240deg,
+                    white 240deg 260deg, transparent 260deg 280deg,
+                    white 280deg 300deg, transparent 300deg 320deg,
+                    white 320deg 340deg, transparent 340deg 360deg);
+            border-radius: 50%;
+            top: -3px;
+            left: -3px;
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 0 3px rgba(255,255,255,0.8));
+            animation: daisySpin 20s linear infinite;
+        }
+        .crop-dailydaisy .plant-fruit::after {
+            content: '31';
+            position: absolute;
+            font-size: 7px;
+            font-weight: bold;
+            color: #8b4513;
+            top: 6px;
+            left: 5px;
+            text-shadow: 0 0 1px #ffd700;
+        }
+        @keyframes daisySpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         .plant-model.crop-dailydaisy .plant-stem { background: linear-gradient(to top, #4a7a3a, #6a9a5a); width: 5px; }
-        .plant-model.crop-dailydaisy .plant-leaf { background: #5a9a4a; width: 10px; height: 6px; border-radius: 40%; }
+        .plant-model.crop-dailydaisy .plant-leaf { background: linear-gradient(135deg, #5a9a4a, #7aba6a); width: 10px; height: 6px; border-radius: 40%; }
         .plant-model.crop-dailydaisy.stage-4 .plant-stem { height: 30px; }
         .plant-model.crop-dailydaisy.stage-4 .plant-leaves { bottom: 24px; }
         
-        .crop-goalgrain .plant-fruit { font-size: 20px; filter: drop-shadow(0 0 6px gold); }
-        .crop-goalgrain .plant-fruit::after { content: '🎯'; }
+        /* Goal Grain - Golden wheat with bullseye target head */
+        .crop-goalgrain .plant-fruit {
+            width: 14px;
+            height: 20px;
+            background: linear-gradient(180deg, #daa520 0%, #b8860b 100%);
+            border-radius: 30% 30% 5px 5px;
+            bottom: 32px;
+            box-shadow: 0 0 8px rgba(218,165,32,0.6);
+        }
+        .crop-goalgrain .plant-fruit::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle,
+                #ff0000 0% 20%,
+                white 20% 35%,
+                #ff0000 35% 50%,
+                white 50% 65%,
+                #ff0000 65% 80%,
+                transparent 80%);
+            border-radius: 50%;
+            top: 2px;
+            left: 1px;
+            animation: targetPulse 1.5s ease-in-out infinite;
+        }
+        .crop-goalgrain .plant-fruit::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            top: 6px;
+            left: 5px;
+            box-shadow: 0 0 4px #ffd700;
+        }
+        @keyframes targetPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
         .plant-model.crop-goalgrain .plant-stem { background: linear-gradient(to top, #9a8a3a, #c9b84a); width: 4px; }
-        .plant-model.crop-goalgrain .plant-leaf { background: #b9a84a; width: 18px; height: 5px; }
+        .plant-model.crop-goalgrain .plant-leaf { background: linear-gradient(135deg, #b9a84a, #d9c86a); width: 18px; height: 5px; }
         .plant-model.crop-goalgrain.stage-4 .plant-stem { height: 38px; }
         .plant-model.crop-goalgrain.stage-4 .plant-leaves { bottom: 30px; }
         
