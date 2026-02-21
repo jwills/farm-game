@@ -6042,6 +6042,53 @@
             100% { opacity: 0; transform: translateY(100%); }
         }
 
+        /* Thunderstruck mutation - supercell weather effect */
+        .plant-model.has-thunderstruck {
+            animation: thunderstruck-shake 0.15s ease-in-out infinite;
+        }
+        .plant-model.has-thunderstruck .plant-fruit {
+            filter: brightness(1.3) saturate(1.5) drop-shadow(0 0 8px #ffff00) drop-shadow(0 0 15px #ff8800);
+        }
+        .plant-model.has-thunderstruck .plant-stem {
+            filter: brightness(1.2) saturate(1.3);
+        }
+        .plant-model.has-thunderstruck::before {
+            content: '⚡';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            animation: thunderstruck-bolt 0.2s steps(3) infinite;
+            z-index: 10;
+            text-shadow: 0 0 10px #ffff00, 0 0 20px #ff8800, 0 0 30px #fff;
+        }
+        .plant-model.has-thunderstruck::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 0, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+            animation: thunderstruck-glow 0.5s ease-in-out infinite;
+        }
+        @keyframes thunderstruck-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-1px) rotate(-1deg); }
+            75% { transform: translateX(1px) rotate(1deg); }
+        }
+        @keyframes thunderstruck-bolt {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+            33% { opacity: 0.4; transform: translateX(-50%) scale(0.9); }
+            66% { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+        @keyframes thunderstruck-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
         /* Ash Covered mutation - smoky/volcanic effect */
         .plant-model.has-ashcovered {
             filter: sepia(0.4) brightness(0.9) contrast(1.1);
@@ -12307,7 +12354,7 @@
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
             heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
-            supercell: { name: 'Supercell', emoji: '🌪️', mutation: null, bonus: 5 },
+            supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'thunderstruck', mutationEmoji: '⚡', bonus: 5 },
             timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
         };
 
@@ -12333,8 +12380,9 @@
             voidinfused: { name: 'Void Infused', emoji: '👁️', bonus: 3.0, sprinklerOnly: true },
             // Day/night mutation
             nightglow: { name: 'Nightglow', emoji: '🌙', bonus: 1.5 },
-            // Supercell weather mutation
-            stormsurge: { name: 'Storm Surge', emoji: '🌩️', bonus: 5 }
+            // Supercell weather mutations
+            stormsurge: { name: 'Storm Surge', emoji: '🌩️', bonus: 5 },
+            thunderstruck: { name: 'Thunderstruck', emoji: '⚡', bonus: 3.0 }
         };
         
         // Prehistoric wheel rewards
@@ -13141,6 +13189,7 @@
                     if (plot.mutations?.includes('fossilized')) mutationClasses += ' has-fossilized';
                     if (plot.mutations?.includes('quantum')) mutationClasses += ' has-quantum';
                     if (plot.mutations?.includes('stormsurge')) mutationClasses += ' has-stormsurge';
+                    if (plot.mutations?.includes('thunderstruck')) mutationClasses += ' has-thunderstruck';
                     
                     const regrowIcon = crop.regrows ? '🔄' : '';
                     const seedEmoji = stage === 1 ? '🌰' : '';
