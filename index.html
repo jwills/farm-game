@@ -16756,10 +16756,10 @@
                     const unlockedRars = getUnlockedRarities();
                     const excludedRarities = ['storm']; // Always exclude storm rarity
                     
-                    // Filter seeds by unlocked rarities
+                    // Filter seeds by unlocked rarities (exclude quest-only and crate-only)
                     const availableSeeds = Object.keys(CROPS).filter(cropId => {
                         const crop = CROPS[cropId];
-                        return !crop.crateOnly && !excludedRarities.includes(crop.rarity) && unlockedRars.includes(crop.rarity);
+                        return !crop.crateOnly && !crop.questOnly && !excludedRarities.includes(crop.rarity) && unlockedRars.includes(crop.rarity);
                     });
                     
                     // Separate by rarity for weighted chances
