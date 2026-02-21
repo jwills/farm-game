@@ -11312,6 +11312,254 @@
             transform: scale(1.05);
         }
         
+        /* Daily Tasks Modal */
+        .daily-tasks-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(20, 10, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .daily-tasks-modal.hidden { display: none; }
+        
+        .daily-tasks-content {
+            background: linear-gradient(135deg, #2a1a0a 0%, #3d2817 50%, #4a3020 100%);
+            border: 3px solid #ffa500;
+            border-radius: 20px;
+            padding: 0;
+            max-width: 550px;
+            width: 95%;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 165, 0, 0.4),
+                        0 0 100px rgba(200, 100, 0, 0.2),
+                        inset 0 0 30px rgba(255, 200, 100, 0.1);
+            animation: tasksAppear 0.3s ease-out;
+        }
+        
+        @keyframes tasksAppear {
+            from { transform: scale(0.8) rotate(-2deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .daily-tasks-header {
+            background: linear-gradient(135deg, #4a3020, #2a1a0a);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid #ffa500;
+        }
+        
+        .daily-tasks-header h2 {
+            margin: 0;
+            color: #ffa500;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.7);
+            flex: 1;
+        }
+        
+        .daily-tasks-timer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid #ffa500;
+        }
+        
+        .daily-tasks-header .close-btn {
+            background: none;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .daily-tasks-header .close-btn:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .daily-tasks-body {
+            padding: 15px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .daily-task-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #8b6914;
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+        
+        .daily-task-item.completed {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+        
+        .daily-task-item.claimed {
+            border-color: #666;
+            background: rgba(100, 100, 100, 0.2);
+            opacity: 0.6;
+        }
+        
+        .task-icon {
+            font-size: 1.8rem;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .task-info {
+            flex: 1;
+        }
+        
+        .task-name {
+            font-weight: bold;
+            color: #ffcc00;
+            margin-bottom: 4px;
+        }
+        
+        .task-desc {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-bottom: 6px;
+        }
+        
+        .task-progress-bar {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .task-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffa500, #ffcc00);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        
+        .task-progress-text {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-top: 3px;
+        }
+        
+        .task-reward {
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .task-reward-value {
+            font-size: 0.9rem;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        
+        .task-claim-btn {
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            animation: pulse-claim 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-claim {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .task-claim-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
+        
+        .task-claimed-badge {
+            color: #4CAF50;
+            font-size: 1.2rem;
+        }
+        
+        .daily-bonus-section {
+            background: linear-gradient(135deg, #1a0a30, #2a1050);
+            border: 2px solid #9b59b6;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .daily-bonus-title {
+            color: #bb86fc;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .daily-bonus-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .bonus-star {
+            font-size: 1.5rem;
+            opacity: 0.3;
+            transition: all 0.3s;
+        }
+        
+        .bonus-star.earned {
+            opacity: 1;
+            animation: starPop 0.3s ease-out;
+        }
+        
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .daily-bonus-reward {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .daily-tasks-btn {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .daily-tasks-btn:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
+        }
+        
+        .daily-tasks-btn.has-claimable {
+            animation: taskNotify 1s ease-in-out infinite;
+        }
+        
+        @keyframes taskNotify {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); text-shadow: 0 0 15px rgba(76, 175, 80, 0.9); }
+        }
+
         .storm-shop-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -12007,7 +12255,8 @@
                 <div class="stat" id="weather-display">☀️ Sunny</div>
                 <div class="stat" id="daynight-display">☀️ Day</div>
                 <div class="stat">💰 <span id="money">100</span></div>
-                <div class="stat storm-essence-btn" id="storm-essence-stat" style="display: none;" onclick="openStormShop()" title="Click to open Storm Shop">⚡ <span id="storm-essence">0</span></div>
+                <div class="stat storm-essence-btn" id="storm-essence-stat" onclick="openStormShop()" title="Click to open Storm Shop">⚡ <span id="storm-essence">0</span></div>
+                <div class="stat daily-tasks-btn" id="daily-tasks-btn" onclick="openDailyTasks()" title="Daily Tasks">📋</div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
 
             </div>
@@ -12864,6 +13113,9 @@
             // Position player after render
             setTimeout(updatePlayerPosition, 100);
             window.addEventListener('resize', updatePlayerPosition);
+            // Initialize daily tasks
+            getDailyTasksState();
+            updateDailyTasksButton();
         }
 
         function initializeStock() {
@@ -13586,6 +13838,9 @@
                 isFromStormcharged: isStormcharged // Track if planted from stormcharged seed (can't spread)
             };
             
+            // Daily task tracking
+            updateDailyTaskProgress('plant_20');
+            
             if (isStormcharged) {
                 showMessage(`⚡ Planted Stormcharged ${CROPS[actualSeedType].name}! Already has Stormsurge! 🌪️`);
             } else {
@@ -13754,10 +14009,16 @@
             
             for (let i = 0; i < actualYield; i++) {
                 const sizeIndex = getRandomSize();
-                gameState.harvested.push({ type: plot.type, sizeIndex, mutations: plot.mutations || [] });
+                const harvestedItem = { type: plot.type, sizeIndex, mutations: plot.mutations || [] };
+                gameState.harvested.push(harvestedItem);
                 gameState.totalHarvested++;
                 
-
+                // Daily task tracking
+                updateDailyTaskProgress('harvest_10');
+                updateDailyTaskProgress('harvest_50');
+                if (harvestedItem.mutations?.includes('golden')) {
+                    updateDailyTaskProgress('golden_1');
+                }
             }
             
             const sizeText = actualYield > 1 ? `${actualYield}x ` : '';
@@ -14504,6 +14765,7 @@
         // Sell All Crops
         function sellAllCrops() {
             let total = 0;
+            const cropCount = gameState.harvested.length;
             gameState.harvested.forEach(item => {
                 const crop = CROPS[item.type];
                 const size = SIZES[item.sizeIndex];
@@ -14522,6 +14784,11 @@
             if (total > 0) {
                 gameState.money += total;
                 gameState.harvested = [];
+                
+                // Daily task tracking
+                updateDailyTaskProgress('sell_10', cropCount);
+                updateDailyTaskProgress('sell_50', cropCount);
+                
                 showMessage(`Sold crops for $${formatMoney(total)}! 💰`);
                 renderShop();
                 renderInventory();
@@ -14731,6 +14998,8 @@
                             if (canGetMutation && !plot.mutations.includes(currentWeather.mutation)) {
                                 plot.mutations.push(currentWeather.mutation);
                                 showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
+                                // Daily task tracking
+                                updateDailyTaskProgress('mutations_3');
                             }
                         }
                         
@@ -14901,6 +15170,8 @@
             if (gameState.currentWeather === 'supercell') {
                 spawnSupercellCrate();
                 showMessage(`📦 The storm left behind a Supply Crate! 🌪️`);
+                // Daily task tracking
+                updateDailyTaskProgress('survive_supercell');
             }
             
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
@@ -15706,6 +15977,213 @@
             { type: 'seed', seedId: 'galegourd', name: 'Gale Gourd', icon: '🎃', weight: 4 },
             { type: 'seed', seedId: 'nimbusnectar', name: 'Nimbus Nectar', icon: '🍯', weight: 2 },
         ];
+        
+        // ========== DAILY TASKS SYSTEM ==========
+        const DAILY_TASKS = [
+            { id: 'harvest_10', name: 'Busy Harvester', desc: 'Harvest 10 crops', icon: '🌾', target: 10, reward: { type: 'money', amount: 5000 }, rewardText: '$5,000' },
+            { id: 'harvest_50', name: 'Harvest Master', desc: 'Harvest 50 crops', icon: '🌾', target: 50, reward: { type: 'money', amount: 25000 }, rewardText: '$25,000' },
+            { id: 'sell_10', name: 'Merchant', desc: 'Sell 10 crops', icon: '💰', target: 10, reward: { type: 'money', amount: 3000 }, rewardText: '$3,000' },
+            { id: 'sell_50', name: 'Trade Baron', desc: 'Sell 50 crops', icon: '💰', target: 50, reward: { type: 'money', amount: 20000 }, rewardText: '$20,000' },
+            { id: 'plant_20', name: 'Green Thumb', desc: 'Plant 20 seeds', icon: '🌱', target: 20, reward: { type: 'money', amount: 8000 }, rewardText: '$8,000' },
+            { id: 'mutations_3', name: 'Mutant Farmer', desc: 'Get 3 weather mutations', icon: '✨', target: 3, reward: { type: 'essence', amount: 5 }, rewardText: '⚡ 5 Essence' },
+            { id: 'golden_1', name: 'Golden Touch', desc: 'Harvest a golden crop', icon: '🌟', target: 1, reward: { type: 'money', amount: 15000 }, rewardText: '$15,000' },
+            { id: 'survive_supercell', name: 'Storm Chaser', desc: 'Survive a supercell', icon: '🌪️', target: 1, reward: { type: 'essence', amount: 10 }, rewardText: '⚡ 10 Essence' },
+        ];
+        
+        function getDailyTasksState() {
+            if (!gameState.dailyTasks) {
+                gameState.dailyTasks = {
+                    date: new Date().toDateString(),
+                    progress: {},
+                    claimed: []
+                };
+            }
+            // Reset if new day
+            const today = new Date().toDateString();
+            if (gameState.dailyTasks.date !== today) {
+                gameState.dailyTasks = {
+                    date: today,
+                    progress: {},
+                    claimed: []
+                };
+            }
+            return gameState.dailyTasks;
+        }
+        
+        function updateDailyTaskProgress(taskId, amount = 1) {
+            const tasks = getDailyTasksState();
+            if (!tasks.progress[taskId]) tasks.progress[taskId] = 0;
+            tasks.progress[taskId] += amount;
+            updateDailyTasksButton();
+        }
+        
+        function setDailyTaskProgress(taskId, value) {
+            const tasks = getDailyTasksState();
+            tasks.progress[taskId] = value;
+            updateDailyTasksButton();
+        }
+        
+        function getTaskProgress(taskId) {
+            const tasks = getDailyTasksState();
+            return tasks.progress[taskId] || 0;
+        }
+        
+        function isTaskClaimed(taskId) {
+            const tasks = getDailyTasksState();
+            return tasks.claimed.includes(taskId);
+        }
+        
+        function claimDailyTask(taskId) {
+            const tasks = getDailyTasksState();
+            const task = DAILY_TASKS.find(t => t.id === taskId);
+            if (!task) return;
+            
+            const progress = getTaskProgress(taskId);
+            if (progress < task.target || isTaskClaimed(taskId)) return;
+            
+            // Give reward
+            if (task.reward.type === 'money') {
+                gameState.money += task.reward.amount;
+                showMessage(`🎁 Task complete! +$${formatMoney(task.reward.amount)}`);
+            } else if (task.reward.type === 'essence') {
+                if (!gameState.stormEssence) gameState.stormEssence = 0;
+                gameState.stormEssence += task.reward.amount;
+                showMessage(`🎁 Task complete! +${task.reward.amount} ⚡ Storm Essence`);
+            }
+            
+            tasks.claimed.push(taskId);
+            
+            // Check for all tasks bonus
+            checkAllTasksBonus();
+            
+            renderDailyTasks();
+            updateDailyTasksButton();
+            updateStormEssenceDisplay();
+            saveGame();
+        }
+        
+        function checkAllTasksBonus() {
+            const tasks = getDailyTasksState();
+            const completedCount = DAILY_TASKS.filter(t => isTaskClaimed(t.id)).length;
+            
+            if (completedCount === DAILY_TASKS.length && !tasks.bonusClaimed) {
+                tasks.bonusClaimed = true;
+                // Bonus reward: 50,000 money + 25 storm essence
+                gameState.money += 50000;
+                if (!gameState.stormEssence) gameState.stormEssence = 0;
+                gameState.stormEssence += 25;
+                showMessage('🌟🌟 ALL TASKS COMPLETE! Bonus: $50,000 + 25 ⚡ 🌟🌟');
+            }
+        }
+        
+        function getTimeUntilReset() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            return tomorrow - now;
+        }
+        
+        function formatTimeUntilReset() {
+            const ms = getTimeUntilReset();
+            const hours = Math.floor(ms / (1000 * 60 * 60));
+            const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function openDailyTasks() {
+            document.getElementById('daily-tasks-modal').classList.remove('hidden');
+            renderDailyTasks();
+        }
+        
+        function closeDailyTasks() {
+            document.getElementById('daily-tasks-modal').classList.add('hidden');
+        }
+        
+        function renderDailyTasks() {
+            const container = document.getElementById('daily-tasks-body');
+            const tasks = getDailyTasksState();
+            
+            let html = '';
+            
+            DAILY_TASKS.forEach(task => {
+                const progress = getTaskProgress(task.id);
+                const completed = progress >= task.target;
+                const claimed = isTaskClaimed(task.id);
+                const percent = Math.min(100, (progress / task.target) * 100);
+                
+                html += `
+                    <div class="daily-task-item ${completed ? 'completed' : ''} ${claimed ? 'claimed' : ''}">
+                        <div class="task-icon">${task.icon}</div>
+                        <div class="task-info">
+                            <div class="task-name">${task.name}</div>
+                            <div class="task-desc">${task.desc}</div>
+                            <div class="task-progress-bar">
+                                <div class="task-progress-fill" style="width: ${percent}%"></div>
+                            </div>
+                            <div class="task-progress-text">${Math.min(progress, task.target)} / ${task.target}</div>
+                        </div>
+                        <div class="task-reward">
+                            ${claimed 
+                                ? '<span class="task-claimed-badge">✓</span>' 
+                                : completed 
+                                    ? `<button class="task-claim-btn" onclick="claimDailyTask('${task.id}')">Claim!</button>`
+                                    : `<div class="task-reward-value">${task.rewardText}</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // All tasks bonus section
+            const claimedCount = DAILY_TASKS.filter(t => isTaskClaimed(t.id)).length;
+            const bonusClaimed = tasks.bonusClaimed;
+            
+            html += `
+                <div class="daily-bonus-section">
+                    <div class="daily-bonus-title">🌟 Complete All Tasks Bonus 🌟</div>
+                    <div class="daily-bonus-progress">
+                        ${DAILY_TASKS.map((_, i) => `<span class="bonus-star ${i < claimedCount ? 'earned' : ''}">⭐</span>`).join('')}
+                    </div>
+                    <div class="daily-bonus-reward">
+                        ${bonusClaimed ? '✓ Claimed!' : '$50,000 + 25 ⚡'}
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // Update timer
+            document.getElementById('daily-tasks-timer').textContent = `Resets in: ${formatTimeUntilReset()}`;
+        }
+        
+        function updateDailyTasksButton() {
+            const btn = document.getElementById('daily-tasks-btn');
+            if (!btn) return;
+            
+            // Check if any tasks are claimable
+            const hasClaimable = DAILY_TASKS.some(task => {
+                const progress = getTaskProgress(task.id);
+                return progress >= task.target && !isTaskClaimed(task.id);
+            });
+            
+            if (hasClaimable) {
+                btn.classList.add('has-claimable');
+            } else {
+                btn.classList.remove('has-claimable');
+            }
+        }
+        
+        // Update daily tasks timer every second
+        setInterval(() => {
+            const timerEl = document.getElementById('daily-tasks-timer');
+            if (timerEl && !document.getElementById('daily-tasks-modal').classList.contains('hidden')) {
+                timerEl.textContent = `Resets in: ${formatTimeUntilReset()}`;
+            }
+        }, 1000);
+        
+        // ========== END DAILY TASKS ==========
         
         function openStormShop() {
             const modal = document.getElementById('storm-shop-modal');
@@ -17160,6 +17638,20 @@
                 </div>
             </div>
             <button id="spin-storm" class="spin-btn" onclick="spinStormWheel()">⚡ SPIN ⚡</button>
+        </div>
+    </div>
+
+    <!-- Daily Tasks Modal -->
+    <div id="daily-tasks-modal" class="daily-tasks-modal hidden">
+        <div class="daily-tasks-content">
+            <div class="daily-tasks-header">
+                <h2>📋 Daily Tasks</h2>
+                <div class="daily-tasks-timer" id="daily-tasks-timer">Resets in: --:--:--</div>
+                <button class="close-btn" onclick="closeDailyTasks()">✕</button>
+            </div>
+            <div class="daily-tasks-body" id="daily-tasks-body">
+                <!-- Tasks rendered here -->
+            </div>
         </div>
     </div>
 </body>
