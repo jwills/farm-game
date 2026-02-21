@@ -7997,15 +7997,6 @@
         }
         
         /* New real fruits */
-        .crop-icon.kiwi::before { content: '🥝'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.mango::before { content: '🥭'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.banana::before { content: '🍌'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.avocado::before { content: '🥑'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.pear::before { content: '🍐'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.greenapple::before { content: '🍏'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.plum::before { content: '🫐'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.olive::before { content: '🫒'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .crop-icon.pomegranate::before { content: '❤️'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
         /* Quest-exclusive crops - Starter tier */
         .crop-icon.questberry::before { content: '🏆'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); filter: drop-shadow(0 0 5px gold); }
@@ -12720,10 +12711,6 @@
             melon: { name: 'Honeydew', seedEmoji: '🍈', growEmoji: '🍈', seedPrice: 220, basePrice: 280, growTime: 22, rarity: 'epic', yield: 1 },
             pineapple: { name: 'Pineapple', seedEmoji: '🍍', growEmoji: '🍍', seedPrice: 250, basePrice: 320, growTime: 24, rarity: 'epic', yield: 1 },
             rose: { name: 'Rose', seedEmoji: '🌹', growEmoji: '🌹', seedPrice: 190, basePrice: 55, growTime: 20, rarity: 'epic', yield: [2, 4], regrows: true },
-            kiwi: { name: 'Kiwi', seedEmoji: '🥝', growEmoji: '🥝', seedPrice: 175, basePrice: 45, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true },
-            mango: { name: 'Mango', seedEmoji: '🥭', growEmoji: '🥭', seedPrice: 210, basePrice: 260, growTime: 21, rarity: 'epic', yield: 1 },
-            banana: { name: 'Banana', seedEmoji: '🍌', growEmoji: '🍌', seedPrice: 155, basePrice: 38, growTime: 17, rarity: 'epic', yield: [2, 5], regrows: true },
-            avocado: { name: 'Avocado', seedEmoji: '🥑', growEmoji: '🥑', seedPrice: 240, basePrice: 300, growTime: 23, rarity: 'epic', yield: 1 },
             // Legendary ($500-2000) - end game goals
             pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 500, basePrice: 651, growTime: 25, rarity: 'legendary', yield: 1 },
             cherry: { name: 'Cherry Tree', seedEmoji: '🍒', growEmoji: '🍒', seedPrice: 700, basePrice: 180, growTime: 22, rarity: 'legendary', yield: [2, 5], regrows: true },
@@ -12734,11 +12721,6 @@
             peach: { name: 'Peach Tree', seedEmoji: '🍑', growEmoji: '🍑', seedPrice: 800, basePrice: 200, growTime: 26, rarity: 'legendary', yield: [2, 4], regrows: true },
             lemon: { name: 'Lemon Tree', seedEmoji: '🍋', growEmoji: '🍋', seedPrice: 650, basePrice: 160, growTime: 24, rarity: 'legendary', yield: [2, 5], regrows: true },
             orange: { name: 'Orange Tree', seedEmoji: '🍊', growEmoji: '🍊', seedPrice: 750, basePrice: 185, growTime: 25, rarity: 'legendary', yield: [2, 4], regrows: true },
-            pear: { name: 'Pear Tree', seedEmoji: '🍐', growEmoji: '🍐', seedPrice: 600, basePrice: 150, growTime: 23, rarity: 'legendary', yield: [2, 4], regrows: true },
-            greenapple: { name: 'Green Apple', seedEmoji: '🍏', growEmoji: '🍏', seedPrice: 680, basePrice: 170, growTime: 24, rarity: 'legendary', yield: [2, 3], regrows: true },
-            plum: { name: 'Plum Tree', seedEmoji: '🫐', growEmoji: '🫐', seedPrice: 720, basePrice: 175, growTime: 24, rarity: 'legendary', yield: [2, 4], regrows: true },
-            olive: { name: 'Olive Tree', seedEmoji: '🫒', growEmoji: '🫒', seedPrice: 850, basePrice: 210, growTime: 27, rarity: 'legendary', yield: [3, 6], regrows: true },
-            pomegranate: { name: 'Pomegranate', seedEmoji: '🍎', growEmoji: '❤️', seedPrice: 950, basePrice: 240, growTime: 28, rarity: 'legendary', yield: [2, 4], regrows: true },
 
             // Godly ($15000+) - fantasy endgame
             dragonfruit: { name: 'Dragon Fruit', seedEmoji: '🐲', growEmoji: '🐲', seedPrice: 15000, basePrice: 19518, growTime: 40, rarity: 'godly', yield: 1 },
@@ -13513,7 +13495,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily', 'tempestfruit', 'staticsprout', 'zapzucchini', 'thundermelon', 'lightninglily', 'hailberry', 'stormcotton', 'cyclonecorn', 'voltagevine', 'galegourd', 'nimbusnectar', 'supercellflower', 'questberry', 'heroflower', 'achievemelon', 'gloryfruit', 'legendleaf', 'mythicmango', 'kiwi', 'mango', 'banana', 'avocado', 'pear', 'greenapple', 'plum', 'olive', 'pomegranate', 'taskroot', 'dailydaisy', 'goalgrain', 'bravebulb', 'valorvine', 'couragecorn', 'trophytomato', 'victoryviolet', 'winnerswheat', 'royalrose', 'crowncarrot', 'majestymelon', 'epicember', 'sagespinach', 'fabledbean', 'cosmiccherry', 'eternaleggplant', 'infinityivy'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily', 'tempestfruit', 'staticsprout', 'zapzucchini', 'thundermelon', 'lightninglily', 'hailberry', 'stormcotton', 'cyclonecorn', 'voltagevine', 'galegourd', 'nimbusnectar', 'supercellflower', 'questberry', 'heroflower', 'achievemelon', 'gloryfruit', 'legendleaf', 'mythicmango', 'taskroot', 'dailydaisy', 'goalgrain', 'bravebulb', 'valorvine', 'couragecorn', 'trophytomato', 'victoryviolet', 'winnerswheat', 'royalrose', 'crowncarrot', 'majestymelon', 'epicember', 'sagespinach', 'fabledbean', 'cosmiccherry', 'eternaleggplant', 'infinityivy'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
