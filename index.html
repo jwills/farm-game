@@ -12816,6 +12816,50 @@
             if (!gameState.equippedPets) return 0;
             return gameState.equippedPets.filter(p => PETS[p]?.effect === effect).length;
         }
+        
+        // Track which rarities the player has unlocked (owns or has owned seeds of that rarity)
+        function getUnlockedRarities() {
+            if (!gameState.unlockedRarities) gameState.unlockedRarities = ['common', 'uncommon', 'rare'];
+            return gameState.unlockedRarities;
+        }
+        
+        function unlockRarity(rarity) {
+            if (!gameState.unlockedRarities) gameState.unlockedRarities = ['common', 'uncommon', 'rare'];
+            if (!gameState.unlockedRarities.includes(rarity)) {
+                gameState.unlockedRarities.push(rarity);
+                showMessage(`🔓 Unlocked ${rarity.toUpperCase()} rarity for stormcharged seeds!`);
+            }
+        }
+        
+        function hasUnlockedRarity(rarity) {
+            return getUnlockedRarities().includes(rarity);
+        }
+        
+        // Give seeds and unlock their rarity
+        function giveSeed(seedId, count = 1) {
+            if (!gameState.seeds) gameState.seeds = {};
+            if (!gameState.seeds[seedId]) gameState.seeds[seedId] = 0;
+            gameState.seeds[seedId] += count;
+            
+            // Unlock the rarity
+            const crop = CROPS[seedId];
+            if (crop && crop.rarity) {
+                unlockRarity(crop.rarity);
+            }
+        }
+        
+        // Give stormcharged seeds and unlock their rarity
+        function giveStormchargedSeed(seedId, count = 1) {
+            if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+            if (!gameState.stormchargedSeeds[seedId]) gameState.stormchargedSeeds[seedId] = 0;
+            gameState.stormchargedSeeds[seedId] += count;
+            
+            // Unlock the rarity
+            const crop = CROPS[seedId];
+            if (crop && crop.rarity) {
+                unlockRarity(crop.rarity);
+            }
+        }
 
         function getPetBonus(type, base) {
             if (!gameState.equippedPets) return base;
@@ -13771,7 +13815,7 @@
                 }
                 if (gameState.money >= crop.seedPrice) {
                     gameState.money -= crop.seedPrice;
-                    gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                    giveSeed(type);
                     gameState.demonicInStock--; // Decrease stock
                     showMessage(`🔥 Bought ${crop.name} seeds! (${gameState.demonicInStock} left) 👿`);
                     selectSeed(type); // Auto-equip purchased seed
@@ -13789,7 +13833,7 @@
                 }
                 if (gameState.money >= crop.seedPrice) {
                     gameState.money -= crop.seedPrice;
-                    gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                    giveSeed(type);
                     gameState.celestialInStock = false; // Only one per heaven
                     showMessage(`✨ Bought ${crop.name} seeds! 👼`);
                     selectSeed(type); // Auto-equip purchased seed
@@ -13802,7 +13846,7 @@
             const stock = gameState.shopStock[type] || 0;
             if (gameState.money >= crop.seedPrice && stock > 0) {
                 gameState.money -= crop.seedPrice;
-                gameState.seeds[type] = (gameState.seeds[type] || 0) + 1;
+                giveSeed(type);
                 gameState.shopStock[type] = stock - 1;
                 showMessage(`Bought ${crop.name} seeds! 🌱`);
                 selectSeed(type); // Auto-equip purchased seed
@@ -15714,7 +15758,7 @@
                 gameState.money += reward.amount;
                 return `+$${reward.amount.toLocaleString()}`;
             } else if (reward.type === 'seed') {
-                gameState.seeds[reward.seedId] = (gameState.seeds[reward.seedId] || 0) + reward.count;
+                giveSeed(reward.seedId, reward.count);
                 const crop = CROPS[reward.seedId];
                 return `${reward.count}x ${crop.name} Seeds`;
             } else if (reward.type === 'pet') {
@@ -15831,8 +15875,7 @@
                     gameState.money += reward.amount;
                     return `JACKPOT! +$${formatMoney(reward.amount)}`;
                 case 'seed':
-                    if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
-                    gameState.seeds[reward.seedId] += reward.count;
+                    giveSeed(reward.seedId, reward.count);
                     return `+${reward.count} ${reward.name}`;
                 case 'pet':
                     if (!gameState.eggInventory) gameState.eggInventory = {};
@@ -15941,23 +15984,29 @@
             
             if (roll < 0.0075) {
                 // 0.75% chance: ELECTROBLOSSOM! (ultra-rare)
-                if (!gameState.seeds.supercellflower) gameState.seeds.supercellflower = 0;
-                gameState.seeds.supercellflower += 1;
+                giveSeed('supercellflower');
                 rewards.push({ icon: '🌺', text: 'ELECTROBLOSSOM SEED!', rarity: 'legendary' });
             } else if (roll < 0.4575) {
                 // 45% chance: Stormcharged seeds (pre-mutated with stormsurge)
-                const seedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit'];
-                const seedType = seedTypes[Math.floor(Math.random() * seedTypes.length)];
-                const seedCount = 1 + Math.floor(Math.random() * 3);
-                if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
-                if (!gameState.stormchargedSeeds[seedType]) gameState.stormchargedSeeds[seedType] = 0;
-                gameState.stormchargedSeeds[seedType] += seedCount;
-                rewards.push({ icon: '⚡🌱', text: `${seedCount}x ${CROPS[seedType].name} (Stormcharged)`, rarity: 'common' });
+                // Only give stormcharged for unlocked rarities
+                const unlockedRars = getUnlockedRarities();
+                const baseSeedTypes = ['corn', 'sunflower', 'pumpkin', 'watermelon', 'grapes', 'starfruit'];
+                const seedTypes = baseSeedTypes.filter(s => unlockedRars.includes(CROPS[s].rarity));
+                if (seedTypes.length > 0) {
+                    const seedType = seedTypes[Math.floor(Math.random() * seedTypes.length)];
+                    const seedCount = 1 + Math.floor(Math.random() * 3);
+                    giveStormchargedSeed(seedType, seedCount);
+                    rewards.push({ icon: '⚡🌱', text: `${seedCount}x ${CROPS[seedType].name} (Stormcharged)`, rarity: 'common' });
+                } else {
+                    // Fallback: give regular seed to unlock rarity first
+                    const seedType = baseSeedTypes[Math.floor(Math.random() * baseSeedTypes.length)];
+                    giveSeed(seedType);
+                    rewards.push({ icon: '🌱', text: `1x ${CROPS[seedType].name} Seed`, rarity: 'common' });
+                }
             } else if (roll < 0.7575) {
                 // 30% chance: Tempest Fruit seeds (exclusive storm crop)
                 const seedCount = 1 + Math.floor(Math.random() * 2);
-                if (!gameState.seeds.tempestfruit) gameState.seeds.tempestfruit = 0;
-                gameState.seeds.tempestfruit += seedCount;
+                giveSeed('tempestfruit', seedCount);
                 rewards.push({ icon: '🌪️', text: `${seedCount}x Tempest Fruit Seeds`, rarity: 'rare' });
             } else if (roll < 0.9175) {
                 // 16% chance: Bonus storm essence burst
@@ -16289,22 +16338,20 @@
             
             switch (item.action) {
                 case 'stormcharge_random':
-                    // Normal crops (exclude special rarities including storm)
-                    const excludedRarities = ['demonic', 'celestial', 'temporal', 'nocturnal', 'storm'];
-                    const normalSeedTypes = Object.keys(CROPS).filter(cropId => {
+                    // Only give stormcharged seeds for rarities the player has unlocked
+                    const unlockedRars = getUnlockedRarities();
+                    const excludedRarities = ['storm']; // Always exclude storm rarity
+                    
+                    // Filter seeds by unlocked rarities
+                    const availableSeeds = Object.keys(CROPS).filter(cropId => {
                         const crop = CROPS[cropId];
-                        return !crop.crateOnly && !excludedRarities.includes(crop.rarity);
+                        return !crop.crateOnly && !excludedRarities.includes(crop.rarity) && unlockedRars.includes(crop.rarity);
                     });
-                    // Demonic crops for rare bonus
-                    const demonicSeeds = Object.keys(CROPS).filter(cropId => {
-                        const crop = CROPS[cropId];
-                        return crop.rarity === 'demonic' && !crop.crateOnly;
-                    });
-                    // Celestial crops for rare bonus
-                    const celestialSeeds = Object.keys(CROPS).filter(cropId => {
-                        const crop = CROPS[cropId];
-                        return crop.rarity === 'celestial' && !crop.crateOnly;
-                    });
+                    
+                    // Separate by rarity for weighted chances
+                    const normalSeedTypes = availableSeeds.filter(id => !['demonic', 'celestial', 'temporal', 'nocturnal'].includes(CROPS[id].rarity));
+                    const demonicSeeds = availableSeeds.filter(id => CROPS[id].rarity === 'demonic');
+                    const celestialSeeds = availableSeeds.filter(id => CROPS[id].rarity === 'celestial');
                     
                     if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
                     let gotCelestial = false;
@@ -16315,16 +16362,19 @@
                         const roll = Math.random();
                         
                         if (roll < 0.10 && celestialSeeds.length > 0) {
-                            // 10% chance for celestial seed
+                            // 10% chance for celestial seed (if unlocked)
                             type = celestialSeeds[Math.floor(Math.random() * celestialSeeds.length)];
                             gotCelestial = true;
                         } else if (roll < 0.30 && demonicSeeds.length > 0) {
-                            // 20% chance for demonic seed (after celestial check)
+                            // 20% chance for demonic seed (if unlocked)
                             type = demonicSeeds[Math.floor(Math.random() * demonicSeeds.length)];
                             gotDemonic = true;
-                        } else {
-                            // Normal seed
+                        } else if (normalSeedTypes.length > 0) {
+                            // Normal seed from unlocked rarities
                             type = normalSeedTypes[Math.floor(Math.random() * normalSeedTypes.length)];
+                        } else {
+                            // Fallback to any available seed
+                            type = availableSeeds[Math.floor(Math.random() * availableSeeds.length)];
                         }
                         
                         if (!gameState.stormchargedSeeds[type]) gameState.stormchargedSeeds[type] = 0;
@@ -16407,11 +16457,14 @@
                     
                     if (currentCount >= MAX_STORM_PET_COPIES) {
                         // Already have 3 of this pet, give stormcharged seed instead
-                        const seedTypes = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !['demonic','celestial','temporal','nocturnal','storm'].includes(CROPS[c].rarity));
+                        // Only give seeds of unlocked rarities
+                        const unlockedRars = getUnlockedRarities();
+                        const seedTypes = Object.keys(CROPS).filter(c => {
+                            const crop = CROPS[c];
+                            return !crop.crateOnly && crop.rarity !== 'storm' && unlockedRars.includes(crop.rarity);
+                        });
                         const randomSeed = seedTypes[Math.floor(Math.random() * seedTypes.length)];
-                        if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
-                        if (!gameState.stormchargedSeeds[randomSeed]) gameState.stormchargedSeeds[randomSeed] = 0;
-                        gameState.stormchargedSeeds[randomSeed]++;
+                        giveStormchargedSeed(randomSeed);
                         const crop = CROPS[randomSeed];
                         
                         egg.textContent = '\u26a1';
@@ -16511,20 +16564,19 @@
             // Show reward after spin completes
             setTimeout(() => {
                 const cropName = CROPS[reward.seedId]?.name || reward.name;
+                const cropRarity = CROPS[reward.seedId]?.rarity || 'common';
                 
-                // 25% chance to be stormcharged (stormsurge)
-                const isStormcharged = Math.random() < 0.25;
+                // 25% chance to be stormcharged (stormsurge) - but only if rarity is unlocked
+                const canBeStormcharged = hasUnlockedRarity(cropRarity);
+                const isStormcharged = canBeStormcharged && Math.random() < 0.25;
                 
                 if (isStormcharged) {
                     // Give stormcharged seed
-                    if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
-                    if (!gameState.stormchargedSeeds[reward.seedId]) gameState.stormchargedSeeds[reward.seedId] = 0;
-                    gameState.stormchargedSeeds[reward.seedId]++;
+                    giveStormchargedSeed(reward.seedId);
                     showStormRewardPopup(reward, cropName, true);
                 } else {
-                    // Give normal seed
-                    if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
-                    gameState.seeds[reward.seedId]++;
+                    // Give normal seed (and unlock the rarity)
+                    giveSeed(reward.seedId);
                     showStormRewardPopup(reward, cropName, false);
                 }
                 
