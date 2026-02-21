@@ -15972,32 +15972,56 @@
             
             // Show reward after spin completes
             setTimeout(() => {
-                // Give seed
-                if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
-                gameState.seeds[reward.seedId]++;
-                
                 const cropName = CROPS[reward.seedId]?.name || reward.name;
-                showStormRewardPopup(reward, cropName);
+                
+                // 25% chance to be stormcharged (stormsurge)
+                const isStormcharged = Math.random() < 0.25;
+                
+                if (isStormcharged) {
+                    // Give stormcharged seed
+                    if (!gameState.stormchargedSeeds) gameState.stormchargedSeeds = {};
+                    if (!gameState.stormchargedSeeds[reward.seedId]) gameState.stormchargedSeeds[reward.seedId] = 0;
+                    gameState.stormchargedSeeds[reward.seedId]++;
+                    showStormRewardPopup(reward, cropName, true);
+                } else {
+                    // Give normal seed
+                    if (!gameState.seeds[reward.seedId]) gameState.seeds[reward.seedId] = 0;
+                    gameState.seeds[reward.seedId]++;
+                    showStormRewardPopup(reward, cropName, false);
+                }
+                
                 renderInventory();
             }, 4000);
         }
         
-        function showStormRewardPopup(reward, cropName) {
+        function showStormRewardPopup(reward, cropName, isStormcharged = false) {
             const existing = document.querySelector('.reward-popup');
             if (existing) existing.remove();
             
             const popup = document.createElement('div');
             popup.className = 'reward-popup storm-reward';
-            popup.innerHTML = `
-                <h2>⚡ Storm Seed! ⚡</h2>
-                <div class="reward-emoji">${reward.icon}</div>
-                <div class="reward-text">+1 ${cropName} Seed</div>
-                <button onclick="this.parentElement.remove(); closeStormWheel();">Collect!</button>
-            `;
-            popup.style.cssText = 'background: linear-gradient(135deg, #001a33, #003366); border: 3px solid #00d4ff; box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);';
-            document.body.appendChild(popup);
             
-            showMessage(`⚡ Got ${cropName} seed!`);
+            if (isStormcharged) {
+                popup.innerHTML = `
+                    <h2>⚡🌩️ STORMCHARGED! 🌩️⚡</h2>
+                    <div class="reward-emoji">${reward.icon}</div>
+                    <div class="reward-text">+1 ${cropName} Seed<br><span style="color: #ffff00; font-size: 0.9em;">⚡ Stormsurge on plant!</span></div>
+                    <button onclick="this.parentElement.remove(); closeStormWheel();">Collect!</button>
+                `;
+                popup.style.cssText = 'background: linear-gradient(135deg, #1a0033, #003366); border: 3px solid #ffff00; box-shadow: 0 0 40px rgba(255, 255, 0, 0.6), 0 0 60px rgba(0, 212, 255, 0.4);';
+                showMessage(`⚡🌩️ Got STORMCHARGED ${cropName} seed!`);
+            } else {
+                popup.innerHTML = `
+                    <h2>⚡ Storm Seed! ⚡</h2>
+                    <div class="reward-emoji">${reward.icon}</div>
+                    <div class="reward-text">+1 ${cropName} Seed</div>
+                    <button onclick="this.parentElement.remove(); closeStormWheel();">Collect!</button>
+                `;
+                popup.style.cssText = 'background: linear-gradient(135deg, #001a33, #003366); border: 3px solid #00d4ff; box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);';
+                showMessage(`⚡ Got ${cropName} seed!`);
+            }
+            
+            document.body.appendChild(popup);
         }
         
         function showRewardPopup(reward, rewardText, wheelType) {
