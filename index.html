@@ -8048,6 +8048,17 @@
             25% { transform: translate(-50%, -50%) rotate(10deg) scale(1.1); }
             75% { transform: translate(-50%, -50%) rotate(-10deg) scale(1.1); }
         }
+        
+        /* New real fruits */
+        .crop-icon.kiwi::before { content: '🥝'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.mango::before { content: '🥭'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.banana::before { content: '🍌'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.avocado::before { content: '🥑'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.pear::before { content: '🍐'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.greenapple::before { content: '🍏'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.plum::before { content: '🫐'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.olive::before { content: '🫒'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .crop-icon.pomegranate::before { content: '❤️'; position: absolute; font-size: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
         /* Heaven Tear - crystalline teardrop */
         .crop-icon.heaventear::before {
@@ -12594,7 +12605,8 @@
             demonic: { name: 'Demonic', color: '#8B0000', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #FF4500 100%)' },
             celestial: { name: 'Celestial', color: '#FFD700', bg: 'linear-gradient(135deg, #fffef0 0%, #fff8dc 20%, #fffacd 40%, #ffd700 70%, #ffffff 100%)' },
             temporal: { name: 'Temporal', color: '#00FFFF', bg: 'linear-gradient(135deg, #0a0020 0%, #1a0040 30%, #9400D3 60%, #00FFFF 100%)' },
-            storm: { name: 'Storm', color: '#00d4ff', bg: 'linear-gradient(135deg, #0a1628 0%, #16213e 30%, #1a4970 60%, #00d4ff 100%)' }
+            storm: { name: 'Storm', color: '#00d4ff', bg: 'linear-gradient(135deg, #0a1628 0%, #16213e 30%, #1a4970 60%, #00d4ff 100%)' },
+            quest: { name: 'Quest', color: '#ffd700', bg: 'linear-gradient(135deg, #2a1810 0%, #3d2817 50%, #ffd700 100%)' }
         };
 
         const MAX_INVENTORY = 40;
@@ -12630,6 +12642,10 @@
             melon: { name: 'Honeydew', seedEmoji: '🍈', growEmoji: '🍈', seedPrice: 220, basePrice: 280, growTime: 22, rarity: 'epic', yield: 1 },
             pineapple: { name: 'Pineapple', seedEmoji: '🍍', growEmoji: '🍍', seedPrice: 250, basePrice: 320, growTime: 24, rarity: 'epic', yield: 1 },
             rose: { name: 'Rose', seedEmoji: '🌹', growEmoji: '🌹', seedPrice: 190, basePrice: 55, growTime: 20, rarity: 'epic', yield: [2, 4], regrows: true },
+            kiwi: { name: 'Kiwi', seedEmoji: '🥝', growEmoji: '🥝', seedPrice: 175, basePrice: 45, growTime: 18, rarity: 'epic', yield: [2, 4], regrows: true },
+            mango: { name: 'Mango', seedEmoji: '🥭', growEmoji: '🥭', seedPrice: 210, basePrice: 260, growTime: 21, rarity: 'epic', yield: 1 },
+            banana: { name: 'Banana', seedEmoji: '🍌', growEmoji: '🍌', seedPrice: 155, basePrice: 38, growTime: 17, rarity: 'epic', yield: [2, 5], regrows: true },
+            avocado: { name: 'Avocado', seedEmoji: '🥑', growEmoji: '🥑', seedPrice: 240, basePrice: 300, growTime: 23, rarity: 'epic', yield: 1 },
             // Legendary ($500-2000) - end game goals
             pumpkin: { name: 'Pumpkin', seedEmoji: '🎃', growEmoji: '🎃', seedPrice: 500, basePrice: 651, growTime: 25, rarity: 'legendary', yield: 1 },
             cherry: { name: 'Cherry Tree', seedEmoji: '🍒', growEmoji: '🍒', seedPrice: 700, basePrice: 180, growTime: 22, rarity: 'legendary', yield: [2, 5], regrows: true },
@@ -12640,6 +12656,11 @@
             peach: { name: 'Peach Tree', seedEmoji: '🍑', growEmoji: '🍑', seedPrice: 800, basePrice: 200, growTime: 26, rarity: 'legendary', yield: [2, 4], regrows: true },
             lemon: { name: 'Lemon Tree', seedEmoji: '🍋', growEmoji: '🍋', seedPrice: 650, basePrice: 160, growTime: 24, rarity: 'legendary', yield: [2, 5], regrows: true },
             orange: { name: 'Orange Tree', seedEmoji: '🍊', growEmoji: '🍊', seedPrice: 750, basePrice: 185, growTime: 25, rarity: 'legendary', yield: [2, 4], regrows: true },
+            pear: { name: 'Pear Tree', seedEmoji: '🍐', growEmoji: '🍐', seedPrice: 600, basePrice: 150, growTime: 23, rarity: 'legendary', yield: [2, 4], regrows: true },
+            greenapple: { name: 'Green Apple', seedEmoji: '🍏', growEmoji: '🍏', seedPrice: 680, basePrice: 170, growTime: 24, rarity: 'legendary', yield: [2, 3], regrows: true },
+            plum: { name: 'Plum Tree', seedEmoji: '🫐', growEmoji: '🫐', seedPrice: 720, basePrice: 175, growTime: 24, rarity: 'legendary', yield: [2, 4], regrows: true },
+            olive: { name: 'Olive Tree', seedEmoji: '🫒', growEmoji: '🫒', seedPrice: 850, basePrice: 210, growTime: 27, rarity: 'legendary', yield: [3, 6], regrows: true },
+            pomegranate: { name: 'Pomegranate', seedEmoji: '🍎', growEmoji: '❤️', seedPrice: 950, basePrice: 240, growTime: 28, rarity: 'legendary', yield: [2, 4], regrows: true },
 
             // Godly ($15000+) - fantasy endgame
             dragonfruit: { name: 'Dragon Fruit', seedEmoji: '🐲', growEmoji: '🐲', seedPrice: 15000, basePrice: 19518, growTime: 40, rarity: 'godly', yield: 1 },
@@ -13032,7 +13053,8 @@
             celestial: { min: 0, max: 0, restockChance: 0, heavenOnly: true },
             temporal: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
             nocturnal: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
-            storm: { min: 0, max: 0, restockChance: 0, wheelOnly: true }
+            storm: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
+            quest: { min: 0, max: 0, restockChance: 0, questOnly: true }
         };
 
         // Initialize
@@ -13388,7 +13410,7 @@
 
         // Generate crop icon HTML
         function getCropIcon(cropId) {
-            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily', 'tempestfruit', 'staticsprout', 'zapzucchini', 'thundermelon', 'lightninglily', 'hailberry', 'stormcotton', 'cyclonecorn', 'voltagevine', 'galegourd', 'nimbusnectar', 'supercellflower', 'questberry', 'heroflower', 'achievemelon', 'gloryfruit', 'legendleaf', 'mythicmango'];
+            const iconCrops = ['carrot', 'potato', 'onion', 'radish', 'turnip', 'wheat', 'tomato', 'corn', 'strawberry', 'watermelon', 'pumpkin', 'lettuce', 'eggplant', 'pepper', 'sunflower', 'grapes', 'broccoli', 'cucumber', 'beans', 'cabbage', 'cauliflower', 'spinach', 'bellpepper', 'blueberry', 'melon', 'pineapple', 'cherry', 'rose', 'truffle', 'goldenapple', 'coconut', 'ancientwheat', 'candytree', 'cosmicgrape', 'crystalflower', 'dragonfruit', 'hellfruit', 'fireblossom', 'hadescrown', 'doomshroom', 'heaventear', 'angelwing', 'holygrail', 'divinehalo', 'edenrose', 'zeusthunder', 'lemon', 'moonflower', 'orange', 'peach', 'rainbowmelon', 'starfruit', 'voidberry', 'primordialfern', 'dinosauregg', 'ambertree', 'cyberlotus', 'plasmafruit', 'nebulabloom', 'boneflower', 'techflower', 'voidrose', 'shadowmelon', 'moontree', 'voidlily', 'tempestfruit', 'staticsprout', 'zapzucchini', 'thundermelon', 'lightninglily', 'hailberry', 'stormcotton', 'cyclonecorn', 'voltagevine', 'galegourd', 'nimbusnectar', 'supercellflower', 'questberry', 'heroflower', 'achievemelon', 'gloryfruit', 'legendleaf', 'mythicmango', 'kiwi', 'mango', 'banana', 'avocado', 'pear', 'greenapple', 'plum', 'olive', 'pomegranate'];
             const iconClass = iconCrops.includes(cropId) ? cropId : 'default';
             return `<div class="crop-icon ${iconClass}"></div>`;
         }
@@ -13398,9 +13420,9 @@
             const container = document.getElementById('shop-items');
             container.innerHTML = '';
             
-            // Sort by price (cheapest first), filter out wheel-only and crate-only crops
+            // Sort by price (cheapest first), filter out wheel-only, crate-only, and quest-only crops
             const sortedCrops = Object.entries(CROPS)
-                .filter(([id, crop]) => !crop.wheelOnly && !crop.crateOnly)
+                .filter(([id, crop]) => !crop.wheelOnly && !crop.crateOnly && !crop.questOnly)
                 .sort((a, b) => a[1].seedPrice - b[1].seedPrice);
             
             for (const [id, crop] of sortedCrops) {
@@ -16190,13 +16212,56 @@
         
         // ========== DAILY TASKS SYSTEM ==========
         // Quest seed pack definitions
+        // Quest seed packs - real fruits as main rewards, quest crops as rare bonus
         const QUEST_SEED_PACKS = {
-            starter: { name: 'Starter Quest Pack', seeds: ['questberry'], counts: [2, 3], icon: '🎯🎁' },
-            hero: { name: 'Hero Seed Pack', seeds: ['questberry', 'heroflower'], counts: [1, 2], icon: '🦸🎁' },
-            champion: { name: 'Champion Seed Pack', seeds: ['heroflower', 'achievemelon'], counts: [1, 2], icon: '🏅🎁' },
-            glory: { name: 'Glory Seed Pack', seeds: ['achievemelon', 'gloryfruit'], counts: [1, 1], icon: '👑🎁' },
-            legend: { name: 'Legend Seed Pack', seeds: ['gloryfruit', 'legendleaf'], counts: [1, 1], icon: '📜🎁' },
-            mythic: { name: 'Mythic Seed Pack', seeds: ['legendleaf', 'mythicmango'], counts: [1, 1], icon: '✨🎁' }
+            starter: { 
+                name: 'Starter Seed Pack', 
+                mainSeeds: ['tomato', 'lettuce', 'pepper', 'cucumber'], 
+                mainCount: [2, 4],
+                bonusSeed: 'questberry',
+                bonusChance: 0.25,
+                icon: '🌱🎁' 
+            },
+            hero: { 
+                name: 'Hero Seed Pack', 
+                mainSeeds: ['corn', 'strawberry', 'sunflower', 'kiwi', 'banana'], 
+                mainCount: [2, 3],
+                bonusSeed: 'heroflower',
+                bonusChance: 0.20,
+                icon: '🦸🎁' 
+            },
+            champion: { 
+                name: 'Champion Seed Pack', 
+                mainSeeds: ['watermelon', 'grapes', 'pineapple', 'mango', 'avocado'], 
+                mainCount: [2, 3],
+                bonusSeed: 'achievemelon',
+                bonusChance: 0.15,
+                icon: '🏅🎁' 
+            },
+            glory: { 
+                name: 'Glory Seed Pack', 
+                mainSeeds: ['cherry', 'peach', 'lemon', 'orange', 'pear', 'plum'], 
+                mainCount: [2, 3],
+                bonusSeed: 'gloryfruit',
+                bonusChance: 0.12,
+                icon: '👑🎁' 
+            },
+            legend: { 
+                name: 'Legend Seed Pack', 
+                mainSeeds: ['coconut', 'truffle', 'goldenapple', 'pomegranate', 'olive'], 
+                mainCount: [1, 2],
+                bonusSeed: 'legendleaf',
+                bonusChance: 0.10,
+                icon: '📜🎁' 
+            },
+            mythic: { 
+                name: 'Mythic Seed Pack', 
+                mainSeeds: ['dragonfruit', 'starfruit', 'crystalflower', 'rainbowmelon'], 
+                mainCount: [1, 2],
+                bonusSeed: 'mythicmango',
+                bonusChance: 0.08,
+                icon: '✨🎁' 
+            }
         };
         
         const DAILY_TASKS = [
@@ -16298,13 +16363,21 @@
             
             // Determine seeds to give
             const seedsGiven = [];
-            for (let i = 0; i < pack.seeds.length; i++) {
-                const seedId = pack.seeds[i];
-                const count = pack.counts[i];
-                for (let j = 0; j < count; j++) {
-                    giveSeed(seedId);
-                    seedsGiven.push(seedId);
-                }
+            let gotBonus = false;
+            
+            // Give main seeds (random from pool)
+            const mainCount = pack.mainCount[0] + Math.floor(Math.random() * (pack.mainCount[1] - pack.mainCount[0] + 1));
+            for (let i = 0; i < mainCount; i++) {
+                const seedId = pack.mainSeeds[Math.floor(Math.random() * pack.mainSeeds.length)];
+                giveSeed(seedId);
+                seedsGiven.push(seedId);
+            }
+            
+            // Check for bonus quest crop
+            if (Math.random() < pack.bonusChance) {
+                giveSeed(pack.bonusSeed);
+                seedsGiven.push(pack.bonusSeed);
+                gotBonus = true;
             }
             
             // Count seeds for display
@@ -16314,13 +16387,18 @@
             let seedsHtml = '';
             for (const [seedId, count] of Object.entries(seedCounts)) {
                 const crop = CROPS[seedId];
-                seedsHtml += `<div style="font-size:1.3em;margin:8px 0;color:#ffd700;">${crop.seedEmoji} ${count}x ${crop.name}</div>`;
+                const isQuest = crop.rarity === 'quest';
+                const style = isQuest ? 'color:#ff69b4;text-shadow:0 0 10px #ff69b4;' : 'color:#ffd700;';
+                const label = isQuest ? ' 🎯 RARE!' : '';
+                seedsHtml += `<div style="font-size:1.3em;margin:8px 0;${style}">${crop.seedEmoji} ${count}x ${crop.name}${label}</div>`;
             }
+            
+            const bonusText = gotBonus ? '<div style="color:#ff69b4;font-size:1.1em;margin-bottom:15px;animation:pulse 0.5s ease-in-out infinite;">🌟 BONUS: Quest-Exclusive Seed! 🌟</div>' : '';
             
             content.innerHTML = `
                 <div style="font-size:2em;margin-bottom:15px;">${pack.icon}</div>
                 <h2 style="color:#ffd700;margin:0 0 10px 0;text-shadow:0 0 10px rgba(255,215,0,0.5);">${pack.name}</h2>
-                <div style="font-size:1em;color:#aaa;margin-bottom:20px;">Quest-Exclusive Seeds!</div>
+                ${bonusText}
                 <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:15px;margin-bottom:20px;">
                     ${seedsHtml}
                 </div>
@@ -16330,7 +16408,8 @@
             modal.appendChild(content);
             document.body.appendChild(modal);
             
-            showMessage(`🎁 Opened ${pack.name}!`);
+            const msg = gotBonus ? `🎁🌟 Opened ${pack.name} - GOT RARE BONUS!` : `🎁 Opened ${pack.name}!`;
+            showMessage(msg);
             renderInventory();
         }
         
