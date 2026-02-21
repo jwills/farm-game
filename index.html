@@ -1607,6 +1607,14 @@
             transform: scale(1.05);
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
+        
+        .plot.adjacent {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+        
+        .plot.adjacent:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 5px 20px rgba(0,0,0,0.3);
+        }
 
         .plot.empty::after {
             content: '+';
@@ -13015,6 +13023,50 @@
                 updatePlayerPosition();
             }, 400);
         }
+        
+        function isAdjacentToPlayer(plotIndex) {
+            const { cols } = getFarmDimensions();
+            const plotX = plotIndex % cols;
+            const plotY = Math.floor(plotIndex / cols);
+            const dx = Math.abs(plotX - playerState.x);
+            const dy = Math.abs(plotY - playerState.y);
+            // Adjacent means within 1 square (including diagonals)
+            return dx <= 1 && dy <= 1 && !(dx === 0 && dy === 0);
+        }
+        
+        function movePlayerToPlot(plotIndex) {
+            const { cols, rows } = getFarmDimensions();
+            const newX = plotIndex % cols;
+            const newY = Math.floor(plotIndex / cols);
+            
+            if (newX >= 0 && newX < cols && newY >= 0 && newY < rows) {
+                // Update facing direction
+                if (newX < playerState.x) playerState.facing = 'left';
+                else if (newX > playerState.x) playerState.facing = 'right';
+                
+                playerState.x = newX;
+                playerState.y = newY;
+                updatePlayerPosition();
+                
+                // Auto-interact with the plot after moving
+                setTimeout(() => {
+                    const plot = gameState.plots[plotIndex];
+                    if (plot && !plot.isEgg) {
+                        const crop = CROPS[plot.type];
+                        const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
+                        if (plot.growth >= targetTime) {
+                            harvestCrop(plotIndex);
+                        }
+                    } else if (plot && plot.isEgg) {
+                        if (plot.growth >= plot.hatchTime) {
+                            hatchEgg(plotIndex);
+                        }
+                    } else if (gameState.supercellCrate && gameState.supercellCrate.plotIndex === plotIndex) {
+                        claimSupercellCrate();
+                    }
+                }, 100);
+            }
+        }
 
         function handleKeyDown(e) {
             // Don't move if typing in an input
@@ -13361,7 +13413,7 @@
             
             gameState.plots.forEach((plot, index) => {
                 const div = document.createElement('div');
-                div.className = 'plot';
+                div.className = 'plot' + (isAdjacentToPlayer(index) ? ' adjacent' : '');
                 div.dataset.index = index;
                 
                 if (plot && plot.isEgg) {
@@ -13393,6 +13445,9 @@
                     div.onclick = () => {
                         if (gameState.shovelSelected) {
                             removePlant(index);
+                        } else if (isAdjacentToPlayer(index)) {
+                            // Move to egg plot and auto-hatch if ready
+                            movePlayerToPlot(index);
                         }
                     };
                 } else if (plot) {
@@ -13470,8 +13525,10 @@
                             placeSprinkler(index);
                         } else if (gameState.selectedGear) {
                             useWateringCan(index);
+                        } else if (isAdjacentToPlayer(index)) {
+                            // Move to plot and auto-harvest if ready
+                            movePlayerToPlot(index);
                         }
-                        // Harvesting only via player walking to plot and pressing space/E
                     };
                 } else {
                     div.classList.add('empty');
@@ -13495,8 +13552,11 @@
                                 placeSprinkler(index);
                             } else if (gameState.selectedGear) {
                                 showMessage('No plant here to water!');
-                            } else {
+                            } else if (gameState.selectedSeed) {
                                 plantSeed(index);
+                            } else if (isAdjacentToPlayer(index)) {
+                                // Move to empty adjacent plot
+                                movePlayerToPlot(index);
                             }
                         };
                     }
