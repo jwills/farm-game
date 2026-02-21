@@ -13441,12 +13441,8 @@
             // Update storm essence display
             const stormEssenceStat = document.getElementById('storm-essence-stat');
             const stormEssence = gameState.stormEssence || 0;
-            if (stormEssence > 0) {
-                stormEssenceStat.style.display = 'block';
-                document.getElementById('storm-essence').textContent = stormEssence;
-            } else {
-                stormEssenceStat.style.display = 'none';
-            }
+            stormEssenceStat.style.display = 'block';
+            document.getElementById('storm-essence').textContent = stormEssence;
         }
 
         // Buy Seed
