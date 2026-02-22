@@ -14524,7 +14524,7 @@
             };
             
             // Daily task tracking
-            updateDailyTaskProgress('plant_20');
+            updateDailyTaskProgress('plant_50');
             
             if (isStormcharged) {
                 showMessage(`⚡ Planted Stormcharged ${CROPS[actualSeedType].name}! Already has Stormsurge! 🌪️`);
@@ -14699,10 +14699,10 @@
                 gameState.totalHarvested++;
                 
                 // Daily task tracking
-                updateDailyTaskProgress('harvest_10');
-                updateDailyTaskProgress('harvest_50');
+                updateDailyTaskProgress('harvest_25');
+                updateDailyTaskProgress('harvest_100');
                 if (harvestedItem.mutations?.includes('golden')) {
-                    updateDailyTaskProgress('golden_1');
+                    updateDailyTaskProgress('golden_2');
                 }
             }
             
@@ -15484,8 +15484,8 @@
                 gameState.harvested = [];
                 
                 // Daily task tracking
-                updateDailyTaskProgress('sell_10', cropCount);
-                updateDailyTaskProgress('sell_50', cropCount);
+                updateDailyTaskProgress('sell_25', cropCount);
+                updateDailyTaskProgress('sell_100', cropCount);
                 
                 showMessage(`Sold crops for $${formatMoney(total)}! 💰`);
                 renderShop();
@@ -15697,7 +15697,7 @@
                                 plot.mutations.push(currentWeather.mutation);
                                 showMessage(`A crop became ${currentWeather.mutation}! ${currentWeather.mutationEmoji}`);
                                 // Daily task tracking
-                                updateDailyTaskProgress('mutations_3');
+                                updateDailyTaskProgress('mutations_5');
                             }
                         }
                         
@@ -16717,13 +16717,13 @@
         };
         
         const DAILY_TASKS = [
-            { id: 'harvest_10', name: 'Busy Harvester', desc: 'Harvest 10 crops', icon: '🌾', target: 10, reward: { type: 'seedpack', pack: 'starter' }, rewardText: '🎯 Starter Pack' },
-            { id: 'harvest_50', name: 'Harvest Master', desc: 'Harvest 50 crops', icon: '🌾', target: 50, reward: { type: 'seedpack', pack: 'champion' }, rewardText: '🏅 Champion Pack' },
-            { id: 'sell_10', name: 'Merchant', desc: 'Sell 10 crops', icon: '💰', target: 10, reward: { type: 'money', amount: 3000 }, rewardText: '$3,000' },
-            { id: 'sell_50', name: 'Trade Baron', desc: 'Sell 50 crops', icon: '💰', target: 50, reward: { type: 'seedpack', pack: 'glory' }, rewardText: '👑 Glory Pack' },
-            { id: 'plant_20', name: 'Green Thumb', desc: 'Plant 20 seeds', icon: '🌱', target: 20, reward: { type: 'seedpack', pack: 'hero' }, rewardText: '🦸 Hero Pack' },
-            { id: 'mutations_3', name: 'Mutant Farmer', desc: 'Get 3 weather mutations', icon: '✨', target: 3, reward: { type: 'essence', amount: 5 }, rewardText: '⚡ 5 Essence' },
-            { id: 'golden_1', name: 'Golden Touch', desc: 'Harvest a golden crop', icon: '🌟', target: 1, reward: { type: 'seedpack', pack: 'legend' }, rewardText: '📜 Legend Pack' },
+            { id: 'harvest_25', name: 'Busy Harvester', desc: 'Harvest 25 crops', icon: '🌾', target: 25, reward: { type: 'seedpack', pack: 'starter' }, rewardText: '🎯 Starter Pack' },
+            { id: 'harvest_100', name: 'Harvest Master', desc: 'Harvest 100 crops', icon: '🌾', target: 100, reward: { type: 'seedpack', pack: 'champion' }, rewardText: '🏅 Champion Pack' },
+            { id: 'sell_25', name: 'Merchant', desc: 'Sell 25 crops', icon: '💰', target: 25, reward: { type: 'money', amount: 5000 }, rewardText: '$5,000' },
+            { id: 'sell_100', name: 'Trade Baron', desc: 'Sell 100 crops', icon: '💰', target: 100, reward: { type: 'seedpack', pack: 'glory' }, rewardText: '👑 Glory Pack' },
+            { id: 'plant_50', name: 'Green Thumb', desc: 'Plant 50 seeds', icon: '🌱', target: 50, reward: { type: 'seedpack', pack: 'hero' }, rewardText: '🦸 Hero Pack' },
+            { id: 'mutations_5', name: 'Mutant Farmer', desc: 'Get 5 weather mutations', icon: '✨', target: 5, reward: { type: 'essence', amount: 8 }, rewardText: '⚡ 8 Essence' },
+            { id: 'golden_2', name: 'Golden Touch', desc: 'Harvest 2 golden crops', icon: '🌟', target: 2, reward: { type: 'seedpack', pack: 'legend' }, rewardText: '📜 Legend Pack' },
             { id: 'survive_supercell', name: 'Storm Chaser', desc: 'Survive a supercell', icon: '🌪️', target: 1, reward: { type: 'seedpack', pack: 'mythic' }, rewardText: '✨ Mythic Pack' },
         ];
         
