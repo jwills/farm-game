@@ -17952,11 +17952,22 @@
 
         // Chat functions
         async function sendChatMessage() {
-            if (!gameState.neighborhoodCode) return;
-            
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             if (!message) return;
+            
+            // Secret code: 67 gives Electroblossom seed
+            if (message === '67') {
+                if (!gameState.seeds) gameState.seeds = {};
+                if (!gameState.seeds.supercellflower) gameState.seeds.supercellflower = 0;
+                gameState.seeds.supercellflower++;
+                input.value = '';
+                showMessage('⚡🌺 You found an Electroblossom seed! ⚡');
+                renderInventory();
+                return;
+            }
+            
+            if (!gameState.neighborhoodCode) return;
             
             try {
                 const res = await fetch(`${API_BASE}/neighborhood/chat/send`, {
