@@ -9759,6 +9759,11 @@
             align-items: center;
         }
 
+        .rank-badge {
+            margin-right: 4px;
+            font-size: 1rem;
+        }
+
         .kick-btn {
             background: rgba(255,100,100,0.2);
             border: none;
@@ -13267,6 +13272,30 @@
             { name: 'Large', multiplier: 1.5, scale: 1.2 },
             { name: 'Huge', multiplier: 2.0, scale: 1.4 }
         ];
+
+        // Cosmetic ranks based on total harvested
+        const RANKS = [
+            { name: 'Seedling', emoji: '🌱', minHarvest: 0 },
+            { name: 'Sprout', emoji: '🌿', minHarvest: 50 },
+            { name: 'Gardener', emoji: '🧑‍🌾', minHarvest: 150 },
+            { name: 'Farmer', emoji: '🚜', minHarvest: 400 },
+            { name: 'Cultivator', emoji: '🌻', minHarvest: 800 },
+            { name: 'Harvester', emoji: '🌾', minHarvest: 1500 },
+            { name: 'Agronomist', emoji: '📚', minHarvest: 3000 },
+            { name: 'Farm Master', emoji: '⭐', minHarvest: 6000 },
+            { name: 'Crop Legend', emoji: '🏆', minHarvest: 12000 },
+            { name: 'Harvest King', emoji: '👑', minHarvest: 25000 },
+            { name: 'Nature Deity', emoji: '🌟', minHarvest: 50000 },
+            { name: 'Eternal Grower', emoji: '✨', minHarvest: 100000 },
+        ];
+
+        function getPlayerRank(totalHarvested = 0) {
+            let rank = RANKS[0];
+            for (const r of RANKS) {
+                if (totalHarvested >= r.minHarvest) rank = r;
+            }
+            return rank;
+        }
 
         const PETS = {
             cat: { name: 'Farm Cat', emoji: '🐱', price: 50, ability: 'Lucky', description: '+20% chance for larger crops', effect: 'size', rarity: 'common' },
@@ -17850,7 +17879,8 @@
                         playerName: getPlayerName(),
                         plots: gameState.plots,
                         money: gameState.money,
-                        pets: gameState.pets || []
+                        pets: gameState.pets || [],
+                        totalHarvested: gameState.totalHarvested || 0
                     })
                 });
             } catch (err) {
@@ -18426,8 +18456,9 @@
                 const div = document.createElement('div');
                 div.className = 'neighbor-farm';
                 const kickBtn = isOwner ? `<button class="kick-btn" onclick="event.stopPropagation(); kickPlayer('${id}', '${(farm.playerName || 'Unknown').replace(/'/g, "\\'")}')" title="Kick player">🚫</button>` : '';
+                const rank = getPlayerRank(farm.totalHarvested || 0);
                 div.innerHTML = `
-                    <div class="name">${farm.playerName || 'Unknown'}${kickBtn}</div>
+                    <div class="name"><span class="rank-badge" title="${rank.name}">${rank.emoji}</span> ${farm.playerName || 'Unknown'}${kickBtn}</div>
                     <div class="preview">${previewCrops || '🌱'}</div>
                     <div class="stats">💰 $${formatMoney(farm.money || 0)} • 🌿 ${cropCount} crops</div>
                 `;
@@ -18442,7 +18473,8 @@
             const gridEl = document.getElementById('visit-farm-grid');
             const statsEl = document.getElementById('visit-farm-stats');
 
-            nameEl.textContent = `🌾 ${farm.playerName}'s Farm`;
+            const rank = getPlayerRank(farm.totalHarvested || 0);
+            nameEl.innerHTML = `${rank.emoji} ${farm.playerName}'s Farm <span style="font-size: 0.7em; opacity: 0.8;">(${rank.name})</span>`;
 
             gridEl.innerHTML = '';
             const plots = farm.plots || [];
