@@ -10892,6 +10892,149 @@
             50% { transform: scale(1.02); }
         }
 
+        /* Disco Shop */
+        .disco-shop-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .disco-shop-modal.hidden { display: none; }
+        .disco-shop-content {
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+            border: 3px solid;
+            border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff) 1;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: disco-shop-pulse 2s ease-in-out infinite;
+        }
+        @keyframes disco-shop-pulse {
+            0%, 100% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
+            50% { box-shadow: 0 0 30px #00ffff, 0 0 60px #ff00ff; }
+        }
+        .disco-shop-header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .disco-shop-header h2 {
+            color: #fff;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+        .disco-shop-header .close-btn {
+            position: absolute;
+            top: 0; right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .disco-points-display {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #ffff00;
+            text-shadow: 0 0 10px #ffff00;
+            margin-bottom: 15px;
+        }
+        .disco-orders {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .disco-orders h3 {
+            color: #00ffff;
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+        .disco-order {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .disco-order.completed {
+            background: rgba(0,255,0,0.2);
+            border-color: #00ff00;
+        }
+        .disco-order .order-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .disco-order .order-emoji { font-size: 1.5rem; }
+        .disco-order .order-text { color: #fff; }
+        .disco-order .order-progress { color: #aaa; font-size: 0.9rem; }
+        .disco-order .order-reward {
+            color: #ffff00;
+            font-weight: bold;
+        }
+        .disco-shop-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .disco-shop-item {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .disco-shop-item:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: #ff00ff;
+            transform: scale(1.05);
+        }
+        .disco-shop-item.cant-afford {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .disco-shop-item .item-emoji { font-size: 2rem; }
+        .disco-shop-item .item-name { color: #fff; font-weight: bold; margin: 5px 0; }
+        .disco-shop-item .item-desc { color: #aaa; font-size: 0.75rem; }
+        .disco-shop-item .item-cost {
+            color: #ffff00;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .disco-shop-btn {
+            position: fixed;
+            top: 120px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1500;
+            animation: disco-btn-pulse 1s ease-in-out infinite;
+            display: none;
+        }
+        body.disco-mode .disco-shop-btn { display: block; }
+        @keyframes disco-btn-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(10deg); }
+        }
+
         .supercell-shake {
             animation: supercell-screen-shake 0.15s ease-in-out;
         }
@@ -13387,6 +13530,16 @@
             { name: 'Eternal Grower', emoji: '✨', minHarvest: 100000 },
         ];
 
+        // Disco Shop items (bought with disco points)
+        const DISCO_SHOP = [
+            { id: 'disco_seeds', name: 'Funky Seed Pack', emoji: '🌟', cost: 5, description: '3 random rare seeds', type: 'seedpack' },
+            { id: 'disco_money', name: 'Tip Jar', emoji: '💰', cost: 3, description: '$10,000 cash', type: 'money', amount: 10000 },
+            { id: 'disco_essence', name: 'Electric Vibes', emoji: '⚡', cost: 8, description: '5 Storm Essence', type: 'essence', amount: 5 },
+            { id: 'disco_pet', name: 'Disco Duck', emoji: '🦆', cost: 25, description: 'Groovy pet! +25% sell price during disco', type: 'pet', petId: 'discoduck' },
+            { id: 'disco_mutation', name: 'Groove Blessing', emoji: '🕺', cost: 10, description: 'Makes 3 random crops groovy', type: 'mutation' },
+            { id: 'disco_sprinkler', name: 'Disco Sprinkler', emoji: '🪩', cost: 15, description: 'Rainbow sprinkler with all effects!', type: 'sprinkler' },
+        ];
+
         function getPlayerRank(totalHarvested = 0) {
             let rank = RANKS[0];
             for (const r of RANKS) {
@@ -13423,6 +13576,8 @@
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster per mammoth [Stackable]', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
             cybercat: { name: 'Cyber Cat', emoji: '🤖', price: 0, ability: 'Digital', description: 'Auto-harvest 3 crops every 8s per cat [Stackable]', effect: 'cyberharv', rarity: 'temporal', wheelOnly: true },
             alienblob: { name: 'Alien Blob', emoji: '👾', price: 0, ability: 'Quantum', description: 'Crops gain quantum mutation (+400% value) [Stackable]', effect: 'quantize', rarity: 'temporal', wheelOnly: true },
+            // Disco pets
+            discoduck: { name: 'Disco Duck', emoji: '🦆', price: 0, ability: 'Funky Fresh', description: '+25% sell price during disco weather', effect: 'funky', rarity: 'disco', discoOnly: true },
             // Storm pets (from storm eggs and supercell crates)
             stormhawk: { name: 'Storm Hawk', emoji: '🦅', price: 0, ability: 'Tempest', description: 'All stormsurge mutations give 10x instead of 5x', effect: 'stormpower', rarity: 'storm', crateOnly: true },
             thunderwolf: { name: 'Thunder Wolf', emoji: '🐺', price: 0, ability: 'Lightning Stride', description: '+50% crop growth during supercell weather', effect: 'lightningstride', rarity: 'storm', crateOnly: true },
@@ -13459,6 +13614,8 @@
             // Void sprinklers (from darkest night wheel only)
             sprinkler_shadow: { name: 'Shadow Sprinkler', emoji: '💀', price: 0, description: 'Shadow Touch +150% value (lasts 6min)', interval: 12, growthBoost: 6, mutationBoost: 0.35, specialMutation: 'shadowtouched', range: 8, duration: 360, rarity: 'void', passive: true, wheelOnly: true },
             sprinkler_void: { name: 'Void Sprinkler', emoji: '👁️', price: 0, description: 'Void Infused +200% value (lasts 8min)', interval: 10, growthBoost: 8, mutationBoost: 0.50, specialMutation: 'voidinfused', range: 'all', duration: 480, rarity: 'void', passive: true, wheelOnly: true },
+            // Disco sprinkler
+            sprinkler_disco: { name: 'Disco Sprinkler', emoji: '🪩', price: 0, description: 'Groovy mutation +150% value (lasts 5min)', interval: 8, growthBoost: 10, mutationBoost: 0.60, specialMutation: 'groovy', range: 'all', duration: 300, rarity: 'disco', passive: true, discoOnly: true },
 
         };
 
@@ -13618,6 +13775,9 @@
             bloodTigerTimer: 0, // timer for Blood Tiger bloodlit chance (every 150s)
             timeWheelsSpun: { prehistoric: false, futuristic: false }, // track wheel spins per time anomaly
             timeWheelsShown: false, // whether we've shown wheels this time anomaly
+            discoPoints: 0, // currency for disco shop
+            discoOrders: [], // current disco orders to fill
+            discoOrdersCompleted: 0, // total orders completed this disco
             lastChatMsgId: 0, // track last seen chat message ID
             isNight: false, // day/night cycle
             isDarkestNight: false, // rare darkest night event
@@ -14468,6 +14628,10 @@
                 // Cyclone Dragon: Storm crops worth 3x
                 if (hasPetEffect('vortexbreath') && crop.rarity === 'storm') {
                     value *= 3;
+                }
+                // Disco Duck: +25% during disco weather
+                if (hasPetEffect('funky') && gameState.currentWeather === 'disco') {
+                    value *= 1.25;
                 }
                 value = Math.round(value);
                 totalValue += value;
@@ -15603,10 +15767,23 @@
                 if (hasPetEffect('vortexbreath') && crop.rarity === 'storm') {
                     value *= 3;
                 }
+                // Disco Duck: +25% during disco weather
+                if (hasPetEffect('funky') && gameState.currentWeather === 'disco') {
+                    value *= 1.25;
+                }
                 total += Math.round(value);
             });
             
             if (total > 0) {
+                // Check for groovy crops to deliver during disco
+                if (gameState.currentWeather === 'disco') {
+                    gameState.harvested.forEach(item => {
+                        if (item.mutations?.includes('groovy')) {
+                            deliverGroovyCrop(item.type);
+                        }
+                    });
+                }
+                
                 gameState.money += total;
                 gameState.harvested = [];
                 
@@ -17590,6 +17767,171 @@
                 lights.appendChild(light);
             }
             document.body.appendChild(lights);
+            
+            // Generate disco orders
+            generateDiscoOrders();
+        }
+
+        function generateDiscoOrders() {
+            // Generate 3 random orders for groovy crops
+            const cropsWithGroovy = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !CROPS[c].questOnly);
+            gameState.discoOrders = [];
+            gameState.discoOrdersCompleted = 0;
+            
+            for (let i = 0; i < 3; i++) {
+                const cropType = cropsWithGroovy[Math.floor(Math.random() * cropsWithGroovy.length)];
+                const amount = 1 + Math.floor(Math.random() * 3); // 1-3 crops
+                const reward = amount * (2 + Math.floor(Math.random() * 3)); // 2-4 points per crop
+                gameState.discoOrders.push({
+                    cropType,
+                    amount,
+                    delivered: 0,
+                    reward,
+                    completed: false
+                });
+            }
+        }
+
+        function openDiscoShop() {
+            document.getElementById('disco-shop-modal').classList.remove('hidden');
+            renderDiscoShop();
+        }
+
+        function closeDiscoShop() {
+            document.getElementById('disco-shop-modal').classList.add('hidden');
+        }
+
+        function renderDiscoShop() {
+            // Update points display
+            document.getElementById('disco-points').textContent = gameState.discoPoints || 0;
+            
+            // Render orders
+            const ordersList = document.getElementById('disco-orders-list');
+            ordersList.innerHTML = '';
+            (gameState.discoOrders || []).forEach((order, idx) => {
+                const crop = CROPS[order.cropType];
+                const completed = order.delivered >= order.amount;
+                ordersList.innerHTML += `
+                    <div class="disco-order ${completed ? 'completed' : ''}">
+                        <div class="order-info">
+                            <span class="order-emoji">${crop.growEmoji}</span>
+                            <div>
+                                <div class="order-text">Groovy ${crop.name}</div>
+                                <div class="order-progress">${order.delivered}/${order.amount} delivered</div>
+                            </div>
+                        </div>
+                        <div class="order-reward">${completed ? '✓' : `+${order.reward} 🕺`}</div>
+                    </div>
+                `;
+            });
+            
+            // Render shop items
+            const shopItems = document.getElementById('disco-shop-items');
+            shopItems.innerHTML = '';
+            DISCO_SHOP.forEach(item => {
+                const canAfford = (gameState.discoPoints || 0) >= item.cost;
+                shopItems.innerHTML += `
+                    <div class="disco-shop-item ${canAfford ? '' : 'cant-afford'}" onclick="buyDiscoItem('${item.id}')">
+                        <div class="item-emoji">${item.emoji}</div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-desc">${item.description}</div>
+                        <div class="item-cost">${item.cost} 🕺</div>
+                    </div>
+                `;
+            });
+        }
+
+        function deliverGroovyCrop(cropType) {
+            if (gameState.currentWeather !== 'disco') return false;
+            
+            // Find matching incomplete order
+            const order = (gameState.discoOrders || []).find(o => 
+                o.cropType === cropType && !o.completed && o.delivered < o.amount
+            );
+            
+            if (order) {
+                order.delivered++;
+                if (order.delivered >= order.amount) {
+                    order.completed = true;
+                    gameState.discoPoints = (gameState.discoPoints || 0) + order.reward;
+                    gameState.discoOrdersCompleted++;
+                    showMessage(`🕺 Order complete! +${order.reward} Disco Points!`);
+                } else {
+                    showMessage(`💃 Delivered groovy ${CROPS[cropType].name}! (${order.delivered}/${order.amount})`);
+                }
+                renderDiscoShop();
+                return true;
+            }
+            return false;
+        }
+
+        function buyDiscoItem(itemId) {
+            const item = DISCO_SHOP.find(i => i.id === itemId);
+            if (!item) return;
+            
+            if ((gameState.discoPoints || 0) < item.cost) {
+                showMessage('❌ Not enough Disco Points!');
+                return;
+            }
+            
+            gameState.discoPoints -= item.cost;
+            
+            switch (item.type) {
+                case 'money':
+                    gameState.money += item.amount;
+                    showMessage(`💰 Got $${formatMoney(item.amount)}!`);
+                    break;
+                case 'essence':
+                    gameState.stormEssence = (gameState.stormEssence || 0) + item.amount;
+                    showMessage(`⚡ Got ${item.amount} Storm Essence!`);
+                    break;
+                case 'pet':
+                    if (!gameState.pets.includes(item.petId)) {
+                        gameState.pets.push(item.petId);
+                        showMessage(`🦆 Got ${PETS[item.petId].name}!`);
+                        renderPets();
+                    } else {
+                        gameState.discoPoints += item.cost; // Refund
+                        showMessage('You already have this pet!');
+                    }
+                    break;
+                case 'seedpack':
+                    // Give 3 random rare seeds
+                    const rareSeeds = Object.keys(CROPS).filter(c => 
+                        CROPS[c].rarity === 'rare' || CROPS[c].rarity === 'epic'
+                    );
+                    for (let i = 0; i < 3; i++) {
+                        const seedType = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
+                        gameState.seeds[seedType] = (gameState.seeds[seedType] || 0) + 1;
+                    }
+                    showMessage('🌟 Got 3 rare seeds!');
+                    renderInventory();
+                    break;
+                case 'mutation':
+                    // Make 3 random growing crops groovy
+                    let mutated = 0;
+                    const growingPlots = gameState.plots.map((p, i) => ({ plot: p, idx: i }))
+                        .filter(p => p.plot && !p.plot.mutations?.includes('groovy'));
+                    const shuffled = growingPlots.sort(() => Math.random() - 0.5);
+                    for (let i = 0; i < Math.min(3, shuffled.length); i++) {
+                        if (!shuffled[i].plot.mutations) shuffled[i].plot.mutations = [];
+                        shuffled[i].plot.mutations.push('groovy');
+                        mutated++;
+                    }
+                    showMessage(`🕺 Made ${mutated} crops groovy!`);
+                    renderFarm();
+                    break;
+                case 'sprinkler':
+                    // Add disco sprinkler (rainbow - all effects)
+                    if (!gameState.unplacedSprinklers) gameState.unplacedSprinklers = [];
+                    gameState.unplacedSprinklers.push('sprinkler_disco');
+                    showMessage('🪩 Got Disco Sprinkler! Place it from the gear menu.');
+                    renderGearTools();
+                    break;
+            }
+            
+            renderDiscoShop();
+            updateUI();
         }
 
         function createRain() {
@@ -18725,6 +19067,26 @@
             <div class="daily-tasks-body" id="daily-tasks-body">
                 <!-- Tasks rendered here -->
             </div>
+        </div>
+    </div>
+
+    <!-- Disco Shop Button -->
+    <button class="disco-shop-btn" onclick="openDiscoShop()">🩩</button>
+
+    <!-- Disco Shop Modal -->
+    <div id="disco-shop-modal" class="disco-shop-modal hidden">
+        <div class="disco-shop-content">
+            <div class="disco-shop-header">
+                <h2>🩩 Disco Shop 🕺</h2>
+                <button class="close-btn" onclick="closeDiscoShop()">✕</button>
+            </div>
+            <div class="disco-points-display">🕺 <span id="disco-points">0</span> Disco Points</div>
+            <div class="disco-orders">
+                <h3>📝 Orders - Deliver Groovy Crops!</h3>
+                <div id="disco-orders-list"></div>
+            </div>
+            <h3 style="color: #ff00ff; text-align: center; margin: 10px 0;">🛍️ Shop</h3>
+            <div class="disco-shop-items" id="disco-shop-items"></div>
         </div>
     </div>
 </body>
