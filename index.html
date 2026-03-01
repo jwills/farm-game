@@ -10812,6 +10812,86 @@
             5% { opacity: 0; }
         }
 
+        /* Disco Party Effects */
+        .disco-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(255,0,128,0.15), 
+                rgba(0,255,255,0.15), 
+                rgba(255,255,0,0.15), 
+                rgba(128,0,255,0.15));
+            background-size: 400% 400%;
+            animation: disco-gradient 2s ease infinite;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes disco-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .disco-ball {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            animation: disco-spin 2s linear infinite;
+            filter: drop-shadow(0 0 20px white) drop-shadow(0 0 40px magenta);
+            z-index: 1001;
+            pointer-events: none;
+        }
+
+        @keyframes disco-spin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        .disco-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .disco-light {
+            position: absolute;
+            width: 100px;
+            height: 300px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 100%);
+            transform-origin: top center;
+            animation: disco-light-sweep 3s ease-in-out infinite;
+        }
+
+        .disco-light:nth-child(1) { left: 20%; background: linear-gradient(to bottom, rgba(255,0,128,0.3) 0%, transparent 100%); animation-delay: 0s; }
+        .disco-light:nth-child(2) { left: 40%; background: linear-gradient(to bottom, rgba(0,255,255,0.3) 0%, transparent 100%); animation-delay: 0.5s; }
+        .disco-light:nth-child(3) { left: 60%; background: linear-gradient(to bottom, rgba(255,255,0,0.3) 0%, transparent 100%); animation-delay: 1s; }
+        .disco-light:nth-child(4) { left: 80%; background: linear-gradient(to bottom, rgba(128,0,255,0.3) 0%, transparent 100%); animation-delay: 1.5s; }
+
+        @keyframes disco-light-sweep {
+            0%, 100% { transform: rotate(-30deg); }
+            50% { transform: rotate(30deg); }
+        }
+
+        body.disco-mode .farm-grid {
+            animation: disco-bounce 0.5s ease-in-out infinite;
+        }
+
+        @keyframes disco-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
         .supercell-shake {
             animation: supercell-screen-shake 0.15s ease-in-out;
         }
@@ -13200,6 +13280,7 @@
             aurora: { name: 'Aurora', emoji: '🌌', mutation: 'radiant', mutationEmoji: '💫', bonus: 1.6 },
             sandstorm: { name: 'Sandstorm', emoji: '🏜️', mutation: 'dusty', mutationEmoji: '🟤', bonus: 1.3 },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
+            disco: { name: 'Disco Party', emoji: '🍾', mutation: 'groovy', mutationEmoji: '🕺', bonus: 2.5 },
             heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
             supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'thunderstruck', mutationEmoji: '⚡', bonus: 5 },
             timeanomaly: { name: 'Time Anomaly', emoji: '⌛', mutation: 'timewarp', mutationEmoji: '⏰', bonus: 3.0, growthMultiplier: 5 }
@@ -13215,6 +13296,7 @@
             prismatic: { name: 'Prismatic', emoji: '🌈', bonus: 1.8 },
             radiant: { name: 'Radiant', emoji: '💫', bonus: 1.6 },
             dusty: { name: 'Dusty', emoji: '🟤', bonus: 1.3 },
+            groovy: { name: 'Groovy', emoji: '🕺', bonus: 2.5 },
             // Sprinkler-exclusive mutations
             honeyglazed: { name: 'Honey Glazed', emoji: '🍯', bonus: 1.8, sprinklerOnly: true },
             starblessed: { name: 'Star Blessed', emoji: '🤩', bonus: 2.0, sprinklerOnly: true },
@@ -15917,7 +15999,7 @@
                 updateDailyTaskProgress('survive_supercell');
             }
             
-            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
+            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly' && w !== 'disco');
             // Calm weathers are more common, mutation weathers are rarer
             const calmWeathers = ['sunny', 'cloudy', 'partlycloudy'];
             const weighted = gameState.isNight 
@@ -15961,6 +16043,13 @@
                 gameState.celestialInStock = true;
                 showMessage(`👼 Heaven opens! Celestial seeds available! ✨`);
                 renderShop();
+            }
+            // 2% chance for DISCO PARTY!
+            else if (roll < 0.22) {
+                gameState.currentWeather = 'disco';
+                gameState.demonicInStock = 0;
+                gameState.celestialInStock = false;
+                showMessage(`🍾🕺 DISCO PARTY! Get groovy for 2.5x crop value! 💃🎶`);
             } else {
                 gameState.currentWeather = weighted[Math.floor(Math.random() * weighted.length)];
                 gameState.demonicInStock = 0;
@@ -15973,6 +16062,8 @@
                 weatherDuration = 60 + Math.floor(Math.random() * 60); // 60-120 seconds
             } else if (gameState.currentWeather === 'supercell') {
                 weatherDuration = 60 + Math.floor(Math.random() * 60); // 60-120 seconds
+            } else if (gameState.currentWeather === 'disco') {
+                weatherDuration = 30 + Math.floor(Math.random() * 30); // 30-60 seconds
             } else {
                 weatherDuration = 10 + Math.floor(Math.random() * 20); // 10-30 seconds
             }
@@ -16117,7 +16208,18 @@
                     createSupercell();
                 } else if (weather === 'timeanomaly') {
                     createTimeAnomaly();
+                } else if (weather === 'disco') {
+                    createDisco();
                 }
+            }
+            
+            // Toggle disco mode class on body
+            if (weather === 'disco') {
+                document.body.classList.add('disco-mode');
+            } else {
+                document.body.classList.remove('disco-mode');
+                // Clean up disco elements if they exist
+                document.querySelectorAll('.disco-overlay, .disco-ball, .disco-lights').forEach(el => el.remove());
             }
         }
 
@@ -17467,6 +17569,29 @@
             showMessage(`${reward.emoji} ${reward.name}!`);
         }
         
+        function createDisco() {
+            // Add disco overlay (gradient background)
+            const discoOverlay = document.createElement('div');
+            discoOverlay.className = 'disco-overlay';
+            document.body.appendChild(discoOverlay);
+            
+            // Add disco ball
+            const ball = document.createElement('div');
+            ball.className = 'disco-ball';
+            ball.textContent = '🩩';
+            document.body.appendChild(ball);
+            
+            // Add sweeping lights
+            const lights = document.createElement('div');
+            lights.className = 'disco-lights';
+            for (let i = 0; i < 4; i++) {
+                const light = document.createElement('div');
+                light.className = 'disco-light';
+                lights.appendChild(light);
+            }
+            document.body.appendChild(lights);
+        }
+
         function createRain() {
             const overlay = document.getElementById('weather-overlay');
             for (let i = 0; i < 100; i++) {
