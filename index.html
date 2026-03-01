@@ -8407,6 +8407,236 @@
             100% { filter: drop-shadow(0 0 16px #9932cc) hue-rotate(360deg); }
         }
 
+        /* ===== DISCO PLANTS - Groovy Visual Effects ===== */
+        
+        /* TIER 1 - Starter Disco Plants */
+        .crop-discoball .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 12px #ff00ff) drop-shadow(0 0 6px #00ffff); }
+        .plant-model.crop-discoball .plant-stem { background: linear-gradient(to top, #2a1a3a, #4a2a5a); width: 6px; }
+        .plant-model.crop-discoball .plant-leaf { background: linear-gradient(135deg, #ff00ff, #00ffff); width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-discoball.stage-4 .plant-stem { height: 32px; }
+        .plant-model.crop-discoball.stage-4 .plant-leaves { bottom: 24px; }
+        .plant-model.crop-discoball.stage-4 .plant-fruit { animation: discoballSpin 2s linear infinite; }
+        @keyframes discoballSpin {
+            0% { filter: drop-shadow(0 0 12px #ff00ff) drop-shadow(0 0 6px #00ffff); transform: rotate(0deg); }
+            25% { filter: drop-shadow(0 0 16px #ffff00) drop-shadow(0 0 8px #ff00ff); }
+            50% { filter: drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 6px #ffff00); transform: rotate(180deg); }
+            75% { filter: drop-shadow(0 0 16px #ff00ff) drop-shadow(0 0 8px #00ffff); }
+            100% { filter: drop-shadow(0 0 12px #ff00ff) drop-shadow(0 0 6px #00ffff); transform: rotate(360deg); }
+        }
+        
+        .crop-groovygrape .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 10px #9400d3); }
+        .plant-model.crop-groovygrape .plant-stem { background: linear-gradient(to top, #3a1a4a, #5a2a6a); width: 5px; }
+        .plant-model.crop-groovygrape .plant-leaf { background: #7a4a9a; width: 11px; height: 7px; border-radius: 50%; }
+        .plant-model.crop-groovygrape.stage-4 .plant-stem { height: 30px; }
+        .plant-model.crop-groovygrape.stage-4 .plant-leaves { bottom: 22px; }
+        .plant-model.crop-groovygrape.stage-4 .plant-fruit { animation: groovyBounce 0.8s ease-in-out infinite; }
+        @keyframes groovyBounce {
+            0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 10px #9400d3); }
+            50% { transform: translateY(-4px) scale(1.1); filter: drop-shadow(0 0 18px #da70d6); }
+        }
+        
+        .crop-funkyfern .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 8px #ff1493); }
+        .plant-model.crop-funkyfern .plant-stem { background: linear-gradient(to top, #1a4a3a, #2a6a5a); width: 5px; }
+        .plant-model.crop-funkyfern .plant-leaf { background: linear-gradient(45deg, #00ff88, #ff1493); width: 14px; height: 9px; }
+        .plant-model.crop-funkyfern.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-funkyfern.stage-4 .plant-leaves { bottom: 27px; }
+        .plant-model.crop-funkyfern.stage-4 .plant-fruit { animation: funkyDance 0.6s ease-in-out infinite; }
+        @keyframes funkyDance {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.05); }
+            50% { transform: rotate(-5deg) scale(1.1); }
+            75% { transform: rotate(5deg) scale(1.05); }
+        }
+        
+        /* TIER 2 - Mid Disco Plants */
+        .crop-neonrose .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 14px #ff1493) drop-shadow(0 0 7px #00ffff); }
+        .plant-model.crop-neonrose .plant-stem { background: linear-gradient(to top, #1a2a1a, #2a4a2a); width: 5px; }
+        .plant-model.crop-neonrose .plant-leaf { background: #3a6a3a; width: 12px; height: 8px; border-radius: 30%; }
+        .plant-model.crop-neonrose.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-neonrose.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-neonrose.stage-4 .plant-fruit { animation: neonPulse 1.5s ease-in-out infinite; }
+        @keyframes neonPulse {
+            0%, 100% { filter: drop-shadow(0 0 14px #ff1493) drop-shadow(0 0 7px #00ffff) brightness(1); }
+            50% { filter: drop-shadow(0 0 24px #ff69b4) drop-shadow(0 0 14px #00ffff) brightness(1.3); }
+        }
+        
+        .crop-boogiebeet .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 10px #ff4500); }
+        .plant-model.crop-boogiebeet .plant-stem { background: linear-gradient(to top, #5a1a2a, #7a2a3a); width: 6px; }
+        .plant-model.crop-boogiebeet .plant-leaf { background: #2a7a4a; width: 14px; height: 8px; }
+        .plant-model.crop-boogiebeet.stage-4 .plant-stem { height: 28px; }
+        .plant-model.crop-boogiebeet.stage-4 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-boogiebeet.stage-4 .plant-fruit { animation: boogieDance 0.5s ease-in-out infinite; }
+        @keyframes boogieDance {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-3px) rotate(-8deg); }
+            75% { transform: translateX(3px) rotate(8deg); }
+        }
+        
+        .crop-hustlehops .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 12px #ffd700); }
+        .plant-model.crop-hustlehops .plant-stem { background: linear-gradient(to top, #4a4a1a, #6a6a2a); width: 5px; }
+        .plant-model.crop-hustlehops .plant-leaf { background: #5a8a3a; width: 10px; height: 14px; }
+        .plant-model.crop-hustlehops.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-hustlehops.stage-4 .plant-leaves { bottom: 34px; }
+        .plant-model.crop-hustlehops.stage-4 .plant-fruit { animation: hustleHop 0.7s ease-in-out infinite; }
+        @keyframes hustleHop {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 12px #ffd700); }
+            50% { transform: translateY(-6px); filter: drop-shadow(0 0 20px #ffff00); }
+        }
+        
+        .crop-glittermelon .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 16px #ff69b4) drop-shadow(0 0 8px #ffd700); }
+        .plant-model.crop-glittermelon .plant-stem { background: linear-gradient(to top, #2a4a2a, #3a6a3a); width: 7px; }
+        .plant-model.crop-glittermelon .plant-leaf { background: #4a8a4a; width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-glittermelon.stage-4 .plant-stem { height: 36px; }
+        .plant-model.crop-glittermelon.stage-4 .plant-leaves { bottom: 28px; }
+        .plant-model.crop-glittermelon.stage-4 .plant-fruit { animation: glitterShimmer 1s ease-in-out infinite; }
+        @keyframes glitterShimmer {
+            0%, 100% { filter: drop-shadow(0 0 16px #ff69b4) drop-shadow(0 0 8px #ffd700) brightness(1); transform: scale(1); }
+            25% { filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 10px #ff1493) brightness(1.1); }
+            50% { filter: drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 12px #ff69b4) brightness(1.2); transform: scale(1.05); }
+            75% { filter: drop-shadow(0 0 20px #ff1493) drop-shadow(0 0 10px #00ffff) brightness(1.1); }
+        }
+        
+        /* TIER 3 - High Disco Plants */
+        .crop-bassberry .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 14px #8b00ff) drop-shadow(0 0 7px #ff0080); }
+        .plant-model.crop-bassberry .plant-stem { background: linear-gradient(to top, #2a1a3a, #4a2a5a); width: 6px; }
+        .plant-model.crop-bassberry .plant-leaf { background: linear-gradient(45deg, #5a2a7a, #8a4aaa); width: 13px; height: 9px; border-radius: 50%; }
+        .plant-model.crop-bassberry.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-bassberry.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-bassberry.stage-4 .plant-fruit { animation: bassDrop 0.4s ease-in-out infinite; }
+        @keyframes bassDrop {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 14px #8b00ff) drop-shadow(0 0 7px #ff0080); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 22px #ff00ff) drop-shadow(0 0 11px #00ffff); }
+        }
+        
+        .crop-strobeflower .plant-fruit { font-size: 26px; }
+        .plant-model.crop-strobeflower .plant-stem { background: linear-gradient(to top, #3a3a3a, #5a5a5a); width: 5px; }
+        .plant-model.crop-strobeflower .plant-leaf { background: #7a7a7a; width: 12px; height: 8px; border-radius: 40%; }
+        .plant-model.crop-strobeflower.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-strobeflower.stage-4 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-strobeflower.stage-4 .plant-fruit { animation: strobeFlash 0.15s steps(2) infinite; }
+        @keyframes strobeFlash {
+            0%, 49% { filter: drop-shadow(0 0 25px #ffffff) brightness(2); }
+            50%, 100% { filter: drop-shadow(0 0 8px #666666) brightness(0.5); }
+        }
+        
+        .crop-mirrorballmelon .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 18px #c0c0c0) drop-shadow(0 0 9px #ff69b4); }
+        .plant-model.crop-mirrorballmelon .plant-stem { background: linear-gradient(to top, #4a4a5a, #6a6a7a); width: 7px; }
+        .plant-model.crop-mirrorballmelon .plant-leaf { background: linear-gradient(45deg, #8a8a9a, #aaaaaa); width: 15px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-mirrorballmelon.stage-4 .plant-stem { height: 42px; }
+        .plant-model.crop-mirrorballmelon.stage-4 .plant-leaves { bottom: 34px; }
+        .plant-model.crop-mirrorballmelon.stage-4 .plant-fruit { animation: mirrorballReflect 3s linear infinite; }
+        @keyframes mirrorballReflect {
+            0% { filter: drop-shadow(0 0 18px #ff0000) drop-shadow(0 0 9px #ffffff); transform: rotate(0deg); }
+            20% { filter: drop-shadow(0 0 18px #ffff00) drop-shadow(0 0 9px #ffffff); }
+            40% { filter: drop-shadow(0 0 18px #00ff00) drop-shadow(0 0 9px #ffffff); }
+            60% { filter: drop-shadow(0 0 18px #00ffff) drop-shadow(0 0 9px #ffffff); }
+            80% { filter: drop-shadow(0 0 18px #ff00ff) drop-shadow(0 0 9px #ffffff); }
+            100% { filter: drop-shadow(0 0 18px #ff0000) drop-shadow(0 0 9px #ffffff); transform: rotate(360deg); }
+        }
+        
+        .crop-technothornberry .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 12px #00ff00) drop-shadow(0 0 6px #ff00ff); }
+        .plant-model.crop-technothornberry .plant-stem { background: linear-gradient(to top, #1a3a1a, #2a5a2a); width: 6px; }
+        .plant-model.crop-technothornberry .plant-leaf { background: linear-gradient(90deg, #00ff00, #00aa00); width: 14px; height: 8px; clip-path: polygon(0 50%, 50% 0, 100% 50%, 50% 100%); }
+        .plant-model.crop-technothornberry.stage-4 .plant-stem { height: 38px; }
+        .plant-model.crop-technothornberry.stage-4 .plant-leaves { bottom: 30px; }
+        .plant-model.crop-technothornberry.stage-4 .plant-fruit { animation: technoBeats 0.5s steps(4) infinite; }
+        @keyframes technoBeats {
+            0% { filter: drop-shadow(0 0 12px #00ff00) brightness(1); transform: scale(1); }
+            25% { filter: drop-shadow(0 0 18px #ff00ff) brightness(1.2); transform: scale(1.08); }
+            50% { filter: drop-shadow(0 0 12px #00ffff) brightness(1); transform: scale(1); }
+            75% { filter: drop-shadow(0 0 18px #ffff00) brightness(1.2); transform: scale(1.08); }
+        }
+        
+        /* TIER 4 - Premium Disco Plants */
+        .crop-synthwave .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #00ffff); }
+        .plant-model.crop-synthwave .plant-stem { background: linear-gradient(to top, #1a0a2a, #3a1a4a, #1a0a2a); width: 8px; }
+        .plant-model.crop-synthwave .plant-leaf { background: linear-gradient(135deg, #ff00ff, #00ffff); width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-synthwave.stage-4 .plant-stem { height: 45px; }
+        .plant-model.crop-synthwave.stage-4 .plant-leaves { bottom: 37px; }
+        .plant-model.crop-synthwave.stage-4 .plant-fruit { animation: synthwaveGlow 2s ease-in-out infinite; }
+        @keyframes synthwaveGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #00ffff) brightness(1); }
+            25% { filter: drop-shadow(0 0 30px #ff1493) drop-shadow(0 0 15px #ff00ff) brightness(1.2); }
+            50% { filter: drop-shadow(0 0 35px #00ffff) drop-shadow(0 0 18px #ff69b4) brightness(1.4); }
+            75% { filter: drop-shadow(0 0 30px #ff00ff) drop-shadow(0 0 15px #00ffff) brightness(1.2); }
+        }
+        
+        .crop-raveradish .plant-fruit { font-size: 26px; }
+        .plant-model.crop-raveradish .plant-stem { background: linear-gradient(to top, #4a1a3a, #6a2a4a); width: 6px; }
+        .plant-model.crop-raveradish .plant-leaf { background: linear-gradient(45deg, #00ff00, #ff00ff); width: 14px; height: 12px; }
+        .plant-model.crop-raveradish.stage-4 .plant-stem { height: 35px; }
+        .plant-model.crop-raveradish.stage-4 .plant-leaves { bottom: 27px; }
+        .plant-model.crop-raveradish.stage-4 .plant-fruit { animation: raveStrobe 0.3s ease-in-out infinite, raveSway 1s ease-in-out infinite; }
+        @keyframes raveStrobe {
+            0%, 100% { filter: drop-shadow(0 0 15px #ff00ff) brightness(1); }
+            50% { filter: drop-shadow(0 0 25px #00ff00) brightness(1.5); }
+        }
+        @keyframes raveSway {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+        
+        .crop-djdaikon .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 8px #ff4500); }
+        .plant-model.crop-djdaikon .plant-stem { background: linear-gradient(to top, #5a5a5a, #8a8a8a); width: 7px; }
+        .plant-model.crop-djdaikon .plant-leaf { background: linear-gradient(90deg, #00aa00, #00ff00); width: 18px; height: 6px; }
+        .plant-model.crop-djdaikon.stage-4 .plant-stem { height: 40px; }
+        .plant-model.crop-djdaikon.stage-4 .plant-leaves { bottom: 32px; }
+        .plant-model.crop-djdaikon.stage-4 .plant-fruit { animation: djSpin 1s linear infinite; }
+        @keyframes djSpin {
+            0% { transform: rotate(0deg); filter: drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 8px #ff4500); }
+            25% { filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 10px #ff00ff); }
+            50% { transform: rotate(180deg); filter: drop-shadow(0 0 24px #ff00ff) drop-shadow(0 0 12px #00ffff); }
+            75% { filter: drop-shadow(0 0 20px #ff4500) drop-shadow(0 0 10px #ffd700); }
+            100% { transform: rotate(360deg); filter: drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 8px #ff4500); }
+        }
+        
+        /* TIER 5 - Legendary Disco Plants */
+        .crop-studiostarfruit .plant-fruit { font-size: 32px; filter: drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 12px #ffffff); }
+        .plant-model.crop-studiostarfruit .plant-stem { background: linear-gradient(to top, #4a3a1a, #7a6a2a, #ffd700); width: 8px; }
+        .plant-model.crop-studiostarfruit .plant-leaf { background: linear-gradient(45deg, #ffd700, #ffff00); width: 16px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-studiostarfruit.stage-4 .plant-stem { height: 50px; }
+        .plant-model.crop-studiostarfruit.stage-4 .plant-leaves { bottom: 42px; }
+        .plant-model.crop-studiostarfruit.stage-4 .plant-fruit { animation: starfuitSparkle 1.5s ease-in-out infinite; }
+        @keyframes starfuitSparkle {
+            0%, 100% { filter: drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 12px #ffffff) brightness(1); transform: scale(1) rotate(0deg); }
+            25% { filter: drop-shadow(0 0 32px #ffffff) drop-shadow(0 0 16px #ffd700) brightness(1.3); transform: scale(1.05) rotate(5deg); }
+            50% { filter: drop-shadow(0 0 40px #ffff00) drop-shadow(0 0 20px #ff69b4) brightness(1.5); transform: scale(1.1) rotate(0deg); }
+            75% { filter: drop-shadow(0 0 32px #ffffff) drop-shadow(0 0 16px #ffd700) brightness(1.3); transform: scale(1.05) rotate(-5deg); }
+        }
+        
+        .crop-clubcucumber .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 20px #00ff88) drop-shadow(0 0 10px #ff00ff); }
+        .plant-model.crop-clubcucumber .plant-stem { background: linear-gradient(to top, #1a3a2a, #2a5a4a); width: 7px; }
+        .plant-model.crop-clubcucumber .plant-leaf { background: linear-gradient(135deg, #00ff88, #00aa66); width: 15px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-clubcucumber.stage-4 .plant-stem { height: 48px; }
+        .plant-model.crop-clubcucumber.stage-4 .plant-leaves { bottom: 40px; }
+        .plant-model.crop-clubcucumber.stage-4 .plant-fruit { animation: clubVibe 0.8s ease-in-out infinite, clubGlow 2s ease-in-out infinite; }
+        @keyframes clubVibe {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-5px) rotate(3deg); }
+        }
+        @keyframes clubGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px #00ff88) drop-shadow(0 0 10px #ff00ff); }
+            33% { filter: drop-shadow(0 0 28px #ff00ff) drop-shadow(0 0 14px #00ffff); }
+            66% { filter: drop-shadow(0 0 28px #00ffff) drop-shadow(0 0 14px #ff00ff); }
+        }
+        
+        .crop-platinumpumpkin .plant-fruit { font-size: 34px; filter: drop-shadow(0 0 28px #e5e4e2) drop-shadow(0 0 14px #c0c0c0); }
+        .plant-model.crop-platinumpumpkin .plant-stem { background: linear-gradient(to top, #5a5a6a, #8a8a9a, #c0c0c0); width: 9px; }
+        .plant-model.crop-platinumpumpkin .plant-leaf { background: linear-gradient(45deg, #8a8a9a, #c0c0c0); width: 18px; height: 12px; border-radius: 40%; }
+        .plant-model.crop-platinumpumpkin.stage-4 .plant-stem { height: 45px; }
+        .plant-model.crop-platinumpumpkin.stage-4 .plant-leaves { bottom: 37px; }
+        .plant-model.crop-platinumpumpkin.stage-4 .plant-fruit { animation: platinumShine 2s ease-in-out infinite, platinumFloat 3s ease-in-out infinite; }
+        @keyframes platinumShine {
+            0%, 100% { filter: drop-shadow(0 0 28px #e5e4e2) drop-shadow(0 0 14px #c0c0c0) brightness(1); }
+            25% { filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 18px #ffd700) brightness(1.2); }
+            50% { filter: drop-shadow(0 0 42px #ff69b4) drop-shadow(0 0 22px #00ffff) brightness(1.4); }
+            75% { filter: drop-shadow(0 0 35px #ffd700) drop-shadow(0 0 18px #ffffff) brightness(1.2); }
+        }
+        @keyframes platinumFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.08); }
+        }
+
         /* Heaven Tear - crystalline teardrop */
         .crop-icon.heaventear::before {
             content: '';
@@ -13407,12 +13637,28 @@
             eternaleggplant: { name: 'Eternal Eggplant', seedEmoji: '🍆', growEmoji: '♾️', seedPrice: 0, basePrice: 600000, growTime: 65, rarity: 'quest', yield: 1, questOnly: true },
             infinityivy: { name: 'Infinity Ivy', seedEmoji: '🌿', growEmoji: '🔮', seedPrice: 0, basePrice: 550000, growTime: 58, rarity: 'quest', yield: [1, 2], regrows: true, questOnly: true },
             // Disco-exclusive crops
-            discoball: { name: 'Disco Ball Fruit', seedEmoji: '🪩', growEmoji: '🪩', seedPrice: 0, basePrice: 5000, growTime: 15, rarity: 'disco', yield: [1, 2], discoOnly: true },
-            funkyfern: { name: 'Funky Fern', seedEmoji: '🌿', growEmoji: '💃', seedPrice: 0, basePrice: 8000, growTime: 20, rarity: 'disco', yield: [2, 3], regrows: true, discoOnly: true },
-            neonrose: { name: 'Neon Rose', seedEmoji: '🌹', growEmoji: '🌹', seedPrice: 0, basePrice: 12000, growTime: 25, rarity: 'disco', yield: 1, discoOnly: true },
-            glittermelon: { name: 'Glitter Melon', seedEmoji: '🍈', growEmoji: '✨', seedPrice: 0, basePrice: 20000, growTime: 35, rarity: 'disco', yield: [1, 2], discoOnly: true },
-            bassberry: { name: 'Bass Berry', seedEmoji: '🎵', growEmoji: '🔊', seedPrice: 0, basePrice: 35000, growTime: 45, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true },
-            strobeflower: { name: 'Strobe Flower', seedEmoji: '💡', growEmoji: '🌟', seedPrice: 0, basePrice: 50000, growTime: 55, rarity: 'disco', yield: 1, discoOnly: true }
+            // DISCO-EXCLUSIVE CROPS - Tier 1 (Starter)
+            discoball: { name: 'Disco Ball Fruit', seedEmoji: '🪩', growEmoji: '🪩', seedPrice: 0, basePrice: 5000, growTime: 12, rarity: 'disco', yield: [1, 3], discoOnly: true },
+            funkyfern: { name: 'Funky Fern', seedEmoji: '🌿', growEmoji: '💃', seedPrice: 0, basePrice: 8000, growTime: 18, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true },
+            groovygrape: { name: 'Groovy Grape', seedEmoji: '🍇', growEmoji: '🎶', seedPrice: 0, basePrice: 6500, growTime: 14, rarity: 'disco', yield: [2, 5], discoOnly: true },
+            // DISCO-EXCLUSIVE CROPS - Tier 2 (Mid)
+            neonrose: { name: 'Neon Rose', seedEmoji: '🌹', growEmoji: '🌺', seedPrice: 0, basePrice: 15000, growTime: 22, rarity: 'disco', yield: [1, 2], discoOnly: true },
+            glittermelon: { name: 'Glitter Melon', seedEmoji: '🍈', growEmoji: '✨', seedPrice: 0, basePrice: 22000, growTime: 28, rarity: 'disco', yield: [1, 3], discoOnly: true },
+            boogiebeet: { name: 'Boogie Beet', seedEmoji: '🫒', growEmoji: '🕺', seedPrice: 0, basePrice: 18000, growTime: 25, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true },
+            hustlehops: { name: 'Hustle Hops', seedEmoji: '🌾', growEmoji: '🎤', seedPrice: 0, basePrice: 20000, growTime: 26, rarity: 'disco', yield: [1, 2], discoOnly: true },
+            // DISCO-EXCLUSIVE CROPS - Tier 3 (High)
+            bassberry: { name: 'Bass Berry', seedEmoji: '🎵', growEmoji: '🔊', seedPrice: 0, basePrice: 40000, growTime: 38, rarity: 'disco', yield: [2, 5], regrows: true, discoOnly: true },
+            strobeflower: { name: 'Strobe Flower', seedEmoji: '💡', growEmoji: '🌟', seedPrice: 0, basePrice: 55000, growTime: 45, rarity: 'disco', yield: [1, 2], discoOnly: true },
+            mirrorballmelon: { name: 'Mirrorball Melon', seedEmoji: '🔮', growEmoji: '💎', seedPrice: 0, basePrice: 48000, growTime: 40, rarity: 'disco', yield: [1, 3], discoOnly: true },
+            technothornberry: { name: 'Techno Thornberry', seedEmoji: '🎛️', growEmoji: '🎧', seedPrice: 0, basePrice: 52000, growTime: 42, rarity: 'disco', yield: [2, 4], discoOnly: true },
+            // DISCO-EXCLUSIVE CROPS - Tier 4 (Premium)
+            synthwave: { name: 'Synthwave Squash', seedEmoji: '🎹', growEmoji: '🌆', seedPrice: 0, basePrice: 75000, growTime: 55, rarity: 'disco', yield: [1, 3], discoOnly: true },
+            raveradish: { name: 'Rave Radish', seedEmoji: '📻', growEmoji: '💜', seedPrice: 0, basePrice: 85000, growTime: 60, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true },
+            djdaikon: { name: 'DJ Daikon', seedEmoji: '🎚️', growEmoji: '🎙️', seedPrice: 0, basePrice: 95000, growTime: 65, rarity: 'disco', yield: [1, 2], discoOnly: true },
+            // DISCO-EXCLUSIVE CROPS - Tier 5 (Legendary)
+            studiostarfruit: { name: 'Studio Starfruit', seedEmoji: '🌟', growEmoji: '⭐', seedPrice: 0, basePrice: 150000, growTime: 80, rarity: 'disco', yield: [1, 3], discoOnly: true },
+            clubcucumber: { name: 'Club Cucumber', seedEmoji: '🥒', growEmoji: '🍾', seedPrice: 0, basePrice: 180000, growTime: 90, rarity: 'disco', yield: [1, 2], regrows: true, discoOnly: true },
+            platinumpumpkin: { name: 'Platinum Pumpkin', seedEmoji: '🎃', growEmoji: '💿', seedPrice: 0, basePrice: 250000, growTime: 100, rarity: 'disco', yield: [1, 2], discoOnly: true }
         };
 
         const WEATHER = {
@@ -13541,12 +13787,28 @@
 
         // Disco Shop items (bought with disco points)
         const DISCO_SHOP = [
-            { id: 'disco_discoball', seedType: 'discoball', cost: 2, maxStock: 5 },
-            { id: 'disco_funkyfern', seedType: 'funkyfern', cost: 3, maxStock: 4 },
-            { id: 'disco_neonrose', seedType: 'neonrose', cost: 5, maxStock: 3 },
-            { id: 'disco_glittermelon', seedType: 'glittermelon', cost: 8, maxStock: 3 },
-            { id: 'disco_bassberry', seedType: 'bassberry', cost: 12, maxStock: 2 },
-            { id: 'disco_strobeflower', seedType: 'strobeflower', cost: 18, maxStock: 1 },
+            // Tier 1 - Starter (cheap, fast, good for beginners)
+            { id: 'disco_discoball', seedType: 'discoball', cost: 2, maxStock: 8 },
+            { id: 'disco_groovygrape', seedType: 'groovygrape', cost: 2, maxStock: 8 },
+            { id: 'disco_funkyfern', seedType: 'funkyfern', cost: 3, maxStock: 6 },
+            // Tier 2 - Mid (balanced value)
+            { id: 'disco_neonrose', seedType: 'neonrose', cost: 5, maxStock: 5 },
+            { id: 'disco_boogiebeet', seedType: 'boogiebeet', cost: 6, maxStock: 5 },
+            { id: 'disco_hustlehops', seedType: 'hustlehops', cost: 6, maxStock: 4 },
+            { id: 'disco_glittermelon', seedType: 'glittermelon', cost: 7, maxStock: 4 },
+            // Tier 3 - High (premium crops)
+            { id: 'disco_bassberry', seedType: 'bassberry', cost: 12, maxStock: 3 },
+            { id: 'disco_mirrorballmelon', seedType: 'mirrorballmelon', cost: 14, maxStock: 3 },
+            { id: 'disco_technothornberry', seedType: 'technothornberry', cost: 15, maxStock: 3 },
+            { id: 'disco_strobeflower', seedType: 'strobeflower', cost: 16, maxStock: 2 },
+            // Tier 4 - Premium (expensive but high value)
+            { id: 'disco_synthwave', seedType: 'synthwave', cost: 22, maxStock: 2 },
+            { id: 'disco_raveradish', seedType: 'raveradish', cost: 25, maxStock: 2 },
+            { id: 'disco_djdaikon', seedType: 'djdaikon', cost: 28, maxStock: 2 },
+            // Tier 5 - Legendary (most valuable)
+            { id: 'disco_studiostarfruit', seedType: 'studiostarfruit', cost: 40, maxStock: 1 },
+            { id: 'disco_clubcucumber', seedType: 'clubcucumber', cost: 50, maxStock: 1 },
+            { id: 'disco_platinumpumpkin', seedType: 'platinumpumpkin', cost: 65, maxStock: 1 },
         ];
 
         function getPlayerRank(totalHarvested = 0) {
