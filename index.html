@@ -13185,11 +13185,20 @@
 
         const WEATHER = {
             sunny: { name: 'Sunny', emoji: '☀️', mutation: null },
+            cloudy: { name: 'Cloudy', emoji: '☁️', mutation: null },
+            partlycloudy: { name: 'Partly Cloudy', emoji: '⛅', mutation: null },
             rainy: { name: 'Rainy', emoji: '🌧️', mutation: 'wet', mutationEmoji: '💧', bonus: 1.3 },
+            drizzle: { name: 'Drizzle', emoji: '🌦️', mutation: 'wet', mutationEmoji: '💧', bonus: 1.15 },
             thunder: { name: 'Thunder', emoji: '⛈️', mutation: 'shocked', mutationEmoji: '⚡', bonus: 1.5 },
             windy: { name: 'Windy', emoji: '💨', mutation: 'breezy', mutationEmoji: '🍃', bonus: 1.2 },
+            foggy: { name: 'Foggy', emoji: '🌫️', mutation: 'misty', mutationEmoji: '💭', bonus: 1.25 },
             heatwave: { name: 'Heatwave', emoji: '🔥', mutation: 'toasty', mutationEmoji: '✨', bonus: 1.4 },
+            humid: { name: 'Humid', emoji: '💦', mutation: 'dewy', mutationEmoji: '🌿', bonus: 1.15 },
             snow: { name: 'Snow', emoji: '❄️', mutation: 'frozen', mutationEmoji: '❄️', bonus: 2.25, requiresMutation: 'wet' },
+            hail: { name: 'Hail', emoji: '🌨️', mutation: 'bruised', mutationEmoji: '🟣', bonus: 1.1 },
+            rainbow: { name: 'Rainbow', emoji: '🌈', mutation: 'prismatic', mutationEmoji: '🌈', bonus: 1.8 },
+            aurora: { name: 'Aurora', emoji: '🌌', mutation: 'radiant', mutationEmoji: '💫', bonus: 1.6 },
+            sandstorm: { name: 'Sandstorm', emoji: '🏜️', mutation: 'dusty', mutationEmoji: '🟤', bonus: 1.3 },
             hellscape: { name: 'Hellscape', emoji: '👿', mutation: 'cursed', mutationEmoji: '🔻', bonus: 2.0 },
             heaven: { name: 'Heaven', emoji: '👼', mutation: 'blessed', mutationEmoji: '✨', bonus: 2.0 },
             supercell: { name: 'Supercell', emoji: '🌪️', mutation: 'thunderstruck', mutationEmoji: '⚡', bonus: 5 },
@@ -13199,6 +13208,13 @@
         const SPECIAL_MUTATIONS = {
             golden: { name: 'Golden', emoji: '🌟', bonus: 1.6, timeRequired: 30, chance: 0.25 },
             rainbow: { name: 'Rainbow', emoji: '🌈', bonus: 1.7, timeRequired: 60, chance: 0.15 },
+            // New weather mutations
+            misty: { name: 'Misty', emoji: '💭', bonus: 1.25 },
+            dewy: { name: 'Dewy', emoji: '🌿', bonus: 1.15 },
+            bruised: { name: 'Bruised', emoji: '🟣', bonus: 1.1 },
+            prismatic: { name: 'Prismatic', emoji: '🌈', bonus: 1.8 },
+            radiant: { name: 'Radiant', emoji: '💫', bonus: 1.6 },
+            dusty: { name: 'Dusty', emoji: '🟤', bonus: 1.3 },
             // Sprinkler-exclusive mutations
             honeyglazed: { name: 'Honey Glazed', emoji: '🍯', bonus: 1.8, sprinklerOnly: true },
             starblessed: { name: 'Star Blessed', emoji: '🤩', bonus: 2.0, sprinklerOnly: true },
@@ -15715,8 +15731,8 @@
                         plot.growth += growthAmount;
                         needsRender = true;
                         
-                        // Chance to gain mutation from current weather (3% base)
-                        let mutationChance = 0.03;
+                        // Chance to gain mutation from current weather (1% base)
+                        let mutationChance = 0.01;
                         mutationChance = getPetBonus('mutation', mutationChance);
                         if (currentWeather.mutation && Math.random() < mutationChance) {
                             if (!plot.mutations) plot.mutations = [];
@@ -15902,11 +15918,11 @@
             }
             
             const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly');
-            // Sunny is more common, special weathers are very rare
-            // But sunny can't happen at night - use 'clear' night weathers instead
+            // Calm weathers are more common, mutation weathers are rarer
+            const calmWeathers = ['sunny', 'cloudy', 'partlycloudy'];
             const weighted = gameState.isNight 
-                ? weathers.filter(w => w !== 'sunny')
-                : ['sunny', 'sunny', 'sunny', ...weathers];
+                ? ['cloudy', 'cloudy', 'cloudy', 'partlycloudy', ...weathers.filter(w => w !== 'sunny')]
+                : [...calmWeathers, ...calmWeathers, ...calmWeathers, ...weathers];
             const roll = Math.random();
             
             // 7.5% chance for supercell
