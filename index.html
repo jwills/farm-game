@@ -13532,12 +13532,12 @@
 
         // Disco Shop items (bought with disco points)
         const DISCO_SHOP = [
-            { id: 'disco_seeds', name: 'Funky Seed Pack', emoji: '🌟', cost: 5, description: '3 random rare seeds', type: 'seedpack' },
+            { id: 'disco_seeds', name: 'Funky Seed', emoji: '🌟', cost: 5, description: '1 random rare seed', type: 'seedpack' },
             { id: 'disco_money', name: 'Tip Jar', emoji: '💰', cost: 3, description: '$10,000 cash', type: 'money', amount: 10000 },
-            { id: 'disco_essence', name: 'Electric Vibes', emoji: '⚡', cost: 8, description: '5 Storm Essence', type: 'essence', amount: 5 },
+            { id: 'disco_golden', name: 'Golden Touch', emoji: '✨', cost: 8, description: 'Makes 1 crop golden', type: 'goldenmutation' },
             { id: 'disco_pet', name: 'Disco Duck', emoji: '🦆', cost: 25, description: 'Groovy pet! +25% sell price during disco', type: 'pet', petId: 'discoduck' },
             { id: 'disco_mutation', name: 'Groove Blessing', emoji: '🕺', cost: 10, description: 'Makes 3 random crops groovy', type: 'mutation' },
-            { id: 'disco_sprinkler', name: 'Disco Sprinkler', emoji: '🪩', cost: 15, description: 'Rainbow sprinkler with all effects!', type: 'sprinkler' },
+            { id: 'disco_sprinkler', name: 'Disco Sprinkler', emoji: '🪩', cost: 15, description: 'Rainbow sprinkler with groovy mutation', type: 'sprinkler' },
         ];
 
         function getPlayerRank(totalHarvested = 0) {
@@ -17881,9 +17881,20 @@
                     gameState.money += item.amount;
                     showMessage(`💰 Got $${formatMoney(item.amount)}!`);
                     break;
-                case 'essence':
-                    gameState.stormEssence = (gameState.stormEssence || 0) + item.amount;
-                    showMessage(`⚡ Got ${item.amount} Storm Essence!`);
+                case 'goldenmutation':
+                    // Make 1 random crop golden
+                    const goldenPlots = gameState.plots.map((p, i) => ({ plot: p, idx: i }))
+                        .filter(p => p.plot && !p.plot.mutations?.includes('golden'));
+                    if (goldenPlots.length > 0) {
+                        const pick = goldenPlots[Math.floor(Math.random() * goldenPlots.length)];
+                        if (!pick.plot.mutations) pick.plot.mutations = [];
+                        pick.plot.mutations.push('golden');
+                        showMessage(`✨ A ${CROPS[pick.plot.type].name} turned golden!`);
+                        renderFarm();
+                    } else {
+                        gameState.discoPoints += item.cost; // Refund
+                        showMessage('No crops to make golden!');
+                    }
                     break;
                 case 'pet':
                     if (!gameState.pets.includes(item.petId)) {
@@ -17896,15 +17907,13 @@
                     }
                     break;
                 case 'seedpack':
-                    // Give 3 random rare seeds
+                    // Give 1 random rare seed
                     const rareSeeds = Object.keys(CROPS).filter(c => 
                         CROPS[c].rarity === 'rare' || CROPS[c].rarity === 'epic'
                     );
-                    for (let i = 0; i < 3; i++) {
-                        const seedType = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
-                        gameState.seeds[seedType] = (gameState.seeds[seedType] || 0) + 1;
-                    }
-                    showMessage('🌟 Got 3 rare seeds!');
+                    const seedType = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
+                    gameState.seeds[seedType] = (gameState.seeds[seedType] || 0) + 1;
+                    showMessage(`🌟 Got a ${CROPS[seedType].name} seed!`);
                     renderInventory();
                     break;
                 case 'mutation':
