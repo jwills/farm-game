@@ -8413,9 +8413,19 @@
         .crop-discoball .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 12px #ff00ff) drop-shadow(0 0 6px #00ffff); }
         .plant-model.crop-discoball .plant-stem { background: linear-gradient(to top, #2a1a3a, #4a2a5a); width: 6px; }
         .plant-model.crop-discoball .plant-leaf { background: linear-gradient(135deg, #ff00ff, #00ffff); width: 12px; height: 8px; border-radius: 50%; }
+        .plant-model.crop-discoball.stage-1 .plant-stem { height: 6px; animation: discoSeedPulse 1s ease-in-out infinite; }
+        .plant-model.crop-discoball.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-discoball.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-discoball.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-discoball.stage-3 .plant-stem { height: 22px; }
+        .plant-model.crop-discoball.stage-3 .plant-leaves { bottom: 18px; }
         .plant-model.crop-discoball.stage-4 .plant-stem { height: 32px; }
         .plant-model.crop-discoball.stage-4 .plant-leaves { bottom: 24px; }
         .plant-model.crop-discoball.stage-4 .plant-fruit { animation: discoballSpin 2s linear infinite; }
+        @keyframes discoSeedPulse {
+            0%, 100% { filter: drop-shadow(0 0 4px #ff00ff); }
+            50% { filter: drop-shadow(0 0 8px #00ffff); }
+        }
         @keyframes discoballSpin {
             0% { filter: drop-shadow(0 0 12px #ff00ff) drop-shadow(0 0 6px #00ffff); transform: rotate(0deg); }
             25% { filter: drop-shadow(0 0 16px #ffff00) drop-shadow(0 0 8px #ff00ff); }
@@ -8427,9 +8437,19 @@
         .crop-groovygrape .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 10px #9400d3); }
         .plant-model.crop-groovygrape .plant-stem { background: linear-gradient(to top, #3a1a4a, #5a2a6a); width: 5px; }
         .plant-model.crop-groovygrape .plant-leaf { background: #7a4a9a; width: 11px; height: 7px; border-radius: 50%; }
+        .plant-model.crop-groovygrape.stage-1 .plant-stem { height: 5px; animation: groovySeedBob 0.8s ease-in-out infinite; }
+        .plant-model.crop-groovygrape.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-groovygrape.stage-2 .plant-stem { height: 12px; }
+        .plant-model.crop-groovygrape.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-groovygrape.stage-3 .plant-stem { height: 20px; }
+        .plant-model.crop-groovygrape.stage-3 .plant-leaves { bottom: 16px; }
         .plant-model.crop-groovygrape.stage-4 .plant-stem { height: 30px; }
         .plant-model.crop-groovygrape.stage-4 .plant-leaves { bottom: 22px; }
         .plant-model.crop-groovygrape.stage-4 .plant-fruit { animation: groovyBounce 0.8s ease-in-out infinite; }
+        @keyframes groovySeedBob {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 3px #9400d3); }
+            50% { transform: translateY(-2px); filter: drop-shadow(0 0 6px #da70d6); }
+        }
         @keyframes groovyBounce {
             0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 10px #9400d3); }
             50% { transform: translateY(-4px) scale(1.1); filter: drop-shadow(0 0 18px #da70d6); }
@@ -8438,9 +8458,19 @@
         .crop-funkyfern .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 8px #ff1493); }
         .plant-model.crop-funkyfern .plant-stem { background: linear-gradient(to top, #1a4a3a, #2a6a5a); width: 5px; }
         .plant-model.crop-funkyfern .plant-leaf { background: linear-gradient(45deg, #00ff88, #ff1493); width: 14px; height: 9px; }
+        .plant-model.crop-funkyfern.stage-1 .plant-stem { height: 6px; animation: funkySeedWiggle 0.6s ease-in-out infinite; }
+        .plant-model.crop-funkyfern.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-funkyfern.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-funkyfern.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-funkyfern.stage-3 .plant-stem { height: 24px; }
+        .plant-model.crop-funkyfern.stage-3 .plant-leaves { bottom: 20px; }
         .plant-model.crop-funkyfern.stage-4 .plant-stem { height: 35px; }
         .plant-model.crop-funkyfern.stage-4 .plant-leaves { bottom: 27px; }
         .plant-model.crop-funkyfern.stage-4 .plant-fruit { animation: funkyDance 0.6s ease-in-out infinite; }
+        @keyframes funkySeedWiggle {
+            0%, 100% { transform: rotate(-3deg); filter: drop-shadow(0 0 3px #00ff88); }
+            50% { transform: rotate(3deg); filter: drop-shadow(0 0 5px #ff1493); }
+        }
         @keyframes funkyDance {
             0%, 100% { transform: rotate(-5deg) scale(1); }
             25% { transform: rotate(5deg) scale(1.05); }
@@ -8452,9 +8482,19 @@
         .crop-neonrose .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 14px #ff1493) drop-shadow(0 0 7px #00ffff); }
         .plant-model.crop-neonrose .plant-stem { background: linear-gradient(to top, #1a2a1a, #2a4a2a); width: 5px; }
         .plant-model.crop-neonrose .plant-leaf { background: #3a6a3a; width: 12px; height: 8px; border-radius: 30%; }
+        .plant-model.crop-neonrose.stage-1 .plant-stem { height: 6px; animation: neonSeedGlow 1.5s ease-in-out infinite; }
+        .plant-model.crop-neonrose.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-neonrose.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-neonrose.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-neonrose.stage-3 .plant-stem { height: 26px; }
+        .plant-model.crop-neonrose.stage-3 .plant-leaves { bottom: 22px; }
         .plant-model.crop-neonrose.stage-4 .plant-stem { height: 38px; }
         .plant-model.crop-neonrose.stage-4 .plant-leaves { bottom: 30px; }
         .plant-model.crop-neonrose.stage-4 .plant-fruit { animation: neonPulse 1.5s ease-in-out infinite; }
+        @keyframes neonSeedGlow {
+            0%, 100% { filter: drop-shadow(0 0 4px #ff1493); }
+            50% { filter: drop-shadow(0 0 8px #00ffff) brightness(1.2); }
+        }
         @keyframes neonPulse {
             0%, 100% { filter: drop-shadow(0 0 14px #ff1493) drop-shadow(0 0 7px #00ffff) brightness(1); }
             50% { filter: drop-shadow(0 0 24px #ff69b4) drop-shadow(0 0 14px #00ffff) brightness(1.3); }
@@ -8463,9 +8503,20 @@
         .crop-boogiebeet .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 10px #ff4500); }
         .plant-model.crop-boogiebeet .plant-stem { background: linear-gradient(to top, #5a1a2a, #7a2a3a); width: 6px; }
         .plant-model.crop-boogiebeet .plant-leaf { background: #2a7a4a; width: 14px; height: 8px; }
+        .plant-model.crop-boogiebeet.stage-1 .plant-stem { height: 5px; animation: boogieSeedShake 0.5s ease-in-out infinite; }
+        .plant-model.crop-boogiebeet.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-boogiebeet.stage-2 .plant-stem { height: 12px; }
+        .plant-model.crop-boogiebeet.stage-2 .plant-leaves { bottom: 10px; }
+        .plant-model.crop-boogiebeet.stage-3 .plant-stem { height: 20px; }
+        .plant-model.crop-boogiebeet.stage-3 .plant-leaves { bottom: 16px; }
         .plant-model.crop-boogiebeet.stage-4 .plant-stem { height: 28px; }
         .plant-model.crop-boogiebeet.stage-4 .plant-leaves { bottom: 20px; }
         .plant-model.crop-boogiebeet.stage-4 .plant-fruit { animation: boogieDance 0.5s ease-in-out infinite; }
+        @keyframes boogieSeedShake {
+            0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 3px #ff4500); }
+            25% { transform: translateX(-1px); }
+            75% { transform: translateX(1px); }
+        }
         @keyframes boogieDance {
             0%, 100% { transform: translateX(0) rotate(0deg); }
             25% { transform: translateX(-3px) rotate(-8deg); }
@@ -8475,9 +8526,19 @@
         .crop-hustlehops .plant-fruit { font-size: 22px; filter: drop-shadow(0 0 12px #ffd700); }
         .plant-model.crop-hustlehops .plant-stem { background: linear-gradient(to top, #4a4a1a, #6a6a2a); width: 5px; }
         .plant-model.crop-hustlehops .plant-leaf { background: #5a8a3a; width: 10px; height: 14px; }
+        .plant-model.crop-hustlehops.stage-1 .plant-stem { height: 7px; animation: hustleSeedHop 0.7s ease-in-out infinite; }
+        .plant-model.crop-hustlehops.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-hustlehops.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-hustlehops.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-hustlehops.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-hustlehops.stage-3 .plant-leaves { bottom: 26px; }
         .plant-model.crop-hustlehops.stage-4 .plant-stem { height: 42px; }
         .plant-model.crop-hustlehops.stage-4 .plant-leaves { bottom: 34px; }
         .plant-model.crop-hustlehops.stage-4 .plant-fruit { animation: hustleHop 0.7s ease-in-out infinite; }
+        @keyframes hustleSeedHop {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 3px #ffd700); }
+            50% { transform: translateY(-3px); filter: drop-shadow(0 0 6px #ffff00); }
+        }
         @keyframes hustleHop {
             0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 12px #ffd700); }
             50% { transform: translateY(-6px); filter: drop-shadow(0 0 20px #ffff00); }
@@ -8486,9 +8547,19 @@
         .crop-glittermelon .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 16px #ff69b4) drop-shadow(0 0 8px #ffd700); }
         .plant-model.crop-glittermelon .plant-stem { background: linear-gradient(to top, #2a4a2a, #3a6a3a); width: 7px; }
         .plant-model.crop-glittermelon .plant-leaf { background: #4a8a4a; width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-glittermelon.stage-1 .plant-stem { height: 6px; animation: glitterSeedSparkle 1s ease-in-out infinite; }
+        .plant-model.crop-glittermelon.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-glittermelon.stage-2 .plant-stem { height: 15px; }
+        .plant-model.crop-glittermelon.stage-2 .plant-leaves { bottom: 13px; }
+        .plant-model.crop-glittermelon.stage-3 .plant-stem { height: 25px; }
+        .plant-model.crop-glittermelon.stage-3 .plant-leaves { bottom: 21px; }
         .plant-model.crop-glittermelon.stage-4 .plant-stem { height: 36px; }
         .plant-model.crop-glittermelon.stage-4 .plant-leaves { bottom: 28px; }
         .plant-model.crop-glittermelon.stage-4 .plant-fruit { animation: glitterShimmer 1s ease-in-out infinite; }
+        @keyframes glitterSeedSparkle {
+            0%, 100% { filter: drop-shadow(0 0 4px #ff69b4) brightness(1); }
+            50% { filter: drop-shadow(0 0 8px #ffd700) brightness(1.3); }
+        }
         @keyframes glitterShimmer {
             0%, 100% { filter: drop-shadow(0 0 16px #ff69b4) drop-shadow(0 0 8px #ffd700) brightness(1); transform: scale(1); }
             25% { filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 10px #ff1493) brightness(1.1); }
@@ -8500,9 +8571,19 @@
         .crop-bassberry .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 14px #8b00ff) drop-shadow(0 0 7px #ff0080); }
         .plant-model.crop-bassberry .plant-stem { background: linear-gradient(to top, #2a1a3a, #4a2a5a); width: 6px; }
         .plant-model.crop-bassberry .plant-leaf { background: linear-gradient(45deg, #5a2a7a, #8a4aaa); width: 13px; height: 9px; border-radius: 50%; }
+        .plant-model.crop-bassberry.stage-1 .plant-stem { height: 6px; animation: bassSeedDrop 0.4s ease-in-out infinite; }
+        .plant-model.crop-bassberry.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-bassberry.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-bassberry.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-bassberry.stage-3 .plant-stem { height: 26px; }
+        .plant-model.crop-bassberry.stage-3 .plant-leaves { bottom: 22px; }
         .plant-model.crop-bassberry.stage-4 .plant-stem { height: 38px; }
         .plant-model.crop-bassberry.stage-4 .plant-leaves { bottom: 30px; }
         .plant-model.crop-bassberry.stage-4 .plant-fruit { animation: bassDrop 0.4s ease-in-out infinite; }
+        @keyframes bassSeedDrop {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px #8b00ff); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 8px #ff0080); }
+        }
         @keyframes bassDrop {
             0%, 100% { transform: scale(1); filter: drop-shadow(0 0 14px #8b00ff) drop-shadow(0 0 7px #ff0080); }
             50% { transform: scale(1.15); filter: drop-shadow(0 0 22px #ff00ff) drop-shadow(0 0 11px #00ffff); }
@@ -8511,9 +8592,19 @@
         .crop-strobeflower .plant-fruit { font-size: 26px; }
         .plant-model.crop-strobeflower .plant-stem { background: linear-gradient(to top, #3a3a3a, #5a5a5a); width: 5px; }
         .plant-model.crop-strobeflower .plant-leaf { background: #7a7a7a; width: 12px; height: 8px; border-radius: 40%; }
+        .plant-model.crop-strobeflower.stage-1 .plant-stem { height: 6px; animation: strobeSeedFlash 0.3s steps(2) infinite; }
+        .plant-model.crop-strobeflower.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-strobeflower.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-strobeflower.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-strobeflower.stage-3 .plant-stem { height: 28px; }
+        .plant-model.crop-strobeflower.stage-3 .plant-leaves { bottom: 24px; }
         .plant-model.crop-strobeflower.stage-4 .plant-stem { height: 40px; }
         .plant-model.crop-strobeflower.stage-4 .plant-leaves { bottom: 32px; }
         .plant-model.crop-strobeflower.stage-4 .plant-fruit { animation: strobeFlash 0.15s steps(2) infinite; }
+        @keyframes strobeSeedFlash {
+            0%, 49% { filter: drop-shadow(0 0 8px #ffffff) brightness(1.5); }
+            50%, 100% { filter: drop-shadow(0 0 2px #444444) brightness(0.7); }
+        }
         @keyframes strobeFlash {
             0%, 49% { filter: drop-shadow(0 0 25px #ffffff) brightness(2); }
             50%, 100% { filter: drop-shadow(0 0 8px #666666) brightness(0.5); }
@@ -8522,9 +8613,21 @@
         .crop-mirrorballmelon .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 18px #c0c0c0) drop-shadow(0 0 9px #ff69b4); }
         .plant-model.crop-mirrorballmelon .plant-stem { background: linear-gradient(to top, #4a4a5a, #6a6a7a); width: 7px; }
         .plant-model.crop-mirrorballmelon .plant-leaf { background: linear-gradient(45deg, #8a8a9a, #aaaaaa); width: 15px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-mirrorballmelon.stage-1 .plant-stem { height: 7px; animation: mirrorSeedReflect 2s linear infinite; }
+        .plant-model.crop-mirrorballmelon.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-mirrorballmelon.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-mirrorballmelon.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-mirrorballmelon.stage-3 .plant-stem { height: 30px; }
+        .plant-model.crop-mirrorballmelon.stage-3 .plant-leaves { bottom: 26px; }
         .plant-model.crop-mirrorballmelon.stage-4 .plant-stem { height: 42px; }
         .plant-model.crop-mirrorballmelon.stage-4 .plant-leaves { bottom: 34px; }
         .plant-model.crop-mirrorballmelon.stage-4 .plant-fruit { animation: mirrorballReflect 3s linear infinite; }
+        @keyframes mirrorSeedReflect {
+            0% { filter: drop-shadow(0 0 5px #ff0000); }
+            33% { filter: drop-shadow(0 0 5px #00ff00); }
+            66% { filter: drop-shadow(0 0 5px #0000ff); }
+            100% { filter: drop-shadow(0 0 5px #ff0000); }
+        }
         @keyframes mirrorballReflect {
             0% { filter: drop-shadow(0 0 18px #ff0000) drop-shadow(0 0 9px #ffffff); transform: rotate(0deg); }
             20% { filter: drop-shadow(0 0 18px #ffff00) drop-shadow(0 0 9px #ffffff); }
@@ -8537,9 +8640,21 @@
         .crop-technothornberry .plant-fruit { font-size: 24px; filter: drop-shadow(0 0 12px #00ff00) drop-shadow(0 0 6px #ff00ff); }
         .plant-model.crop-technothornberry .plant-stem { background: linear-gradient(to top, #1a3a1a, #2a5a2a); width: 6px; }
         .plant-model.crop-technothornberry .plant-leaf { background: linear-gradient(90deg, #00ff00, #00aa00); width: 14px; height: 8px; clip-path: polygon(0 50%, 50% 0, 100% 50%, 50% 100%); }
+        .plant-model.crop-technothornberry.stage-1 .plant-stem { height: 6px; animation: technoSeedBeats 0.5s steps(4) infinite; }
+        .plant-model.crop-technothornberry.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-technothornberry.stage-2 .plant-stem { height: 16px; }
+        .plant-model.crop-technothornberry.stage-2 .plant-leaves { bottom: 14px; }
+        .plant-model.crop-technothornberry.stage-3 .plant-stem { height: 26px; }
+        .plant-model.crop-technothornberry.stage-3 .plant-leaves { bottom: 22px; }
         .plant-model.crop-technothornberry.stage-4 .plant-stem { height: 38px; }
         .plant-model.crop-technothornberry.stage-4 .plant-leaves { bottom: 30px; }
         .plant-model.crop-technothornberry.stage-4 .plant-fruit { animation: technoBeats 0.5s steps(4) infinite; }
+        @keyframes technoSeedBeats {
+            0% { filter: drop-shadow(0 0 4px #00ff00); }
+            25% { filter: drop-shadow(0 0 6px #ff00ff); }
+            50% { filter: drop-shadow(0 0 4px #00ffff); }
+            75% { filter: drop-shadow(0 0 6px #ffff00); }
+        }
         @keyframes technoBeats {
             0% { filter: drop-shadow(0 0 12px #00ff00) brightness(1); transform: scale(1); }
             25% { filter: drop-shadow(0 0 18px #ff00ff) brightness(1.2); transform: scale(1.08); }
@@ -8551,9 +8666,19 @@
         .crop-synthwave .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #00ffff); }
         .plant-model.crop-synthwave .plant-stem { background: linear-gradient(to top, #1a0a2a, #3a1a4a, #1a0a2a); width: 8px; }
         .plant-model.crop-synthwave .plant-leaf { background: linear-gradient(135deg, #ff00ff, #00ffff); width: 16px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-synthwave.stage-1 .plant-stem { height: 8px; animation: synthSeedGlow 2s ease-in-out infinite; }
+        .plant-model.crop-synthwave.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-synthwave.stage-2 .plant-stem { height: 20px; }
+        .plant-model.crop-synthwave.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-synthwave.stage-3 .plant-stem { height: 32px; }
+        .plant-model.crop-synthwave.stage-3 .plant-leaves { bottom: 28px; }
         .plant-model.crop-synthwave.stage-4 .plant-stem { height: 45px; }
         .plant-model.crop-synthwave.stage-4 .plant-leaves { bottom: 37px; }
         .plant-model.crop-synthwave.stage-4 .plant-fruit { animation: synthwaveGlow 2s ease-in-out infinite; }
+        @keyframes synthSeedGlow {
+            0%, 100% { filter: drop-shadow(0 0 6px #ff00ff); }
+            50% { filter: drop-shadow(0 0 12px #00ffff) brightness(1.2); }
+        }
         @keyframes synthwaveGlow {
             0%, 100% { filter: drop-shadow(0 0 20px #ff00ff) drop-shadow(0 0 10px #00ffff) brightness(1); }
             25% { filter: drop-shadow(0 0 30px #ff1493) drop-shadow(0 0 15px #ff00ff) brightness(1.2); }
@@ -8564,9 +8689,19 @@
         .crop-raveradish .plant-fruit { font-size: 26px; }
         .plant-model.crop-raveradish .plant-stem { background: linear-gradient(to top, #4a1a3a, #6a2a4a); width: 6px; }
         .plant-model.crop-raveradish .plant-leaf { background: linear-gradient(45deg, #00ff00, #ff00ff); width: 14px; height: 12px; }
+        .plant-model.crop-raveradish.stage-1 .plant-stem { height: 6px; animation: raveSeedStrobe 0.3s ease-in-out infinite; }
+        .plant-model.crop-raveradish.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-raveradish.stage-2 .plant-stem { height: 14px; }
+        .plant-model.crop-raveradish.stage-2 .plant-leaves { bottom: 12px; }
+        .plant-model.crop-raveradish.stage-3 .plant-stem { height: 24px; }
+        .plant-model.crop-raveradish.stage-3 .plant-leaves { bottom: 20px; }
         .plant-model.crop-raveradish.stage-4 .plant-stem { height: 35px; }
         .plant-model.crop-raveradish.stage-4 .plant-leaves { bottom: 27px; }
         .plant-model.crop-raveradish.stage-4 .plant-fruit { animation: raveStrobe 0.3s ease-in-out infinite, raveSway 1s ease-in-out infinite; }
+        @keyframes raveSeedStrobe {
+            0%, 100% { filter: drop-shadow(0 0 5px #ff00ff); }
+            50% { filter: drop-shadow(0 0 10px #00ff00) brightness(1.3); }
+        }
         @keyframes raveStrobe {
             0%, 100% { filter: drop-shadow(0 0 15px #ff00ff) brightness(1); }
             50% { filter: drop-shadow(0 0 25px #00ff00) brightness(1.5); }
@@ -8579,9 +8714,20 @@
         .crop-djdaikon .plant-fruit { font-size: 26px; filter: drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 8px #ff4500); }
         .plant-model.crop-djdaikon .plant-stem { background: linear-gradient(to top, #5a5a5a, #8a8a8a); width: 7px; }
         .plant-model.crop-djdaikon .plant-leaf { background: linear-gradient(90deg, #00aa00, #00ff00); width: 18px; height: 6px; }
+        .plant-model.crop-djdaikon.stage-1 .plant-stem { height: 7px; animation: djSeedSpin 1s linear infinite; }
+        .plant-model.crop-djdaikon.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-djdaikon.stage-2 .plant-stem { height: 18px; }
+        .plant-model.crop-djdaikon.stage-2 .plant-leaves { bottom: 16px; }
+        .plant-model.crop-djdaikon.stage-3 .plant-stem { height: 28px; }
+        .plant-model.crop-djdaikon.stage-3 .plant-leaves { bottom: 24px; }
         .plant-model.crop-djdaikon.stage-4 .plant-stem { height: 40px; }
         .plant-model.crop-djdaikon.stage-4 .plant-leaves { bottom: 32px; }
         .plant-model.crop-djdaikon.stage-4 .plant-fruit { animation: djSpin 1s linear infinite; }
+        @keyframes djSeedSpin {
+            0% { filter: drop-shadow(0 0 5px #ffd700); }
+            50% { filter: drop-shadow(0 0 8px #ff4500); }
+            100% { filter: drop-shadow(0 0 5px #ffd700); }
+        }
         @keyframes djSpin {
             0% { transform: rotate(0deg); filter: drop-shadow(0 0 16px #ffd700) drop-shadow(0 0 8px #ff4500); }
             25% { filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 10px #ff00ff); }
@@ -8594,9 +8740,19 @@
         .crop-studiostarfruit .plant-fruit { font-size: 32px; filter: drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 12px #ffffff); }
         .plant-model.crop-studiostarfruit .plant-stem { background: linear-gradient(to top, #4a3a1a, #7a6a2a, #ffd700); width: 8px; }
         .plant-model.crop-studiostarfruit .plant-leaf { background: linear-gradient(45deg, #ffd700, #ffff00); width: 16px; height: 10px; border-radius: 50%; }
+        .plant-model.crop-studiostarfruit.stage-1 .plant-stem { height: 8px; animation: starSeedSparkle 1.5s ease-in-out infinite; }
+        .plant-model.crop-studiostarfruit.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-studiostarfruit.stage-2 .plant-stem { height: 22px; }
+        .plant-model.crop-studiostarfruit.stage-2 .plant-leaves { bottom: 20px; }
+        .plant-model.crop-studiostarfruit.stage-3 .plant-stem { height: 36px; }
+        .plant-model.crop-studiostarfruit.stage-3 .plant-leaves { bottom: 32px; }
         .plant-model.crop-studiostarfruit.stage-4 .plant-stem { height: 50px; }
         .plant-model.crop-studiostarfruit.stage-4 .plant-leaves { bottom: 42px; }
         .plant-model.crop-studiostarfruit.stage-4 .plant-fruit { animation: starfuitSparkle 1.5s ease-in-out infinite; }
+        @keyframes starSeedSparkle {
+            0%, 100% { filter: drop-shadow(0 0 8px #ffd700) brightness(1); }
+            50% { filter: drop-shadow(0 0 14px #ffffff) brightness(1.4); }
+        }
         @keyframes starfuitSparkle {
             0%, 100% { filter: drop-shadow(0 0 24px #ffd700) drop-shadow(0 0 12px #ffffff) brightness(1); transform: scale(1) rotate(0deg); }
             25% { filter: drop-shadow(0 0 32px #ffffff) drop-shadow(0 0 16px #ffd700) brightness(1.3); transform: scale(1.05) rotate(5deg); }
@@ -8607,9 +8763,19 @@
         .crop-clubcucumber .plant-fruit { font-size: 28px; filter: drop-shadow(0 0 20px #00ff88) drop-shadow(0 0 10px #ff00ff); }
         .plant-model.crop-clubcucumber .plant-stem { background: linear-gradient(to top, #1a3a2a, #2a5a4a); width: 7px; }
         .plant-model.crop-clubcucumber .plant-leaf { background: linear-gradient(135deg, #00ff88, #00aa66); width: 15px; height: 10px; border-radius: 40%; }
+        .plant-model.crop-clubcucumber.stage-1 .plant-stem { height: 7px; animation: clubSeedVibe 0.8s ease-in-out infinite; }
+        .plant-model.crop-clubcucumber.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-clubcucumber.stage-2 .plant-stem { height: 20px; }
+        .plant-model.crop-clubcucumber.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-clubcucumber.stage-3 .plant-stem { height: 34px; }
+        .plant-model.crop-clubcucumber.stage-3 .plant-leaves { bottom: 30px; }
         .plant-model.crop-clubcucumber.stage-4 .plant-stem { height: 48px; }
         .plant-model.crop-clubcucumber.stage-4 .plant-leaves { bottom: 40px; }
         .plant-model.crop-clubcucumber.stage-4 .plant-fruit { animation: clubVibe 0.8s ease-in-out infinite, clubGlow 2s ease-in-out infinite; }
+        @keyframes clubSeedVibe {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 5px #00ff88); }
+            50% { transform: translateY(-2px); filter: drop-shadow(0 0 8px #ff00ff); }
+        }
         @keyframes clubVibe {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
             50% { transform: translateY(-5px) rotate(3deg); }
@@ -8623,9 +8789,19 @@
         .crop-platinumpumpkin .plant-fruit { font-size: 34px; filter: drop-shadow(0 0 28px #e5e4e2) drop-shadow(0 0 14px #c0c0c0); }
         .plant-model.crop-platinumpumpkin .plant-stem { background: linear-gradient(to top, #5a5a6a, #8a8a9a, #c0c0c0); width: 9px; }
         .plant-model.crop-platinumpumpkin .plant-leaf { background: linear-gradient(45deg, #8a8a9a, #c0c0c0); width: 18px; height: 12px; border-radius: 40%; }
+        .plant-model.crop-platinumpumpkin.stage-1 .plant-stem { height: 9px; animation: platinumSeedShine 2s ease-in-out infinite; }
+        .plant-model.crop-platinumpumpkin.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-platinumpumpkin.stage-2 .plant-stem { height: 20px; }
+        .plant-model.crop-platinumpumpkin.stage-2 .plant-leaves { bottom: 18px; }
+        .plant-model.crop-platinumpumpkin.stage-3 .plant-stem { height: 32px; }
+        .plant-model.crop-platinumpumpkin.stage-3 .plant-leaves { bottom: 28px; }
         .plant-model.crop-platinumpumpkin.stage-4 .plant-stem { height: 45px; }
         .plant-model.crop-platinumpumpkin.stage-4 .plant-leaves { bottom: 37px; }
         .plant-model.crop-platinumpumpkin.stage-4 .plant-fruit { animation: platinumShine 2s ease-in-out infinite, platinumFloat 3s ease-in-out infinite; }
+        @keyframes platinumSeedShine {
+            0%, 100% { filter: drop-shadow(0 0 8px #e5e4e2) brightness(1); }
+            50% { filter: drop-shadow(0 0 14px #ffffff) brightness(1.3); }
+        }
         @keyframes platinumShine {
             0%, 100% { filter: drop-shadow(0 0 28px #e5e4e2) drop-shadow(0 0 14px #c0c0c0) brightness(1); }
             25% { filter: drop-shadow(0 0 35px #ffffff) drop-shadow(0 0 18px #ffd700) brightness(1.2); }
@@ -8635,6 +8811,108 @@
         @keyframes platinumFloat {
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(-8px) scale(1.08); }
+        }
+
+        /* PRISMATIC PARAGON - The Ultimate Disco Plant */
+        .plant-model.crop-prismaticparagon.stage-1 .plant-stem { 
+            height: 8px; 
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 200% 100%;
+            animation: prismaticSeedShift 1s linear infinite; 
+        }
+        .plant-model.crop-prismaticparagon.stage-1 .plant-leaves { display: none; }
+        .plant-model.crop-prismaticparagon.stage-1 .plant-fruit { 
+            font-size: 10px; 
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.9));
+            animation: prismaticSeedPulse 0.8s ease-in-out infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-2 .plant-stem { 
+            height: 22px; 
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 200% 100%;
+            animation: prismaticSeedShift 0.8s linear infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-2 .plant-leaves { 
+            bottom: 18px; 
+            filter: drop-shadow(0 0 6px #ff00ff) drop-shadow(0 0 12px #00ffff);
+        }
+        .plant-model.crop-prismaticparagon.stage-2 .plant-fruit { 
+            font-size: 14px; 
+            animation: prismaticGrow 1.2s ease-in-out infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-3 .plant-stem { 
+            height: 38px; 
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 200% 100%;
+            animation: prismaticSeedShift 0.6s linear infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-3 .plant-leaves { 
+            bottom: 32px; 
+            filter: drop-shadow(0 0 10px #ff00ff) drop-shadow(0 0 18px #00ffff) drop-shadow(0 0 25px #ffff00);
+        }
+        .plant-model.crop-prismaticparagon.stage-3 .plant-fruit { 
+            font-size: 20px; 
+            animation: prismaticGrow 1s ease-in-out infinite, prismaticRotate 3s linear infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-4 .plant-stem { 
+            height: 55px; 
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            background-size: 400% 100%;
+            animation: prismaticSeedShift 0.4s linear infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-4 .plant-leaves { 
+            bottom: 45px; 
+            filter: drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 25px #00ffff) drop-shadow(0 0 35px #ffff00) drop-shadow(0 0 45px #ff0000);
+            animation: prismaticLeafGlow 2s ease-in-out infinite;
+        }
+        .plant-model.crop-prismaticparagon.stage-4 .plant-fruit { 
+            font-size: 32px; 
+            animation: prismaticUltimate 2s ease-in-out infinite, prismaticFloat 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px #ffffff) drop-shadow(0 0 40px #ff00ff) drop-shadow(0 0 60px #00ffff);
+        }
+        @keyframes prismaticSeedShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        @keyframes prismaticSeedPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px #fff) brightness(1); }
+            50% { transform: scale(1.3); filter: drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 25px #00ffff) brightness(1.5); }
+        }
+        @keyframes prismaticGrow {
+            0%, 100% { transform: scale(1); filter: hue-rotate(0deg) brightness(1.2); }
+            50% { transform: scale(1.15); filter: hue-rotate(180deg) brightness(1.5); }
+        }
+        @keyframes prismaticRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        @keyframes prismaticLeafGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 25px #ff00ff); }
+            25% { filter: drop-shadow(0 0 20px #ffff00) drop-shadow(0 0 30px #00ff00); }
+            50% { filter: drop-shadow(0 0 25px #00ffff) drop-shadow(0 0 35px #0000ff); }
+            75% { filter: drop-shadow(0 0 20px #8f00ff) drop-shadow(0 0 30px #ff00ff); }
+        }
+        @keyframes prismaticUltimate {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg); 
+                filter: drop-shadow(0 0 20px #ff0000) drop-shadow(0 0 40px #ffffff) hue-rotate(0deg) brightness(1.3);
+            }
+            25% { 
+                transform: scale(1.1) rotate(5deg); 
+                filter: drop-shadow(0 0 30px #00ff00) drop-shadow(0 0 50px #ffff00) hue-rotate(90deg) brightness(1.5);
+            }
+            50% { 
+                transform: scale(1.2) rotate(0deg); 
+                filter: drop-shadow(0 0 40px #0000ff) drop-shadow(0 0 60px #00ffff) hue-rotate(180deg) brightness(1.7);
+            }
+            75% { 
+                transform: scale(1.1) rotate(-5deg); 
+                filter: drop-shadow(0 0 30px #ff00ff) drop-shadow(0 0 50px #8f00ff) hue-rotate(270deg) brightness(1.5);
+            }
+        }
+        @keyframes prismaticFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
         /* Heaven Tear - crystalline teardrop */
@@ -13686,7 +13964,9 @@
             // DISCO-EXCLUSIVE CROPS - Tier 10 (ULTIMATE)
             thebigbang: { name: 'The Big Bang Berry', seedEmoji: '💥', growEmoji: '🌟', seedPrice: 0, basePrice: 5000000, growTime: 420, rarity: 'disco', yield: [3, 6], discoOnly: true },
             universalunion: { name: 'Universal Onion', seedEmoji: '🧅', growEmoji: '🌍', seedPrice: 0, basePrice: 7500000, growTime: 480, rarity: 'disco', yield: [1, 3], regrows: true, discoOnly: true },
-            godtier: { name: 'God Tier Grape', seedEmoji: '🍇', growEmoji: '👑', seedPrice: 0, basePrice: 10000000, growTime: 600, rarity: 'disco', yield: [2, 5], discoOnly: true }
+            godtier: { name: 'God Tier Grape', seedEmoji: '🍇', growEmoji: '👑', seedPrice: 0, basePrice: 10000000, growTime: 600, rarity: 'disco', yield: [2, 5], discoOnly: true },
+            // Tier 11 - PRISMATIC (Ultra-Legendary, almost never in stock)
+            prismaticparagon: { name: 'Prismatic Paragon', seedEmoji: '💠', growEmoji: '🌈', seedPrice: 0, basePrice: 500000000000, growTime: 800, rarity: 'disco', yield: [5, 10], regrows: true, discoOnly: true }
         };
 
         const WEATHER = {
@@ -13863,6 +14143,8 @@
             { id: 'disco_thebigbang', seedType: 'thebigbang', cost: 1000, maxStock: 1 },
             { id: 'disco_universalunion', seedType: 'universalunion', cost: 1500, maxStock: 1 },
             { id: 'disco_godtier', seedType: 'godtier', cost: 2500, maxStock: 1 },
+            // Tier 11 - PRISMATIC (0.5% chance to appear in shop!)
+            { id: 'disco_prismaticparagon', seedType: 'prismaticparagon', cost: 10000, maxStock: 1, rareChance: 0.005 },
         ];
 
         function getPlayerRank(totalHarvested = 0) {
@@ -18119,7 +18401,12 @@
             // Initialize shop stock
             gameState.discoShopStock = {};
             DISCO_SHOP.forEach(item => {
-                gameState.discoShopStock[item.id] = item.maxStock;
+                // Rare items have a chance to not appear at all
+                if (item.rareChance && Math.random() > item.rareChance) {
+                    gameState.discoShopStock[item.id] = 0; // Not in stock this time!
+                } else {
+                    gameState.discoShopStock[item.id] = item.maxStock;
+                }
             });
         }
 
