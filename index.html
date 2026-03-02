@@ -15739,7 +15739,7 @@
             
             // Filter out wheel-only and crate-only pets
             const sortedPets = Object.entries(PETS)
-                .filter(([id, pet]) => !pet.wheelOnly && !pet.crateOnly)
+                .filter(([id, pet]) => !pet.wheelOnly && !pet.crateOnly && !pet.discoOnly)
                 .sort((a, b) => a[1].price - b[1].price);
             
             for (const [id, pet] of sortedPets) {
