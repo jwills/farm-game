@@ -19524,9 +19524,13 @@
             if (!message) return;
             
             // Check for admin commands
-            if (message.startsWith('/') && gameState.isAdmin) {
-                await handleAdminCommand(message);
-                input.value = '';
+            if (message.startsWith('/')) {
+                if (gameState.isAdmin) {
+                    await handleAdminCommand(message);
+                    input.value = '';
+                } else {
+                    showMessage('❌ Admin commands require admin privileges');
+                }
                 return;
             }
             
@@ -19555,6 +19559,17 @@
             const parts = message.slice(1).split(' ');
             const command = parts[0].toLowerCase();
             const args = parts.slice(1).join(' ');
+            
+            // Client-side help command
+            if (command === 'help') {
+                showMessage('🛡️ Admin Commands:');
+                showMessage('/setweather <type> - disco, supercell, heaven, hellscape, timeanomaly, sunny, rainy, etc');
+                showMessage('/extendweather - Add 5 minutes to current weather');
+                showMessage('/broadcast <msg> - System announcement');
+                showMessage('/kick <name> - Kick player');
+                showMessage('/listplayers - List all players');
+                return;
+            }
             
             try {
                 const res = await fetch(`${API_BASE}/admin/command`, {
@@ -20375,11 +20390,11 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 init();
-                setTimeout(() => renderNeighborhoodStatus(), 100);
+                setTimeout(() => { renderNeighborhoodStatus(); checkAdminStatus(); }, 100);
             });
         } else {
             init();
-            setTimeout(() => renderNeighborhoodStatus(), 100);
+            setTimeout(() => { renderNeighborhoodStatus(); checkAdminStatus(); }, 100);
         }
     </script>
     
