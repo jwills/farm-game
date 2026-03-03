@@ -128,6 +128,48 @@
             grid-template-columns: repeat(8, var(--plot-size, 130px));
         }
 
+        /* Extra Beds */
+        .extra-beds-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .extra-bed {
+            display: grid;
+            grid-template-columns: repeat(3, 90px);
+            grid-template-rows: repeat(2, 90px);
+            gap: 5px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3), rgba(101, 67, 33, 0.4));
+            border: 3px solid #8B5A2B;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 2px 10px rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .extra-bed::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #8B5A2B, #654321);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .extra-bed .plot {
+            width: 90px;
+            height: 90px;
+        }
+
         .expand-btn {
             font-size: 0.7rem;
             padding: 4px 10px;
@@ -13673,6 +13715,11 @@
                     </div>
                     <div class="player-shadow" id="player-shadow"></div>
                 </div>
+                
+                <div class="extra-beds-container" id="extra-beds-container" style="display: none;">
+                    <div class="extra-bed" id="extra-bed-1"></div>
+                    <div class="extra-bed" id="extra-bed-2"></div>
+                </div>
 
                 <div class="neighborhood-section">
                     <h2>🏡 Neighborhood</h2>
@@ -14997,14 +15044,53 @@
             renderInventory();
         }
 
+        const EXTRA_BEDS = [
+            { cost: 5000000000000, label: 'Extra Bed 1 ($5T)', plots: 6 },
+            { cost: 25000000000000, label: 'Extra Bed 2 ($25T)', plots: 6 }
+        ];
+
+        function buyExtraBed() {
+            const bedCount = gameState.extraBeds || 0;
+            if (bedCount >= EXTRA_BEDS.length) {
+                showMessage('All extra beds purchased! 🛏️');
+                return;
+            }
+            const bed = EXTRA_BEDS[bedCount];
+            if (gameState.money < bed.cost) {
+                showMessage(`Need $${formatNumber(bed.cost)} for extra bed! 💰`);
+                return;
+            }
+            gameState.money -= bed.cost;
+            gameState.extraBeds = bedCount + 1;
+            // Add 6 plots for this bed
+            for (let i = 0; i < bed.plots; i++) {
+                gameState.plots.push(null);
+            }
+            showMessage(`Extra bed ${bedCount + 1} purchased! +6 plots! 🛏️🎉`);
+            updateExpandButton();
+            renderFarm();
+            renderInventory();
+        }
+
         function updateExpandButton() {
             const btn = document.getElementById('expand-farm-btn');
             if (!btn) return;
             const level = getFarmExpansionLevel();
+            const bedCount = gameState.extraBeds || 0;
+            
+            // Check if main farm is fully expanded
             if (level >= FARM_EXPANSIONS.length) {
-                btn.textContent = '✅ Fully Expanded!';
-                btn.classList.add('purchased');
-                btn.onclick = null;
+                // Check if extra beds are available
+                if (bedCount >= EXTRA_BEDS.length) {
+                    btn.textContent = '✅ Fully Expanded!';
+                    btn.classList.add('purchased');
+                    btn.onclick = null;
+                } else {
+                    const nextBed = EXTRA_BEDS[bedCount];
+                    btn.textContent = `🛏️ ${nextBed.label}`;
+                    btn.classList.remove('purchased');
+                    btn.onclick = buyExtraBed;
+                }
             } else {
                 const next = FARM_EXPANSIONS[level];
                 btn.textContent = `🔓 Expand to ${next.label}`;
@@ -15030,9 +15116,44 @@
             // Update expand button state
             updateExpandButton();
             
+            // Calculate main farm size (64 max without extra beds)
+            const mainFarmSize = 64;
+            const bedCount = gameState.extraBeds || 0;
+            
+            // Setup extra beds container
+            const extraBedsContainer = document.getElementById('extra-beds-container');
+            const extraBed1 = document.getElementById('extra-bed-1');
+            const extraBed2 = document.getElementById('extra-bed-2');
+            
+            if (bedCount > 0) {
+                extraBedsContainer.style.display = 'flex';
+                extraBed1.innerHTML = '';
+                extraBed1.dataset.label = '🛏️ Extra Bed 1';
+                extraBed1.style.display = 'grid';
+                if (bedCount > 1) {
+                    extraBed2.innerHTML = '';
+                    extraBed2.dataset.label = '🛏️ Extra Bed 2';
+                    extraBed2.style.display = 'grid';
+                } else {
+                    extraBed2.style.display = 'none';
+                }
+            } else {
+                extraBedsContainer.style.display = 'none';
+            }
+            
             gameState.plots.forEach((plot, index) => {
                 const div = document.createElement('div');
-                div.className = 'plot' + (isAdjacentToPlayer(index) ? ' adjacent' : '');
+                
+                // Determine which container this plot belongs to
+                let targetContainer = container;
+                if (index >= mainFarmSize && index < mainFarmSize + 6) {
+                    targetContainer = extraBed1;
+                } else if (index >= mainFarmSize + 6) {
+                    targetContainer = extraBed2;
+                }
+                
+                // Only add adjacent class for main farm plots
+                div.className = 'plot' + (index < mainFarmSize && isAdjacentToPlayer(index) ? ' adjacent' : '');
                 div.dataset.index = index;
                 
                 if (plot && plot.isEgg) {
@@ -15208,7 +15329,7 @@
                     }
                 }
                 
-                container.appendChild(div);
+                targetContainer.appendChild(div);
             });
 
             // Re-add player elements
