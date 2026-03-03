@@ -551,8 +551,8 @@ func pickNewWeather(current string) string {
 	if roll < 0.20 {
 		return "heaven"
 	}
-	// 10% chance for disco
-	if roll < 0.30 {
+	// 20% chance for disco
+	if roll < 0.40 {
 		return "disco"
 	}
 
