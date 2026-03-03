@@ -28,9 +28,10 @@ type ChatMessage struct {
 }
 
 type Gift struct {
-	CropType   string   `json:"cropType"`
-	SizeIndex  int      `json:"sizeIndex"`
-	Mutations  []string `json:"mutations"`
+	CropType   string   `json:"cropType,omitempty"`
+	SizeIndex  int      `json:"sizeIndex,omitempty"`
+	Mutations  []string `json:"mutations,omitempty"`
+	PetId      string   `json:"petId,omitempty"`
 	ToPlayer   string   `json:"toPlayer"`
 	FromPlayer string   `json:"fromPlayer"`
 	Claimed    bool     `json:"claimed"`
@@ -71,6 +72,8 @@ func main() {
 	http.HandleFunc("/api/neighborhood/gift/claim", corsMiddleware(handleGiftClaim))
 	http.HandleFunc("/api/neighborhood/gift/decline", corsMiddleware(handleGiftDecline))
 	http.HandleFunc("/api/neighborhood/gift/reclaim", corsMiddleware(handleGiftReclaim))
+	http.HandleFunc("/api/neighborhood/gift/pet/send", corsMiddleware(handlePetGiftSend))
+	http.HandleFunc("/api/neighborhood/gift/pet/claim", corsMiddleware(handlePetGiftClaim))
 	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
 
 	// Serve static files from parent directory
@@ -828,5 +831,146 @@ func handleGiftReclaim(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": false,
 		"error":   "Gift not found",
+	})
+}
+
+
+func handlePetGiftSend(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerID   string `json:"playerId"`
+		PlayerName string `json:"playerName"`
+		ToPlayer   string `json:"toPlayer"`
+		PetId      string `json:"petId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Create pet gift message
+	hood.MsgID++
+	msg := ChatMessage{
+		ID:         hood.MsgID,
+		PlayerID:   req.PlayerID,
+		PlayerName: req.PlayerName,
+		Message:    fmt.Sprintf("sent a pet to %s!", req.ToPlayer),
+		Timestamp:  time.Now(),
+		Gift: &Gift{
+			PetId:      req.PetId,
+			ToPlayer:   req.ToPlayer,
+			FromPlayer: req.PlayerName,
+			Claimed:    false,
+		},
+	}
+
+	hood.Messages = append(hood.Messages, msg)
+
+	// Keep only last 50 messages
+	if len(hood.Messages) > 50 {
+		hood.Messages = hood.Messages[len(hood.Messages)-50:]
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"message": msg,
+	})
+}
+
+func handlePetGiftClaim(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerName string `json:"playerName"`
+		MessageID  int64  `json:"messageId"`
+		PetCount   int    `json:"petCount"` // How many of this pet the claimer already has
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Neighborhood not found"})
+		return
+	}
+
+	// Find the message with the pet gift
+	for i := range hood.Messages {
+		msg := &hood.Messages[i]
+		if msg.ID == req.MessageID && msg.Gift != nil && msg.Gift.PetId != "" {
+			if msg.Gift.Claimed {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Pet already claimed",
+				})
+				return
+			}
+			if msg.Gift.Declined {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Pet was declined",
+				})
+				return
+			}
+			if msg.Gift.Reclaimed {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Pet was reclaimed",
+				})
+				return
+			}
+			// Check if this gift is for the requester
+			if msg.Gift.ToPlayer != req.PlayerName {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "This pet is not for you",
+				})
+				return
+			}
+			// Check if recipient already has 3 of this pet
+			if req.PetCount >= 3 {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "You already have 3 of this pet!",
+				})
+				return
+			}
+			msg.Gift.Claimed = true
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": true,
+				"gift":    msg.Gift,
+			})
+			return
+		}
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": false,
+		"error":   "Pet gift not found",
 	})
 }

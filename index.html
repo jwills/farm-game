@@ -10584,6 +10584,70 @@
             cursor: not-allowed;
         }
 
+        /* Pet gift panel */
+        .gift-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .gift-tab {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            background: #e0e0e0;
+            transition: all 0.2s;
+        }
+        .gift-tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .gift-tab:hover:not(.active) {
+            background: #d0d0d0;
+        }
+        .gift-pet-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+        .gift-pet-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            min-width: 70px;
+            transition: all 0.2s;
+        }
+        .gift-pet-item:hover {
+            transform: scale(1.05);
+            border-color: #4CAF50;
+        }
+        .gift-pet-item.selected {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        .gift-pet-item .pet-emoji {
+            font-size: 28px;
+        }
+        .gift-pet-item .pet-name {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 4px;
+            color: #555;
+        }
+        .gift-content { display: none; }
+        .gift-content.active { display: block; }
+
         .chat-message.gift {
             background: linear-gradient(135deg, #fff5f8, #ffe0e8);
             border: 1px solid #ff6b9d;
@@ -13752,8 +13816,18 @@
                                 <label>To:</label>
                                 <select id="gift-recipient-select"></select>
                             </div>
-                            <div class="gift-select-label">Select a crop to gift:</div>
-                            <div class="gift-items" id="gift-items"></div>
+                            <div class="gift-tabs">
+                                <button class="gift-tab active" onclick="switchGiftTab('crops')">🌾 Crops</button>
+                                <button class="gift-tab" onclick="switchGiftTab('pets')">🐾 Pets</button>
+                            </div>
+                            <div id="gift-crops-content" class="gift-content active">
+                                <div class="gift-select-label">Select a crop to gift:</div>
+                                <div class="gift-items" id="gift-items"></div>
+                            </div>
+                            <div id="gift-pets-content" class="gift-content">
+                                <div class="gift-select-label">Select a pet to gift:</div>
+                                <div class="gift-pet-items" id="gift-pet-items"></div>
+                            </div>
                             <div class="gift-selected" id="gift-selected"></div>
                             <div class="gift-buttons">
                                 <button class="gift-cancel-btn" onclick="toggleGiftPanel()">Cancel</button>
@@ -19459,7 +19533,9 @@
             messages.forEach(msg => {
                 const isOwn = msg.playerId === playerId;
                 const div = document.createElement('div');
-                const hasGift = msg.gift && msg.gift.cropType;
+                const hasCropGift = msg.gift && msg.gift.cropType;
+                const hasPetGift = msg.gift && msg.gift.petId;
+                const hasGift = hasCropGift || hasPetGift;
                 div.className = `chat-message${isOwn ? ' own' : ''}${hasGift ? ' gift' : ''}`;
                 
                 const time = new Date(msg.timestamp);
@@ -19471,8 +19547,8 @@
                     <span class="text">${escapeHtml(msg.message)}</span>
                 `;
                 
-                // Add gift box if this is a gift message
-                if (hasGift) {
+                // Add gift box if this is a crop gift message
+                if (hasCropGift) {
                     const crop = CROPS[msg.gift.cropType];
                     const sizeName = SIZES[msg.gift.sizeIndex]?.name || 'Medium';
                     const isForMe = msg.gift.toPlayer === playerName;
@@ -19490,6 +19566,42 @@
                         html += `<button class="decline-gift-btn" onclick="declineGift(${msg.id})">Decline</button>`;
                     } else if (isFromMe && !isClaimed && !isDeclined && !isReclaimed) {
                         html += `<button class="decline-gift-btn" onclick="reclaimGift(${msg.id})">Take Back</button>`;
+                    } else if (isClaimed) {
+                        html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
+                    } else if (isDeclined) {
+                        html += `<span style="color:#e74c3c;font-size:11px;">Declined ✗</span>`;
+                    } else if (isReclaimed) {
+                        html += `<span style="color:#f39c12;font-size:11px;">Taken Back ↩</span>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                // Add gift box if this is a pet gift message
+                if (hasPetGift) {
+                    const pet = PETS[msg.gift.petId];
+                    const isForMe = msg.gift.toPlayer === playerName;
+                    const isFromMe = msg.gift.fromPlayer === playerName || msg.playerName === playerName;
+                    const isClaimed = msg.gift.claimed;
+                    const isDeclined = msg.gift.declined;
+                    const isReclaimed = msg.gift.reclaimed;
+                    
+                    // Check if recipient already has 3 of this pet
+                    const recipientPetCount = isForMe ? getPetCount(msg.gift.petId) : 0;
+                    const canClaim = recipientPetCount < 3;
+                    
+                    html += `<div class="gift-box">`;
+                    html += `<span class="gift-emoji">${pet?.emoji || '🐾'}</span>`;
+                    html += `<span class="gift-info">${pet?.name || msg.gift.petId}</span>`;
+                    
+                    if (isForMe && !isClaimed && !isDeclined && !isReclaimed) {
+                        if (canClaim) {
+                            html += `<button class="claim-gift-btn" onclick="claimPetGift(${msg.id}, '${msg.gift.petId}')">Claim!</button>`;
+                        } else {
+                            html += `<span style="color:#e74c3c;font-size:11px;">Max 3 owned</span>`;
+                        }
+                        html += `<button class="decline-gift-btn" onclick="declineGift(${msg.id})">Decline</button>`;
+                    } else if (isFromMe && !isClaimed && !isDeclined && !isReclaimed) {
+                        html += `<button class="decline-gift-btn" onclick="reclaimPetGift(${msg.id}, '${msg.gift.petId}')">Take Back</button>`;
                     } else if (isClaimed) {
                         html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
                     } else if (isDeclined) {
@@ -19537,9 +19649,27 @@
         }
 
         let selectedGiftIndex = null;
+        let selectedGiftPetId = null;
+        let currentGiftTab = 'crops';
+
+        function switchGiftTab(tab) {
+            currentGiftTab = tab;
+            document.querySelectorAll('.gift-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.gift-content').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.gift-tab:nth-child(${tab === 'crops' ? 1 : 2})`).classList.add('active');
+            document.getElementById(tab === 'crops' ? 'gift-crops-content' : 'gift-pets-content').classList.add('active');
+            // Clear selection when switching tabs
+            selectedGiftIndex = null;
+            selectedGiftPetId = null;
+            document.getElementById('gift-selected').innerHTML = '';
+            document.getElementById('gift-send-btn').disabled = true;
+            document.querySelectorAll('.gift-item, .gift-pet-item').forEach(el => el.classList.remove('selected'));
+        }
 
         function renderGiftPanel() {
             selectedGiftIndex = null;
+            selectedGiftPetId = null;
+            currentGiftTab = 'crops';
             
             // Populate recipient dropdown with neighborhood players
             const select = document.getElementById('gift-recipient-select');
@@ -19599,9 +19729,82 @@
                 div.onclick = () => selectGiftItem(index);
                 container.appendChild(div);
             });
+            
+            // Populate pet gift items
+            renderGiftPetItems();
+        }
+        
+        function renderGiftPetItems() {
+            const container = document.getElementById('gift-pet-items');
+            container.innerHTML = '';
+            
+            // Get owned pets that are NOT equipped (can be gifted)
+            const equippedCounts = {};
+            (gameState.equippedPets || []).forEach(p => {
+                equippedCounts[p] = (equippedCounts[p] || 0) + 1;
+            });
+            
+            const ownedCounts = {};
+            (gameState.pets || []).forEach(p => {
+                ownedCounts[p] = (ownedCounts[p] || 0) + 1;
+            });
+            
+            // Calculate unequipped pets available to gift
+            const giftablePets = [];
+            for (const [petId, count] of Object.entries(ownedCounts)) {
+                const equippedOfThis = equippedCounts[petId] || 0;
+                const unequippedOfThis = count - equippedOfThis;
+                for (let i = 0; i < unequippedOfThis; i++) {
+                    giftablePets.push(petId);
+                }
+            }
+            
+            if (giftablePets.length === 0) {
+                container.innerHTML = '<div style="color:#999;text-align:center;width:100%;padding:20px;">No unequipped pets to gift.<br><small>Unequip a pet first to gift it.</small></div>';
+                return;
+            }
+            
+            // Show each giftable pet (grouped by type)
+            const petGroups = {};
+            giftablePets.forEach(petId => {
+                if (!petGroups[petId]) petGroups[petId] = 0;
+                petGroups[petId]++;
+            });
+            
+            for (const [petId, count] of Object.entries(petGroups)) {
+                const pet = PETS[petId];
+                if (!pet) continue;
+                
+                const div = document.createElement('div');
+                div.className = 'gift-pet-item';
+                div.dataset.petId = petId;
+                div.innerHTML = `
+                    <span class="pet-emoji">${pet.emoji}</span>
+                    <span class="pet-name">${pet.name}${count > 1 ? ` (${count})` : ''}</span>
+                `;
+                div.onclick = () => selectGiftPet(petId);
+                container.appendChild(div);
+            }
+        }
+        
+        function selectGiftPet(petId) {
+            selectedGiftPetId = petId;
+            selectedGiftIndex = null; // Clear crop selection
+            
+            const pet = PETS[petId];
+            
+            // Update visual selection
+            document.querySelectorAll('.gift-item, .gift-pet-item').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.gift-pet-item[data-pet-id="${petId}"]`)?.classList.add('selected');
+            
+            document.getElementById('gift-selected').innerHTML = 
+                `Selected: <strong>${pet.emoji} ${pet.name}</strong>`;
+            
+            document.getElementById('gift-send-btn').disabled = false;
         }
 
         function selectGiftItem(index) {
+            selectedGiftPetId = null; // Clear pet selection
             selectedGiftIndex = index;
             const item = gameState.harvested[index];
             const crop = CROPS[item.type];
@@ -19628,11 +19831,72 @@
         }
 
         async function sendSelectedGift() {
+            if (selectedGiftPetId) {
+                await sendPetGift(selectedGiftPetId);
+                return;
+            }
             if (selectedGiftIndex === null) {
-                showMessage('Select a crop to gift!');
+                showMessage('Select a crop or pet to gift!');
                 return;
             }
             await sendGift(selectedGiftIndex);
+        }
+        
+        async function sendPetGift(petId) {
+            const recipient = document.getElementById('gift-recipient-select').value;
+            if (!recipient) {
+                showMessage('Select a neighbor to gift!');
+                return;
+            }
+            
+            const pet = PETS[petId];
+            if (!pet) {
+                showMessage('Pet not found!');
+                return;
+            }
+            
+            // Check if we own this pet (unequipped)
+            const equippedCounts = {};
+            (gameState.equippedPets || []).forEach(p => {
+                equippedCounts[p] = (equippedCounts[p] || 0) + 1;
+            });
+            const totalOwned = (gameState.pets || []).filter(p => p === petId).length;
+            const equipped = equippedCounts[petId] || 0;
+            const unequipped = totalOwned - equipped;
+            
+            if (unequipped <= 0) {
+                showMessage('No unequipped pets of this type to gift!');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/pet/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerId: getPlayerId(),
+                        playerName: gameState.playerName,
+                        toPlayer: recipient,
+                        petId: petId
+                    })
+                });
+                
+                if (res.ok) {
+                    // Remove one pet from inventory
+                    const petIndex = gameState.pets.indexOf(petId);
+                    if (petIndex !== -1) {
+                        gameState.pets.splice(petIndex, 1);
+                    }
+                    showMessage(`\ud83c\udf81 Sent ${pet.emoji} ${pet.name} to ${recipient}!`);
+                    toggleGiftPanel();
+                    renderPetShop();
+                    await fetchChatMessages();
+                }
+            } catch (err) {
+                console.log('Send pet gift failed:', err);
+                showMessage('Failed to send pet gift!');
+            }
         }
 
         async function sendGift(itemIndex) {
@@ -19783,6 +20047,80 @@
             } catch (err) {
                 console.log('Reclaim gift failed:', err);
                 showMessage('Failed to take back gift!');
+            }
+        }
+        
+        async function claimPetGift(messageId, petId) {
+            // Check if we already have 3 of this pet
+            const currentCount = getPetCount(petId);
+            if (currentCount >= 3) {
+                showMessage('You already have 3 of this pet!');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/pet/claim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId,
+                        petCount: currentCount
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success && data.gift) {
+                    // Add pet to inventory
+                    if (!gameState.pets) gameState.pets = [];
+                    gameState.pets.push(data.gift.petId);
+                    const pet = PETS[data.gift.petId];
+                    showMessage(`\ud83c\udf81 Received ${pet?.emoji || ''} ${pet?.name || data.gift.petId}!`);
+                    renderPetShop();
+                    saveGame();
+                    // Refresh chat to show claimed status
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to claim pet');
+                }
+            } catch (err) {
+                console.log('Claim pet gift failed:', err);
+                showMessage('Failed to claim pet gift!');
+            }
+        }
+        
+        async function reclaimPetGift(messageId, petId) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/reclaim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success && data.gift && data.gift.petId) {
+                    // Add pet back to inventory
+                    if (!gameState.pets) gameState.pets = [];
+                    gameState.pets.push(data.gift.petId);
+                    const pet = PETS[data.gift.petId];
+                    showMessage(`\ud83c\udf81 Took back ${pet?.emoji || ''} ${pet?.name || data.gift.petId}!`);
+                    renderPetShop();
+                    saveGame();
+                    // Refresh chat to show reclaimed status
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to take back pet');
+                }
+            } catch (err) {
+                console.log('Reclaim pet gift failed:', err);
+                showMessage('Failed to take back pet gift!');
             }
         }
 
