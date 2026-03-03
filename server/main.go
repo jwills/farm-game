@@ -158,9 +158,26 @@ func handleJoin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mu.RLock()
+	mu.Lock()
+	defer mu.Unlock()
+
+	// Auto-create neighborhood 0804 if it doesn't exist (global neighborhood)
+	if req.Code == "0804" {
+		if _, exists := neighborhoods["0804"]; !exists {
+			neighborhoods["0804"] = &Neighborhood{
+				Code:         "0804",
+				OwnerID:      "system",
+				Farms:        make(map[string]FarmData),
+				Messages:     []ChatMessage{},
+				MsgID:        0,
+				Weather:      "sunny",
+				WeatherUntil: time.Now().Add(getWeatherDuration("sunny")),
+				Created:      time.Now(),
+			}
+		}
+	}
+
 	hood, exists := neighborhoods[req.Code]
-	mu.RUnlock()
 
 	if !exists {
 		w.WriteHeader(http.StatusNotFound)

@@ -14908,6 +14908,9 @@
             // Initialize daily tasks
             getDailyTasksState();
             updateDailyTasksButton();
+            
+            // Auto-join global neighborhood after a short delay
+            setTimeout(autoJoinGlobalNeighborhood, 2000);
         }
 
         function initializeStock() {
@@ -19262,6 +19265,33 @@
                 }
             } catch (err) {
                 showMessage('Could not create neighborhood ❌');
+            }
+        }
+
+        // Auto-join all players to the global neighborhood 0804
+        async function autoJoinGlobalNeighborhood() {
+            // Skip if already in a neighborhood
+            if (gameState.neighborhoodCode) return;
+            
+            // Need a player name first
+            if (!gameState.playerName) return;
+            
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: '0804', playerId: getPlayerId(), playerName: gameState.playerName })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    gameState.neighborhoodCode = '0804';
+                    saveGame();
+                    renderNeighborhoodStatus();
+                    syncFarmToNeighborhood();
+                    console.log('Auto-joined global neighborhood 0804');
+                }
+            } catch (err) {
+                console.log('Auto-join failed:', err);
             }
         }
 
