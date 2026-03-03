@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -33,6 +34,10 @@ type Gift struct {
 	SizeIndex  int      `json:"sizeIndex,omitempty"`
 	Mutations  []string `json:"mutations,omitempty"`
 	PetId      string   `json:"petId,omitempty"`
+	SeedType   string   `json:"seedType,omitempty"`   // For admin give command
+	SeedQty    int      `json:"seedQty,omitempty"`    // For admin give command
+	GearId     string   `json:"gearId,omitempty"`     // For admin give command
+	Money      int64    `json:"money,omitempty"`      // For admin give command
 	ToPlayer   string   `json:"toPlayer"`
 	FromPlayer string   `json:"fromPlayer"`
 	Claimed    bool     `json:"claimed"`
@@ -1151,6 +1156,130 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 			"players": players,
 		})
 
+	case "give":
+		// /give <player> <type> <item> [quantity]
+		// Types: seed, pet, gear, money
+		// Examples:
+		//   /give joe seed wheat 10
+		//   /give joe pet dragon
+		//   /give joe gear sprinkler_prismatic
+		//   /give joe money 1000000
+		parts := strings.Fields(req.Args)
+		if len(parts) < 3 {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Usage: /give <player> <type> <item> [quantity]",
+				"examples": []string{
+					"/give joe seed wheat 10",
+					"/give joe pet dragon",
+					"/give joe gear sprinkler_prismatic",
+					"/give joe money 1000000",
+				},
+			})
+			return
+		}
+
+		targetPlayer := parts[0]
+		giveType := strings.ToLower(parts[1])
+		itemId := strings.ToLower(parts[2])
+
+		// Find if target player exists in neighborhood
+		found := false
+		for _, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetPlayer) {
+				targetPlayer = farm.PlayerName // Use exact name
+				found = true
+				break
+			}
+		}
+		if !found {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player not found in neighborhood: " + targetPlayer,
+			})
+			return
+		}
+
+		var gift *Gift
+		var giftDesc string
+
+		switch giveType {
+		case "seed", "seeds":
+			qty := 1
+			if len(parts) >= 4 {
+				if q, err := strconv.Atoi(parts[3]); err == nil && q > 0 {
+					qty = q
+				}
+			}
+			gift = &Gift{
+				SeedType:   itemId,
+				SeedQty:    qty,
+				ToPlayer:   targetPlayer,
+				FromPlayer: "🛡️ Admin",
+			}
+			giftDesc = fmt.Sprintf("%d %s seeds", qty, itemId)
+
+		case "pet", "pets":
+			gift = &Gift{
+				PetId:      itemId,
+				ToPlayer:   targetPlayer,
+				FromPlayer: "🛡️ Admin",
+			}
+			giftDesc = itemId + " pet"
+
+		case "gear":
+			gift = &Gift{
+				GearId:     itemId,
+				ToPlayer:   targetPlayer,
+				FromPlayer: "🛡️ Admin",
+			}
+			giftDesc = itemId + " gear"
+
+		case "money", "cash", "coins":
+			amount, err := strconv.ParseInt(itemId, 10, 64)
+			if err != nil || amount <= 0 {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": false,
+					"error":   "Invalid money amount",
+				})
+				return
+			}
+			gift = &Gift{
+				Money:      amount,
+				ToPlayer:   targetPlayer,
+				FromPlayer: "🛡️ Admin",
+			}
+			giftDesc = fmt.Sprintf("$%d", amount)
+
+		default:
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Unknown gift type: " + giveType,
+				"types":   []string{"seed", "pet", "gear", "money"},
+			})
+			return
+		}
+
+		// Create gift message in chat
+		hood.MsgID++
+		msg := ChatMessage{
+			ID:         hood.MsgID,
+			PlayerID:   "ADMIN",
+			PlayerName: "🛡️ Admin",
+			Message:    fmt.Sprintf("sent %s to %s!", giftDesc, targetPlayer),
+			Timestamp:  time.Now(),
+			Gift:       gift,
+		}
+		hood.Messages = append(hood.Messages, msg)
+		if len(hood.Messages) > 50 {
+			hood.Messages = hood.Messages[len(hood.Messages)-50:]
+		}
+
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": fmt.Sprintf("Sent %s to %s", giftDesc, targetPlayer),
+		})
+
 	default:
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": false,
@@ -1161,6 +1290,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 				"/broadcast <msg> - Send system message",
 				"/kick <player> - Kick a player",
 				"/listplayers - List all players",
+				"/give <player> <type> <item> [qty] - Give items (seed/pet/gear/money)",
 			},
 		})
 	}

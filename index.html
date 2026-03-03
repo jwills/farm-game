@@ -19750,6 +19750,12 @@
                 adminLog('/broadcast <msg> - System message', 'info');
                 adminLog('/kick <name> - Kick player', 'info');
                 adminLog('/listplayers - List players', 'info');
+                adminLog('/give <player> <type> <item> [qty]', 'info');
+                adminLog('  Types: seed, pet, gear, money', 'info');
+                adminLog('  Ex: /give joe seed wheat 10', 'info');
+                adminLog('  Ex: /give joe pet dragon', 'info');
+                adminLog('  Ex: /give joe gear sprinkler_prismatic', 'info');
+                adminLog('  Ex: /give joe money 1000000', 'info');
                 return;
             }
             
@@ -19829,7 +19835,10 @@
                 const div = document.createElement('div');
                 const hasCropGift = msg.gift && msg.gift.cropType;
                 const hasPetGift = msg.gift && msg.gift.petId;
-                const hasGift = hasCropGift || hasPetGift;
+                const hasSeedGift = msg.gift && msg.gift.seedType;
+                const hasGearGift = msg.gift && msg.gift.gearId;
+                const hasMoneyGift = msg.gift && msg.gift.money;
+                const hasGift = hasCropGift || hasPetGift || hasSeedGift || hasGearGift || hasMoneyGift;
                 div.className = `chat-message${isOwn ? ' own' : ''}${hasGift ? ' gift' : ''}`;
                 
                 const time = new Date(msg.timestamp);
@@ -19906,6 +19915,61 @@
                     html += `</div>`;
                 }
                 
+                // Add gift box for seed gifts (admin give command)
+                if (hasSeedGift) {
+                    const crop = CROPS[msg.gift.seedType];
+                    const qty = msg.gift.seedQty || 1;
+                    const isForMe = msg.gift.toPlayer === playerName;
+                    const isClaimed = msg.gift.claimed;
+                    
+                    html += `<div class="gift-box">`;
+                    html += `<span class="gift-emoji">${crop?.seedEmoji || '🌱'}</span>`;
+                    html += `<span class="gift-info">${qty}x ${crop?.name || msg.gift.seedType} Seeds</span>`;
+                    
+                    if (isForMe && !isClaimed) {
+                        html += `<button class="claim-gift-btn" onclick="claimSeedGift(${msg.id}, '${msg.gift.seedType}', ${qty})">Claim!</button>`;
+                    } else if (isClaimed) {
+                        html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                // Add gift box for gear gifts (admin give command)
+                if (hasGearGift) {
+                    const gear = GEAR[msg.gift.gearId];
+                    const isForMe = msg.gift.toPlayer === playerName;
+                    const isClaimed = msg.gift.claimed;
+                    
+                    html += `<div class="gift-box">`;
+                    html += `<span class="gift-emoji">${gear?.emoji || '🔧'}</span>`;
+                    html += `<span class="gift-info">${gear?.name || msg.gift.gearId}</span>`;
+                    
+                    if (isForMe && !isClaimed) {
+                        html += `<button class="claim-gift-btn" onclick="claimGearGift(${msg.id}, '${msg.gift.gearId}')">Claim!</button>`;
+                    } else if (isClaimed) {
+                        html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                // Add gift box for money gifts (admin give command)
+                if (hasMoneyGift) {
+                    const amount = msg.gift.money;
+                    const isForMe = msg.gift.toPlayer === playerName;
+                    const isClaimed = msg.gift.claimed;
+                    
+                    html += `<div class="gift-box">`;
+                    html += `<span class="gift-emoji">💰</span>`;
+                    html += `<span class="gift-info">$${formatMoney(amount)}</span>`;
+                    
+                    if (isForMe && !isClaimed) {
+                        html += `<button class="claim-gift-btn" onclick="claimMoneyGift(${msg.id}, ${amount})">Claim!</button>`;
+                    } else if (isClaimed) {
+                        html += `<span style="color:#4CAF50;font-size:11px;">Claimed ✓</span>`;
+                    }
+                    html += `</div>`;
+                }
+                
                 div.innerHTML = html;
                 container.appendChild(div);
                 
@@ -19965,6 +20029,12 @@
             selectedGiftPetId = null;
             currentGiftTab = 'crops';
             
+            // Reset tab state to crops tab
+            document.querySelectorAll('.gift-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.gift-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('.gift-tab:nth-child(1)')?.classList.add('active');
+            document.getElementById('gift-crops-content')?.classList.add('active');
+            
             // Populate recipient dropdown with neighborhood players
             const select = document.getElementById('gift-recipient-select');
             select.innerHTML = '';
@@ -19995,8 +20065,7 @@
             
             if (gameState.harvested.length === 0) {
                 container.innerHTML = '<div style="color:#999;text-align:center;width:100%;">No harvested crops to gift</div>';
-                return;
-            }
+            } else {
             
             gameState.harvested.forEach((item, index) => {
                 const crop = CROPS[item.type];
@@ -20023,8 +20092,9 @@
                 div.onclick = () => selectGiftItem(index);
                 container.appendChild(div);
             });
+            }
             
-            // Populate pet gift items
+            // Populate pet gift items (always render, even if no crops)
             renderGiftPetItems();
         }
         
@@ -20415,6 +20485,108 @@
             } catch (err) {
                 console.log('Reclaim pet gift failed:', err);
                 showMessage('Failed to take back pet gift!');
+            }
+        }
+        
+        // Claim seed gift from admin /give command
+        async function claimSeedGift(messageId, seedType, quantity) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/claim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    // Add seeds to inventory
+                    if (!gameState.seeds) gameState.seeds = [];
+                    const existingSeed = gameState.seeds.find(s => s.type === seedType);
+                    if (existingSeed) {
+                        existingSeed.quantity += quantity;
+                    } else {
+                        gameState.seeds.push({ type: seedType, quantity: quantity });
+                    }
+                    const crop = CROPS[seedType];
+                    showMessage(`🎁 Received ${quantity}x ${crop?.name || seedType} Seeds!`);
+                    renderInventory();
+                    saveGame();
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to claim seeds');
+                }
+            } catch (err) {
+                console.log('Claim seed gift failed:', err);
+                showMessage('Failed to claim seed gift!');
+            }
+        }
+        
+        // Claim gear gift from admin /give command
+        async function claimGearGift(messageId, gearId) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/claim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    // Add gear to inventory
+                    if (!gameState.gear) gameState.gear = [];
+                    gameState.gear.push({ id: gearId, uses: GEAR[gearId]?.uses || 10 });
+                    const gear = GEAR[gearId];
+                    showMessage(`🎁 Received ${gear?.emoji || ''} ${gear?.name || gearId}!`);
+                    renderInventory();
+                    saveGame();
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to claim gear');
+                }
+            } catch (err) {
+                console.log('Claim gear gift failed:', err);
+                showMessage('Failed to claim gear gift!');
+            }
+        }
+        
+        // Claim money gift from admin /give command
+        async function claimMoneyGift(messageId, amount) {
+            try {
+                const res = await fetch(`${API_BASE}/neighborhood/gift/claim`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        messageId: messageId
+                    })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    // Add money
+                    gameState.money += amount;
+                    showMessage(`🎁 Received $${formatMoney(amount)}!`);
+                    updateMoneyDisplay();
+                    saveGame();
+                    gameState.lastChatMsgId = 0;
+                    await fetchAllChatMessages();
+                } else {
+                    showMessage(data.error || 'Failed to claim money');
+                }
+            } catch (err) {
+                console.log('Claim money gift failed:', err);
+                showMessage('Failed to claim money gift!');
             }
         }
 
