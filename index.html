@@ -13730,6 +13730,90 @@
                 padding-top: 60px;
             }
         }
+
+        /* Admin Panel */
+        .admin-panel {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 320px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            z-index: 10000;
+            font-family: monospace;
+            overflow: hidden;
+        }
+        .admin-panel.hidden { display: none; }
+        .admin-panel.collapsed .admin-body { display: none; }
+        .admin-panel.collapsed .admin-toggle { transform: rotate(-90deg); }
+        .admin-header {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            color: #1a1a2e;
+            padding: 8px 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-toggle {
+            transition: transform 0.2s;
+        }
+        .admin-body {
+            padding: 10px;
+        }
+        .admin-output {
+            background: #0a0a15;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 8px;
+            height: 150px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #0f0;
+        }
+        .admin-output .cmd { color: #ff0; }
+        .admin-output .success { color: #0f0; }
+        .admin-output .error { color: #f55; }
+        .admin-output .info { color: #5af; }
+        .admin-output div { margin: 2px 0; }
+        .admin-input-row {
+            display: flex;
+            gap: 6px;
+        }
+        .admin-input-row input {
+            flex: 1;
+            background: #0a0a15;
+            border: 1px solid #ffd700;
+            border-radius: 4px;
+            padding: 6px 10px;
+            color: #fff;
+            font-family: monospace;
+        }
+        .admin-input-row input:focus {
+            outline: none;
+            border-color: #ff8c00;
+        }
+        .admin-input-row button {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: #1a1a2e;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .admin-input-row button:hover {
+            filter: brightness(1.1);
+        }
+        .admin-help {
+            text-align: center;
+            color: #666;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -19616,9 +19700,81 @@
                 gameState.isAdmin = data.isAdmin;
                 if (gameState.isAdmin) {
                     console.log('🛡️ Admin mode enabled');
+                    showAdminPanel();
                 }
             } catch (err) {
                 console.log('Admin check failed:', err);
+            }
+        }
+
+        function showAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            if (panel) panel.classList.remove('hidden');
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            if (panel) panel.classList.toggle('collapsed');
+        }
+
+        function adminLog(message, type = 'info') {
+            const output = document.getElementById('admin-output');
+            if (!output) return;
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = message;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        async function runAdminCommand() {
+            const input = document.getElementById('admin-input');
+            let cmd = input.value.trim();
+            if (!cmd) return;
+            
+            // Add / prefix if missing
+            if (!cmd.startsWith('/')) cmd = '/' + cmd;
+            
+            input.value = '';
+            adminLog('> ' + cmd, 'cmd');
+            
+            const parts = cmd.slice(1).split(' ');
+            const command = parts[0].toLowerCase();
+            const args = parts.slice(1).join(' ');
+            
+            // Client-side help
+            if (command === 'help') {
+                adminLog('/setweather <type> - Set weather', 'info');
+                adminLog('  Types: disco, supercell, heaven, hellscape, timeanomaly, sunny, rainy, snow, thunder, etc', 'info');
+                adminLog('/extendweather - Extend by 5 min', 'info');
+                adminLog('/broadcast <msg> - System message', 'info');
+                adminLog('/kick <name> - Kick player', 'info');
+                adminLog('/listplayers - List players', 'info');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/admin/command`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        command: command,
+                        args: args
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    adminLog(data.message, 'success');
+                    if (command === 'listplayers' && data.players) {
+                        adminLog('Players: ' + data.players.join(', '), 'info');
+                    }
+                } else {
+                    adminLog(data.error, 'error');
+                }
+            } catch (err) {
+                adminLog('Command failed: ' + err.message, 'error');
             }
         }
 
@@ -20481,6 +20637,24 @@
             </div>
             <h3 style="color: #ff00ff; text-align: center; margin: 10px 0;">🛍️ Shop</h3>
             <div class="disco-shop-items" id="disco-shop-items"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel hidden">
+        <div class="admin-header" onclick="toggleAdminPanel()">
+            <span>🛡️ Admin Panel</span>
+            <span class="admin-toggle">▼</span>
+        </div>
+        <div class="admin-body">
+            <div class="admin-output" id="admin-output"></div>
+            <div class="admin-input-row">
+                <input type="text" id="admin-input" placeholder="/setweather disco" onkeydown="if(event.key==='Enter')runAdminCommand()">
+                <button onclick="runAdminCommand()">▶</button>
+            </div>
+            <div class="admin-help">
+                <small>/help for commands</small>
+            </div>
         </div>
     </div>
 </body>
