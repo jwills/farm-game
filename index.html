@@ -11400,6 +11400,108 @@
             50% { transform: scale(1.02); }
         }
 
+        /* Disco floor tiles */
+        .disco-floor {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            pointer-events: none;
+            z-index: 998;
+            perspective: 500px;
+            transform: rotateX(60deg);
+            transform-origin: bottom;
+        }
+
+        .disco-tile {
+            background: rgba(255,255,255,0.1);
+            animation: disco-tile-flash 1s ease-in-out infinite;
+        }
+
+        @keyframes disco-tile-flash {
+            0%, 100% { background: rgba(255,0,128,0.4); }
+            25% { background: rgba(0,255,255,0.4); }
+            50% { background: rgba(255,255,0,0.4); }
+            75% { background: rgba(128,0,255,0.4); }
+        }
+
+        /* Stagger the tile animations */
+        .disco-tile:nth-child(3n) { animation-delay: 0.1s; }
+        .disco-tile:nth-child(3n+1) { animation-delay: 0.2s; }
+        .disco-tile:nth-child(3n+2) { animation-delay: 0.3s; }
+        .disco-tile:nth-child(5n) { animation-delay: 0.15s; }
+        .disco-tile:nth-child(7n) { animation-delay: 0.25s; }
+
+        /* Disco sparkle particles */
+        .disco-sparkle {
+            position: fixed;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 1002;
+            animation: disco-sparkle-fall 3s linear forwards;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+
+        @keyframes disco-sparkle-fall {
+            0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
+        }
+
+        /* Mirror ball reflections */
+        .disco-reflection {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            z-index: 1000;
+            animation: disco-reflect 2s linear infinite;
+            box-shadow: 0 0 10px white, 0 0 20px currentColor;
+        }
+
+        @keyframes disco-reflect {
+            0% { transform: translate(0, 0); opacity: 0.8; }
+            25% { transform: translate(50px, 100px); opacity: 1; }
+            50% { transform: translate(-30px, 200px); opacity: 0.6; }
+            75% { transform: translate(70px, 150px); opacity: 1; }
+            100% { transform: translate(0, 0); opacity: 0.8; }
+        }
+
+        /* Enhanced disco mode styles */
+        body.disco-mode {
+            background: linear-gradient(180deg, #0a0015 0%, #1a0a2e 50%, #2d1b4e 100%) !important;
+        }
+
+        body.disco-mode .plot {
+            animation: plot-disco-glow 1s ease-in-out infinite;
+        }
+
+        @keyframes plot-disco-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,0,255,0.5); }
+            33% { box-shadow: 0 0 10px rgba(0,255,255,0.5); }
+            66% { box-shadow: 0 0 10px rgba(255,255,0,0.5); }
+        }
+
+        /* Disco strobe effect */
+        .disco-strobe {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 997;
+            animation: disco-strobe-flash 0.5s steps(2) infinite;
+        }
+
+        @keyframes disco-strobe-flash {
+            0%, 50% { background: transparent; }
+            25%, 75% { background: rgba(255,255,255,0.03); }
+        }
+
         /* Disco Shop */
         .disco-shop-modal {
             position: fixed;
@@ -17004,7 +17106,8 @@
             } else {
                 document.body.classList.remove('disco-mode');
                 // Clean up disco elements if they exist
-                document.querySelectorAll('.disco-overlay, .disco-ball, .disco-lights').forEach(el => el.remove());
+                document.querySelectorAll('.disco-overlay, .disco-ball, .disco-lights, .disco-floor, .disco-strobe, .disco-reflection, .disco-sparkle').forEach(el => el.remove());
+                if (window.discoSparkleInterval) clearInterval(window.discoSparkleInterval);
             }
         }
 
@@ -18360,24 +18463,78 @@
             discoOverlay.className = 'disco-overlay';
             document.body.appendChild(discoOverlay);
             
+            // Add strobe effect
+            const strobe = document.createElement('div');
+            strobe.className = 'disco-strobe';
+            document.body.appendChild(strobe);
+            
+            // Add disco floor tiles
+            const floor = document.createElement('div');
+            floor.className = 'disco-floor';
+            for (let i = 0; i < 30; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'disco-tile';
+                floor.appendChild(tile);
+            }
+            document.body.appendChild(floor);
+            
             // Add disco ball
             const ball = document.createElement('div');
             ball.className = 'disco-ball';
-            ball.textContent = '🩩';
+            ball.textContent = '🪩';
             document.body.appendChild(ball);
             
             // Add sweeping lights
             const lights = document.createElement('div');
             lights.className = 'disco-lights';
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 6; i++) {
                 const light = document.createElement('div');
                 light.className = 'disco-light';
+                light.style.left = (10 + i * 15) + '%';
                 lights.appendChild(light);
             }
             document.body.appendChild(lights);
             
+            // Add mirror ball reflections
+            const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0080', '#80ff00', '#0080ff'];
+            for (let i = 0; i < 12; i++) {
+                const reflection = document.createElement('div');
+                reflection.className = 'disco-reflection';
+                reflection.style.left = Math.random() * 90 + 5 + 'vw';
+                reflection.style.top = Math.random() * 70 + 10 + 'vh';
+                reflection.style.color = colors[i % colors.length];
+                reflection.style.animationDelay = (Math.random() * 2) + 's';
+                reflection.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+                document.body.appendChild(reflection);
+            }
+            
+            // Start spawning sparkle particles
+            startDiscoSparkles();
+            
             // Generate disco orders
             generateDiscoOrders();
+        }
+        
+        function startDiscoSparkles() {
+            const sparkleSymbols = ['✨', '⭐', '💫', '🌟', '💎', '🪩', '🕺', '💃'];
+            const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0080', '#80ff00'];
+            
+            window.discoSparkleInterval = setInterval(() => {
+                if (gameState.currentWeather !== 'disco') {
+                    clearInterval(window.discoSparkleInterval);
+                    return;
+                }
+                
+                const sparkle = document.createElement('div');
+                sparkle.className = 'disco-sparkle';
+                sparkle.textContent = sparkleSymbols[Math.floor(Math.random() * sparkleSymbols.length)];
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
+                sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 4000);
+            }, 150);
         }
 
         function generateDiscoOrders() {
