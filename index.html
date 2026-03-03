@@ -13751,7 +13751,7 @@
             <div class="stats">
                 <div class="stat" id="weather-display">☀️ Sunny</div>
                 <div class="stat" id="daynight-display">☀️ Day</div>
-                <div class="stat">💰 <span id="money">100</span></div>
+                <div class="stat"><span id="player-rank" title="Your rank">🌱</span> 💰 <span id="money">100</span></div>
                 <div class="stat storm-essence-btn" id="storm-essence-stat" onclick="openStormShop()" title="Click to open Storm Shop">⚡ <span id="storm-essence">0</span></div>
                 <div class="stat daily-tasks-btn" id="daily-tasks-btn" onclick="openDailyTasks()" title="Daily Tasks">📋</div>
                 <div class="stat">📦 <span id="harvested">0</span> harvested</div>
@@ -15601,6 +15601,12 @@
             // Update header stats
             document.getElementById('money').textContent = formatMoney(gameState.money);
             document.getElementById('harvested').textContent = gameState.totalHarvested;
+            
+            // Update rank display
+            const rank = getPlayerRank(gameState.totalHarvested, gameState.playerName);
+            const rankEl = document.getElementById('player-rank');
+            rankEl.textContent = rank.emoji;
+            rankEl.title = rank.name;
             
             // Update storm essence display
             const stormEssenceStat = document.getElementById('storm-essence-stat');
