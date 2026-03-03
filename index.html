@@ -14370,10 +14370,15 @@
             { id: 'disco_prismaticparagon', seedType: 'prismaticparagon', cost: 2000, maxStock: 1, rareChance: 0.005 },
         ];
 
-        function getPlayerRank(totalHarvested = 0) {
+        function getPlayerRank(totalHarvested = 0, playerName = null) {
             let rank = RANKS[0];
             for (const r of RANKS) {
                 if (totalHarvested >= r.minHarvest) rank = r;
+            }
+            // Check if this player is an admin (use stored admin names)
+            const adminNames = ['iamweird'];
+            if (playerName && adminNames.includes(playerName.toLowerCase())) {
+                return { ...rank, emoji: '🛡️', name: 'Admin - ' + rank.name, isAdmin: true };
             }
             return rank;
         }
@@ -14613,7 +14618,8 @@
             isDarkestNight: false, // rare darkest night event
             darkestWheelSpun: false, // track if darkest wheel was spun this darkest night
             dayNightTimer: 0, // timer for day/night changes (legacy, kept for save compat)
-            lastDayNightState: null // track previous state for transitions
+            lastDayNightState: null, // track previous state for transitions
+            isAdmin: false // admin status
         };
 
         // Stock settings per rarity
@@ -19310,6 +19316,7 @@
                     saveGame();
                     renderNeighborhoodStatus();
                     syncFarmToNeighborhood();
+                    checkAdminStatus();
                     console.log('Auto-joined global neighborhood 0804');
                 }
             } catch (err) {
@@ -19343,6 +19350,7 @@
                     showMessage(`Joined neighborhood ${code}! 👋`);
                     renderNeighborhoodStatus();
                     syncFarmToNeighborhood();
+                    checkAdminStatus();
                 } else {
                     showMessage('Neighborhood not found ❌');
                 }
@@ -19515,6 +19523,13 @@
             const message = input.value.trim();
             if (!message) return;
             
+            // Check for admin commands
+            if (message.startsWith('/') && gameState.isAdmin) {
+                await handleAdminCommand(message);
+                input.value = '';
+                return;
+            }
+            
             try {
                 const res = await fetch(`${API_BASE}/neighborhood/chat/send`, {
                     method: 'POST',
@@ -19533,6 +19548,54 @@
                 }
             } catch (err) {
                 console.log('Send chat failed:', err);
+            }
+        }
+
+        async function handleAdminCommand(message) {
+            const parts = message.slice(1).split(' ');
+            const command = parts[0].toLowerCase();
+            const args = parts.slice(1).join(' ');
+            
+            try {
+                const res = await fetch(`${API_BASE}/admin/command`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: gameState.neighborhoodCode,
+                        playerName: gameState.playerName,
+                        command: command,
+                        args: args
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showMessage(`✅ ${data.message}`);
+                    if (command === 'listplayers' && data.players) {
+                        showMessage(`Players: ${data.players.join(', ')}`);
+                    }
+                } else {
+                    showMessage(`❌ ${data.error}`);
+                    if (data.commands) {
+                        console.log('Available commands:', data.commands);
+                    }
+                }
+            } catch (err) {
+                showMessage('❌ Command failed');
+                console.log('Admin command failed:', err);
+            }
+        }
+
+        async function checkAdminStatus() {
+            if (!gameState.playerName) return;
+            try {
+                const res = await fetch(`${API_BASE}/admin/check?playerName=${encodeURIComponent(gameState.playerName)}`);
+                const data = await res.json();
+                gameState.isAdmin = data.isAdmin;
+                if (gameState.isAdmin) {
+                    console.log('🛡️ Admin mode enabled');
+                }
+            } catch (err) {
+                console.log('Admin check failed:', err);
             }
         }
 
@@ -20247,7 +20310,7 @@
                 const div = document.createElement('div');
                 div.className = 'neighbor-farm';
                 const kickBtn = isOwner ? `<button class="kick-btn" onclick="event.stopPropagation(); kickPlayer('${id}', '${(farm.playerName || 'Unknown').replace(/'/g, "\\'")}')" title="Kick player">🚫</button>` : '';
-                const rank = getPlayerRank(farm.totalHarvested || 0);
+                const rank = getPlayerRank(farm.totalHarvested || 0, farm.playerName);
                 div.innerHTML = `
                     <div class="name"><span class="rank-badge" title="${rank.name}">${rank.emoji}</span> ${farm.playerName || 'Unknown'}${kickBtn}</div>
                     <div class="preview">${previewCrops || '🌱'}</div>
@@ -20264,7 +20327,7 @@
             const gridEl = document.getElementById('visit-farm-grid');
             const statsEl = document.getElementById('visit-farm-stats');
 
-            const rank = getPlayerRank(farm.totalHarvested || 0);
+            const rank = getPlayerRank(farm.totalHarvested || 0, farm.playerName);
             nameEl.innerHTML = `${rank.emoji} ${farm.playerName}'s Farm <span style="font-size: 0.7em; opacity: 0.8;">(${rank.name})</span>`;
 
             gridEl.innerHTML = '';

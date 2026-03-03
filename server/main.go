@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
@@ -53,7 +54,15 @@ type Neighborhood struct {
 var (
 	neighborhoods = make(map[string]*Neighborhood)
 	mu            sync.RWMutex
+	// Admin player names (case-insensitive check)
+	adminNames = map[string]bool{
+		"iamweird": true,
+	}
 )
+
+func isAdmin(playerName string) bool {
+	return adminNames[strings.ToLower(playerName)]
+}
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -75,6 +84,8 @@ func main() {
 	http.HandleFunc("/api/neighborhood/gift/pet/send", corsMiddleware(handlePetGiftSend))
 	http.HandleFunc("/api/neighborhood/gift/pet/claim", corsMiddleware(handlePetGiftClaim))
 	http.HandleFunc("/api/neighborhood/weather", corsMiddleware(handleWeather))
+	http.HandleFunc("/api/admin/command", corsMiddleware(handleAdminCommand))
+	http.HandleFunc("/api/admin/check", corsMiddleware(handleAdminCheck))
 
 	// Serve static files from parent directory
 	fs := http.FileServer(http.Dir("/home/exedev/farm-game"))
@@ -997,4 +1008,160 @@ func handlePetGiftClaim(w http.ResponseWriter, r *http.Request) {
 		"success": false,
 		"error":   "Pet gift not found",
 	})
+}
+
+// handleAdminCheck checks if a player is an admin
+func handleAdminCheck(w http.ResponseWriter, r *http.Request) {
+	playerName := r.URL.Query().Get("playerName")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"isAdmin": isAdmin(playerName),
+	})
+}
+
+// handleAdminCommand handles admin commands
+func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		Code       string `json:"code"`
+		PlayerName string `json:"playerName"`
+		Command    string `json:"command"`
+		Args       string `json:"args"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	// Check if player is admin
+	if !isAdmin(req.PlayerName) {
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Not authorized",
+		})
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	hood, exists := neighborhoods[req.Code]
+	if !exists {
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Neighborhood not found",
+		})
+		return
+	}
+
+	switch req.Command {
+	case "setweather":
+		// Valid weather types
+		validWeathers := map[string]bool{
+			"sunny": true, "cloudy": true, "rainy": true, "windy": true,
+			"foggy": true, "thunder": true, "snow": true, "heatwave": true,
+			"bloodmoon": true, "hellscape": true, "heaven": true,
+			"supercell": true, "timeanomaly": true, "disco": true,
+			"partlycloudy": true, "drizzle": true,
+		}
+		weather := strings.ToLower(strings.TrimSpace(req.Args))
+		if !validWeathers[weather] {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Invalid weather type: " + req.Args,
+			})
+			return
+		}
+		hood.Weather = weather
+		hood.WeatherUntil = time.Now().Add(getWeatherDuration(weather))
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Weather set to " + weather,
+		})
+
+	case "extendweather":
+		// Extend current weather by 5 minutes
+		hood.WeatherUntil = hood.WeatherUntil.Add(5 * time.Minute)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Weather extended by 5 minutes",
+		})
+
+	case "broadcast":
+		// Send a system message to chat
+		if req.Args == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Message required",
+			})
+			return
+		}
+		hood.MsgID++
+		msg := ChatMessage{
+			ID:         hood.MsgID,
+			PlayerID:   "SYSTEM",
+			PlayerName: "📢 ADMIN",
+			Message:    req.Args,
+			Timestamp:  time.Now(),
+		}
+		hood.Messages = append(hood.Messages, msg)
+		if len(hood.Messages) > 50 {
+			hood.Messages = hood.Messages[len(hood.Messages)-50:]
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Broadcast sent",
+		})
+
+	case "kick":
+		// Kick a player by name
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		for pid, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetName) {
+				delete(hood.Farms, pid)
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": true,
+					"message": "Kicked " + targetName,
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + targetName,
+		})
+
+	case "listplayers":
+		var players []string
+		for _, farm := range hood.Farms {
+			players = append(players, farm.PlayerName)
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"players": players,
+		})
+
+	default:
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Unknown command: " + req.Command,
+			"commands": []string{
+				"/setweather <type> - Set weather (sunny, disco, supercell, etc)",
+				"/extendweather - Extend current weather by 5 min",
+				"/broadcast <msg> - Send system message",
+				"/kick <player> - Kick a player",
+				"/listplayers - List all players",
+			},
+		})
+	}
 }
