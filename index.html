@@ -18636,6 +18636,59 @@
                 });
             }
             
+            // One-time migration: Remove all disco rewards (March 2026 reset)
+            if (!gameState.discoRewardsCleared_v1) {
+                // Get all disco crop/pet IDs
+                const discoCropIds = Object.entries(CROPS).filter(([id, c]) => c.discoOnly).map(([id]) => id);
+                const discoPetIds = Object.entries(PETS).filter(([id, p]) => p.discoOnly).map(([id]) => id);
+                const discoGearIds = Object.entries(GEAR).filter(([id, g]) => g.discoOnly).map(([id]) => id);
+                
+                // Clear disco seeds
+                if (gameState.seeds) {
+                    discoCropIds.forEach(id => delete gameState.seeds[id]);
+                }
+                // Clear disco inventory
+                if (gameState.inventory) {
+                    discoCropIds.forEach(id => delete gameState.inventory[id]);
+                }
+                // Clear disco harvested items
+                if (gameState.harvestedItems) {
+                    gameState.harvestedItems = gameState.harvestedItems.filter(item => 
+                        !item || !discoCropIds.includes(item.type)
+                    );
+                }
+                // Clear disco pets
+                if (gameState.pets) {
+                    gameState.pets = gameState.pets.filter(p => !discoPetIds.includes(p));
+                }
+                if (gameState.equippedPets) {
+                    gameState.equippedPets = gameState.equippedPets.filter(p => !discoPetIds.includes(p));
+                }
+                if (gameState.eggInventory) {
+                    discoPetIds.forEach(id => delete gameState.eggInventory[id]);
+                }
+                // Clear disco gear
+                if (gameState.gear) {
+                    gameState.gear = gameState.gear.filter(g => !discoGearIds.includes(g));
+                }
+                if (gameState.equippedGear) {
+                    discoGearIds.forEach(id => delete gameState.equippedGear[id]);
+                }
+                // Clear disco plots (planted disco crops)
+                if (gameState.plots) {
+                    gameState.plots.forEach((plot, i) => {
+                        if (plot && discoCropIds.includes(plot.type)) {
+                            gameState.plots[i] = null;
+                        }
+                    });
+                }
+                // Reset disco points
+                gameState.discoPoints = 0;
+                gameState.discoOrdersCompleted = 0;
+                
+                gameState.discoRewardsCleared_v1 = true;
+                console.log('Disco rewards cleared (v1 migration)');
+            }
         }
 
         function manualSave() {
