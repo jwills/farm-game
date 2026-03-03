@@ -14300,20 +14300,23 @@
             { name: 'Huge', multiplier: 2.0, scale: 1.4 }
         ];
 
-        // Cosmetic ranks based on total harvested
+        // Cosmetic ranks based on money
         const RANKS = [
-            { name: 'Seedling', emoji: '🌱', minHarvest: 0 },
-            { name: 'Sprout', emoji: '🌿', minHarvest: 50 },
-            { name: 'Gardener', emoji: '🧑‍🌾', minHarvest: 150 },
-            { name: 'Farmer', emoji: '🚜', minHarvest: 400 },
-            { name: 'Cultivator', emoji: '🌻', minHarvest: 800 },
-            { name: 'Harvester', emoji: '🌾', minHarvest: 1500 },
-            { name: 'Agronomist', emoji: '📚', minHarvest: 3000 },
-            { name: 'Farm Master', emoji: '⭐', minHarvest: 6000 },
-            { name: 'Crop Legend', emoji: '🏆', minHarvest: 12000 },
-            { name: 'Harvest King', emoji: '👑', minHarvest: 25000 },
-            { name: 'Nature Deity', emoji: '🌟', minHarvest: 50000 },
-            { name: 'Eternal Grower', emoji: '✨', minHarvest: 100000 },
+            { name: 'Seedling', emoji: '🌱', minMoney: 0 },
+            { name: 'Sprout', emoji: '🌿', minMoney: 1000 },
+            { name: 'Gardener', emoji: '🧑‍🌾', minMoney: 10000 },
+            { name: 'Farmer', emoji: '🚜', minMoney: 100000 },
+            { name: 'Cultivator', emoji: '🌻', minMoney: 1000000 },
+            { name: 'Harvester', emoji: '🌾', minMoney: 10000000 },
+            { name: 'Agronomist', emoji: '📚', minMoney: 100000000 },
+            { name: 'Farm Master', emoji: '⭐', minMoney: 1000000000 },
+            { name: 'Crop Legend', emoji: '🏆', minMoney: 10000000000 },
+            { name: 'Harvest King', emoji: '👑', minMoney: 100000000000 },
+            { name: 'Nature Deity', emoji: '🌟', minMoney: 1000000000000 },
+            { name: 'Eternal Grower', emoji: '✨', minMoney: 10000000000000 },
+            { name: 'Universe Farmer', emoji: '🌌', minMoney: 100000000000000 },
+            { name: 'Reality Bender', emoji: '🔮', minMoney: 1000000000000000 },
+            { name: 'Cosmic Deity', emoji: '👽', minMoney: 10000000000000000 },
         ];
 
         // Disco Shop items (bought with disco points)
@@ -14370,10 +14373,10 @@
             { id: 'disco_prismaticparagon', seedType: 'prismaticparagon', cost: 2000, maxStock: 1, rareChance: 0.005 },
         ];
 
-        function getPlayerRank(totalHarvested = 0, playerName = null) {
+        function getPlayerRank(money = 0, playerName = null) {
             let rank = RANKS[0];
             for (const r of RANKS) {
-                if (totalHarvested >= r.minHarvest) rank = r;
+                if (money >= r.minMoney) rank = r;
             }
             // Check if this player is an admin (use stored admin names)
             const adminNames = ['iamweird'];
@@ -15603,7 +15606,7 @@
             document.getElementById('harvested').textContent = gameState.totalHarvested;
             
             // Update rank display
-            const rank = getPlayerRank(gameState.totalHarvested, gameState.playerName);
+            const rank = getPlayerRank(gameState.money, gameState.playerName);
             const rankEl = document.getElementById('player-rank');
             rankEl.textContent = rank.emoji;
             rankEl.title = rank.name;
@@ -20330,7 +20333,7 @@
                 const div = document.createElement('div');
                 div.className = 'neighbor-farm';
                 const kickBtn = isOwner ? `<button class="kick-btn" onclick="event.stopPropagation(); kickPlayer('${id}', '${(farm.playerName || 'Unknown').replace(/'/g, "\\'")}')" title="Kick player">🚫</button>` : '';
-                const rank = getPlayerRank(farm.totalHarvested || 0, farm.playerName);
+                const rank = getPlayerRank(farm.money || 0, farm.playerName);
                 div.innerHTML = `
                     <div class="name"><span class="rank-badge" title="${rank.name}">${rank.emoji}</span> ${farm.playerName || 'Unknown'}${kickBtn}</div>
                     <div class="preview">${previewCrops || '🌱'}</div>
@@ -20347,7 +20350,7 @@
             const gridEl = document.getElementById('visit-farm-grid');
             const statsEl = document.getElementById('visit-farm-stats');
 
-            const rank = getPlayerRank(farm.totalHarvested || 0, farm.playerName);
+            const rank = getPlayerRank(farm.money || 0, farm.playerName);
             nameEl.innerHTML = `${rank.emoji} ${farm.playerName}'s Farm <span style="font-size: 0.7em; opacity: 0.8;">(${rank.name})</span>`;
 
             gridEl.innerHTML = '';
