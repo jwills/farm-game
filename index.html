@@ -14774,6 +14774,16 @@
             return dx <= 1 && dy <= 1 && !(dx === 0 && dy === 0);
         }
         
+        function isExtraBedPlot(plotIndex) {
+            // Extra beds start at index 64 (after the 8x8 main farm)
+            return plotIndex >= 64;
+        }
+        
+        function canInteractWithPlot(plotIndex) {
+            // Can always interact with extra bed plots, otherwise need adjacency
+            return isExtraBedPlot(plotIndex) || isAdjacentToPlayer(plotIndex);
+        }
+        
         function movePlayerToPlot(plotIndex) {
             const { cols, rows } = getFarmDimensions();
             const newX = plotIndex % cols;
@@ -15230,7 +15240,9 @@
                 }
                 
                 // Only add adjacent class for main farm plots
-                div.className = 'plot' + (index < mainFarmSize && isAdjacentToPlayer(index) ? ' adjacent' : '');
+                // Extra bed plots are always 'adjacent' (interactable), main farm uses actual adjacency
+                const isInteractable = isExtraBedPlot(index) || isAdjacentToPlayer(index);
+                div.className = 'plot' + (isInteractable ? ' adjacent' : '');
                 div.dataset.index = index;
                 
                 if (plot && plot.isEgg) {
@@ -15262,9 +15274,13 @@
                     div.onclick = () => {
                         if (gameState.shovelSelected) {
                             removePlant(index);
-                        } else if (isAdjacentToPlayer(index)) {
-                            // Move to egg plot and auto-hatch if ready
-                            movePlayerToPlot(index);
+                        } else if (canInteractWithPlot(index)) {
+                            // Move to egg plot and auto-hatch if ready (or direct interact for extra beds)
+                            if (!isExtraBedPlot(index)) movePlayerToPlot(index);
+                            // For extra beds, just check if egg is ready
+                            if (plot.growth >= plot.hatchTime) {
+                                hatchEgg(index);
+                            }
                         }
                     };
                 } else if (plot) {
@@ -15342,9 +15358,15 @@
                             placeSprinkler(index);
                         } else if (gameState.selectedGear) {
                             useWateringCan(index);
-                        } else if (isAdjacentToPlayer(index)) {
+                        } else if (canInteractWithPlot(index)) {
                             // Move to plot and auto-harvest if ready
-                            movePlayerToPlot(index);
+                            if (!isExtraBedPlot(index)) movePlayerToPlot(index);
+                            // Auto-harvest for extra beds
+                            const crop = CROPS[plot.type];
+                            const targetTime = plot.harvested ? Math.ceil(crop.growTime / 2) : crop.growTime;
+                            if (plot.growth >= targetTime) {
+                                harvestCrop(index);
+                            }
                         }
                     };
                 } else {
@@ -15371,9 +15393,9 @@
                                 showMessage('No plant here to water!');
                             } else if (gameState.selectedSeed) {
                                 plantSeed(index);
-                            } else if (isAdjacentToPlayer(index)) {
-                                // Move to empty adjacent plot
-                                movePlayerToPlot(index);
+                            } else if (canInteractWithPlot(index)) {
+                                // Move to empty adjacent plot (main farm only)
+                                if (!isExtraBedPlot(index)) movePlayerToPlot(index);
                             }
                         };
                     }
