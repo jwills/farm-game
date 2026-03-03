@@ -19529,7 +19529,7 @@
                     await handleAdminCommand(message);
                     input.value = '';
                 } else {
-                    showMessage('❌ Admin commands require admin privileges');
+                    console.log('❌ Admin commands require admin privileges');
                 }
                 return;
             }
@@ -19562,12 +19562,12 @@
             
             // Client-side help command
             if (command === 'help') {
-                showMessage('🛡️ Admin Commands:');
-                showMessage('/setweather <type> - disco, supercell, heaven, hellscape, timeanomaly, sunny, rainy, etc');
-                showMessage('/extendweather - Add 5 minutes to current weather');
-                showMessage('/broadcast <msg> - System announcement');
-                showMessage('/kick <name> - Kick player');
-                showMessage('/listplayers - List all players');
+                console.log('%c🛡️ Admin Commands:', 'font-weight: bold; color: #ffd700');
+                console.log('/setweather <type> - disco, supercell, heaven, hellscape, timeanomaly, sunny, rainy, etc');
+                console.log('/extendweather - Add 5 minutes to current weather');
+                console.log('/broadcast <msg> - System announcement');
+                console.log('/kick <name> - Kick player');
+                console.log('/listplayers - List all players');
                 return;
             }
             
@@ -19584,19 +19584,18 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    showMessage(`✅ ${data.message}`);
+                    console.log(`✅ ${data.message}`);
                     if (command === 'listplayers' && data.players) {
-                        showMessage(`Players: ${data.players.join(', ')}`);
+                        console.log(`Players: ${data.players.join(', ')}`);
                     }
                 } else {
-                    showMessage(`❌ ${data.error}`);
+                    console.log(`❌ ${data.error}`);
                     if (data.commands) {
                         console.log('Available commands:', data.commands);
                     }
                 }
             } catch (err) {
-                showMessage('❌ Command failed');
-                console.log('Admin command failed:', err);
+                console.log('❌ Command failed:', err);
             }
         }
 
