@@ -18759,7 +18759,7 @@
 
         function generateDiscoOrders() {
             // Generate 3 random orders for groovy crops
-            const cropsWithGroovy = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !CROPS[c].questOnly && !CROPS[c].discoOnly);
+            const cropsWithGroovy = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !CROPS[c].questOnly && !CROPS[c].discoOnly && !CROPS[c].wheelOnly);
             gameState.discoOrders = [];
             gameState.discoOrdersCompleted = 0;
             

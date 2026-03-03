@@ -551,6 +551,10 @@ func pickNewWeather(current string) string {
 	if roll < 0.20 {
 		return "heaven"
 	}
+	// 10% chance for disco
+	if roll < 0.30 {
+		return "disco"
+	}
 
 	// Weighted towards sunny
 	weighted := []string{"sunny", "sunny", "sunny"}
@@ -572,6 +576,9 @@ func getWeatherDuration(weather string) time.Duration {
 	case "supercell", "timeanomaly":
 		// 60-120 seconds for special weather
 		return time.Duration(60+rand.Intn(60)) * time.Second
+	case "disco":
+		// 90-180 seconds for disco (1.5-3 minutes)
+		return time.Duration(90+rand.Intn(90)) * time.Second
 	default:
 		// 10-30 seconds for normal weather
 		return time.Duration(10+rand.Intn(20)) * time.Second
