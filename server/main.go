@@ -166,7 +166,7 @@ func handleJoin(w http.ResponseWriter, r *http.Request) {
 		if _, exists := neighborhoods["0804"]; !exists {
 			neighborhoods["0804"] = &Neighborhood{
 				Code:         "0804",
-				OwnerID:      "system",
+				OwnerID:      "player_y8nykf1y1", // iamweird
 				Farms:        make(map[string]FarmData),
 				Messages:     []ChatMessage{},
 				MsgID:        0,
