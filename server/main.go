@@ -225,7 +225,7 @@ func handleJoin(w http.ResponseWriter, r *http.Request) {
 		if _, exists := neighborhoods["7655"]; !exists {
 			neighborhoods["7655"] = &Neighborhood{
 				Code:         "7655",
-				OwnerID:      "player_y8nykf1y1", // iamweird
+				OwnerID:      "player_y8nykf1y1", // iamweird - owner of 7655
 				Farms:        make(map[string]FarmData),
 				Messages:     []ChatMessage{},
 				MsgID:        0,
@@ -1350,6 +1350,310 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 			"message": fmt.Sprintf("Sent %s to %s", giftDesc, targetPlayer),
 		})
 
+	case "giveall":
+		// /giveall <type> <item> [quantity] - Give to ALL players
+		parts := strings.Fields(req.Args)
+		if len(parts) < 2 {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Usage: /giveall <type> <item> [quantity]",
+			})
+			return
+		}
+
+		giveType := strings.ToLower(parts[0])
+		itemId := strings.ToLower(parts[1])
+		count := 0
+
+		for _, farm := range hood.Farms {
+			var gift *Gift
+			var giftDesc string
+
+			switch giveType {
+			case "seed", "seeds":
+				qty := 1
+				if len(parts) >= 3 {
+					if q, err := strconv.Atoi(parts[2]); err == nil && q > 0 {
+						qty = q
+					}
+				}
+				gift = &Gift{SeedType: itemId, SeedQty: qty, ToPlayer: farm.PlayerName, FromPlayer: "🛡️ Admin"}
+				giftDesc = fmt.Sprintf("%d %s seeds", qty, itemId)
+			case "pet", "pets":
+				gift = &Gift{PetId: itemId, ToPlayer: farm.PlayerName, FromPlayer: "🛡️ Admin"}
+				giftDesc = itemId + " pet"
+			case "gear":
+				gift = &Gift{GearId: itemId, ToPlayer: farm.PlayerName, FromPlayer: "🛡️ Admin"}
+				giftDesc = itemId + " gear"
+			case "money", "cash":
+				amount, _ := strconv.ParseInt(itemId, 10, 64)
+				if amount <= 0 {
+					continue
+				}
+				gift = &Gift{Money: amount, ToPlayer: farm.PlayerName, FromPlayer: "🛡️ Admin"}
+				giftDesc = fmt.Sprintf("$%d", amount)
+			default:
+				continue
+			}
+
+			hood.MsgID++
+			msg := ChatMessage{
+				ID:         hood.MsgID,
+				PlayerID:   "ADMIN",
+				PlayerName: "🛡️ Admin",
+				Message:    fmt.Sprintf("sent %s to %s!", giftDesc, farm.PlayerName),
+				Timestamp:  time.Now(),
+				Gift:       gift,
+			}
+			hood.Messages = append(hood.Messages, msg)
+			count++
+		}
+
+		if len(hood.Messages) > 50 {
+			hood.Messages = hood.Messages[len(hood.Messages)-50:]
+		}
+		saveNeighborhoods()
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": fmt.Sprintf("Sent to %d players", count),
+		})
+
+	case "clearchat":
+		// Clear all chat messages
+		hood.Messages = []ChatMessage{}
+		hood.MsgID = 0
+		saveNeighborhoods()
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Chat cleared",
+		})
+
+	case "setowner":
+		// Transfer ownership to another player
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		for pid, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetName) {
+				hood.OwnerID = pid
+				saveNeighborhoods()
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": true,
+					"message": "Ownership transferred to " + targetName,
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + targetName,
+		})
+
+	case "stats":
+		// Show neighborhood stats
+		totalMoney := int64(0)
+		totalPets := 0
+		totalPlots := 0
+		for _, farm := range hood.Farms {
+			totalMoney += int64(farm.Money)
+			totalPets += len(farm.Pets)
+			var plots []interface{}
+			json.Unmarshal(farm.Plots, &plots)
+			for _, p := range plots {
+				if p != nil {
+					totalPlots++
+				}
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"stats": map[string]interface{}{
+				"players":     len(hood.Farms),
+				"totalMoney":  totalMoney,
+				"totalPets":   totalPets,
+				"totalPlants": totalPlots,
+				"messages":    len(hood.Messages),
+				"weather":     hood.Weather,
+				"created":     hood.Created.Format("2006-01-02 15:04:05"),
+			},
+		})
+
+	case "rename":
+		// Rename a player (for moderation)
+		parts := strings.SplitN(req.Args, " ", 2)
+		if len(parts) < 2 {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Usage: /rename <oldname> <newname>",
+			})
+			return
+		}
+		oldName := strings.TrimSpace(parts[0])
+		newName := strings.TrimSpace(parts[1])
+		for pid, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, oldName) {
+				farm.PlayerName = newName
+				hood.Farms[pid] = farm
+				saveNeighborhoods()
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": true,
+					"message": fmt.Sprintf("Renamed %s to %s", oldName, newName),
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + oldName,
+		})
+
+	case "wipe":
+		// Wipe a player's farm (reset their plots)
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		for pid, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetName) {
+				farm.Plots = json.RawMessage("[]")
+				hood.Farms[pid] = farm
+				saveNeighborhoods()
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": true,
+					"message": "Wiped farm for " + targetName,
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + targetName,
+		})
+
+	case "mute":
+		// Add player to muted list (stored in messages as system note)
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		hood.MsgID++
+		msg := ChatMessage{
+			ID:         hood.MsgID,
+			PlayerID:   "SYSTEM",
+			PlayerName: "🔇 MUTED",
+			Message:    targetName,
+			Timestamp:  time.Now(),
+		}
+		hood.Messages = append(hood.Messages, msg)
+		saveNeighborhoods()
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Muted " + targetName,
+		})
+
+	case "unmute":
+		// Remove player from muted list
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		// Remove mute messages for this player
+		newMessages := []ChatMessage{}
+		for _, m := range hood.Messages {
+			if !(m.PlayerName == "🔇 MUTED" && strings.EqualFold(m.Message, targetName)) {
+				newMessages = append(newMessages, m)
+			}
+		}
+		hood.Messages = newMessages
+		saveNeighborhoods()
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": true,
+			"message": "Unmuted " + targetName,
+		})
+
+	case "info":
+		// Get info about a specific player
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		for pid, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetName) {
+				var plots []interface{}
+				json.Unmarshal(farm.Plots, &plots)
+				plantCount := 0
+				for _, p := range plots {
+					if p != nil {
+						plantCount++
+					}
+				}
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success": true,
+					"info": map[string]interface{}{
+						"name":     farm.PlayerName,
+						"playerId": pid,
+						"money":    farm.Money,
+						"pets":     len(farm.Pets),
+						"petList":  farm.Pets,
+						"plants":   plantCount,
+						"lastSync": farm.LastSync.Format("2006-01-02 15:04:05"),
+						"isOwner":  pid == hood.OwnerID,
+					},
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + targetName,
+		})
+
+	case "tp", "teleport":
+		// Teleport to visit a player's farm (sends back their data)
+		targetName := strings.TrimSpace(req.Args)
+		if targetName == "" {
+			json.NewEncoder(w).Encode(map[string]interface{}{
+				"success": false,
+				"error":   "Player name required",
+			})
+			return
+		}
+		for _, farm := range hood.Farms {
+			if strings.EqualFold(farm.PlayerName, targetName) {
+				json.NewEncoder(w).Encode(map[string]interface{}{
+					"success":  true,
+					"teleport": true,
+					"farm":     farm,
+				})
+				return
+			}
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success": false,
+			"error":   "Player not found: " + targetName,
+		})
+
 	default:
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": false,
@@ -1361,6 +1665,16 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 				"/kick <player> - Kick a player",
 				"/listplayers - List all players",
 				"/give <player> <type> <item> [qty] - Give items (seed/pet/gear/money)",
+				"/giveall <type> <item> [qty] - Give to ALL players",
+				"/clearchat - Clear all chat messages",
+				"/setowner <player> - Transfer neighborhood ownership",
+				"/stats - Show neighborhood statistics",
+				"/info <player> - Get player info",
+				"/rename <old> <new> - Rename a player",
+				"/wipe <player> - Reset a player's farm plots",
+				"/mute <player> - Mute a player",
+				"/unmute <player> - Unmute a player",
+				"/tp <player> - View a player's farm",
 			},
 		})
 	}
