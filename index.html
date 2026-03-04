@@ -17304,6 +17304,13 @@
                 const now = Math.floor(Date.now() / 1000);
                 gameState.weatherTimer = Math.max(1, weatherUntil - now);
                 
+                // Clear disco orders when leaving disco (so next disco gets fresh orders)
+                if (oldWeather === 'disco' && newWeather !== 'disco') {
+                    gameState.discoOrders = [];
+                    gameState.discoShopStock = {};
+                    saveGame();
+                }
+                
                 // Handle special weather messages
                 if (newWeather === 'timeanomaly') {
                     gameState.demonicInStock = 0;
@@ -18856,7 +18863,14 @@
             }, 150);
         }
 
-        function generateDiscoOrders() {
+        function generateDiscoOrders(forceReset = false) {
+            // Don't regenerate if we already have valid disco orders (unless forced)
+            // This preserves orders across page reloads during the same disco event
+            if (!forceReset && gameState.discoOrders && gameState.discoOrders.length > 0) {
+                console.log('Disco orders already exist, preserving them');
+                return;
+            }
+            
             // Generate 3 random orders for groovy crops
             const cropsWithGroovy = Object.keys(CROPS).filter(c => !CROPS[c].crateOnly && !CROPS[c].questOnly && !CROPS[c].discoOnly && !CROPS[c].wheelOnly);
             gameState.discoOrders = [];
@@ -18875,7 +18889,7 @@
                 });
             }
             
-            // Initialize shop stock
+            // Initialize shop stock only if generating new orders
             gameState.discoShopStock = {};
             DISCO_SHOP.forEach(item => {
                 // Rare items have a chance to not appear at all
@@ -18885,6 +18899,8 @@
                     gameState.discoShopStock[item.id] = item.maxStock;
                 }
             });
+            
+            saveGame();
         }
 
         function openDiscoShop() {
