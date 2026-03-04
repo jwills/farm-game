@@ -19686,7 +19686,7 @@
                     discoPetIds.forEach(id => delete gameState.eggInventory[id]);
                 }
                 // Clear disco gear
-                if (gameState.gear) {
+                if (gameState.gear && Array.isArray(gameState.gear)) {
                     gameState.gear = gameState.gear.filter(g => !discoGearIds.includes(g));
                 }
                 if (gameState.equippedGear) {
