@@ -10069,6 +10069,32 @@
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
         }
         
+        /* Awakened seed styles */
+        .inv-item.awakened-seed {
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 50%, #8B0000 100%);
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 12px rgba(255, 68, 68, 0.6), 0 0 20px rgba(255, 215, 0, 0.3);
+            position: relative;
+            animation: awakened-seed-pulse 1.5s ease-in-out infinite;
+        }
+        .inv-item.awakened-seed .awakened-icon {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            font-size: 0.9rem;
+            filter: drop-shadow(0 0 5px #ffd700);
+            animation: awakened-crown-bob 1s ease-in-out infinite;
+        }
+        .inv-item.awakened-seed.selected {
+            background: linear-gradient(135deg, #2a0000 0%, #5a0000 50%, #ff4444 100%);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.8), 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        @keyframes awakened-seed-pulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(255, 68, 68, 0.6), 0 0 20px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 18px rgba(255, 68, 68, 0.8), 0 0 30px rgba(255, 215, 0, 0.5); }
+        }
+        
         /* Storm crop harvested items - blue electric background */
         .inv-item.storm-crop {
             background: linear-gradient(135deg, #0a1628 0%, #16213e 50%, #1a4970 100%);
@@ -10100,6 +10126,44 @@
         @keyframes storm-crop-flash {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
+        }
+        
+        /* Awakened crop styles */
+        .inv-item.awakened-crop {
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #8B0000 60%, #ffd700 100%);
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.6), 0 0 30px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(255, 68, 68, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: awakened-pulse 1.5s ease-in-out infinite;
+        }
+        .inv-item.awakened-crop::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.3), transparent, rgba(255, 68, 68, 0.3), transparent);
+            animation: awakened-spin 3s linear infinite;
+        }
+        .inv-item.awakened-crop::after {
+            content: '👑';
+            position: absolute;
+            top: 2px; right: 4px;
+            font-size: 0.8rem;
+            filter: drop-shadow(0 0 5px #ffd700);
+            animation: awakened-crown-bob 1s ease-in-out infinite;
+        }
+        @keyframes awakened-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 68, 68, 0.6), 0 0 30px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 68, 68, 0.8), 0 0 50px rgba(255, 215, 0, 0.5); }
+        }
+        @keyframes awakened-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes awakened-crown-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
         }
         
         @keyframes pulse-glow {
@@ -14199,7 +14263,8 @@
             storm: { name: 'Storm', color: '#00d4ff', bg: 'linear-gradient(135deg, #0a1628 0%, #16213e 30%, #1a4970 60%, #00d4ff 100%)' },
             quest: { name: 'Quest', color: '#ffd700', bg: 'linear-gradient(135deg, #2a1810 0%, #3d2817 50%, #ffd700 100%)' },
             disco: { name: 'Disco', color: '#ff00ff', bg: 'linear-gradient(135deg, #1a0a2e 0%, #4a1a6e 30%, #ff00ff 60%, #00ffff 100%)' },
-            nocturnal: { name: 'Nocturnal', color: '#4169e1', bg: 'linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #4169e1 100%)' }
+            nocturnal: { name: 'Nocturnal', color: '#4169e1', bg: 'linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #4169e1 100%)' },
+            awakened: { name: 'Awakened', color: '#ff4444', bg: 'linear-gradient(135deg, #1a0000 0%, #4a0000 30%, #ff0000 60%, #ffd700 100%)' }
         };
 
         const MAX_INVENTORY = 40;
@@ -14377,7 +14442,26 @@
             universalunion: { name: 'Universal Onion', seedEmoji: '🧅', growEmoji: '🌍', seedPrice: 0, basePrice: 7500000, growTime: 480, rarity: 'disco', yield: [1, 3], regrows: true, discoOnly: true },
             godtier: { name: 'God Tier Grape', seedEmoji: '🍇', growEmoji: '👑', seedPrice: 0, basePrice: 10000000, growTime: 600, rarity: 'disco', yield: [2, 5], discoOnly: true },
             // Tier 11 - PRISMATIC (Ultra-Legendary, almost never in stock)
-            prismaticparagon: { name: 'Prismatic Paragon', seedEmoji: '💠', growEmoji: '🌈', seedPrice: 0, basePrice: 150000000000, growTime: 900, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true }
+            prismaticparagon: { name: 'Prismatic Paragon', seedEmoji: '💠', growEmoji: '🌈', seedPrice: 0, basePrice: 150000000000, growTime: 900, rarity: 'disco', yield: [2, 4], regrows: true, discoOnly: true },
+            
+            // ===== AWAKENED CROPS (Admin Takeover exclusive) =====
+            // Awakened versions of crops - can only be obtained during Admin Takeover weather
+            // These are ultra-powerful versions with crown emoji prefix, 10x base value, faster growth
+            awakenedcarrot: { name: 'Awakened Carrot', seedEmoji: '👑', growEmoji: '👑🥕', seedPrice: 0, basePrice: 170, growTime: 4, rarity: 'awakened', yield: [2, 3], awakenedFrom: 'carrot', adminOnly: true },
+            awakenedpotato: { name: 'Awakened Potato', seedEmoji: '👑', growEmoji: '👑🥔', seedPrice: 0, basePrice: 110, growTime: 5, rarity: 'awakened', yield: [3, 6], awakenedFrom: 'potato', adminOnly: true },
+            awakenedtomato: { name: 'Awakened Tomato', seedEmoji: '👑', growEmoji: '👑🍅', seedPrice: 0, basePrice: 120, growTime: 6, rarity: 'awakened', yield: [3, 5], regrows: true, awakenedFrom: 'tomato', adminOnly: true },
+            awakenedcorn: { name: 'Awakened Corn', seedEmoji: '👑', growEmoji: '👑🌽', seedPrice: 0, basePrice: 290, growTime: 8, rarity: 'awakened', yield: [4, 8], awakenedFrom: 'corn', adminOnly: true },
+            awakenedstrawberry: { name: 'Awakened Strawberry', seedEmoji: '👑', growEmoji: '👑🍓', seedPrice: 0, basePrice: 250, growTime: 9, rarity: 'awakened', yield: [4, 8], regrows: true, awakenedFrom: 'strawberry', adminOnly: true },
+            awakenedwatermelon: { name: 'Awakened Watermelon', seedEmoji: '👑', growEmoji: '👑🍉', seedPrice: 0, basePrice: 2170, growTime: 10, rarity: 'awakened', yield: [2, 4], awakenedFrom: 'watermelon', adminOnly: true },
+            awakenedpumpkin: { name: 'Awakened Pumpkin', seedEmoji: '👑', growEmoji: '👑🎃', seedPrice: 0, basePrice: 6510, growTime: 12, rarity: 'awakened', yield: [2, 3], awakenedFrom: 'pumpkin', adminOnly: true },
+            awakenedtruffle: { name: 'Awakened Truffle', seedEmoji: '👑', growEmoji: '👑🍄', seedPrice: 0, basePrice: 15610, growTime: 18, rarity: 'awakened', yield: [2, 3], awakenedFrom: 'truffle', adminOnly: true },
+            awakenedgoldenapple: { name: 'Awakened Golden Apple', seedEmoji: '👑', growEmoji: '👑🍎', seedPrice: 0, basePrice: 3000, growTime: 15, rarity: 'awakened', yield: [3, 6], regrows: true, awakenedFrom: 'goldenapple', adminOnly: true },
+            awakeneddragonfruit: { name: 'Awakened Dragon Fruit', seedEmoji: '👑', growEmoji: '👑🐲', seedPrice: 0, basePrice: 195180, growTime: 20, rarity: 'awakened', yield: [2, 4], awakenedFrom: 'dragonfruit', adminOnly: true },
+            awakenedmoonflower: { name: 'Awakened Moon Flower', seedEmoji: '👑', growEmoji: '👑🌙', seedPrice: 0, basePrice: 390360, growTime: 28, rarity: 'awakened', yield: [2, 3], awakenedFrom: 'moonflower', adminOnly: true },
+            awakenedstarfruit: { name: 'Awakened Star Fruit', seedEmoji: '👑', growEmoji: '👑⭐', seedPrice: 0, basePrice: 120000, growTime: 30, rarity: 'awakened', yield: [4, 6], regrows: true, awakenedFrom: 'starfruit', adminOnly: true },
+            awakenedvoidberry: { name: 'Awakened Void Berry', seedEmoji: '👑', growEmoji: '👑🖤', seedPrice: 0, basePrice: 350000, growTime: 50, rarity: 'awakened', yield: [3, 5], regrows: true, awakenedFrom: 'voidberry', adminOnly: true },
+            awakenedhellfruit: { name: 'Awakened Hellfruit', seedEmoji: '👑', growEmoji: '👑👿', seedPrice: 0, basePrice: 5000000, growTime: 333, rarity: 'awakened', yield: [2, 4], regrows: true, awakenedFrom: 'hellfruit', adminOnly: true },
+            awakeneddivinehalo: { name: 'Awakened Divine Halo', seedEmoji: '👑', growEmoji: '👑💫', seedPrice: 0, basePrice: 150000000000, growTime: 1200, rarity: 'awakened', yield: [2, 4], regrows: true, awakenedFrom: 'divinehalo', adminOnly: true }
         };
 
         const WEATHER = {
@@ -14830,7 +14914,8 @@
             nocturnal: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
             storm: { min: 0, max: 0, restockChance: 0, wheelOnly: true },
             quest: { min: 0, max: 0, restockChance: 0, questOnly: true },
-            disco: { min: 0, max: 0, restockChance: 0, discoOnly: true }
+            disco: { min: 0, max: 0, restockChance: 0, discoOnly: true },
+            awakened: { min: 0, max: 0, restockChance: 0, adminOnly: true }
         };
 
         // Initialize
@@ -15676,13 +15761,16 @@
                     const crop = CROPS[id];
                     const div = document.createElement('div');
                     const isQuest = crop.rarity === 'quest';
-                    div.className = `inv-item ${gameState.selectedSeed === id ? 'selected' : ''} ${isQuest ? 'quest-seed' : ''}`;
+                    const isAwakened = crop.rarity === 'awakened';
+                    div.className = `inv-item ${gameState.selectedSeed === id ? 'selected' : ''} ${isQuest ? 'quest-seed' : ''} ${isAwakened ? 'awakened-seed' : ''}`;
                     div.innerHTML = `
                         ${isQuest ? '<span class="quest-icon">🎯</span>' : ''}
+                        ${isAwakened ? '<span class="awakened-icon">👑</span>' : ''}
                         ${getCropIcon(id)}
                         <span class="count">${count}</span>
                     `;
                     if (isQuest) div.title = `${crop.name} - Quest Exclusive!`;
+                    if (isAwakened) div.title = `${crop.name} - Admin Takeover Exclusive! 10x power!`;
                     div.onclick = () => selectSeed(id);
                     seedContainer.appendChild(div);
                 }
@@ -15776,10 +15864,12 @@
                 
                 const div = document.createElement('div');
                 const stormClass = crop.rarity === 'storm' ? ' storm-crop' : '';
-                div.className = `inv-item harvested-item${stormClass}`;
+                const awakenedClass = crop.rarity === 'awakened' ? ' awakened-crop' : '';
+                div.className = `inv-item harvested-item${stormClass}${awakenedClass}`;
+                const rarityColor = crop.rarity === 'storm' ? '#00d4ff' : crop.rarity === 'awakened' ? '#ff4444' : '#666';
                 div.innerHTML = `
                     <div style="transform: scale(${size.scale}); display: inline-block;">${getCropIcon(item.type)}</div>
-                    <span style="font-size: 0.65rem; color: ${crop.rarity === 'storm' ? '#00d4ff' : '#666'};">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
+                    <span style="font-size: 0.65rem; color: ${rarityColor};">${size.name}${mutationEmojis ? ' ' + mutationEmojis : ''}<br>$${value}</span>
                 `;
                 harvestContainer.appendChild(div);
             });
@@ -16135,6 +16225,34 @@
             
             const sizeText = actualYield > 1 ? `${actualYield}x ` : '';
             const lostCrops = yieldAmount - actualYield;
+            
+            // Admin Takeover: Chance to get awakened seed
+            if (gameState.currentWeather === 'takeover') {
+                const awakenedChance = 0.05; // 5% chance per harvest
+                if (Math.random() < awakenedChance) {
+                    // Find awakened version of this crop
+                    const awakenedCropId = 'awakened' + plot.type;
+                    if (CROPS[awakenedCropId]) {
+                        if (!gameState.seeds) gameState.seeds = {};
+                        if (!gameState.seeds[awakenedCropId]) gameState.seeds[awakenedCropId] = 0;
+                        gameState.seeds[awakenedCropId]++;
+                        showMessage(`👑 AWAKENED! You received an ${CROPS[awakenedCropId].name} seed!`);
+                        // Create particle effect
+                        for (let i = 0; i < 5; i++) {
+                            setTimeout(() => {
+                                const particle = document.createElement('div');
+                                particle.className = 'takeover-particle';
+                                particle.textContent = '👑';
+                                particle.style.left = (30 + Math.random() * 40) + 'vw';
+                                particle.style.top = '40vh';
+                                particle.style.animationDuration = '1s';
+                                document.body.appendChild(particle);
+                                setTimeout(() => particle.remove(), 1000);
+                            }, i * 100);
+                        }
+                    }
+                }
+            }
             
             // Check if crop regrows
             // Gale Phoenix: storm crops always regrow once
