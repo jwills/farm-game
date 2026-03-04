@@ -19389,7 +19389,7 @@
             }
         }
 
-        // Auto-join all players to the global neighborhood 0804
+        // Auto-join all players to the global neighborhood 7655
         async function autoJoinGlobalNeighborhood() {
             // Skip if already in a neighborhood
             if (gameState.neighborhoodCode) return;
@@ -19401,16 +19401,16 @@
                 const res = await fetch(`${API_BASE}/neighborhood/join`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: '0804', playerId: getPlayerId(), playerName: gameState.playerName })
+                    body: JSON.stringify({ code: '7655', playerId: getPlayerId(), playerName: gameState.playerName })
                 });
                 const data = await res.json();
                 if (data.success) {
-                    gameState.neighborhoodCode = '0804';
+                    gameState.neighborhoodCode = '7655';
                     saveGame();
                     renderNeighborhoodStatus();
                     syncFarmToNeighborhood();
                     checkAdminStatus();
-                    console.log('Auto-joined global neighborhood 0804');
+                    console.log('Auto-joined global neighborhood 7655');
                 }
             } catch (err) {
                 console.log('Auto-join failed:', err);

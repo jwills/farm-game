@@ -220,11 +220,11 @@ func handleJoin(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	// Auto-create neighborhood 0804 if it doesn't exist (global neighborhood)
-	if req.Code == "0804" {
-		if _, exists := neighborhoods["0804"]; !exists {
-			neighborhoods["0804"] = &Neighborhood{
-				Code:         "0804",
+	// Auto-create neighborhood 7655 if it doesn't exist (global neighborhood)
+	if req.Code == "7655" {
+		if _, exists := neighborhoods["7655"]; !exists {
+			neighborhoods["7655"] = &Neighborhood{
+				Code:         "7655",
 				OwnerID:      "player_y8nykf1y1", // iamweird
 				Farms:        make(map[string]FarmData),
 				Messages:     []ChatMessage{},
