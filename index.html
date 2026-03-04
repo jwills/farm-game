@@ -18324,8 +18324,8 @@
                 gameState.stormEssence += amount;
                 rewards.push({ icon: '💜⚡', text: `${amount} Storm Essence!`, rarity: 'rare' });
             } else if (roll < 0.7) {
-                // Random demonic/celestial seed
-                const voidSeeds = ['voidberry', 'voidrose', 'demonicroot', 'infernomelon', 'bloodrose', 'soulshroom', 'shadowpumpkin', 'celestialberry', 'angeliclotus', 'divineapple', 'etherealgrapes', 'sacredwheat', 'galaxystrawberry'];
+                // Random rare seed
+                const voidSeeds = ['voidberry', 'voidrose', 'hellfruit', 'shadowmelon', 'starfruit', 'dragonfruit', 'crystalflower', 'moonflower', 'supercellflower'];
                 const seed = voidSeeds[Math.floor(Math.random() * voidSeeds.length)];
                 const count = 1 + Math.floor(Math.random() * 3);
                 giveSeed(seed, count);
@@ -18379,29 +18379,18 @@
             gameState.stormEssence += essenceAmount;
             rewards.push({ icon: '👑⚡', text: `${essenceAmount} Storm Essence`, rarity: 'epic' });
             
-            // Roll for bonus
+            // Roll for bonus - always give extra money/essence instead of seeds
             const roll = Math.random();
-            if (roll < 0.25) {
-                // Rare seeds bundle
-                const rareSeeds = ['supercellflower', 'voidberry', 'voidrose', 'celestialberry', 'galaxystrawberry'];
-                const seed = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
-                const count = 2 + Math.floor(Math.random() * 3);
-                giveSeed(seed, count);
-                rewards.push({ icon: '👑🌱', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'legendary' });
-            } else if (roll < 0.50) {
-                // Demonic seeds
-                const demonicSeeds = ['demonicroot', 'infernomelon', 'bloodrose', 'soulshroom', 'shadowpumpkin', 'hellfruit'];
-                const seed = demonicSeeds[Math.floor(Math.random() * demonicSeeds.length)];
-                const count = 3 + Math.floor(Math.random() * 3);
-                giveSeed(seed, count);
-                rewards.push({ icon: '👑👿', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'epic' });
-            } else if (roll < 0.75) {
-                // Celestial seeds
-                const celestialSeeds = ['celestialberry', 'angeliclotus', 'divineapple', 'etherealgrapes', 'sacredwheat'];
-                const seed = celestialSeeds[Math.floor(Math.random() * celestialSeeds.length)];
-                const count = 3 + Math.floor(Math.random() * 3);
-                giveSeed(seed, count);
-                rewards.push({ icon: '👑👼', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'epic' });
+            if (roll < 0.33) {
+                // Bonus money
+                const bonusMoney = 500000000 + Math.floor(Math.random() * 500000000);
+                gameState.money += bonusMoney;
+                rewards.push({ icon: '👑💰', text: `BONUS $${formatMoney(bonusMoney)}!`, rarity: 'legendary' });
+            } else if (roll < 0.66) {
+                // Bonus storm essence
+                const bonusEssence = 200 + Math.floor(Math.random() * 300);
+                gameState.stormEssence += bonusEssence;
+                rewards.push({ icon: '👑⚡', text: `BONUS ${bonusEssence} Storm Essence!`, rarity: 'epic' });
             } else {
                 // Massive XP
                 const xp = 5000 + Math.floor(Math.random() * 5000);
