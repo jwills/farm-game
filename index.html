@@ -6422,6 +6422,79 @@
             font-weight: bold;
             text-shadow: 0 0 5px rgba(99, 102, 241, 0.8);
         }
+        
+        /* Admin Crate Styling */
+        .admin-supply-crate .crate-box {
+            background: linear-gradient(145deg, #ffd700, #ff4500);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        .admin-supply-crate .crate-box::before {
+            background: linear-gradient(145deg, #ffec8b, #ff6347);
+        }
+        .admin-glow {
+            background: radial-gradient(ellipse, rgba(255, 215, 0, 0.9) 0%, rgba(255, 69, 0, 0.5) 50%, transparent 70%);
+            width: 40px;
+            height: 25px;
+            animation: admin-glow-pulse 0.5s ease-in-out infinite;
+        }
+        @keyframes admin-glow-pulse {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+        }
+        .admin-text {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 69, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.5);
+            font-size: 0.65rem;
+            animation: admin-text-pulse 0.8s ease-in-out infinite;
+        }
+        @keyframes admin-text-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .plot.admin-crate {
+            animation: admin-crate-glow 1s ease-in-out infinite;
+        }
+        @keyframes admin-crate-glow {
+            0%, 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: inset 0 0 30px rgba(255, 69, 0, 0.5); }
+        }
+        
+        /* Void Burst Effect */
+        .void-burst-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            color: #9333ea;
+            text-shadow: 0 0 30px #9333ea, 0 0 60px #7c3aed, 0 0 90px #6d28d9;
+            z-index: 10000;
+            animation: void-burst-anim 3s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes void-burst-anim {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+        
+        /* Admin Crate Modal Styling */
+        .crate-reward-content.admin-crate {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+        .crate-reward-content.admin-crate h2 {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+        }
+        .admin-claim {
+            background: linear-gradient(145deg, #ffd700, #ff4500) !important;
+            color: #1a1a2e !important;
+            font-weight: bold !important;
+        }
 
         @keyframes sway {
             0%, 100% { transform: rotate(-3deg); }
@@ -14835,6 +14908,7 @@
             demonicInStock: 0, // number of demonic seeds available during hellscape (0-5)
             celestialInStock: false, // only true during heaven with 25% chance
             supercellCrate: null, // { plotIndex: number } - supply crate location during supercell
+            adminCrate: null, // { plotIndex: number } - admin crate location during takeover
             stormEssence: 0, // currency from supercell crates
             stormchargedSeeds: {}, // seeds that auto-apply stormsurge: { cropType: count }
             gear: {}, // owned gear: { gearId: { uses: number } } for watering cans
@@ -15054,6 +15128,8 @@
                         }
                     } else if (gameState.supercellCrate && gameState.supercellCrate.plotIndex === plotIndex) {
                         claimSupercellCrate();
+                    } else if (gameState.adminCrate && gameState.adminCrate.plotIndex === plotIndex) {
+                        claimAdminCrate();
                     }
                 }, 100);
             }
@@ -15633,6 +15709,19 @@
                             <div class="crate-text">Click to open!</div>
                         `;
                         div.onclick = () => claimSupercellCrate();
+                    } else if (gameState.adminCrate && gameState.adminCrate.plotIndex === index) {
+                        // Admin crate during takeover
+                        div.classList.add('has-crate', 'admin-crate');
+                        div.innerHTML = `
+                            <div class="supply-crate admin-supply-crate">
+                                <div class="crate-box"></div>
+                                <div class="crate-lid"></div>
+                                <div class="crate-glow admin-glow"></div>
+                                <div class="crate-label">👑</div>
+                            </div>
+                            <div class="crate-text admin-text">ADMIN CRATE!</div>
+                        `;
+                        div.onclick = () => claimAdminCrate();
                     } else {
                         div.onclick = () => {
                             if (gameState.selectedSprinkler !== null) {
@@ -17606,8 +17695,14 @@
             } else {
                 document.body.classList.remove('takeover-mode');
                 document.querySelectorAll('.takeover-overlay, .takeover-grid, .takeover-text, .takeover-particle, .takeover-crack, .takeover-text-container').forEach(el => el.remove());
-                if (window.takeoverCrateInterval) clearInterval(window.takeoverCrateInterval);
+                if (window.takeoverChaosInterval) clearInterval(window.takeoverChaosInterval);
+                if (window.takeoverAdminCrateInterval) clearInterval(window.takeoverAdminCrateInterval);
                 if (window.takeoverInterval) clearInterval(window.takeoverInterval);
+                // Clear any admin crate
+                if (gameState.adminCrate) {
+                    gameState.adminCrate = null;
+                    renderFarm();
+                }
             }
             
             // Toggle disco mode class on body
@@ -18203,6 +18298,150 @@
         function closeCrateRewardModal() {
             const modal = document.getElementById('crate-reward-modal');
             if (modal) modal.remove();
+        }
+        
+        // Void Burst - instant bonus during takeover
+        function triggerVoidBurst() {
+            const rewards = [];
+            
+            // Create void visual effect
+            const voidFx = document.createElement('div');
+            voidFx.className = 'void-burst-effect';
+            voidFx.innerHTML = '🌀💜 VOID BURST 💜🌀';
+            document.body.appendChild(voidFx);
+            setTimeout(() => voidFx.remove(), 3000);
+            
+            const roll = Math.random();
+            if (roll < 0.3) {
+                // Money burst
+                const amount = 50000000 + Math.floor(Math.random() * 100000000);
+                gameState.money += amount;
+                rewards.push({ icon: '💜💰', text: `$${formatMoney(amount)} from the void!`, rarity: 'epic' });
+            } else if (roll < 0.5) {
+                // Storm essence burst
+                const amount = 50 + Math.floor(Math.random() * 100);
+                if (!gameState.stormEssence) gameState.stormEssence = 0;
+                gameState.stormEssence += amount;
+                rewards.push({ icon: '💜⚡', text: `${amount} Storm Essence!`, rarity: 'rare' });
+            } else if (roll < 0.7) {
+                // Random demonic/celestial seed
+                const voidSeeds = ['voidberry', 'voidrose', 'demonicroot', 'infernomelon', 'bloodrose', 'soulshroom', 'shadowpumpkin', 'celestialberry', 'angeliclotus', 'divineapple', 'etherealgrapes', 'sacredwheat', 'galaxystrawberry'];
+                const seed = voidSeeds[Math.floor(Math.random() * voidSeeds.length)];
+                const count = 1 + Math.floor(Math.random() * 3);
+                giveSeed(seed, count);
+                rewards.push({ icon: '💜🌱', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'legendary' });
+            } else {
+                // XP burst
+                const xp = 1000 + Math.floor(Math.random() * 2000);
+                gameState.xp += xp;
+                checkLevelUp();
+                rewards.push({ icon: '💜✨', text: `${xp} XP!`, rarity: 'rare' });
+            }
+            
+            showMessage(`🌀 VOID BURST! ${rewards[0].text}`);
+            renderShop();
+            renderFarm();
+        }
+        
+        // Admin Crate - special crate during takeover
+        function spawnAdminCrate() {
+            // Find empty plots
+            const emptyPlots = [];
+            gameState.plots.forEach((plot, index) => {
+                if (!plot) emptyPlots.push(index);
+            });
+            
+            if (emptyPlots.length === 0) {
+                gameState.adminCrate = { plotIndex: Math.floor(Math.random() * gameState.plots.length) };
+            } else {
+                const randomIndex = emptyPlots[Math.floor(Math.random() * emptyPlots.length)];
+                gameState.adminCrate = { plotIndex: randomIndex };
+            }
+            renderFarm();
+        }
+        
+        function claimAdminCrate() {
+            if (!gameState.adminCrate) return;
+            
+            gameState.adminCrate = null;
+            
+            const rewards = [];
+            
+            // Admin crates are VERY generous
+            // Always give big money
+            const moneyAmount = 100000000 + Math.floor(Math.random() * 500000000);
+            gameState.money += moneyAmount;
+            rewards.push({ icon: '👑💰', text: `$${formatMoney(moneyAmount)}`, rarity: 'legendary' });
+            
+            // Always give storm essence
+            const essenceAmount = 100 + Math.floor(Math.random() * 150);
+            if (!gameState.stormEssence) gameState.stormEssence = 0;
+            gameState.stormEssence += essenceAmount;
+            rewards.push({ icon: '👑⚡', text: `${essenceAmount} Storm Essence`, rarity: 'epic' });
+            
+            // Roll for bonus
+            const roll = Math.random();
+            if (roll < 0.25) {
+                // Rare seeds bundle
+                const rareSeeds = ['supercellflower', 'voidberry', 'voidrose', 'celestialberry', 'galaxystrawberry'];
+                const seed = rareSeeds[Math.floor(Math.random() * rareSeeds.length)];
+                const count = 2 + Math.floor(Math.random() * 3);
+                giveSeed(seed, count);
+                rewards.push({ icon: '👑🌱', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'legendary' });
+            } else if (roll < 0.50) {
+                // Demonic seeds
+                const demonicSeeds = ['demonicroot', 'infernomelon', 'bloodrose', 'soulshroom', 'shadowpumpkin', 'hellfruit'];
+                const seed = demonicSeeds[Math.floor(Math.random() * demonicSeeds.length)];
+                const count = 3 + Math.floor(Math.random() * 3);
+                giveSeed(seed, count);
+                rewards.push({ icon: '👑👿', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'epic' });
+            } else if (roll < 0.75) {
+                // Celestial seeds
+                const celestialSeeds = ['celestialberry', 'angeliclotus', 'divineapple', 'etherealgrapes', 'sacredwheat'];
+                const seed = celestialSeeds[Math.floor(Math.random() * celestialSeeds.length)];
+                const count = 3 + Math.floor(Math.random() * 3);
+                giveSeed(seed, count);
+                rewards.push({ icon: '👑👼', text: `${count}x ${CROPS[seed]?.name || seed} Seeds!`, rarity: 'epic' });
+            } else {
+                // Massive XP
+                const xp = 5000 + Math.floor(Math.random() * 5000);
+                gameState.xp += xp;
+                checkLevelUp();
+                rewards.push({ icon: '👑✨', text: `${xp} XP!`, rarity: 'rare' });
+            }
+            
+            showAdminCrateRewardModal(rewards);
+            renderFarm();
+            renderInventory();
+            renderShop();
+        }
+        
+        function showAdminCrateRewardModal(rewards) {
+            const existing = document.getElementById('crate-reward-modal');
+            if (existing) existing.remove();
+            
+            const modal = document.createElement('div');
+            modal.id = 'crate-reward-modal';
+            
+            const rewardItems = rewards.map(r => {
+                return `<li class="crate-reward-item ${r.rarity}">
+                    <span class="crate-reward-icon">${r.icon}</span>
+                    <span class="crate-reward-text">${r.text}</span>
+                </li>`;
+            }).join('');
+            
+            modal.innerHTML = `
+                <div class="crate-reward-content admin-crate">
+                    <div class="crate-open-icon">👑📦🛡️</div>
+                    <h2>ADMIN CRATE OPENED!</h2>
+                    <ul class="crate-rewards-list">
+                        ${rewardItems}
+                    </ul>
+                    <button class="crate-claim-btn admin-claim" onclick="closeCrateRewardModal()">CLAIMED!</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
         }
         
         // Storm Shop
@@ -19030,17 +19269,42 @@
                 setTimeout(() => particle.remove(), 5000);
             }, 300);
             
-            // Supply crate drops every 15 seconds during takeover
-            window.takeoverCrateInterval = setInterval(() => {
+            // Random chaos event every 30 seconds: time wheel, storm crate, or void burst
+            window.takeoverChaosInterval = setInterval(() => {
                 if (gameState.currentWeather !== 'takeover') {
-                    clearInterval(window.takeoverCrateInterval);
+                    clearInterval(window.takeoverChaosInterval);
                     return;
                 }
-                if (!gameState.supercellCrate) {
-                    spawnSupercellCrate();
-                    showMessage('📦 Admin dropped a Supply Crate! 🛡️');
+                const roll = Math.random();
+                if (roll < 0.33) {
+                    // Time wheel spin
+                    gameState.timeWheelsSpun = { prehistoric: false, futuristic: false };
+                    showRouletteWheels();
+                    showMessage('⏰ Time Rift reopened! Spin the wheels! ⏰');
+                } else if (roll < 0.66) {
+                    // Storm supply crate
+                    if (!gameState.supercellCrate) {
+                        spawnSupercellCrate();
+                        showMessage('📦🌪️ Storm Crate dropped! 🌪️📦');
+                    } else {
+                        // Crate exists, give void burst instead
+                        triggerVoidBurst();
+                    }
+                } else {
+                    // Void burst - instant bonus
+                    triggerVoidBurst();
                 }
             }, 30000);
+            
+            // Admin crate every 60 seconds
+            window.takeoverAdminCrateInterval = setInterval(() => {
+                if (gameState.currentWeather !== 'takeover') {
+                    clearInterval(window.takeoverAdminCrateInterval);
+                    return;
+                }
+                spawnAdminCrate();
+                showMessage('👑🛡️ ADMIN CRATE DEPLOYED! 🛡️👑');
+            }, 60000);
             
             showMessage('🛡️👑 ADMIN TAKEOVER! All items unlocked! Mutations boosted! 👑🛡️');
         }
