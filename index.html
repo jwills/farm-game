@@ -17372,7 +17372,7 @@
                 updateDailyTaskProgress('survive_supercell');
             }
             
-            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly' && w !== 'disco');
+            const weathers = Object.keys(WEATHER).filter(w => w !== 'hellscape' && w !== 'heaven' && w !== 'supercell' && w !== 'timeanomaly' && w !== 'disco' && w !== 'takeover');
             // Calm weathers are more common, mutation weathers are rarer
             const calmWeathers = ['sunny', 'cloudy', 'partlycloudy'];
             const weighted = gameState.isNight 
