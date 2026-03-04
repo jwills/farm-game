@@ -649,6 +649,9 @@ func getWeatherDuration(weather string) time.Duration {
 	case "disco":
 		// 90-180 seconds for disco (1.5-3 minutes)
 		return time.Duration(90+rand.Intn(90)) * time.Second
+	case "takeover":
+		// 5 minutes for admin takeover (admin can extend or change)
+		return 5 * time.Minute
 	default:
 		// 10-30 seconds for normal weather
 		return time.Duration(10+rand.Intn(20)) * time.Second
@@ -1135,7 +1138,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 			"foggy": true, "thunder": true, "snow": true, "heatwave": true,
 			"bloodmoon": true, "hellscape": true, "heaven": true,
 			"supercell": true, "timeanomaly": true, "disco": true,
-			"partlycloudy": true, "drizzle": true,
+			"partlycloudy": true, "drizzle": true, "takeover": true,
 		}
 		weather := strings.ToLower(strings.TrimSpace(req.Args))
 		if !validWeathers[weather] {
