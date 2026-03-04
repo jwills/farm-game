@@ -6,11 +6,14 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 )
+
+const neighborhoodsFile = "neighborhoods.json"
 
 type FarmData struct {
 	PlayerName string          `json:"playerName"`
@@ -69,8 +72,47 @@ func isAdmin(playerName string) bool {
 	return adminNames[strings.ToLower(playerName)]
 }
 
+// loadNeighborhoods loads neighborhood data from the JSON file
+func loadNeighborhoods() {
+	data, err := os.ReadFile(neighborhoodsFile)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Println("No neighborhoods file found, starting fresh")
+			return
+		}
+		log.Printf("Error reading neighborhoods file: %v", err)
+		return
+	}
+
+	var loaded map[string]*Neighborhood
+	if err := json.Unmarshal(data, &loaded); err != nil {
+		log.Printf("Error parsing neighborhoods file: %v", err)
+		return
+	}
+
+	neighborhoods = loaded
+	log.Printf("Loaded %d neighborhoods from file", len(neighborhoods))
+}
+
+// saveNeighborhoods saves all neighborhood data to the JSON file
+func saveNeighborhoods() {
+	data, err := json.MarshalIndent(neighborhoods, "", "  ")
+	if err != nil {
+		log.Printf("Error marshaling neighborhoods: %v", err)
+		return
+	}
+
+	if err := os.WriteFile(neighborhoodsFile, data, 0644); err != nil {
+		log.Printf("Error saving neighborhoods: %v", err)
+		return
+	}
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
+
+	// Load existing neighborhoods from file
+	loadNeighborhoods()
 
 	// API routes
 	http.HandleFunc("/api/neighborhood/create", corsMiddleware(handleCreate))
@@ -155,6 +197,7 @@ func handleCreate(w http.ResponseWriter, r *http.Request) {
 		Created:      time.Now(),
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{"code": code, "weather": "sunny", "ownerId": req.PlayerID})
 }
 
@@ -201,6 +244,7 @@ func handleJoin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"code":    hood.Code,
@@ -245,6 +289,7 @@ func handleSync(w http.ResponseWriter, r *http.Request) {
 		LastSync:   time.Now(),
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
@@ -262,9 +307,11 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if weather needs to change
+	weatherChanged := false
 	if time.Now().After(hood.WeatherUntil) {
 		hood.Weather = pickNewWeather(hood.Weather)
 		hood.WeatherUntil = time.Now().Add(getWeatherDuration(hood.Weather))
+		weatherChanged = true
 	}
 	weather := hood.Weather
 	weatherUntil := hood.WeatherUntil
@@ -278,6 +325,9 @@ func handleGetFarms(w http.ResponseWriter, r *http.Request) {
 		} else {
 			myPlots = farm.Plots
 		}
+	}
+	if weatherChanged {
+		saveNeighborhoods()
 	}
 	mu.Unlock()
 
@@ -311,6 +361,7 @@ func handleLeave(w http.ResponseWriter, r *http.Request) {
 
 	if hood, exists := neighborhoods[req.Code]; exists {
 		delete(hood.Farms, req.PlayerID)
+		saveNeighborhoods()
 	}
 
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
@@ -360,6 +411,7 @@ func handleKick(w http.ResponseWriter, r *http.Request) {
 	}
 
 	delete(hood.Farms, req.TargetID)
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
 
@@ -444,6 +496,7 @@ func handleSteal(w http.ResponseWriter, r *http.Request) {
 	victim.Plots = newPlots
 	hood.Farms[victimID] = victim
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success":    true,
 		"plant":      stolenPlant,
@@ -500,6 +553,7 @@ func handleChatSend(w http.ResponseWriter, r *http.Request) {
 		hood.Messages = hood.Messages[len(hood.Messages)-50:]
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": msg,
@@ -614,13 +668,18 @@ func handleWeather(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if weather needs to change
+	weatherChanged := false
 	if time.Now().After(hood.WeatherUntil) {
 		hood.Weather = pickNewWeather(hood.Weather)
 		hood.WeatherUntil = time.Now().Add(getWeatherDuration(hood.Weather))
+		weatherChanged = true
 	}
 
 	weather := hood.Weather
 	weatherUntil := hood.WeatherUntil
+	if weatherChanged {
+		saveNeighborhoods()
+	}
 	mu.Unlock()
 
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -684,6 +743,7 @@ func handleGiftSend(w http.ResponseWriter, r *http.Request) {
 		hood.Messages = hood.Messages[len(hood.Messages)-50:]
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": msg,
@@ -735,6 +795,7 @@ func handleGiftClaim(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			msg.Gift.Claimed = true
+			saveNeighborhoods()
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 				"gift":    msg.Gift,
@@ -794,6 +855,7 @@ func handleGiftDecline(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			msg.Gift.Declined = true
+			saveNeighborhoods()
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 			})
@@ -860,6 +922,7 @@ func handleGiftReclaim(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			msg.Gift.Reclaimed = true
+			saveNeighborhoods()
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 				"gift":    msg.Gift,
@@ -926,6 +989,7 @@ func handlePetGiftSend(w http.ResponseWriter, r *http.Request) {
 		hood.Messages = hood.Messages[len(hood.Messages)-50:]
 	}
 
+	saveNeighborhoods()
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"message": msg,
@@ -1001,6 +1065,7 @@ func handlePetGiftClaim(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			msg.Gift.Claimed = true
+			saveNeighborhoods()
 			json.NewEncoder(w).Encode(map[string]interface{}{
 				"success": true,
 				"gift":    msg.Gift,
@@ -1082,6 +1147,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 		}
 		hood.Weather = weather
 		hood.WeatherUntil = time.Now().Add(getWeatherDuration(weather))
+		saveNeighborhoods()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": true,
 			"message": "Weather set to " + weather,
@@ -1090,6 +1156,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 	case "extendweather":
 		// Extend current weather by 5 minutes
 		hood.WeatherUntil = hood.WeatherUntil.Add(5 * time.Minute)
+		saveNeighborhoods()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": true,
 			"message": "Weather extended by 5 minutes",
@@ -1116,6 +1183,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 		if len(hood.Messages) > 50 {
 			hood.Messages = hood.Messages[len(hood.Messages)-50:]
 		}
+		saveNeighborhoods()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": true,
 			"message": "Broadcast sent",
@@ -1134,6 +1202,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 		for pid, farm := range hood.Farms {
 			if strings.EqualFold(farm.PlayerName, targetName) {
 				delete(hood.Farms, pid)
+				saveNeighborhoods()
 				json.NewEncoder(w).Encode(map[string]interface{}{
 					"success": true,
 					"message": "Kicked " + targetName,
@@ -1275,6 +1344,7 @@ func handleAdminCommand(w http.ResponseWriter, r *http.Request) {
 			hood.Messages = hood.Messages[len(hood.Messages)-50:]
 		}
 
+		saveNeighborhoods()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success": true,
 			"message": fmt.Sprintf("Sent %s to %s", giftDesc, targetPlayer),
