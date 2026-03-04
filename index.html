@@ -11682,6 +11682,47 @@
             background: linear-gradient(135deg, #4a0000 0%, #2a0000 100%) !important;
             border-color: #ff0000 !important;
         }
+        
+        /* Screen crack effect for takeover */
+        .takeover-crack {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1001;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 51%, transparent 52%);
+            background-size: 100% 100%;
+            background-position: 30% 20%, 70% 60%;
+            background-repeat: no-repeat;
+        }
+        .takeover-crack::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 25%;
+            width: 50%;
+            height: 70%;
+            background: 
+                linear-gradient(60deg, transparent 45%, rgba(255,255,255,0.15) 48%, rgba(200,200,200,0.4) 50%, rgba(255,255,255,0.15) 52%, transparent 55%),
+                linear-gradient(-30deg, transparent 45%, rgba(255,255,255,0.1) 48%, rgba(180,180,180,0.3) 50%, rgba(255,255,255,0.1) 52%, transparent 55%),
+                linear-gradient(120deg, transparent 45%, rgba(255,255,255,0.1) 48%, rgba(150,150,150,0.25) 50%, rgba(255,255,255,0.1) 52%, transparent 55%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+        .takeover-crack::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 35% 25%, rgba(255,0,0,0.1) 0%, transparent 30%),
+                        radial-gradient(ellipse at 65% 55%, rgba(255,0,0,0.08) 0%, transparent 25%);
+        }
 
         /* Enhanced disco mode styles */
         body.disco-mode {
@@ -15222,15 +15263,17 @@
                 
                 // Demonic items only available during hellscape with 25% chance per check
                 // Celestial items only available during heaven with 25% chance per check
+                const isTakeoverWeather = gameState.currentWeather === 'takeover';
                 let stock, inStock, stockDisplay, stockColor;
                 if (isDemonic) {
-                    inStock = isHellscape && gameState.demonicInStock > 0;
-                    stockDisplay = isHellscape ? (inStock ? `🔥 ${gameState.demonicInStock} left` : '👿 Sold Out') : '👿 Requires Hellscape';
+                    inStock = (isHellscape || isTakeoverWeather) && gameState.demonicInStock > 0;
+                    stockDisplay = (isHellscape || isTakeoverWeather) ? (inStock ? `🔥 ${gameState.demonicInStock} left` : '👿 Sold Out') : '👿 Requires Hellscape';
                     stockColor = inStock ? '#ff4500' : '#8B0000';
                     stock = gameState.demonicInStock;
                 } else if (isCelestial) {
-                    inStock = isHeaven && gameState.celestialInStock;
-                    stockDisplay = isHeaven ? (inStock ? '✨ Available' : '👼 Sold Out') : '👼 Requires Heaven';
+                    const isTakeover = gameState.currentWeather === 'takeover';
+                    inStock = (isHeaven || isTakeover) && gameState.celestialInStock;
+                    stockDisplay = (isHeaven || isTakeover) ? (inStock ? '✨ Available' : '👼 Sold Out') : '👼 Requires Heaven';
                     stockColor = inStock ? '#FFD700' : '#B8860B';
                     stock = inStock ? 1 : 0;
                 } else {
@@ -15817,7 +15860,8 @@
             
             // Special handling for demonic seeds
             if (isDemonic) {
-                if (gameState.currentWeather !== 'hellscape' || gameState.demonicInStock <= 0) {
+                const isTakeover = gameState.currentWeather === 'takeover';
+                if ((gameState.currentWeather !== 'hellscape' && !isTakeover) || gameState.demonicInStock <= 0) {
                     showMessage(`${crop.name} requires Hellscape weather! 👿`);
                     return;
                 }
@@ -15825,7 +15869,7 @@
                     gameState.money -= crop.seedPrice;
                     giveSeed(type);
                     gameState.demonicInStock--; // Decrease stock
-                    showMessage(`🔥 Bought ${crop.name} seeds! (${gameState.demonicInStock} left) 👿`);
+                    showMessage(`🔥 Bought ${crop.name} seeds! (${gameState.demonicInStock} left) ${isTakeover ? '🛡️' : '👿'}`);
                     selectSeed(type); // Auto-equip purchased seed
                     renderShop();
                     renderInventory();
@@ -15835,15 +15879,16 @@
             
             // Special handling for celestial seeds
             if (isCelestial) {
-                if (gameState.currentWeather !== 'heaven' || !gameState.celestialInStock) {
+                const isTakeover = gameState.currentWeather === 'takeover';
+                if ((gameState.currentWeather !== 'heaven' && !isTakeover) || !gameState.celestialInStock) {
                     showMessage(`${crop.name} requires Heaven weather! 👼`);
                     return;
                 }
                 if (gameState.money >= crop.seedPrice) {
                     gameState.money -= crop.seedPrice;
                     giveSeed(type);
-                    gameState.celestialInStock = false; // Only one per heaven
-                    showMessage(`✨ Bought ${crop.name} seeds! 👼`);
+                    gameState.celestialInStock = false; // Only one per heaven/takeover
+                    showMessage(`✨ Bought ${crop.name} seeds! ${isTakeover ? '🛡️' : '👼'}`);
                     selectSeed(type); // Auto-equip purchased seed
                     renderShop();
                     renderInventory();
@@ -17129,7 +17174,22 @@
                         // Chance to gain mutation from current weather (1% base)
                         let mutationChance = 0.01;
                         mutationChance = getPetBonus('mutation', mutationChance);
-                        if (currentWeather.mutation && Math.random() < mutationChance) {
+                        
+                        // ADMIN TAKEOVER: 25% mutation chance, can get ANY weather mutation!
+                        if (gameState.currentWeather === 'takeover') {
+                            mutationChance = 0.25;
+                            // Pick a random weather mutation
+                            const allMutationWeathers = Object.entries(WEATHER).filter(([k, w]) => w.mutation);
+                            if (allMutationWeathers.length > 0 && Math.random() < mutationChance) {
+                                const [weatherKey, weather] = allMutationWeathers[Math.floor(Math.random() * allMutationWeathers.length)];
+                                if (!plot.mutations) plot.mutations = [];
+                                if (!plot.mutations.includes(weather.mutation)) {
+                                    plot.mutations.push(weather.mutation);
+                                    showMessage(`🛡️ Admin override! Crop became ${weather.mutation}! ${weather.mutationEmoji}`);
+                                    updateDailyTaskProgress('mutations_5');
+                                }
+                            }
+                        } else if (currentWeather.mutation && Math.random() < mutationChance) {
                             if (!plot.mutations) plot.mutations = [];
                             // Check if mutation requires another mutation first
                             const canGetMutation = !currentWeather.requiresMutation || plot.mutations.includes(currentWeather.requiresMutation);
@@ -17540,7 +17600,8 @@
                 document.body.classList.add('takeover-mode');
             } else {
                 document.body.classList.remove('takeover-mode');
-                document.querySelectorAll('.takeover-overlay, .takeover-grid, .takeover-text, .takeover-particle').forEach(el => el.remove());
+                document.querySelectorAll('.takeover-overlay, .takeover-grid, .takeover-text, .takeover-particle, .takeover-crack, .takeover-text-container').forEach(el => el.remove());
+                if (window.takeoverCrateInterval) clearInterval(window.takeoverCrateInterval);
                 if (window.takeoverInterval) clearInterval(window.takeoverInterval);
             }
             
@@ -18914,10 +18975,15 @@
             grid.className = 'takeover-grid';
             document.body.appendChild(grid);
             
+            // Screen crack effect
+            const crack = document.createElement('div');
+            crack.className = 'takeover-crack';
+            document.body.appendChild(crack);
+            
             // Admin text that scrolls
             const textContainer = document.createElement('div');
             textContainer.className = 'takeover-text-container';
-            const messages = ['ADMIN TAKEOVER', 'SYSTEM OVERRIDE', 'CONTROL ASSUMED', 'CROPS FROZEN', 'OBEY'];
+            const messages = ['ADMIN TAKEOVER', 'SYSTEM OVERRIDE', 'CONTROL ASSUMED', 'ALL ACCESS GRANTED', 'OBEY'];
             for (let i = 0; i < 5; i++) {
                 const text = document.createElement('div');
                 text.className = 'takeover-text';
@@ -18928,7 +18994,23 @@
             }
             document.body.appendChild(textContainer);
             
-            // Floating admin shields
+            // Put everything in stock!
+            gameState.demonicInStock = 5;
+            gameState.celestialInStock = true;
+            gameState.takeoverCelestialUsed = false; // Track if celestial was bought
+            renderShop();
+            
+            // Show time anomaly wheels after a delay
+            if (!gameState.timeWheelsSpun) gameState.timeWheelsSpun = { prehistoric: false, futuristic: false };
+            gameState.timeWheelsShown = false;
+            setTimeout(() => {
+                if (gameState.currentWeather === 'takeover') {
+                    showRouletteWheels();
+                    showMessage('⏰ Admin override unlocked the Time Rift! ⏰');
+                }
+            }, 3000);
+            
+            // Floating admin shields + occasional supply crates
             window.takeoverInterval = setInterval(() => {
                 if (gameState.currentWeather !== 'takeover') {
                     clearInterval(window.takeoverInterval);
@@ -18943,7 +19025,19 @@
                 setTimeout(() => particle.remove(), 5000);
             }, 300);
             
-            showMessage('🛡️👑 ADMIN TAKEOVER! All crops are FROZEN! 👑🛡️');
+            // Supply crate drops every 15 seconds during takeover
+            window.takeoverCrateInterval = setInterval(() => {
+                if (gameState.currentWeather !== 'takeover') {
+                    clearInterval(window.takeoverCrateInterval);
+                    return;
+                }
+                if (!gameState.supercellCrate) {
+                    spawnSupercellCrate();
+                    showMessage('📦 Admin dropped a Supply Crate! 🛡️');
+                }
+            }, 15000);
+            
+            showMessage('🛡️👑 ADMIN TAKEOVER! All items unlocked! Mutations boosted! 👑🛡️');
         }
         
         function createDisco() {
