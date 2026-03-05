@@ -15193,6 +15193,24 @@
 
         document.addEventListener('keydown', handleKeyDown);
 
+        // Game loop interval IDs - tracked so we can restart them
+        let gameLoopIntervals = [];
+
+        function startGameLoops() {
+            // Clear any existing intervals to avoid duplicates
+            gameLoopIntervals.forEach(id => clearInterval(id));
+            gameLoopIntervals = [];
+
+            // Start all game loop intervals
+            gameLoopIntervals.push(setInterval(updateCrops, 1000));
+            gameLoopIntervals.push(setInterval(updateRestockTimer, 1000));
+            gameLoopIntervals.push(setInterval(saveGame, 5000));
+            gameLoopIntervals.push(setInterval(checkRestock, 30000));
+            gameLoopIntervals.push(setInterval(updateBloodTigerTimer, 1000));
+            gameLoopIntervals.push(setInterval(updateRaptorTimer, 1000));
+            gameLoopIntervals.push(setInterval(updateAlienBlobTimer, 1000));
+        }
+
         function init() {
             loadGame();
             if (!gameState.pets) gameState.pets = [];
@@ -15222,13 +15240,7 @@
             renderGearShop();
             renderFarm();
             renderInventory();
-            setInterval(updateCrops, 1000);
-            setInterval(updateRestockTimer, 1000);
-            setInterval(saveGame, 5000);
-            setInterval(checkRestock, 30000);
-            setInterval(updateBloodTigerTimer, 1000);
-            setInterval(updateRaptorTimer, 1000);
-            setInterval(updateAlienBlobTimer, 1000);
+            startGameLoops();
             // Position player after render
             setTimeout(updatePlayerPosition, 100);
             window.addEventListener('resize', updatePlayerPosition);
@@ -19738,6 +19750,7 @@
                         renderPetShop();
                         updateWeatherDisplay();
                         updateDayNightDisplay();
+                        startGameLoops(); // Restart game loops after import
                         showMessage('Save imported! 📥');
                     } catch (err) {
                         showMessage('Invalid save file! ❌');
@@ -19823,6 +19836,7 @@
                 renderPetShop();
                 updateWeatherDisplay();
                 updateDayNightDisplay();
+                startGameLoops(); // Restart game loops after load
                 showMessage(`Loaded "${name}"! 📂`);
             }
         }
