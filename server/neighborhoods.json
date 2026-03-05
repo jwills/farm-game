@@ -1,0 +1,2245 @@
+{
+  "0804": {
+    "code": "0804",
+    "ownerId": "player_y8nykf1y1",
+    "farms": {
+      "player_5l57bw2dp": {
+        "playerName": "Alt",
+        "plots": [
+          {
+            "type": "cosmicgrape",
+            "growth": 35.64999999999998,
+            "plantedAt": 1771982924997,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 155
+          },
+          {
+            "type": "starfruit",
+            "growth": 31.049999999999983,
+            "plantedAt": 1771982961175,
+            "mutations": [
+              "rainbow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 126
+          },
+          {
+            "type": "starfruit",
+            "growth": 31.049999999999983,
+            "plantedAt": 1772548935597,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 125
+          },
+          {
+            "type": "goldenapple",
+            "growth": 16.1,
+            "plantedAt": 1772549643472,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 136
+          },
+          {
+            "type": "cherry",
+            "growth": 11.500000000000002,
+            "plantedAt": 1772548938013,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 139
+          },
+          {
+            "type": "goldenapple",
+            "growth": 1924.3,
+            "plantedAt": 1772549644905,
+            "mutations": [
+              "stormsurge",
+              "wet",
+              "volcanic",
+              "toasty",
+              "golden",
+              "groovy",
+              "rainbow",
+              "cursed",
+              "bruised",
+              "prismatic",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 766
+          },
+          {
+            "growth": 2142.6,
+            "harvested": true,
+            "isFromStormcharged": false,
+            "mutations": [
+              "wet",
+              "golden",
+              "thunderstruck",
+              "frozen",
+              "rainbow",
+              "toasty",
+              "volcanic",
+              "groovy",
+              "cursed",
+              "bruised",
+              "prismatic"
+            ],
+            "plantedAt": 1772515223004,
+            "readyTime": 796,
+            "type": "cosmicgrape",
+            "planted": 1772549100512
+          },
+          {
+            "type": "cosmicgrape",
+            "growth": 4309.25,
+            "plantedAt": 1772549614041,
+            "mutations": [
+              "wet",
+              "rainbow",
+              "groovy",
+              "golden",
+              "shocked",
+              "thunderstruck",
+              "dominated",
+              "frozen",
+              "toasty",
+              "cursed",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1684
+          },
+          {
+            "type": "boneflower",
+            "growth": 39.09999999999997,
+            "plantedAt": 1772633690727,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 154
+          },
+          {
+            "type": "cyberlotus",
+            "growth": 356.9,
+            "plantedAt": 1772634971900,
+            "mutations": [
+              "wet",
+              "toasty",
+              "golden",
+              "rainbow",
+              "groovy",
+              "cursed",
+              "prismatic",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 498
+          },
+          {
+            "type": "cyberlotus",
+            "growth": 364.05,
+            "plantedAt": 1772634972432,
+            "mutations": [
+              "wet",
+              "frozen",
+              "rainbow",
+              "toasty",
+              "golden",
+              "groovy",
+              "golden",
+              "cursed",
+              "prismatic",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 499
+          },
+          {
+            "type": "cyberlotus",
+            "growth": 392.9,
+            "plantedAt": 1772634974050,
+            "mutations": [
+              "wet",
+              "frozen",
+              "golden",
+              "toasty",
+              "thunderstruck",
+              "groovy",
+              "prismatic",
+              "rainbow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 509
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 170.20000000000047,
+            "plantedAt": 1772633725914,
+            "mutations": [
+              "nightglow",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 0
+          },
+          {
+            "type": "peach",
+            "growth": 13.800000000000002,
+            "plantedAt": 1772549810457,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 132
+          },
+          {
+            "type": "strawberry",
+            "growth": 9.200000000000001,
+            "plantedAt": 1772628694536,
+            "mutations": [
+              "rainbow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 134
+          },
+          {
+            "type": "crystalflower",
+            "growth": 4305.8,
+            "plantedAt": 1771982598922,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "shocked",
+              "thunderstruck",
+              "dominated",
+              "frozen",
+              "toasty",
+              "cursed",
+              "bruised",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1687
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 28.749999999999986,
+            "plantedAt": 1771646129410,
+            "mutations": [
+              "groovy"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 165
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 4646.1,
+            "plantedAt": 1771646271762,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "shocked",
+              "thunderstruck",
+              "dominated",
+              "frozen",
+              "toasty",
+              "cursed",
+              "bruised"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1929
+          },
+          {
+            "type": "rose",
+            "growth": 60.35,
+            "plantedAt": 1772549815758,
+            "mutations": [
+              "wet"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 279
+          },
+          {
+            "type": "rose",
+            "growth": 630.6,
+            "plantedAt": 1772549822557,
+            "mutations": [
+              "wet",
+              "groovy",
+              "rainbow",
+              "golden",
+              "frozen",
+              "toasty",
+              "thunderstruck",
+              "cursed",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 552
+          },
+          {
+            "type": "grapes",
+            "growth": 610.3,
+            "plantedAt": 1772549260588,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "toasty",
+              "thunderstruck",
+              "cursed",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 549
+          },
+          {
+            "type": "strawberry",
+            "growth": 9.200000000000001,
+            "plantedAt": 1772628696636,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 12
+          },
+          null,
+          {
+            "type": "crystalflower",
+            "growth": 4390.45,
+            "plantedAt": 1772633149162,
+            "mutations": [
+              "wet",
+              "dewy",
+              "groovy",
+              "rainbow",
+              "golden",
+              "shocked",
+              "thunderstruck",
+              "dominated",
+              "frozen",
+              "toasty",
+              "cursed",
+              "bruised",
+              "prismatic"
+            ],
+            "harvested": false,
+            "isFromStormcharged": false,
+            "readyTime": 1738
+          },
+          null,
+          null,
+          {
+            "type": "strawberry",
+            "growth": 59.2,
+            "plantedAt": 1772549827473,
+            "mutations": [
+              "groovy",
+              "wet"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 278
+          },
+          {
+            "type": "rose",
+            "growth": 4728.3,
+            "plantedAt": 1772549823123,
+            "mutations": [
+              "wet",
+              "golden",
+              "rainbow",
+              "groovy",
+              "shocked",
+              "cursed",
+              "honeyglazed",
+              "crystalized",
+              "thunderstruck",
+              "dominated",
+              "frozen",
+              "toasty",
+              "bruised"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1943
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1868.4499999999994,
+            "plantedAt": 1772633770385,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "cursed",
+              "rainbow",
+              "bruised",
+              "golden",
+              "frozen",
+              "toasty",
+              "prismatic",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 686
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1840.7499999999995,
+            "plantedAt": 1772633770919,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "golden",
+              "cursed",
+              "bruised",
+              "rainbow",
+              "frozen",
+              "toasty",
+              "thunderstruck",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 681
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1840.7499999999995,
+            "plantedAt": 1772633773470,
+            "mutations": [
+              "wet",
+              "groovy",
+              "cursed",
+              "golden",
+              "bruised",
+              "rainbow",
+              "toasty",
+              "thunderstruck",
+              "prismatic"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 681
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1833.5999999999995,
+            "plantedAt": 1772633771971,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "golden",
+              "cursed",
+              "bruised",
+              "rainbow",
+              "frozen",
+              "toasty",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 679
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "questberry",
+            "growth": 4.6,
+            "plantedAt": 1772679705197,
+            "mutations": [
+              "golden"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 255
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1819.2999999999995,
+            "plantedAt": 1772633774238,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "golden",
+              "cursed",
+              "bruised",
+              "rainbow",
+              "frozen",
+              "toasty",
+              "prismatic",
+              "thunderstruck"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 678
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "money": 647262286168191,
+        "pets": [
+          "stormhawk",
+          "panda",
+          "panda",
+          "raccoon",
+          "raccoon",
+          "raccoon",
+          "dog",
+          "butterfly",
+          "slime",
+          "slime",
+          "slime"
+        ],
+        "lastSync": "2026-03-05T03:07:14.938167919Z"
+      },
+      "player_lf1zl4wl0": {
+        "playerName": "joe's aurafarm",
+        "plots": [
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772519248581,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 76
+          },
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772515409583,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 83
+          },
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772515408780,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 82
+          },
+          {
+            "type": "blueberry",
+            "growth": 10,
+            "plantedAt": 1772513961117,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 81
+          },
+          {
+            "type": "cosmicgrape",
+            "growth": 35,
+            "plantedAt": 1772515223004,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 68
+          },
+          {
+            "type": "questberry",
+            "growth": 4,
+            "plantedAt": 1772550652205,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 98
+          },
+          null,
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772515408152,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 77
+          },
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772514341095,
+            "mutations": [
+              "groovy"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 77
+          },
+          {
+            "type": "mythicmango",
+            "growth": 30,
+            "plantedAt": 1772514153200,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 78
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 28,
+            "plantedAt": 1772517565700,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 81
+          },
+          {
+            "type": "edenrose",
+            "growth": 472,
+            "plantedAt": 1772517975689,
+            "mutations": [
+              "nightglow",
+              "thunderstruck",
+              "groovy",
+              "misty"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 0
+          },
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772514941991,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 63
+          },
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772514940039,
+            "mutations": [
+              "stormsurge",
+              "golden"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 67
+          },
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772514939195,
+            "mutations": [
+              "stormsurge",
+              "groovy"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 68
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 28,
+            "plantedAt": 1772517564970,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 71
+          },
+          {
+            "type": "nimbusnectar",
+            "growth": 86,
+            "plantedAt": 1772517525615,
+            "mutations": [
+              "groovy",
+              "nightglow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 0
+          },
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772519246972,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 57
+          },
+          {
+            "type": "hellfruit",
+            "growth": 129,
+            "plantedAt": 1772517452010,
+            "mutations": [
+              "nightglow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 0
+          },
+          {
+            "type": "hellfruit",
+            "growth": 128,
+            "plantedAt": 1772517441956,
+            "mutations": [
+              "groovy",
+              "nightglow"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 0
+          },
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772592666936,
+            "mutations": [
+              "groovy"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 58
+          },
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772592667716,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 56
+          },
+          {
+            "type": "primordialfern",
+            "growth": 23,
+            "plantedAt": 1772592668541,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 53
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 28,
+            "plantedAt": 1772592670575,
+            "mutations": [
+              "groovy"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 47
+          },
+          {
+            "type": "nebulabloom",
+            "growth": 28,
+            "plantedAt": 1772592672158,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 57
+          },
+          null,
+          null,
+          null,
+          {
+            "type": "starfruit",
+            "growth": 30,
+            "plantedAt": 1772592679128,
+            "mutations": [
+              "stormsurge"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 51
+          },
+          {
+            "type": "peach",
+            "growth": 13,
+            "plantedAt": 1772599803944,
+            "mutations": [],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 67
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "money": 49652638691508,
+        "pets": [
+          "stormhawk",
+          "staticbunny",
+          "penguin",
+          "panda",
+          "penguin"
+        ],
+        "lastSync": "2026-03-05T03:43:44.887785385Z"
+      },
+      "player_y8nykf1y1": {
+        "playerName": "iamweird",
+        "plots": [
+          {
+            "type": "angelwing",
+            "growth": 1551.7000000000003,
+            "plantedAt": 1771691178086,
+            "mutations": [
+              "stormsurge",
+              "nightglow",
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 446
+          },
+          {
+            "type": "heaventear",
+            "growth": 1484.1000000000004,
+            "plantedAt": 1771442206042,
+            "mutations": [
+              "groovy",
+              "wet",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 498
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1598.2000000000007,
+            "plantedAt": 1771691194335,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "fossilized",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen",
+              "shadowtouched"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 461
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1598.2000000000007,
+            "plantedAt": 1771698901568,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen",
+              "shadowtouched"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 462
+          },
+          {
+            "type": "angelwing",
+            "growth": 1619.0000000000002,
+            "plantedAt": 1771898961788,
+            "mutations": [
+              "stormsurge",
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "shadowtouched"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 446
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1558.3000000000006,
+            "plantedAt": 1771474131510,
+            "mutations": [
+              "wet",
+              "bloodlit",
+              "groovy",
+              "nightglow",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 468
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1552.3000000000006,
+            "plantedAt": 1771474894517,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed"
+            ],
+            "harvested": true,
+            "readyTime": 467
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 595.3000000000008,
+            "plantedAt": 1771517588356,
+            "mutations": [
+              "wet",
+              "timewarp",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "cursed",
+              "golden",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 217
+          },
+          {
+            "type": "edenrose",
+            "growth": 2040.4999999999948,
+            "plantedAt": 1771442370145,
+            "mutations": [
+              "bloodlit",
+              "wet",
+              "groovy",
+              "nightglow",
+              "dominated",
+              "timewarp",
+              "golden",
+              "rainbow",
+              "cursed",
+              "rainbow",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 276
+          },
+          {
+            "type": "holygrail",
+            "growth": 1624.4999999999975,
+            "plantedAt": 1771445088889,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "dominated",
+              "golden",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 388
+          },
+          {
+            "type": "hellfruit",
+            "growth": 0,
+            "plantedAt": 1771443261126,
+            "mutations": [],
+            "harvested": true,
+            "readyTime": 490
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1655.6000000000008,
+            "plantedAt": 1771455761547,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed"
+            ],
+            "harvested": true,
+            "readyTime": 490
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1714.3000000000006,
+            "plantedAt": 1771517760775,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "shadowtouched"
+            ],
+            "harvested": true,
+            "readyTime": 489
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1558.3000000000006,
+            "plantedAt": 1771628363551,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 468
+          },
+          {
+            "type": "holygrail",
+            "growth": 1657.8999999999976,
+            "plantedAt": 1771635284812,
+            "mutations": [
+              "stormsurge",
+              "nightglow",
+              "wet",
+              "groovy",
+              "bloodlit",
+              "dominated",
+              "golden",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 397
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1564.3000000000006,
+            "plantedAt": 1771635800975,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "rainbow",
+              "golden",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 469
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1616.2000000000007,
+            "plantedAt": 1771690705880,
+            "mutations": [
+              "groovy",
+              "wet",
+              "nightglow",
+              "bloodlit",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 481
+          },
+          {
+            "type": "fireblossom",
+            "growth": 1035.5,
+            "plantedAt": 1771279582522,
+            "mutations": [
+              "wet",
+              "groovy",
+              "dominated",
+              "rainbow",
+              "golden",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 416
+          },
+          null,
+          null,
+          {
+            "type": "zeusthunder",
+            "growth": 1637.6000000000008,
+            "plantedAt": 1771520186761,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "rainbow",
+              "dominated",
+              "golden",
+              "timewarp",
+              "cursed",
+              "shadowtouched"
+            ],
+            "harvested": true,
+            "readyTime": 470
+          },
+          {
+            "type": "supercellflower",
+            "growth": 1571.6000000000008,
+            "plantedAt": 1772077095718,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 470
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1571.6000000000008,
+            "plantedAt": 1772079823292,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 470
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1570.3000000000006,
+            "plantedAt": 1772079851292,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 470
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "zeusthunder",
+            "growth": 1516.3000000000006,
+            "plantedAt": 1771606479528,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 458
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1516.3000000000006,
+            "plantedAt": 1772079901927,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 458
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "zeusthunder",
+            "growth": 1490.2000000000007,
+            "plantedAt": 1772149591562,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 450
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1490.2000000000007,
+            "plantedAt": 1772501887582,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 451
+          },
+          {
+            "type": "holygrail",
+            "growth": 1591.0999999999976,
+            "plantedAt": 1772503279724,
+            "mutations": [
+              "stormsurge",
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "dominated",
+              "golden",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 380
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1490.2000000000007,
+            "plantedAt": 1772504151737,
+            "mutations": [
+              "bloodlit",
+              "wet",
+              "nightglow",
+              "groovy",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 452
+          },
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "supercellflower",
+            "growth": 1490.2000000000007,
+            "plantedAt": 1772079589690,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 450
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1488.9000000000008,
+            "plantedAt": 1772079305932,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 450
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1487.6000000000008,
+            "plantedAt": 1771456934906,
+            "mutations": [
+              "bloodlit",
+              "wet",
+              "groovy",
+              "nightglow",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 450
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1488.9000000000008,
+            "plantedAt": 1771299009348,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 450
+          },
+          {
+            "type": "angelwing",
+            "growth": 1507.1000000000001,
+            "plantedAt": 1772153746015,
+            "mutations": [
+              "stormsurge",
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen",
+              "fossilized"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 436
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1436.5000000000007,
+            "plantedAt": 1771440173506,
+            "mutations": [
+              "nightglow",
+              "wet",
+              "groovy",
+              "golden",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 450
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1448.2000000000007,
+            "plantedAt": 1771456558338,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 442
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1450.3000000000006,
+            "plantedAt": 1771435674864,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 446
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1441.2000000000007,
+            "plantedAt": 1771301300681,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 453
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1441.2000000000007,
+            "plantedAt": 1771301300054,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 453
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1672.6000000000006,
+            "plantedAt": 1771301299531,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "golden",
+              "rainbow",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 507
+          },
+          {
+            "type": "zeusthunder",
+            "growth": 1468.3000000000006,
+            "plantedAt": 1771300176829,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "rainbow",
+              "dominated",
+              "golden",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 447
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1462.6000000000006,
+            "plantedAt": 1771301298665,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 457
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1432.6000000000006,
+            "plantedAt": 1771296317879,
+            "mutations": [
+              "wet",
+              "groovy",
+              "nightglow",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 449
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1426.6000000000006,
+            "plantedAt": 1771296318351,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "golden",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 448
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1426.6000000000006,
+            "plantedAt": 1771296324345,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 448
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1420.6000000000006,
+            "plantedAt": 1771296319797,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 447
+          },
+          {
+            "type": "hadescrown",
+            "growth": 1420.6000000000006,
+            "plantedAt": 1771296320644,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "golden",
+              "rainbow",
+              "golden",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 447
+          },
+          {
+            "type": "edenrose",
+            "growth": 1941.0999999999947,
+            "plantedAt": 1771297778608,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "dominated",
+              "nightglow",
+              "timewarp",
+              "rainbow",
+              "golden",
+              "golden",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 249
+          },
+          {
+            "type": "holygrail",
+            "growth": 1518.5999999999976,
+            "plantedAt": 1771297969464,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "dominated",
+              "golden",
+              "rainbow",
+              "timewarp",
+              "cursed"
+            ],
+            "harvested": true,
+            "readyTime": 366
+          },
+          {
+            "type": "angelwing",
+            "growth": 1433.0000000000002,
+            "plantedAt": 1771456192457,
+            "mutations": [
+              "wet",
+              "groovy",
+              "bloodlit",
+              "nightglow",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "readyTime": 417
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "type": "blueberry",
+            "growth": 2968.4,
+            "plantedAt": 1772512280580,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1012
+          },
+          {
+            "type": "rose",
+            "growth": 2965.8,
+            "plantedAt": 1772512285483,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1012
+          },
+          {
+            "type": "lemon",
+            "growth": 2964.5,
+            "plantedAt": 1772512334735,
+            "mutations": [
+              "groovy",
+              "wet",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1012
+          },
+          {
+            "type": "strawberry",
+            "growth": 2961.9,
+            "plantedAt": 1772550850978,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "rainbow",
+              "dominated",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1012
+          },
+          {
+            "type": "coconut",
+            "growth": 2964.5,
+            "plantedAt": 1772512525707,
+            "mutations": [
+              "wet",
+              "groovy",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "cursed",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": false,
+            "readyTime": 1011
+          },
+          {
+            "type": "grapes",
+            "growth": 2967.1,
+            "plantedAt": 1772512504336,
+            "mutations": [
+              "stormsurge",
+              "bloodlit",
+              "wet",
+              "groovy",
+              "golden",
+              "dominated",
+              "rainbow",
+              "timewarp",
+              "frozen"
+            ],
+            "harvested": true,
+            "isFromStormcharged": true,
+            "readyTime": 1012
+          }
+        ],
+        "money": 837222414229488000,
+        "pets": [
+          "mammoth",
+          "bloodtiger",
+          "raccoon",
+          "penguin",
+          "nightowl",
+          "dragon",
+          "bunny",
+          "hellbird",
+          "hellbird",
+          "bloodtiger",
+          "hellbird",
+          "bloodtiger",
+          "shadowcat",
+          "nightowl",
+          "stormhawk",
+          "galephoenix",
+          "cybercat",
+          "thunderwolf",
+          "thunderwolf",
+          "staticbunny",
+          "raptor",
+          "cybercat",
+          "raptor",
+          "cyclonedragon",
+          "cyclonedragon",
+          "cyclonedragon",
+          "galephoenix",
+          "staticbunny",
+          "raptor",
+          "thunderwolf",
+          "galephoenix",
+          "cybercat",
+          "staticbunny",
+          "cybercat",
+          "mammoth",
+          "alienblob",
+          "raptor",
+          "alienblob"
+        ],
+        "lastSync": "2026-03-05T03:54:58.964901955Z"
+      }
+    },
+    "messages": [
+      {
+        "id": 1,
+        "playerId": "player_lf1zl4wl0",
+        "playerName": "joe's aurafarm",
+        "message": "hello wes!",
+        "timestamp": "2026-03-04T02:33:10.591133133Z"
+      },
+      {
+        "id": 2,
+        "playerId": "player_lf1zl4wl0",
+        "playerName": "joe's aurafarm",
+        "message": "stop the admin control!",
+        "timestamp": "2026-03-04T02:53:30.793487692Z"
+      },
+      {
+        "id": 3,
+        "playerId": "player_lf1zl4wl0",
+        "playerName": "joe's aurafarm",
+        "message": "any ideas for the comic?",
+        "timestamp": "2026-03-04T04:45:57.428597462Z"
+      },
+      {
+        "id": 4,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "Oh I only have my alt on this so need to kick ai tests",
+        "timestamp": "2026-03-04T14:07:52.449944146Z"
+      },
+      {
+        "id": 5,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "the cheese guy should have a move where he can melt and shape shift, and he could land on popsicle and try to melt him. He could also have an ability that would let him throw his holes and use them to",
+        "timestamp": "2026-03-04T14:12:29.318543034Z"
+      },
+      {
+        "id": 6,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "Teleport",
+        "timestamp": "2026-03-04T14:12:40.778872102Z"
+      },
+      {
+        "id": 7,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "You should get some better pets, 2 penguins are useless",
+        "timestamp": "2026-03-04T14:14:09.711234318Z"
+      },
+      {
+        "id": 8,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "sent a gift to joe's aurafarm!",
+        "timestamp": "2026-03-04T14:19:45.525719202Z",
+        "gift": {
+          "cropType": "zeusthunder",
+          "sizeIndex": 3,
+          "mutations": [
+            "nightglow",
+            "cursed",
+            "groovy",
+            "wet",
+            "volcanic",
+            "starblessed",
+            "enchanted",
+            "honeyglazed",
+            "rainbow",
+            "thunderstruck",
+            "golden"
+          ],
+          "toPlayer": "joe's aurafarm",
+          "fromPlayer": "Alt",
+          "claimed": false,
+          "declined": false,
+          "reclaimed": true
+        }
+      },
+      {
+        "id": 9,
+        "playerId": "player_y8nykf1y1",
+        "playerName": "iamweird",
+        "message": "sent a pet to joe's aurafarm!",
+        "timestamp": "2026-03-04T14:57:11.833146775Z",
+        "gift": {
+          "petId": "alienblob",
+          "toPlayer": "joe's aurafarm",
+          "fromPlayer": "iamweird",
+          "claimed": false,
+          "declined": false,
+          "reclaimed": true
+        }
+      },
+      {
+        "id": 10,
+        "playerId": "ADMIN",
+        "playerName": "🛡️ Admin",
+        "message": "sent 1 voidlily seeds to iamweird!",
+        "timestamp": "2026-03-04T15:20:42.057254685Z",
+        "gift": {
+          "seedType": "voidlily",
+          "seedQty": 1,
+          "toPlayer": "iamweird",
+          "fromPlayer": "🛡️ Admin",
+          "claimed": true,
+          "declined": false,
+          "reclaimed": false
+        }
+      },
+      {
+        "id": 11,
+        "playerId": "ADMIN",
+        "playerName": "🛡️ Admin",
+        "message": "sent $1000000000000000000 to iamweird!",
+        "timestamp": "2026-03-04T15:26:09.835476287Z",
+        "gift": {
+          "money": 1000000000000000000,
+          "toPlayer": "iamweird",
+          "fromPlayer": "🛡️ Admin",
+          "claimed": true,
+          "declined": false,
+          "reclaimed": false
+        }
+      },
+      {
+        "id": 12,
+        "playerId": "player_lf1zl4wl0",
+        "playerName": "joe's aurafarm",
+        "message": "sorry i had dinner early.",
+        "timestamp": "2026-03-05T01:43:42.923132762Z"
+      },
+      {
+        "id": 13,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "Oh",
+        "timestamp": "2026-03-05T02:27:14.210764533Z"
+      },
+      {
+        "id": 14,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "My main account is corrupted so I can use my alt",
+        "timestamp": "2026-03-05T02:28:45.505099692Z"
+      },
+      {
+        "id": 15,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "sent a gift to joe's aurafarm!",
+        "timestamp": "2026-03-05T02:29:16.823784101Z",
+        "gift": {
+          "cropType": "zeusthunder",
+          "sizeIndex": 3,
+          "mutations": [
+            "wet",
+            "toasty",
+            "volcanic",
+            "groovy",
+            "nightglow",
+            "rainbow",
+            "cursed",
+            "golden",
+            "bruised",
+            "golden"
+          ],
+          "toPlayer": "joe's aurafarm",
+          "fromPlayer": "Alt",
+          "claimed": true,
+          "declined": false,
+          "reclaimed": false
+        }
+      },
+      {
+        "id": 16,
+        "playerId": "player_5l57bw2dp",
+        "playerName": "Alt",
+        "message": "Here",
+        "timestamp": "2026-03-05T02:29:20.923426793Z"
+      },
+      {
+        "id": 17,
+        "playerId": "player_lf1zl4wl0",
+        "playerName": "joe's aurafarm",
+        "message": "thanks",
+        "timestamp": "2026-03-05T03:40:27.875667224Z"
+      }
+    ],
+    "msgId": 17,
+    "weather": "thunder",
+    "weatherUntil": "2026-03-05T03:55:10.963465918Z",
+    "created": "2026-03-04T01:27:06.068743386Z"
+  },
+  "7655": {
+    "code": "7655",
+    "ownerId": "player_y8nykf1y1",
+    "farms": {},
+    "messages": [
+      {
+        "id": 1,
+        "playerId": "ADMIN",
+        "playerName": "🛡️ Admin",
+        "message": "sent $100000000000000000 to iamweird!",
+        "timestamp": "2026-03-04T02:10:35.344590077Z",
+        "gift": {
+          "money": 100000000000000000,
+          "toPlayer": "iamweird",
+          "fromPlayer": "🛡️ Admin",
+          "claimed": true,
+          "declined": false,
+          "reclaimed": false
+        }
+      },
+      {
+        "id": 2,
+        "playerId": "SYSTEM",
+        "playerName": "📢 ADMIN",
+        "message": "going to be a special weather soon!!!!!!!",
+        "timestamp": "2026-03-04T02:38:51.221138869Z"
+      },
+      {
+        "id": 3,
+        "playerId": "player_y8nykf1y1",
+        "playerName": "iamweird",
+        "message": "67",
+        "timestamp": "2026-03-04T02:39:16.685140064Z"
+      },
+      {
+        "id": 4,
+        "playerId": "ADMIN",
+        "playerName": "🛡️ Admin",
+        "message": "sent 1 voidlily seeds to iamweird!",
+        "timestamp": "2026-03-04T02:48:33.384371225Z",
+        "gift": {
+          "seedType": "voidlily",
+          "seedQty": 1,
+          "toPlayer": "iamweird",
+          "fromPlayer": "🛡️ Admin",
+          "claimed": true,
+          "declined": false,
+          "reclaimed": false
+        }
+      }
+    ],
+    "msgId": 4,
+    "weather": "rainy",
+    "weatherUntil": "2026-03-05T00:33:30.060524883Z",
+    "created": "2026-03-04T01:59:32.192155298Z"
+  }
+}
