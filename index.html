@@ -14714,6 +14714,12 @@
             penguin: { name: 'Merchant Penguin', emoji: '🐧', price: 2000, ability: 'Salesman', description: 'Auto-sells all crops when inventory full', effect: 'autosell', rarity: 'epic' },
             bloodtiger: { name: 'Blood Tiger', emoji: '🐯', price: 100000000, ability: 'Bloodlust', description: 'Bloodlit every 1:00, 3x cursed, 2x sprinklers', effect: 'bloodlust', rarity: 'demonic' },
             hellbird: { name: 'Hellbird', emoji: '🐦‍🔥', price: 500000, ability: 'Blood Moon', description: 'Crops can become Bloodlit at night (2x value)', effect: 'bloodmoon', rarity: 'demonic' },
+            // Celestial pets (available during heaven weather)
+            cherub: { name: 'Cherub', emoji: '👼', price: 500000, ability: 'Divine Light', description: 'Blessed crops worth 2x more', effect: 'divinelight', rarity: 'celestial' },
+            seraph: { name: 'Seraph', emoji: '🕊️', price: 5000000, ability: 'Holy Aura', description: '+50% value on all celestial crops', effect: 'holyaura', rarity: 'celestial' },
+            pegasus: { name: 'Pegasus', emoji: '🦄', price: 25000000, ability: 'Skyborne', description: 'Celestial crops grow 2x faster', effect: 'skyborne', rarity: 'celestial' },
+            archangel: { name: 'Archangel', emoji: '😇', price: 100000000, ability: 'Ascension', description: 'All crops have 5% chance to become blessed each tick', effect: 'ascension', rarity: 'celestial' },
+            holygriffin: { name: 'Holy Griffin', emoji: '🦁', price: 500000000, ability: 'Divine Harvest', description: '+2 bonus yield on celestial crops', effect: 'divineharvest', rarity: 'celestial' },
             // Temporal pets (from time wheels only)
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value) [Stackable]', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster per mammoth [Stackable]', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
@@ -15912,6 +15918,14 @@
                 if (hasPetEffect('funky') && gameState.currentWeather === 'disco') {
                     value *= 1.25;
                 }
+                // Cherub: Blessed crops worth 2x more
+                if (hasPetEffect('divinelight') && mutations.includes('blessed')) {
+                    value *= 2;
+                }
+                // Seraph: +50% value on celestial crops
+                if (hasPetEffect('holyaura') && crop.rarity === 'celestial') {
+                    value *= 1.5;
+                }
                 value = Math.round(value);
                 totalValue += value;
                 
@@ -16265,6 +16279,10 @@
                 yieldAmount *= 2;
                 showMessage('⚡ Static Bunny sparked a double yield!');
             }
+            // Holy Griffin: +2 bonus yield on celestial crops
+            if (hasPetEffect('divineharvest') && crop.rarity === 'celestial') {
+                yieldAmount += 2;
+            }
             
             // Harvest each item (limited by inventory space)
             const spaceAvailable = MAX_INVENTORY - gameState.harvested.length;
@@ -16431,7 +16449,13 @@
                 // Demonic pets only available during hellscape
                 const isDemonic = pet.rarity === 'demonic';
                 const isHellscape = gameState.currentWeather === 'hellscape';
-                const inStock = !isDemonic || (isHellscape && gameState.demonicInStock > 0);
+                // Celestial pets only available during heaven
+                const isCelestial = pet.rarity === 'celestial';
+                const isHeaven = gameState.currentWeather === 'heaven';
+                const isTakeover = gameState.currentWeather === 'takeover';
+                let inStock = true;
+                if (isDemonic) inStock = isHellscape && gameState.demonicInStock > 0;
+                if (isCelestial) inStock = isHeaven || isTakeover;
                 
                 const canAfford = gameState.money >= pet.price && !maxedOut && inStock;
                 const rarity = RARITIES[pet.rarity];
@@ -16442,6 +16466,7 @@
                 if (pet.rarity === 'legendary') classNames += ' legendary-glow';
                 if (pet.rarity === 'godly') classNames += ' godly-glow';
                 if (pet.rarity === 'demonic') classNames += ' demonic-glow';
+                if (pet.rarity === 'celestial') classNames += ' celestial-glow';
                 if (pet.rarity === 'temporal') classNames += ' temporal-glow';
                 if (pet.rarity === 'storm') classNames += ' storm-glow';
                 div.className = classNames;
@@ -17058,6 +17083,14 @@
                 if (hasPetEffect('funky') && gameState.currentWeather === 'disco') {
                     value *= 1.25;
                 }
+                // Cherub: Blessed crops worth 2x more
+                if (hasPetEffect('divinelight') && (item.mutations || []).includes('blessed')) {
+                    value *= 2;
+                }
+                // Seraph: +50% value on celestial crops
+                if (hasPetEffect('holyaura') && crop.rarity === 'celestial') {
+                    value *= 1.5;
+                }
                 total += Math.round(value);
             });
             
@@ -17268,6 +17301,10 @@
                         if (hasPetEffect('lightningstride') && gameState.currentWeather === 'supercell') {
                             growthAmount += 0.50;
                         }
+                        // Pegasus: Celestial crops grow 2x faster
+                        if (hasPetEffect('skyborne') && crop.rarity === 'celestial') {
+                            growthAmount *= 2;
+                        }
                         
                         // Time Anomaly: 5x growth speed!
                         if (currentWeather.growthMultiplier) {
@@ -17324,6 +17361,14 @@
                             if (!plot.mutations.includes('bloodlit')) {
                                 plot.mutations.push('bloodlit');
                                 showMessage(`A crop became bloodlit! ${SPECIAL_MUTATIONS.bloodlit.emoji} (2x value)`);
+                            }
+                        }
+                        // Archangel: 5% chance to become blessed each tick
+                        if (hasPetEffect('ascension') && Math.random() < 0.05) {
+                            if (!plot.mutations) plot.mutations = [];
+                            if (!plot.mutations.includes('blessed')) {
+                                plot.mutations.push('blessed');
+                                showMessage(`A crop became blessed! ✨ (2x value)`);
                             }
                         }
                         // Reset ready timer when not ready
