@@ -14719,7 +14719,6 @@
             seraph: { name: 'Seraph', emoji: '🕊️', price: 5000000, ability: 'Holy Aura', description: '+50% value on all celestial crops', effect: 'holyaura', rarity: 'celestial' },
             pegasus: { name: 'Pegasus', emoji: '🦄', price: 25000000, ability: 'Skyborne', description: 'Celestial crops grow 2x faster', effect: 'skyborne', rarity: 'celestial' },
             archangel: { name: 'Archangel', emoji: '😇', price: 100000000, ability: 'Ascension', description: 'All crops have 5% chance to become blessed each tick', effect: 'ascension', rarity: 'celestial' },
-            holygriffin: { name: 'Holy Griffin', emoji: '🦁', price: 500000000, ability: 'Divine Harvest', description: '+2 bonus yield on celestial crops', effect: 'divineharvest', rarity: 'celestial' },
             // Temporal pets (from time wheels only)
             raptor: { name: 'Baby Raptor', emoji: '🦖', price: 0, ability: 'Prehistoric', description: 'Crops gain fossilized mutation (+300% value) [Stackable]', effect: 'fossilize', rarity: 'temporal', wheelOnly: true },
             mammoth: { name: 'Woolly Mammoth', emoji: '🦣', price: 0, ability: 'Ancient', description: 'All crops grow 30% faster per mammoth [Stackable]', effect: 'ancientspeed', rarity: 'temporal', wheelOnly: true },
@@ -16279,11 +16278,6 @@
                 yieldAmount *= 2;
                 showMessage('⚡ Static Bunny sparked a double yield!');
             }
-            // Holy Griffin: +2 bonus yield on celestial crops
-            if (hasPetEffect('divineharvest') && crop.rarity === 'celestial') {
-                yieldAmount += 2;
-            }
-            
             // Harvest each item (limited by inventory space)
             const spaceAvailable = MAX_INVENTORY - gameState.harvested.length;
             const actualYield = Math.min(yieldAmount, spaceAvailable);
