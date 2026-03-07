@@ -10222,6 +10222,25 @@
             cursor: not-allowed;
         }
 
+        .destroy-seeds-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .destroy-seeds-btn:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            transform: scale(1.02);
+        }
+
         .message {
             position: fixed;
             top: 20px;
@@ -15882,6 +15901,13 @@
             
             if (!hasSeeds && !hasEggs) {
                 seedContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No seeds - buy some!</p>';
+            } else if (hasSeeds) {
+                // Add destroy all seeds button
+                const destroyBtn = document.createElement('button');
+                destroyBtn.className = 'destroy-seeds-btn';
+                destroyBtn.innerHTML = '🗑️ Destroy All Seeds';
+                destroyBtn.onclick = destroyAllSeeds;
+                seedContainer.appendChild(destroyBtn);
             }
 
             // Harvested
@@ -16037,6 +16063,28 @@
             gameState.selectedSprinkler = null;
             renderInventory();
             renderGearShop();
+        }
+
+        function destroyAllSeeds() {
+            const seedCount = Object.values(gameState.seeds).reduce((a, b) => a + b, 0);
+            const stormCount = Object.values(gameState.stormchargedSeeds || {}).reduce((a, b) => a + b, 0);
+            const total = seedCount + stormCount;
+            
+            if (total === 0) {
+                showMessage('No seeds to destroy!');
+                return;
+            }
+            
+            if (!confirm(`Destroy all ${total} seeds? This cannot be undone!`)) {
+                return;
+            }
+            
+            gameState.seeds = {};
+            gameState.stormchargedSeeds = {};
+            gameState.selectedSeed = null;
+            saveGame();
+            renderInventory();
+            showMessage(`🗑️ Destroyed ${total} seeds!`);
         }
 
         function toggleShovel() {
